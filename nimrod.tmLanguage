@@ -4,7 +4,7 @@
 <dict>
 	<key>fileTypes</key>
 	<array>
-		<string>.nim</string>
+		<string>nim</string>
 	</array>
 	<key>name</key>
 	<string>Nimrod</string>
@@ -23,6 +23,14 @@
 			<string>(#).*$\n?</string>
 			<key>name</key>
 			<string>comment.line.number-sign.nimrod</string>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>discard \"\"\"</string>
+			<key>end</key>
+			<string>\"\"\"</string>
+			<key>name</key>
+			<string>comment.line.discarded.nimrod</string>
 		</dict>
 		<dict>
 			<key>match</key>
@@ -92,7 +100,7 @@
 			<key>comment</key>
 			<string>Other keywords.</string>
 			<key>match</key>
-			<string>(\b(addr|as|asm|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|iterator|let|macro|method|mod|object|of|proc|ptr|ref|shl|shr|static|template|tuple|type|var)\b)</string>
+			<string>(\b(addr|as|asm|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|let|mod|object|of|ptr|ref|shl|shr|static|tuple|type|var)\b)</string>
 			<key>name</key>
 			<string>keyword.other.nimrod</string>
 		</dict>
@@ -119,6 +127,22 @@
 			<string>\b(range|array|seq|natural|set|ref|ptr)\b</string>
 			<key>name</key>
 			<string>storage.type.generic.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Function types</string>
+			<key>match</key>
+			<string>\b(proc|iterator|method|template|macro)\b</string>
+			<key>name</key>
+			<string>storage.type.function.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Common functions</string>
+			<key>match</key>
+			<string>\b(echo|newException)\b</string>
+			<key>name</key>
+			<string>keyword.function.nimrod</string>
 		</dict>
 		<dict>
 			<key>comment</key>
@@ -176,7 +200,7 @@
 			<key>comment</key>
 			<string>Single quoted character literal</string>
 			<key>match</key>
-			<string>\'(\\\d{1,}|\\?[^\n]?)\'</string>
+			<string>\'(\\\d{1,3}|\\?[^\n]?)\'</string>
 			<key>name</key>
 			<string>string.quoted.single.nimrod</string>
 		</dict>

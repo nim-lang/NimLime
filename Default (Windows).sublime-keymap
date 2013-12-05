@@ -1,0 +1,7 @@
+[
+    {"keys": ["f12"], "command": "lookup", "context": 
+    	[
+    		{ "key": "selector", "operator": "equal", "operand": "source.nimrod" }
+    	]
+	}
+]

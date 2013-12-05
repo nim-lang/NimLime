@@ -1,0 +1,9 @@
+[
+    {
+        "mnemonic": "g",
+        "caption": "Go To Definition",
+        "id": "lookup",
+        "command": "lookup",
+        "context": [{"key": "selector", "operator": "equal", "operand": "source.nimrod"}]
+    }
+]

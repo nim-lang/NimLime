@@ -1,0 +1,12 @@
+{
+    "cmd": ["nimrod", "c", "$file"],
+    "selector": "source.nimrod",
+
+    "variants": [
+        {
+            "cmd": ["nimrod", "c", "-r", "--verbosity:0", "--hints:off", "$file"],
+            "selector": "source.nimrod",
+            "name": "Run"
+        }
+    ]
+}

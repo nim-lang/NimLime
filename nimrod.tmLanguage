@@ -18,9 +18,14 @@
 					<key>name</key>
 					<string>punctuation.definition.comment.nimrod</string>
 				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal.TODO.nimrod</string>
+				</dict>
 			</dict>
 			<key>match</key>
-			<string>(#).*$\n?</string>
+			<string>(#(\s*TODO|todo)?).*$\n?</string>
 			<key>name</key>
 			<string>comment.line.number-sign.nimrod</string>
 		</dict>

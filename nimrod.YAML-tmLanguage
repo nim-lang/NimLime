@@ -7,9 +7,10 @@ uuid: fa6f2c1c-dd3f-4bcd-b2be-d05312be4080
 
 patterns:
 - name: comment.line.number-sign.nimrod
-  match: (#).*$\n?
+  match: (#(\s*TODO|todo)?).*$\n?
   captures:
     '1': {name: punctuation.definition.comment.nimrod}
+    '2': {name: invalid.illegal.TODO.nimrod}
 
 - name: comment.line.discarded.nimrod
   begin: discard \"\"\"

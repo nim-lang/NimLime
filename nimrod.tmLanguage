@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string>.nim</string>
+	</array>
+	<key>name</key>
+	<string>Nimrod</string>
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.comment.nimrod</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(#).*$\n?</string>
+			<key>name</key>
+			<string>comment.line.number-sign.nimrod</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b((\d[_\d]*\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*))('[fF](32|64))?</string>
+			<key>name</key>
+			<string>constant.numeric.float.decimal.nimrod</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(0[xX]\h[_\h]*)('[iIuU](8|16|32|64))?</string>
+			<key>name</key>
+			<string>constant.numeric.integer.hexadecimal.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>For simplicity's sake, we don't enforce floats only having 32 and 64 prefix types.</string>
+			<key>match</key>
+			<string>\b(0o[0-7][_0-7]*)('[iIuUfF](8|16|32|64))?</string>
+			<key>name</key>
+			<string>constant.numeric.integer.octal.nimrod</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(0(b|B)[01][_01]*)('[iIuUfF](8|16|32|64))?</string>
+			<key>name</key>
+			<string>constant.numeric.integer.binary.nimrod</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>\b(\d[_\d]*)('[iIuUfF](8|16|32|64))?</string>
+			<key>name</key>
+			<string>constant.numeric.integer.decimal.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Language Constants.</string>
+			<key>match</key>
+			<string>\b(true|false|inf|nil)\b</string>
+			<key>name</key>
+			<string>constant.language.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Keywords that affect program control flow or scope.</string>
+			<key>match</key>
+			<string>\b(block|break|case|continue|do|elif|else|end|except|finally|for|if|raise|return|try|when|while|yield)\b</string>
+			<key>name</key>
+			<string>keyword.control.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Keyword boolean operators for expressions.</string>
+			<key>match</key>
+			<string>(\b(and|in|is|isnot|not|notin|or|xor)\b)</string>
+			<key>name</key>
+			<string>keyword.operator.boolean.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Generic operators for expressions.</string>
+			<key>match</key>
+			<string>(\b()\b|(=|\+|-|\*|/|&lt;|&gt;|@|\$|~|&amp;|%|!|\?|\^|\.|:|\\)+)</string>
+			<key>name</key>
+			<string>keyword.operator.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Other keywords.</string>
+			<key>match</key>
+			<string>(\b(addr|as|asm|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|iterator|let|macro|method|mod|object|of|proc|ptr|ref|shl|shr|static|template|tuple|type|var)\b)</string>
+			<key>name</key>
+			<string>keyword.other.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Invalid and unused keywords.</string>
+			<key>match</key>
+			<string>(\b(converter|generic|interface|lambda|mixin|out|shared|with|without)\b)</string>
+			<key>name</key>
+			<string>keyword.invalid.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Built-in, concrete types.</string>
+			<key>match</key>
+			<string>\b(int8|int16|int32|int64|uint8|uint16|uint32|uint64|float32|float64|bool|string|cstring|char|tobject)\b</string>
+			<key>name</key>
+			<string>storage.type.concrete.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Built-in, generic types.</string>
+			<key>match</key>
+			<string>\b(range|array|seq|natural|set|ref|ptr)\b</string>
+			<key>name</key>
+			<string>storage.type.generic.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Special types.</string>
+			<key>match</key>
+			<string>\b(openarray|varargs|void)\b</string>
+			<key>name</key>
+			<string>storage.type.generic.nimrod</string>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>(\w[_\w]*)?\"\"\"</string>
+			<key>comment</key>
+			<string>(Raw) Triple Quoted String</string>
+			<key>end</key>
+			<string>\"\"\"[^"]</string>
+			<key>name</key>
+			<string>string.quoted.triple.nimrod</string>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>r\"</string>
+			<key>comment</key>
+			<string>Raw Double Quoted String</string>
+			<key>end</key>
+			<string>\"</string>
+			<key>name</key>
+			<string>string.quoted.double.raw.nimrod</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\"\"</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>(\w[_\w]*)?\"</string>
+			<key>comment</key>
+			<string>Double Quoted String</string>
+			<key>end</key>
+			<string>\"</string>
+			<key>name</key>
+			<string>string.quoted.double.nimrod</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>(\\([abenrclftv]|["']|[0-9])|x\h\h)</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Single quoted character literal</string>
+			<key>match</key>
+			<string>\'(\\\d{1,}|\\?[^\n]?)\'</string>
+			<key>name</key>
+			<string>string.quoted.single.nimrod</string>
+		</dict>
+	</array>
+	<key>scopeName</key>
+	<string>source.nimrod</string>
+	<key>uuid</key>
+	<string>fa6f2c1c-dd3f-4bcd-b2be-d05312be4080</string>
+</dict>
+</plist>

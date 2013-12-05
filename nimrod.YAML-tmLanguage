@@ -1,0 +1,89 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: Nimrod
+scopeName: source.nimrod
+fileTypes: [".nim"]
+uuid: fa6f2c1c-dd3f-4bcd-b2be-d05312be4080
+
+patterns:
+- name: comment.line.number-sign.nimrod
+  match: (#).*$\n?
+  captures:
+    '1': {name: punctuation.definition.comment.nimrod}
+
+- name: constant.numeric.float.decimal.nimrod
+  match: \b((\d[_\d]*\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*))('[fF](32|64))?
+
+- name: constant.numeric.integer.hexadecimal.nimrod
+  match: \b(0[xX]\h[_\h]*)('[iIuU](8|16|32|64))?
+
+- comment: For simplicity's sake, we don't enforce floats only having 32 and
+           64 prefix types.
+  name: constant.numeric.integer.octal.nimrod
+  match: \b(0o[0-7][_0-7]*)('[iIuUfF](8|16|32|64))?
+
+- name: constant.numeric.integer.binary.nimrod
+  match: \b(0(b|B)[01][_01]*)('[iIuUfF](8|16|32|64))?
+
+- name: constant.numeric.integer.decimal.nimrod
+  match: \b(\d[_\d]*)('[iIuUfF](8|16|32|64))?
+
+- comment: Language Constants.
+  name: constant.language.nimrod
+  match: \b(true|false|inf|nil)\b
+
+- comment: Keywords that affect program control flow or scope.
+  name: keyword.control.nimrod
+  match: \b(block|break|case|continue|do|elif|else|end|except|finally|for|if|raise|return|try|when|while|yield)\b
+
+- comment: Keyword boolean operators for expressions.
+  name: keyword.operator.boolean.nimrod
+  match: (\b(and|in|is|isnot|not|notin|or|xor)\b)
+
+- comment: Generic operators for expressions.
+  name: keyword.operator.nimrod
+  match: (\b()\b|(=|\+|-|\*|/|<|>|@|\$|~|&|%|!|\?|\^|\.|:|\\)+)
+
+- comment: Other keywords.
+  name: keyword.other.nimrod
+  match: (\b(addr|as|asm|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|iterator|let|macro|method|mod|object|of|proc|ptr|ref|shl|shr|static|template|tuple|type|var)\b)
+
+- comment: Invalid and unused keywords.
+  name: keyword.invalid.nimrod
+  match: (\b(converter|generic|interface|lambda|mixin|out|shared|with|without)\b)
+
+- comment: Built-in, concrete types.
+  name: storage.type.concrete.nimrod
+  match: \b(int8|int16|int32|int64|uint8|uint16|uint32|uint64|float32|float64|bool|string|cstring|char|tobject)\b
+
+- comment: Built-in, generic types.
+  name: storage.type.generic.nimrod
+  match: \b(range|array|seq|natural|set|ref|ptr)\b
+
+- comment: Special types.
+  name: storage.type.generic.nimrod
+  match: \b(openarray|varargs|void)\b
+
+- comment: (Raw) Triple Quoted String
+  name: string.quoted.triple.nimrod
+  begin: (\w[_\w]*)?\"\"\"
+  end: \"\"\"[^"]
+
+- comment: Raw Double Quoted String
+  name: string.quoted.double.raw.nimrod
+  begin: r\"
+  end: \"
+  patterns:
+  - match: \"\"
+
+- comment: Double Quoted String
+  name: string.quoted.double.nimrod
+  begin: (\w[_\w]*)?\"
+  end: \"
+  patterns:
+  - match: (\\([abenrclftv]|["']|[0-9])|x\h\h)
+
+- comment: Single quoted character literal
+  name: string.quoted.single.nimrod
+  match: \'(\\\d{1,}|\\?[^\n]?)\'
+...

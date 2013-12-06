@@ -105,7 +105,7 @@
 			<key>comment</key>
 			<string>Other keywords.</string>
 			<key>match</key>
-			<string>(\b(addr|as|asm|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|let|mod|object|of|ptr|ref|shl|shr|static|tuple|type|var)\b)</string>
+			<string>(\b(addr|as|asm|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|let|mod|object|of|ptr|ref|shl|shr|static|type|var)\b)</string>
 			<key>name</key>
 			<string>keyword.other.nimrod</string>
 		</dict>
@@ -121,7 +121,7 @@
 			<key>comment</key>
 			<string>Built-in, concrete types.</string>
 			<key>match</key>
-			<string>\b(int8|int16|int32|int64|uint8|uint16|uint32|uint64|float32|float64|bool|string|cstring|char|tobject)\b</string>
+			<string>\b(int|int8|int16|int32|int64|uint|uint8|uint16|uint32|uint64|float32|float64|bool|string|cstring|char|byte|tuple|tobject)\b</string>
 			<key>name</key>
 			<string>storage.type.concrete.nimrod</string>
 		</dict>
@@ -145,9 +145,9 @@
 			<key>comment</key>
 			<string>Common functions</string>
 			<key>match</key>
-			<string>\b(echo|newException)\b</string>
+			<string>\b(echo|defined|newException)\b</string>
 			<key>name</key>
-			<string>keyword.function.nimrod</string>
+			<string>keyword.common.function.nimrod</string>
 		</dict>
 		<dict>
 			<key>comment</key>

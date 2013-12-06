@@ -51,7 +51,7 @@ patterns:
 
 - comment: Other keywords.
   name: keyword.other.nimrod
-  match: (\b(addr|as|asm|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|let|mod|object|of|ptr|ref|shl|shr|static|tuple|type|var)\b)
+  match: (\b(addr|as|asm|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|let|mod|object|of|ptr|ref|shl|shr|static|type|var)\b)
 
 - comment: Invalid and unused keywords.
   name: keyword.invalid.nimrod
@@ -59,7 +59,7 @@ patterns:
 
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nimrod
-  match: \b(int8|int16|int32|int64|uint8|uint16|uint32|uint64|float32|float64|bool|string|cstring|char|tobject)\b
+  match: \b(int|int8|int16|int32|int64|uint|uint8|uint16|uint32|uint64|float32|float64|bool|string|cstring|char|byte|tuple|tobject)\b
 
 - comment: Built-in, generic types.
   name: storage.type.generic.nimrod
@@ -70,8 +70,8 @@ patterns:
   match: \b(proc|iterator|method|template|macro)\b
 
 - comment: Common functions
-  name: keyword.function.nimrod
-  match: \b(echo|newException)\b
+  name: keyword.common.function.nimrod
+  match: \b(echo|defined|newException)\b
 
 - comment: Special types.
   name: storage.type.generic.nimrod

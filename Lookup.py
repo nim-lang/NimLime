@@ -1,6 +1,6 @@
 import sublime, sublime_plugin
 
-from nimrod import Idetools
+from Nimrod import Idetools
 
 ##Resources
 # http://sublimetext.info/docs/en/extensibility/plugins.html

@@ -1,0 +1,10 @@
+[
+    {
+        "caption": "Nimrod: Install Package",
+        "command": "babel_install"
+    },
+    {
+    	"caption": "Nimrod: Go To Definition",
+    	"command": "lookup"
+    }
+]

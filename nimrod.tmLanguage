@@ -25,7 +25,7 @@
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>(#(\s*TODO|todo)?).*$\n?</string>
+			<string>(#\s*(TODO|todo)?).*$\n?</string>
 			<key>name</key>
 			<string>comment.line.number-sign.nimrod</string>
 		</dict>

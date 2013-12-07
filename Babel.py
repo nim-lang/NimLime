@@ -85,23 +85,24 @@ class BabelUpdateCommand(sublime_plugin.WindowCommand):
         ).start()
 
 
+class BabelInstallThread(threading.Thread):
+    def __init__(self, pkgName = ""):
+        self.pkgName = pkgName
+        threading.Thread.__init__(self)
 
-class BabelInstallCommand(sublime_plugin.WindowCommand):
-    """
-    Install the specified babel package
-    """
-
-    @staticmethod
-    def install(name):
-        Babel.run("install " + name)
-        msg = name + " installed."
+    def run(self):
+        Babel.run("install -y " + self.pkgName)
+        msg = self.pkgName + " installed."
 
         def show_status():
             sublime.status_message(msg)
 
         sublime.set_timeout(show_status, 10)
 
+
+class BabelInstallCommand(sublime_plugin.WindowCommand):
+    """
+    Install the specified babel package
+    """
     def run(self, name):
-        threading.Thread(
-            target=functools.partial(BabelInstallCommand.install, name)
-        ).start()
+        BabelInstallThread(name).start()

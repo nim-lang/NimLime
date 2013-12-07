@@ -1,8 +1,12 @@
 import sublime, sublime_plugin
 import re, os, subprocess
+import threading
+import socket
 
 
 class Idetools:
+
+    service = None
 
     ## Fields
     pattern = re.compile(
@@ -14,14 +18,47 @@ class Idetools:
 
     ## Methods
     @staticmethod
-    def idetool(cmd, filename, line, col, extra = ""):
-        args = "nimrod --verbosity:0 idetools " \
-             + cmd + " --track:" \
-             + filename + "," + str(line) + "," + str(col) \
-             + " " + filename + extra
+    def ensure_service(proj = ""):
+        #If service is running, do nothing
+        if Idetools.service != None and not Idetools.service.poll():
+            return
 
-        result = ""
-        for result in os.popen(args): pass
+        Idetools.service = subprocess.Popen(
+            [
+                "nimrod", "--verbosity:0", "serve", 
+                "--server.type:stdin", proj
+            ], 
+            stdout=subprocess.PIPE,
+            stdin=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=True)
+
+        print("Nimrod CaaS now running")
+
+    @staticmethod
+    def idetool(cmd, filename, line, col, extra = ""):
+
+        if False: #TODO - use this when it's not broken in nimrod
+            #Ensure IDE Tools service is running
+            Idetools.ensure_service()
+
+            #Call the service
+            args = "idetools " \
+                 + "--track:" \
+                 + filename + "," + str(line) + "," + str(col) + " " \
+                 + cmd + extra
+
+            return Idetools.service.communicate(args + "\r\n")
+
+        else:
+            args = "nimrod --verbosity:0 idetools " \
+                 + cmd + " --track:" \
+                 + filename + "," + str(line) + "," + str(col) \
+                 + " " + filename + extra
+            print(args)
+            result = ""
+            for result in os.popen(args): pass
+
         return result
 
     @staticmethod
@@ -36,7 +73,6 @@ class Idetools:
 
     @staticmethod
     def parse(result):
-        print(result)
         m = Idetools.pattern.match(result)
 
         if m is not None:

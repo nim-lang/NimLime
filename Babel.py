@@ -64,10 +64,26 @@ class BabelListCommand(sublime_plugin.WindowCommand):
         self.window.show_quick_panel(self.items, self.on_done)
 
 
-class BabelUpdateCommand(sublime_plugin.TextCommand):
+class BabelUpdateCommand(sublime_plugin.WindowCommand):
+    """
+    Update the Babel package list
+    """
 
-    def run(self, edit):
-        None
+    @staticmethod
+    def update():
+        Babel.run("update")
+
+        def show_status():
+            sublime.status_message("Babel package list updated")
+
+        sublime.set_timeout(show_status, 10)
+
+    def run(self):
+        sublime.status_message("Updating Babel package list...")
+        threading.Thread(
+            target=functools.partial(BabelUpdateCommand.update)
+        ).start()
+
 
 
 class BabelInstallCommand(sublime_plugin.WindowCommand):
@@ -89,9 +105,3 @@ class BabelInstallCommand(sublime_plugin.WindowCommand):
         threading.Thread(
             target=functools.partial(BabelInstallCommand.install, name)
         ).start()
-
-
-class BabelUninstallCommand(sublime_plugin.TextCommand):
-
-    def run(self, edit):
-        None

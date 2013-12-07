@@ -8,10 +8,6 @@
         "command": "babel_list"
     },
     {
-        "caption": "Nimrod: Uninstall Babel Package",
-        "command": "babel_uninstall"
-    },
-    {
     	"caption": "Nimrod: Go To Definition",
     	"command": "lookup"
     }

@@ -57,6 +57,10 @@ patterns:
   name: keyword.invalid.nimrod
   match: (\b(converter|generic|interface|lambda|mixin|out|shared|with|without)\b)
 
+- comment: Common functions
+  name: keyword.common.function.nimrod
+  match: \b(new|echo|defined|newException|countup|countdown|high|low)\b
+
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nimrod
   match: \b(((uint|int|float)(8|16|32|64)?)|bool|string|cstring|char|tobject|typedesc)\b
@@ -68,10 +72,6 @@ patterns:
 - comment: Function types
   name: storage.type.function.nimrod
   match: \b(proc|iterator|method|template|macro)\b
-
-- comment: Common functions
-  name: keyword.common.function.nimrod
-  match: \b(new|echo|defined|newException|countup|countdown|high|low)\b
 
 - comment: Special types.
   name: storage.type.generic.nimrod

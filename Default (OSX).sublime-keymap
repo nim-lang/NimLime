@@ -1,0 +1,12 @@
+[
+    {"keys": ["ctrl+alt+d"], "command": "lookup", "context": 
+    	[
+    		{ "key": "selector", "operator": "equal", "operand": "source.nimrod" }
+    	]
+	},
+    {"keys": ["ctrl+alt+]"], "command": "align_assignments", "context":
+        [
+            { "key": "selector", "operator": "equal", "operand": "source.nimrod" }
+        ]
+    }
+]

@@ -119,6 +119,14 @@
 		</dict>
 		<dict>
 			<key>comment</key>
+			<string>Common functions</string>
+			<key>match</key>
+			<string>\b(new|echo|defined|newException|countup|countdown|high|low)\b</string>
+			<key>name</key>
+			<string>keyword.common.function.nimrod</string>
+		</dict>
+		<dict>
+			<key>comment</key>
 			<string>Built-in, concrete types.</string>
 			<key>match</key>
 			<string>\b(((uint|int|float)(8|16|32|64)?)|bool|string|cstring|char|tobject|typedesc)\b</string>
@@ -140,14 +148,6 @@
 			<string>\b(proc|iterator|method|template|macro)\b</string>
 			<key>name</key>
 			<string>storage.type.function.nimrod</string>
-		</dict>
-		<dict>
-			<key>comment</key>
-			<string>Common functions</string>
-			<key>match</key>
-			<string>\b(new|echo|defined|newException|countup|countdown|high|low)\b</string>
-			<key>name</key>
-			<string>keyword.common.function.nimrod</string>
 		</dict>
 		<dict>
 			<key>comment</key>

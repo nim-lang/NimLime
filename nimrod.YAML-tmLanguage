@@ -59,7 +59,7 @@ patterns:
 
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nimrod
-  match: \b(int8|int16|int32|int64|uint8|uint16|uint32|uint64|float32|float64|bool|string|cstring|char|tobject)\b
+  match: \b(((uint|int|float)(8|16|32|64)?)|bool|string|cstring|char|tobject|typedesc)\b
 
 - comment: Built-in, generic types.
   name: storage.type.generic.nimrod
@@ -94,9 +94,10 @@ patterns:
   begin: (\w[_\w]*)?\"
   end: \"
   patterns:
-  - match: (\\([abenrclftv]|["']|[0-9])|x\h\h)
+  - match: (\\([abenrclftv\\]|["']|[0-9])|x\h\h)
 
 - comment: Single quoted character literal
   name: string.quoted.single.nimrod
   match: \'(\\\d{1,3}|\\?[^\n]?)\'
+
 ...

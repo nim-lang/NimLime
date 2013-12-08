@@ -121,7 +121,7 @@
 			<key>comment</key>
 			<string>Built-in, concrete types.</string>
 			<key>match</key>
-			<string>\b(int8|int16|int32|int64|uint8|uint16|uint32|uint64|float32|float64|bool|string|cstring|char|tobject)\b</string>
+			<string>\b(((uint|int|float)(8|16|32|64)?)|bool|string|cstring|char|tobject|typedesc)\b</string>
 			<key>name</key>
 			<string>storage.type.concrete.nimrod</string>
 		</dict>
@@ -197,7 +197,7 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>(\\([abenrclftv]|["']|[0-9])|x\h\h)</string>
+					<string>(\\([abenrclftv\\]|["']|[0-9])|x\h\h)</string>
 				</dict>
 			</array>
 		</dict>

@@ -71,7 +71,7 @@ patterns:
 
 - comment: Common functions
   name: keyword.common.function.nimrod
-  match: \b(echo|defined|newException)\b
+  match: \b(new|echo|defined|newException|countup|countdown|high|low)\b
 
 - comment: Special types.
   name: storage.type.generic.nimrod

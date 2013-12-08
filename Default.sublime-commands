@@ -1,0 +1,14 @@
+[
+    {
+        "caption": "Nimrod: Update Babel Package List",
+        "command": "babel_update"
+    },
+    {
+        "caption": "Nimrod: Install Babel Package",
+        "command": "babel_list"
+    },
+    {
+    	"caption": "Nimrod: Go To Definition",
+    	"command": "lookup"
+    }
+]

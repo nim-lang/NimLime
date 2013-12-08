@@ -36,15 +36,22 @@ class Idetools:
         print("Nimrod CaaS now running")
 
     @staticmethod
-    def idetool(cmd, filename, line, col, extra = ""):
+    def idetool(cmd, filename, line, col, dirtyFile="", extra=""):
+
+        trackType = " --track:"
+        filePath  = filename
+
+        if dirtyFile != "":
+            trackType = " --trackDirty:"
+            filePath  = dirtyFile + "," + filePath
 
         if False: #TODO - use this when it's not broken in nimrod
             #Ensure IDE Tools service is running
             Idetools.ensure_service()
 
             #Call the service
-            args = "idetools " \
-                 + "--track:" \
+            args = "idetools" \
+                 + trackType \
                  + filename + "," + str(line) + "," + str(col) + " " \
                  + cmd + extra
 
@@ -52,8 +59,8 @@ class Idetools:
 
         else:
             args = "nimrod --verbosity:0 idetools " \
-                 + cmd + " --track:" \
-                 + filename + "," + str(line) + "," + str(col) \
+                 + cmd + trackType \
+                 + filePath + "," + str(line) + "," + str(col) \
                  + " " + filename + extra
             print(args)
             result = ""

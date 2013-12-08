@@ -1,4 +1,5 @@
 import sublime, sublime_plugin
+import os, tempfile
 
 from Nimrod import Idetools
 
@@ -11,7 +12,22 @@ from Nimrod import Idetools
 class LookupCommand(sublime_plugin.TextCommand):
 
     def lookup(self, filename, line, col):
-        result = Idetools.idetool("--def", filename, line, col)
+        result = ""
+        if self.view.is_dirty():
+            #Generate temp file
+            size = self.view.size()
+            
+            with tempfile.NamedTemporaryFile(suffix=".nim", bufsize=size, delete=False) as dirtyFile:
+                dirtyFile.file.write(
+                    self.view.substr(sublime.Region(0, size))
+                )
+                dirtyFile.file.close()
+
+                result = Idetools.idetool("--def", filename, line, col, dirtyFile.name)
+                os.remove(dirtyFile.name)
+
+        else:
+            result = Idetools.idetool("--def", filename, line, col)
 
         #Parse the result
         value = Idetools.parse(result)

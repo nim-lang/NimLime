@@ -1,5 +1,5 @@
 import sublime, sublime_plugin
-import os, threading, functools
+import subprocess, threading, functools
 
 ##Resources
 # http://docs.sublimetext.info/en/latest/reference/command_palette.html
@@ -10,7 +10,10 @@ class Babel:
     @staticmethod
     def run(cmd):
         #TODO - in babel does not exist, display error
-        return os.popen("babel " + cmd)
+        output = subprocess.Popen(["babel", cmd],
+            stdout=subprocess.PIPE,
+            shell=True)
+        return output.stdout
 
 
 class Package(object): 

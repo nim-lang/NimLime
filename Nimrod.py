@@ -1,5 +1,5 @@
 import sublime, sublime_plugin
-import re, os, subprocess
+import re, subprocess
 import threading
 import socket
 
@@ -63,8 +63,15 @@ class Idetools:
                  + filePath + "," + str(line) + "," + str(col) \
                  + " " + filename + extra
             print(args)
+
+            output = subprocess.Popen(args.split(' '), 
+                    stdout=subprocess.PIPE, 
+                    shell=True)
+
             result = ""
-            for result in os.popen(args): pass
+            for result in output.stdout: pass
+
+            output.wait()
 
         return result
 

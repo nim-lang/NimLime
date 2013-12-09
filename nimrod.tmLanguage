@@ -163,7 +163,7 @@
 			<key>comment</key>
 			<string>(Raw) Triple Quoted String</string>
 			<key>end</key>
-			<string>\"\"\"[^"]</string>
+			<string>\"\"\"</string>
 			<key>name</key>
 			<string>string.quoted.triple.nimrod</string>
 		</dict>

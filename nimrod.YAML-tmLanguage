@@ -80,7 +80,7 @@ patterns:
 - comment: (Raw) Triple Quoted String
   name: string.quoted.triple.nimrod
   begin: (\w[_\w]*)?\"\"\"
-  end: \"\"\"[^"]
+  end: \"\"\"
 
 - comment: Raw Double Quoted String
   name: string.quoted.double.raw.nimrod

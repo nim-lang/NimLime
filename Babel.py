@@ -51,6 +51,9 @@ class BabelListCommand(sublime_plugin.WindowCommand):
                 setattr(pkg, info[0].strip(), info[1].strip())
 
     def on_done(self, picked):
+        if picked < 0: #Action was cancelled
+            return
+
         item = self.items[picked]
 
         self.window.run_command("babel_install", { 'name':  item[0] })

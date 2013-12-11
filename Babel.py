@@ -10,13 +10,13 @@ class Babel:
     @staticmethod
     def run(cmd):
         #TODO - in babel does not exist, display error
-        output = subprocess.Popen(["babel", cmd],
+        output = subprocess.Popen("babel " + cmd,
             stdout=subprocess.PIPE,
             shell=True)
         return output.stdout
 
 
-class Package(object): 
+class Package(object):
     pass
 
 
@@ -47,6 +47,7 @@ class BabelListCommand(sublime_plugin.WindowCommand):
             #Parse property
             else:
                 info = row.split(":", 1)
+                if len(info) < 2: continue
                 setattr(pkg, info[0].strip(), info[1].strip())
 
     def on_done(self, picked):

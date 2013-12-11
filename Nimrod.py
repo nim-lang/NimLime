@@ -24,7 +24,7 @@ class Idetools:
             return
 
         Idetools.service = subprocess.Popen(
-            "nimrod --verbosity:0 serve" + \
+            "nimrod --verbosity:0 serve " + \
             "--server.type:stdin " + proj,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,

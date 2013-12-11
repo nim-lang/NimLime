@@ -10,9 +10,9 @@ class Idetools:
 
     ## Fields
     pattern = re.compile(
-        '^(?P<cmd>\S+)\s(?P<ast>\S+)\s' + 
+        '^(?P<cmd>\S+)\s(?P<ast>\S+)\s' +
         '(?P<symbol>\S+)( (?P<instance>\S+))?\s' +
-        '(?P<type>[^\t]+)\s(?P<path>[^\t]+)\s' + 
+        '(?P<type>[^\t]+)\s(?P<path>[^\t]+)\s' +
         '(?P<line>\d+)\s(?P<col>\d+)\s' +
         '(?P<description>\".+\")?')
 
@@ -24,10 +24,8 @@ class Idetools:
             return
 
         Idetools.service = subprocess.Popen(
-            [
-                "nimrod", "--verbosity:0", "serve", 
-                "--server.type:stdin", proj
-            ], 
+            "nimrod --verbosity:0 serve" + \
+            "--server.type:stdin " + proj,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -64,8 +62,8 @@ class Idetools:
                  + " " + filename + extra
             print(args)
 
-            output = subprocess.Popen(args.split(' '), 
-                    stdout=subprocess.PIPE, 
+            output = subprocess.Popen(args,
+                    stdout=subprocess.PIPE,
                     shell=True)
 
             result = ""
@@ -94,7 +92,7 @@ class Idetools:
 
             if cmd == "def":
                 return (m.group("symbol"), m.group("type"),
-                 m.group("path"), m.group("line"), 
+                 m.group("path"), m.group("line"),
                  m.group("col"), m.group("description"))
 
         else: None

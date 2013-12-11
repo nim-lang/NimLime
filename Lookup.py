@@ -16,7 +16,7 @@ class LookupCommand(sublime_plugin.TextCommand):
         if self.view.is_dirty():
             #Generate temp file
             size = self.view.size()
-            
+
             with tempfile.NamedTemporaryFile(suffix=".nim", bufsize=size, delete=False) as dirtyFile:
                 dirtyFile.file.write(
                     self.view.substr(sublime.Region(0, size))
@@ -33,7 +33,7 @@ class LookupCommand(sublime_plugin.TextCommand):
         value = Idetools.parse(result)
 
         if value is not None:
-            Idetools.open_definition(self.view.window(), 
+            Idetools.open_definition(self.view.window(),
                 value[2], value[3], value[4])
         else:
             sublime.status_message("No definition found")

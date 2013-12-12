@@ -1,0 +1,17 @@
+[
+  {
+    "comment": "This module contains code for reading from `stdin`:idx:. On UNIX the GNU\u000D\u000A## readline library is wrapped and set up to provide default key bindings \u000D\u000A## (e.g. you can navigate with the arrow keys). On Windows ``system.readLine``\u000D\u000A## is used. This suffices because Windows' console already provides the \u000D\u000A## wanted functionality."
+  }, 
+  {
+    "name": "ReadLineFromStdin", 
+    "type": "skProc", 
+    "description": "Reads a line from stdin.", 
+    "code": "proc ReadLineFromStdin*(prompt: string): TaintedString {.\u000D\u000A    tags: [FReadIO, FWriteIO].}"
+  }, 
+  {
+    "name": "ReadLineFromStdin", 
+    "type": "skProc", 
+    "description": "Reads a <cite>line</cite> from stdin. <cite>line</cite> must not be <tt class=\"docutils literal\"><span class=\"pre\">nil</span></tt>! May throw an IO exception. A line of text may be delimited by <tt class=\"docutils literal\"><span class=\"pre\">CR</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">LF</span></tt> or <tt class=\"docutils literal\"><span class=\"pre\">CRLF</span></tt>. The newline character(s) are not part of the returned string. Returns <tt class=\"docutils literal\"><span class=\"pre\">false</span></tt> if the end of the file has been reached, <tt class=\"docutils literal\"><span class=\"pre\">true</span></tt> otherwise. If <tt class=\"docutils literal\"><span class=\"pre\">false</span></tt> is returned <cite>line</cite> contains no new data.", 
+    "code": "proc ReadLineFromStdin*(prompt: string; line: var TaintedString): bool {.\u000D\u000A    tags: [FReadIO, FWriteIO].}"
+  }
+]

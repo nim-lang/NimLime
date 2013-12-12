@@ -1,0 +1,35 @@
+[
+  {
+    "comment": "This module parses an XML document and creates its XML tree representation."
+  }, 
+  {
+    "name": "EInvalidXml", 
+    "type": "skType", 
+    "description": "exception that is raised for invalid XML", 
+    "code": "EInvalidXml* = object of EInvalidValue\u000D\u000A  errors*: seq[string]        ## all detected parsing errors\u000D\u000A  "
+  }, 
+  {
+    "name": "parseXml", 
+    "type": "skProc", 
+    "description": "parses the XML from stream <cite>s</cite> and returns a <tt class=\"docutils literal\"><span class=\"pre\">PXmlNode</span></tt>. Every occured parsing error is added to the <cite>errors</cite> sequence.", 
+    "code": "proc parseXml*(s: PStream; filename: string; errors: var seq[string]): PXmlNode"
+  }, 
+  {
+    "name": "parseXml", 
+    "type": "skProc", 
+    "description": "parses the XTML from stream <cite>s</cite> and returns a <tt class=\"docutils literal\"><span class=\"pre\">PXmlNode</span></tt>. All parsing errors are turned into an <tt class=\"docutils literal\"><span class=\"pre\">EInvalidXML</span></tt> exception.", 
+    "code": "proc parseXml*(s: PStream): PXmlNode"
+  }, 
+  {
+    "name": "loadXml", 
+    "type": "skProc", 
+    "description": "Loads and parses XML from file specified by <tt class=\"docutils literal\"><span class=\"pre\">path</span></tt>, and returns a <tt class=\"docutils literal\"><span class=\"pre\">PXmlNode</span></tt>. Every occured parsing error is added to the <cite>errors</cite> sequence.", 
+    "code": "proc loadXml*(path: string; errors: var seq[string]): PXmlNode"
+  }, 
+  {
+    "name": "loadXml", 
+    "type": "skProc", 
+    "description": "Loads and parses XML from file specified by <tt class=\"docutils literal\"><span class=\"pre\">path</span></tt>, and returns a <tt class=\"docutils literal\"><span class=\"pre\">PXmlNode</span></tt>.  All parsing errors are turned into an <tt class=\"docutils literal\"><span class=\"pre\">EInvalidXML</span></tt> exception.  ", 
+    "code": "proc loadXml*(path: string): PXmlNode"
+  }
+]

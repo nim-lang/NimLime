@@ -1,0 +1,70 @@
+[
+  {
+    "comment": "This module implements helper procs for SCGI applications. Example:\u000D\u000A## \u000D\u000A## .. code-block:: Nimrod\u000D\u000A##\u000D\u000A##    import strtabs, sockets, scgi\u000D\u000A##\u000D\u000A##    var counter = 0\u000D\u000A##    proc handleRequest(client: TSocket, input: string, \u000D\u000A##                       headers: PStringTable): bool {.procvar.} =\u000D\u000A##      inc(counter)\u000D\u000A##      client.writeStatusOkTextContent()\u000D\u000A##      client.send(\"Hello for the $#th time.\" % $counter & \"\\c\\L\")\u000D\u000A##      return false # do not stop processing\u000D\u000A##\u000D\u000A##    run(handleRequest)\u000D\u000A##\u000D\u000A## **Warning:** The API of this module is unstable, and therefore is subject\u000D\u000A## to change."
+  }, 
+  {
+    "name": "EScgi", 
+    "type": "skType", 
+    "description": "the exception that is raised, if a SCGI error occurs", 
+    "code": "EScgi* = object of EIO"
+  }, 
+  {
+    "name": "scgiError", 
+    "type": "skProc", 
+    "description": "raises an EScgi exception with message <cite>msg</cite>.", 
+    "code": "proc scgiError*(msg: string) {.noreturn.}"
+  }, 
+  {
+    "name": "PAsyncScgiState", 
+    "type": "skType", 
+    "code": "PAsyncScgiState* = ref TAsyncScgiState"
+  }, 
+  {
+    "name": "open", 
+    "type": "skProc", 
+    "description": "opens a connection.", 
+    "code": "proc open*(s: var TScgiState; port = TPort(4000); address = \"127.0.0.1\"; \u000D\u000A           reuseAddr = False)"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "closes the connection.", 
+    "code": "proc close*(s: var TScgiState)"
+  }, 
+  {
+    "name": "next", 
+    "type": "skProc", 
+    "description": "proceed to the first/next request. Waits <tt class=\"docutils literal\"><span class=\"pre\">timeout</span></tt> miliseconds for a request, if <tt class=\"docutils literal\"><span class=\"pre\">timeout</span></tt> is <cite>-1</cite> then this function will never time out. Returns <cite>True</cite> if a new request has been processed.", 
+    "code": "proc next*(s: var TScgistate; timeout: int = - 1): bool"
+  }, 
+  {
+    "name": "writeStatusOkTextContent", 
+    "type": "skProc", 
+    "description": "<p>sends the following string to the socket <cite>c</cite>:<pre>\u000D\u000AStatus: 200 OK\\r\\LContent-Type: text/html\\r\\L\\r\\L</pre>\u000D\u000A</p>\u000D\u000A<p>You should send this before sending your HTML page, for example.</p>\u000D\u000A", 
+    "code": "proc writeStatusOkTextContent*(c: TSocket; contentType = \"text/html\")"
+  }, 
+  {
+    "name": "run", 
+    "type": "skProc", 
+    "description": "encapsulates the SCGI object and main loop.", 
+    "code": "proc run*(handleRequest: proc (client: TSocket; input: string; \u000D\u000A                               headers: PStringTable): bool {.nimcall.}; \u000D\u000A          port = TPort(4000))"
+  }, 
+  {
+    "name": "open", 
+    "type": "skProc", 
+    "description": "<p>Creates an <tt class=\"docutils literal\"><span class=\"pre\">PAsyncScgiState</span></tt> object which serves as a SCGI server.</p>\u000D\u000A<p>After the execution of <tt class=\"docutils literal\"><span class=\"pre\">handleRequest</span></tt> the client socket will be closed automatically unless it has already been closed.</p>\u000D\u000A", 
+    "code": "proc open*(handleRequest: proc (client: PAsyncSocket; input: string; \u000D\u000A                                headers: PStringTable) {.closure.}; \u000D\u000A           port = TPort(4000); address = \"127.0.0.1\"; reuseAddr = false): PAsyncScgiState"
+  }, 
+  {
+    "name": "register", 
+    "type": "skProc", 
+    "description": "Registers <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> with dispatcher <tt class=\"docutils literal\"><span class=\"pre\">d</span></tt>.", 
+    "code": "proc register*(d: PDispatcher; s: PAsyncScgiState): PDelegate {.discardable.}"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "Closes the <tt class=\"docutils literal\"><span class=\"pre\">PAsyncScgiState</span></tt>.", 
+    "code": "proc close*(s: PAsyncScgiState)"
+  }
+]

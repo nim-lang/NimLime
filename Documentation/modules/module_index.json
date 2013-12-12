@@ -1,0 +1,537 @@
+[
+  {
+    "module": "actors", 
+    "description": "`Actor`:idx: support for Nimrod. An actor is implemented as a thread with\u000D\u000A## a channel as its inbox. This module requires the ``--threads:on``\u000D\u000A## command line switch.\u000D\u000A##\u000D\u000A## Example:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##\u000D\u000A##      var\u000D\u000A##        a: TActorPool[int, void]\u000D\u000A##      createActorPool(a)\u000D\u000A##      for i in 0 .. < 300:\u000D\u000A##        a.spawn(i, proc (x: int) {.thread.} = echo x)\u000D\u000A##      a.join()"
+  }, 
+  {
+    "module": "algorithm", 
+    "description": "This module implements some common generic algorithms."
+  }, 
+  {
+    "module": "asyncio", 
+    "description": "This module implements an asynchronous event loop together with asynchronous sockets\u000D\u000A## which use this event loop.\u000D\u000A## It is akin to Python's asyncore module. Many modules that use sockets\u000D\u000A## have an implementation for this module, those modules should all have a \u000D\u000A## ``register`` function which you should use to add the desired objects to a \u000D\u000A## dispatcher which you created so\u000D\u000A## that you can receive the events associated with that module's object.\u000D\u000A##\u000D\u000A## Once everything is registered in a dispatcher, you need to call the ``poll``\u000D\u000A## function in a while loop.\u000D\u000A##\u000D\u000A## **Note:** Most modules have tasks which need to be ran regularly, this is\u000D\u000A## why you should not call ``poll`` with a infinite timeout, or even a \u000D\u000A## very long one. In most cases the default timeout is fine.\u000D\u000A##\u000D\u000A## **Note:** This module currently only supports select(), this is limited by\u000D\u000A## FD_SETSIZE, which is usually 1024. So you may only be able to use 1024\u000D\u000A## sockets at a time.\u000D\u000A## \u000D\u000A## Most (if not all) modules that use asyncio provide a userArg which is passed\u000D\u000A## on with the events. The type that you set userArg to must be inheriting from\u000D\u000A## TObject!\u000D\u000A##\u000D\u000A## **Note:** If you want to provide async ability to your module please do not \u000D\u000A## use the ``TDelegate`` object, instead use ``PAsyncSocket``. It is possible \u000D\u000A## that in the future this type's fields will not be exported therefore breaking\u000D\u000A## your code.\u000D\u000A##\u000D\u000A## **Warning:** The API of this module is unstable, and therefore is subject\u000D\u000A## to change.\u000D\u000A##\u000D\u000A## Asynchronous sockets\u000D\u000A## ====================\u000D\u000A##\u000D\u000A## For most purposes you do not need to worry about the ``TDelegate`` type. The\u000D\u000A## ``PAsyncSocket`` is what you are after. It's a reference to the ``TAsyncSocket``\u000D\u000A## object. This object defines events which you should overwrite by your own\u000D\u000A## procedures.\u000D\u000A##\u000D\u000A## For server sockets the only event you need to worry about is the ``handleAccept``\u000D\u000A## event, in your handleAccept proc you should call ``accept`` on the server\u000D\u000A## socket which will give you the client which is connecting. You should then\u000D\u000A## set any events that you want to use on that client and add it to your dispatcher\u000D\u000A## using the ``register`` procedure.\u000D\u000A## \u000D\u000A## An example ``handleAccept`` follows:\u000D\u000A## \u000D\u000A## .. code-block:: nimrod\u000D\u000A##   \u000D\u000A##    var disp: PDispatcher = newDispatcher()\u000D\u000A##    ...\u000D\u000A##    proc handleAccept(s: PAsyncSocket) =\u000D\u000A##      echo(\"Accepted client.\")\u000D\u000A##      var client: PAsyncSocket\u000D\u000A##      new(client)\u000D\u000A##      s.accept(client)\u000D\u000A##      client.handleRead = ...\u000D\u000A##      disp.register(client)\u000D\u000A##    ...\u000D\u000A## \u000D\u000A## For client sockets you should only be interested in the ``handleRead`` and\u000D\u000A## ``handleConnect`` events. The former gets called whenever the socket has\u000D\u000A## received messages and can be read from and the latter gets called whenever\u000D\u000A## the socket has established a connection to a server socket; from that point\u000D\u000A## it can be safely written to.\u000D\u000A##\u000D\u000A## Getting a blocking client from a PAsyncSocket\u000D\u000A## =============================================\u000D\u000A## \u000D\u000A## If you need a asynchronous server socket but you wish to process the clients\u000D\u000A## synchronously then you can use the ``getSocket`` converter to get a TSocket\u000D\u000A## object from the PAsyncSocket object, this can then be combined with ``accept``\u000D\u000A## like so:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##    \u000D\u000A##    proc handleAccept(s: PAsyncSocket) =\u000D\u000A##      var client: TSocket\u000D\u000A##      getSocket(s).accept(client)"
+  }, 
+  {
+    "module": "base64", 
+    "description": "This module implements a base64 encoder and decoder."
+  }, 
+  {
+    "module": "baseutils"
+  }, 
+  {
+    "module": "basic2d", 
+    "description": "Basic 2d support with vectors, points, matrices and some basic utilities.\u000D\u000A## Vectors are implemented as direction vectors, ie. when transformed with a matrix\u000D\u000A## the translation part of matrix is ignored. \u000D\u000A## Operators `+` , `-` , `*` , `/` , `+=` , `-=` , `*=` and `/=` are implemented for vectors and scalars.\u000D\u000A##\u000D\u000A## Quick start example:\u000D\u000A##   \u000D\u000A##   # Create a matrix wich first rotates, then scales and at last translates\u000D\u000A##   \u000D\u000A##   var m:TMatrix2d=rotate(DEG90) & scale(2.0) & move(100.0,200.0)\u000D\u000A##   \u000D\u000A##   # Create a 2d point at (100,0) and a vector (5,2)\u000D\u000A##   \u000D\u000A##   var pt:TPoint2d=point2d(100.0,0.0) \u000D\u000A##   \u000D\u000A##   var vec:TVector2d=vector2d(5.0,2.0)\u000D\u000A##   \u000D\u000A##   \u000D\u000A##   pt &= m # transforms pt in place\u000D\u000A##   \u000D\u000A##   var pt2:TPoint2d=pt & m #concatenates pt with m and returns a new point\u000D\u000A##   \u000D\u000A##   var vec2:TVector2d=vec & m #concatenates vec with m and returns a new vector"
+  }, 
+  {
+    "module": "browsers", 
+    "description": "This module implements a simple proc for opening URLs with the user's\u000D\u000A## default browser."
+  }, 
+  {
+    "module": "cgi", 
+    "description": "This module implements helper procs for CGI applications. Example:\u000D\u000A##\u000D\u000A## .. code-block:: Nimrod\u000D\u000A##\u000D\u000A##    import strtabs, cgi\u000D\u000A##\u000D\u000A##    # Fill the values when debugging:\u000D\u000A##    when debug:\u000D\u000A##      setTestData(\"name\", \"Klaus\", \"password\", \"123456\")\u000D\u000A##    # read the data into `myData`\u000D\u000A##    var myData = readData()\u000D\u000A##    # check that the data's variable names are \"name\" or \"password\"\u000D\u000A##    validateData(myData, \"name\", \"password\")\u000D\u000A##    # start generating content:\u000D\u000A##    writeContentType()\u000D\u000A##    # generate content:\u000D\u000A##    write(stdout, \"<!DOCTYPE HTML PUBLIC \\\"-//W3C//DTD HTML 4.01//EN\\\">\\n\")\u000D\u000A##    write(stdout, \"<html><head><title>Test</title></head><body>\\n\")\u000D\u000A##    writeln(stdout, \"your name: \" & myData[\"name\"])\u000D\u000A##    writeln(stdout, \"your password: \" & myData[\"password\"])\u000D\u000A##    writeln(stdout, \"</body></html>\")"
+  }, 
+  {
+    "module": "claro", 
+    "description": "Wrapper for the Claro GUI library. \u000D\u000A## This wrapper calls ``claro_base_init`` and ``claro_graphics_init`` \u000D\u000A## automatically on startup, so you don't have to do it and in fact cannot do\u000D\u000A## it because they are not exported."
+  }, 
+  {
+    "module": "colors", 
+    "description": "This module implements color handling for Nimrod. It is used by \u000D\u000A## the ``graphics`` module."
+  }, 
+  {
+    "module": "complex", 
+    "description": "This module implements complex numbers."
+  }, 
+  {
+    "module": "cookies", 
+    "description": "This module implements helper procs for parsing Cookies."
+  }, 
+  {
+    "module": "critbits", 
+    "description": "This module implements a `crit bit tree`:idx: which is an efficient\u000D\u000A## container for a set or a mapping of strings. Based on the excellent paper\u000D\u000A## by Adam Langley."
+  }, 
+  {
+    "module": "db_mongo", 
+    "description": "This module implements a higher level wrapper for `mongodb`:idx:. Example:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##\u000D\u000A##    import mongo, db_mongo, oids, json\u000D\u000A##\u000D\u000A##    var conn = db_mongo.open()\u000D\u000A##\u000D\u000A##    # construct JSON data:\u000D\u000A##    var data = %{\"a\": %13, \"b\": %\"my string value\", \u000D\u000A##                 \"inner\": %{\"i\": %71} }\u000D\u000A##\u000D\u000A##    var id = insertID(conn, \"test.test\", data)\u000D\u000A##\u000D\u000A##    for v in find(conn, \"test.test\", \"this.a == 13\"):\u000D\u000A##      print v\u000D\u000A##\u000D\u000A##    delete(conn, \"test.test\", id)\u000D\u000A##    close(conn)"
+  }, 
+  {
+    "module": "db_mysql", 
+    "description": "A higher level `mySQL`:idx: database wrapper. The same interface is \u000D\u000A## implemented for other databases too."
+  }, 
+  {
+    "module": "db_postgres", 
+    "description": "A higher level `PostgreSQL`:idx: database wrapper. This interface \u000D\u000A## is implemented for other databases too."
+  }, 
+  {
+    "module": "db_sqlite", 
+    "description": "A higher level `SQLite`:idx: database wrapper. This interface \u000D\u000A## is implemented for other databases too."
+  }, 
+  {
+    "module": "dialogs", 
+    "description": "This module implements portable dialogs for Nimrod; the implementation\u000D\u000A## builds on the GTK interface. On Windows, native dialogs are shown instead."
+  }, 
+  {
+    "module": "dom", 
+    "description": "Declaration of the Document Object Model for the JavaScript backend."
+  }, 
+  {
+    "module": "dynlib", 
+    "description": "This module implements the ability to access symbols from shared\u000D\u000A## libraries. On POSIX this uses the ``dlsym`` mechanism, on \u000D\u000A## Windows ``LoadLibrary``."
+  }, 
+  {
+    "module": "encodings", 
+    "description": "Converts between different character encodings. On UNIX, this uses \u000D\u000A## the `iconv`:idx: library, on Windows the Windows API."
+  }, 
+  {
+    "module": "endians", 
+    "description": "This module contains helpers that deal with different byte orders\u000D\u000A## (`endian`:idx:)."
+  }, 
+  {
+    "module": "events", 
+    "description": ":Author: Alex Mitchell\u000D\u000A##\u000D\u000A## This module implements an event system that is not dependant on external\u000D\u000A## graphical toolkits. It was originally called ``NimEE`` because \u000D\u000A## it was inspired by Python's PyEE module. There are two ways you can use\u000D\u000A## events: one is a python-inspired way; the other is more of a C-style way.\u000D\u000A##\u000D\u000A## .. code-block:: Nimrod\u000D\u000A##    var ee = initEventEmitter()\u000D\u000A##    var genericargs: TEventArgs\u000D\u000A##    proc handleevent(e: TEventArgs) =\u000D\u000A##        echo(\"Handled!\")\u000D\u000A##\u000D\u000A##    # Python way\u000D\u000A##    ee.on(\"EventName\", handleevent)\u000D\u000A##    ee.emit(\"EventName\", genericargs)\u000D\u000A## \u000D\u000A##    # C/Java way\u000D\u000A##    # Declare a type\u000D\u000A##    type\u000D\u000A##        TSomeObject = object of TObject\u000D\u000A##            SomeEvent: TEventHandler\u000D\u000A##    var myobj: TSomeObject\u000D\u000A##    myobj.SomeEvent = initEventHandler(\"SomeEvent\")\u000D\u000A##    myobj.SomeEvent.addHandler(handleevent)\u000D\u000A##    ee.emit(myobj.SomeEvent, genericargs)"
+  }, 
+  {
+    "module": "expat"
+  }, 
+  {
+    "module": "fsmonitor", 
+    "description": "This module allows you to monitor files or directories for changes using\u000D\u000A## asyncio.\u000D\u000A##\u000D\u000A## Windows support is not yet implemented.\u000D\u000A##\u000D\u000A## **Note:** This module uses ``inotify`` on Linux (Other Unixes are not yet\u000D\u000A## supported). ``inotify`` was merged into the 2.6.13 Linux kernel, this\u000D\u000A## module will therefore not work with any Linux kernel prior to that, unless\u000D\u000A## it has been patched to support inotify."
+  }, 
+  {
+    "module": "ftpclient", 
+    "description": "This module **partially** implements an FTP client as specified\u000D\u000A## by `RFC 959 <http://tools.ietf.org/html/rfc959>`_. \u000D\u000A## \u000D\u000A## This module provides both a synchronous and asynchronous implementation.\u000D\u000A## The asynchronous implementation requires you to use the ``AsyncFTPClient``\u000D\u000A## function. You are then required to register the ``PAsyncFTPClient`` with a\u000D\u000A## asyncio dispatcher using the ``register`` function. Take a look at the\u000D\u000A## asyncio module documentation for more information.\u000D\u000A##\u000D\u000A## **Note**: The asynchronous implementation is only asynchronous for long\u000D\u000A## file transfers, calls to functions which use the command socket will block.\u000D\u000A##\u000D\u000A## Here is some example usage of this module:\u000D\u000A## \u000D\u000A## .. code-block:: Nimrod\u000D\u000A##    var ftp = FTPClient(\"example.org\", user = \"user\", pass = \"pass\")\u000D\u000A##    ftp.connect()\u000D\u000A##    ftp.retrFile(\"file.ext\", \"file.ext\")\u000D\u000A##\u000D\u000A## **Warning:** The API of this module is unstable, and therefore is subject\u000D\u000A## to change."
+  }, 
+  {
+    "module": "gentabs", 
+    "description": "The ``gentabs`` module implements an efficient hash table that is a\u000D\u000A## key-value mapping. The keys are required to be strings, but the values\u000D\u000A## may be any Nimrod or user defined type. This module supports matching \u000D\u000A## of keys in case-sensitive, case-insensitive and style-insensitive modes."
+  }, 
+  {
+    "module": "graphics", 
+    "description": "This module implements graphical output for Nimrod; the current\u000D\u000A## implementation uses SDL but the interface is meant to support multiple\u000D\u000A## backends some day. There is no need to init SDL as this module does that \u000D\u000A## implicitly."
+  }, 
+  {
+    "module": "hashes", 
+    "description": "This module implements efficient computations of hash values for diverse\u000D\u000A## Nimrod types."
+  }, 
+  {
+    "module": "history"
+  }, 
+  {
+    "module": "htmlgen", 
+    "description": "This module implements a simple `XML`:idx: and `HTML`:idx: code \u000D\u000A## generator. Each commonly used HTML tag has a corresponding macro\u000D\u000A## that generates a string with its HTML representation.\u000D\u000A##\u000D\u000A## Example:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##   var nim = \"Nimrod\"\u000D\u000A##   echo h1(a(href=\"http://nimrod-code.org\", nim))\u000D\u000A##  \u000D\u000A## Writes the string::\u000D\u000A##   \u000D\u000A##   <h1><a href=\"http://nimrod-code.org\">Nimrod</a></h1>\u000D\u000A##"
+  }, 
+  {
+    "module": "htmlparser", 
+    "description": "This module parses an HTML document and creates its XML tree representation.\u000D\u000A## It is supposed to handle the *wild* HTML the real world uses.\u000D\u000A## \u000D\u000A## It can be used to parse a wild HTML document and output it as valid XHTML\u000D\u000A## document (well, if you are lucky):\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##\u000D\u000A##   echo loadHtml(\"mydirty.html\")\u000D\u000A##\u000D\u000A## Every tag in the resulting tree is in lower case.\u000D\u000A##\u000D\u000A## **Note:** The resulting ``PXmlNode`` already uses the ``clientData`` field, \u000D\u000A## so it cannot be used by clients of this library.\u000D\u000A##\u000D\u000A## Example: Transforming hyperlinks\u000D\u000A## ================================\u000D\u000A##\u000D\u000A## This code demonstrates how you can iterate over all the tags in an HTML file\u000D\u000A## and write back the modified version. In this case we look for hyperlinks\u000D\u000A## ending with the extension ``.rst`` and convert them to ``.html``.\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##\u000D\u000A##   import htmlparser\u000D\u000A##   import xmltree  # To use '$' for PXmlNode\u000D\u000A##   import strtabs  # To access PXmlAttributes\u000D\u000A##   import os       # To use splitFile\u000D\u000A##   import strutils # To use cmpIgnoreCase\u000D\u000A##\u000D\u000A##   proc transformHyperlinks() =\u000D\u000A##     let html = loadHTML(\"input.html\")\u000D\u000A##\u000D\u000A##     for a in html.findAll(\"a\"):\u000D\u000A##       let href = a.attrs[\"href\"]\u000D\u000A##       if not href.isNil:\u000D\u000A##         let (dir, filename, ext) = splitFile(href)\u000D\u000A##         if cmpIgnoreCase(ext, \".rst\") == 0:\u000D\u000A##           a.attrs[\"href\"] = dir / filename & \".html\"\u000D\u000A##\u000D\u000A##     writeFile(\"output.html\", $html)"
+  }, 
+  {
+    "module": "httpclient", 
+    "description": "This module implements a simple HTTP client that can be used to retrieve\u000D\u000A## webpages/other data.\u000D\u000A##\u000D\u000A##\u000D\u000A## **Note**: This module is not ideal, connection is not kept alive so sites with\u000D\u000A## many redirects are expensive. As such in the future this module may change,\u000D\u000A## and the current procedures will be deprecated.\u000D\u000A##\u000D\u000A## Retrieving a website\u000D\u000A## ====================\u000D\u000A## \u000D\u000A## This example uses HTTP GET to retrieve\u000D\u000A## ``http://google.com``\u000D\u000A## \u000D\u000A## .. code-block:: nimrod\u000D\u000A##   echo(getContent(\"http://google.com\"))\u000D\u000A## \u000D\u000A## Using HTTP POST\u000D\u000A## ===============\u000D\u000A## \u000D\u000A## This example demonstrates the usage of the W3 HTML Validator, it \u000D\u000A## uses ``multipart/form-data`` as the ``Content-Type`` to send the HTML to\u000D\u000A## the server. \u000D\u000A## \u000D\u000A## .. code-block:: nimrod\u000D\u000A##   var headers: string = \"Content-Type: multipart/form-data; boundary=xyz\\c\\L\"\u000D\u000A##   var body: string = \"--xyz\\c\\L\"\u000D\u000A##   # soap 1.2 output\u000D\u000A##   body.add(\"Content-Disposition: form-data; name=\\\"output\\\"\\c\\L\")\u000D\u000A##   body.add(\"\\c\\Lsoap12\\c\\L\")\u000D\u000A##    \u000D\u000A##   # html\u000D\u000A##   body.add(\"--xyz\\c\\L\")\u000D\u000A##   body.add(\"Content-Disposition: form-data; name=\\\"uploaded_file\\\";\" &\u000D\u000A##            \" filename=\\\"test.html\\\"\\c\\L\")\u000D\u000A##   body.add(\"Content-Type: text/html\\c\\L\")\u000D\u000A##   body.add(\"\\c\\L<html><head></head><body><p>test</p></body></html>\\c\\L\")\u000D\u000A##   body.add(\"--xyz--\")\u000D\u000A##    \u000D\u000A##   echo(postContent(\"http://validator.w3.org/check\", headers, body))\u000D\u000A##\u000D\u000A## SSL/TLS support\u000D\u000A## ===============\u000D\u000A## This requires the OpenSSL library, fortunately it's widely used and installed\u000D\u000A## on many operating systems. httpclient will use SSL automatically if you give\u000D\u000A## any of the functions a url with the ``https`` schema, for example:\u000D\u000A## ``https://github.com/``, you also have to compile with ``ssl`` defined like so:\u000D\u000A## ``nimrod c -d:ssl ...``.\u000D\u000A##\u000D\u000A## Timeouts\u000D\u000A## ========\u000D\u000A## Currently all functions support an optional timeout, by default the timeout is set to\u000D\u000A## `-1` which means that the function will never time out. The timeout is\u000D\u000A## measured in miliseconds, once it is set any call on a socket which may\u000D\u000A## block will be susceptible to this timeout, however please remember that the\u000D\u000A## function as a whole can take longer than the specified timeout, only\u000D\u000A## individual internal calls on the socket are affected. In practice this means\u000D\u000A## that as long as the server is sending data an exception will not be raised,\u000D\u000A## if however data does not reach client within the specified timeout an ETimeout\u000D\u000A## exception will then be raised.\u000D\u000A##\u000D\u000A## Proxy\u000D\u000A## =====\u000D\u000A##\u000D\u000A## A proxy can be specified as a param to any of these procedures, the ``newProxy``\u000D\u000A## constructor should be used for this purpose. However,\u000D\u000A## currently only basic authentication is supported."
+  }, 
+  {
+    "module": "httpserver", 
+    "description": "This module implements a simple HTTP-Server.\u000D\u000A##\u000D\u000A## Example:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##  import strutils, sockets, httpserver\u000D\u000A##\u000D\u000A##  var counter = 0\u000D\u000A##  proc handleRequest(client: TSocket, path, query: string): bool {.procvar.} =\u000D\u000A##    inc(counter)\u000D\u000A##    client.send(\"Hello for the $#th time.\" % $counter & wwwNL)\u000D\u000A##    return false # do not stop processing\u000D\u000A##\u000D\u000A##  run(handleRequest, TPort(80))\u000D\u000A##\u000D\u000A## **Warning:** The API of this module is unstable, and therefore is subject\u000D\u000A## to change."
+  }, 
+  {
+    "module": "inotify"
+  }, 
+  {
+    "module": "intsets", 
+    "description": "The ``intsets`` module implements an efficient int set implemented as a\u000D\u000A## sparse bit set.\u000D\u000A## **Note**: Since Nimrod currently does not allow the assignment operator to\u000D\u000A## be overloaded, ``=`` for int sets performs some rather meaningless shallow\u000D\u000A## copy; use ``assign`` to get a deep copy."
+  }, 
+  {
+    "module": "irc", 
+    "description": "This module implements an asynchronous IRC client.\u000D\u000A## \u000D\u000A## Currently this module requires at least some knowledge of the IRC protocol.\u000D\u000A## It provides a function for sending raw messages to the IRC server, together\u000D\u000A## with some basic functions like sending a message to a channel. \u000D\u000A## It automizes the process of keeping the connection alive, so you don't\u000D\u000A## need to reply to PING messages. In fact, the server is also PING'ed to check \u000D\u000A## the amount of lag.\u000D\u000A##\u000D\u000A## .. code-block:: Nimrod\u000D\u000A##\u000D\u000A##   var client = irc(\"picheta.me\", joinChans = @[\"#bots\"])\u000D\u000A##   client.connect()\u000D\u000A##   while True:\u000D\u000A##     var event: TIRCEvent\u000D\u000A##     if client.poll(event):\u000D\u000A##       case event.typ\u000D\u000A##       of EvConnected: nil\u000D\u000A##       of EvDisconnected:\u000D\u000A##         client.reconnect()\u000D\u000A##       of EvMsg:\u000D\u000A##         # Write your message reading code here.\u000D\u000A## \u000D\u000A## **Warning:** The API of this module is unstable, and therefore is subject\u000D\u000A## to change."
+  }, 
+  {
+    "module": "iup"
+  }, 
+  {
+    "module": "joyent_http_parser"
+  }, 
+  {
+    "module": "json", 
+    "description": "This module implements a simple high performance `JSON`:idx:\u000D\u000A## parser. JSON (JavaScript Object Notation) is a lightweight \u000D\u000A## data-interchange format that is easy for humans to read and write \u000D\u000A## (unlike XML). It is easy for machines to parse and generate.\u000D\u000A## JSON is based on a subset of the JavaScript Programming Language,\u000D\u000A## Standard ECMA-262 3rd Edition - December 1999.\u000D\u000A##\u000D\u000A## Usage example:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##  let\u000D\u000A##    small_json = \"\"\"{\"test\": 1.3, \"key2\": true}\"\"\"\u000D\u000A##    jobj = parseJson(small_json)\u000D\u000A##  assert (jobj.kind == JObject)\u000D\u000A##  echo($jobj[\"test\"].fnum)\u000D\u000A##  echo($jobj[\"key2\"].bval)\u000D\u000A##\u000D\u000A## Results in:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##\u000D\u000A##   1.3000000000000000e+00\u000D\u000A##   true"
+  }, 
+  {
+    "module": "lexbase", 
+    "description": "This module implements a base object of a lexer with efficient buffer\u000D\u000A## handling. Only at line endings checks are necessary if the buffer\u000D\u000A## needs refilling."
+  }, 
+  {
+    "module": "libcurl"
+  }, 
+  {
+    "module": "libffi"
+  }, 
+  {
+    "module": "libsvm", 
+    "description": "This module is a low level wrapper for `libsvm`:idx:."
+  }, 
+  {
+    "module": "libuv", 
+    "description": "libuv is still fast moving target\u000D\u000A## This file was last updated against a development HEAD revision of https://github.com/joyent/libuv/"
+  }, 
+  {
+    "module": "libzip", 
+    "description": "Interface to the `libzip <http://www.nih.at/libzip/index.html>`_ library by\u000D\u000A## Dieter Baron and Thomas Klausner. This version links\u000D\u000A## against ``libzip2.so.2`` unless you define the symbol ``useLibzipSrc``; then\u000D\u000A## it is compiled against some old ``libizp_all.c`` file."
+  }, 
+  {
+    "module": "lists", 
+    "description": "Implementation of singly and doubly linked lists. Because it makes no sense\u000D\u000A## to do so, the 'next' and 'prev' pointers are not hidden from you and can\u000D\u000A## be manipulated directly for efficiency."
+  }, 
+  {
+    "module": "LockFreeHash"
+  }, 
+  {
+    "module": "locks", 
+    "description": "This module contains Nimrod's support for locks and condition vars.\u000D\u000A## If the symbol ``preventDeadlocks`` is defined\u000D\u000A## (compiled with ``-d:preventDeadlocks``) special logic is added to\u000D\u000A## every ``acquire``, ``tryAcquire`` and ``release`` action that ensures at\u000D\u000A## runtime that no deadlock can occur. This is achieved by forcing a thread\u000D\u000A## to release its locks should it be part of a deadlock. This thread then\u000D\u000A## re-acquires its locks and proceeds."
+  }, 
+  {
+    "module": "macros", 
+    "description": "This module contains the interface to the compiler's abstract syntax\u000D\u000A## tree (`AST`:idx:). Macros operate on this tree."
+  }, 
+  {
+    "module": "marshal", 
+    "description": "This module contains procs for serialization and deseralization of \u000D\u000A## arbitrary Nimrod data structures. The serialization format uses JSON.\u000D\u000A##\u000D\u000A## **Restriction**: For objects their type is **not** serialized. This means\u000D\u000A## essentially that it does not work if the object has some other runtime\u000D\u000A## type than its compiletime type:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A## \u000D\u000A##   type \u000D\u000A##     TA = object\u000D\u000A##     TB = object of TA\u000D\u000A##       f: int\u000D\u000A##\u000D\u000A##   var\u000D\u000A##     a: ref TA\u000D\u000A##     b: ref TB\u000D\u000A##\u000D\u000A##   new(b)\u000D\u000A##   a = b\u000D\u000A##   echo($$a[]) # produces \"{}\", not \"{f: 0}\""
+  }, 
+  {
+    "module": "matchers", 
+    "description": "This module contains various string matchers for email addresses, etc."
+  }, 
+  {
+    "module": "math", 
+    "description": "Constructive mathematics is naturally typed. -- Simon Thompson\u000D\u000A## \u000D\u000A## Basic math routines for Nimrod.\u000D\u000A## This module is available for the JavaScript target."
+  }, 
+  {
+    "module": "md5", 
+    "description": "Module for computing MD5 checksums."
+  }, 
+  {
+    "module": "memfiles", 
+    "description": ":Authors: Zahary Karadjov, Andreas Rumpf\u000D\u000A##\u000D\u000A## This module provides support for `memory mapped files`:idx:\u000D\u000A## (Posix's `mmap`:idx:) on the different operating systems."
+  }, 
+  {
+    "module": "mersenne"
+  }, 
+  {
+    "module": "mimetypes", 
+    "description": "This module implements a mimetypes database"
+  }, 
+  {
+    "module": "mmsystem"
+  }, 
+  {
+    "module": "module_index"
+  }, 
+  {
+    "module": "mongo", 
+    "description": "This module is a wrapper for the `mongodb`:idx: client C library.\u000D\u000A## It allows you to connect to a mongo-server instance, send commands and\u000D\u000A## receive replies."
+  }, 
+  {
+    "module": "mysql"
+  }, 
+  {
+    "module": "nb30"
+  }, 
+  {
+    "module": "nimprof", 
+    "description": "Profiling support for Nimrod. This is an embedded profiler that requires\u000D\u000A## ``--profiler:on``. You only need to import this module to get a profiling\u000D\u000A## report at program exit."
+  }, 
+  {
+    "module": "nimrtl", 
+    "description": "Main file to generate a DLL from the standard library. \u000D\u000A## The default Nimrtl does not only contain the ``system`` module, but these \u000D\u000A## too:\u000D\u000A##\u000D\u000A## * parseutils\u000D\u000A## * strutils\u000D\u000A## * parseopt\u000D\u000A## * parsecfg\u000D\u000A## * strtabs\u000D\u000A## * times\u000D\u000A## * os\u000D\u000A## * osproc\u000D\u000A## * unicode\u000D\u000A## * pegs\u000D\u000A## * ropes\u000D\u000A##"
+  }, 
+  {
+    "module": "numeric"
+  }, 
+  {
+    "module": "odbcsql"
+  }, 
+  {
+    "module": "oids", 
+    "description": "Nimrod OID support. An OID is a global ID that consists of a timestamp,\u000D\u000A## a unique counter and a random value. This combination should suffice to \u000D\u000A## produce a globally distributed unique ID. This implementation was extracted\u000D\u000A## from the Mongodb interface and it thus binary compatible with a Mongo OID.\u000D\u000A##\u000D\u000A## This implementation calls ``math.randomize()`` for the first call of\u000D\u000A## ``genOid``."
+  }, 
+  {
+    "module": "ole2"
+  }, 
+  {
+    "module": "openssl", 
+    "description": "OpenSSL support"
+  }, 
+  {
+    "module": "os", 
+    "description": "This module contains basic operating system facilities like\u000D\u000A## retrieving environment variables, reading command line arguments,\u000D\u000A## working with directories, running shell commands, etc."
+  }, 
+  {
+    "module": "osinfo_posix"
+  }, 
+  {
+    "module": "osinfo_win"
+  }, 
+  {
+    "module": "osproc", 
+    "description": "This module implements an advanced facility for executing OS processes\u000D\u000A## and process communication."
+  }, 
+  {
+    "module": "parsecfg", 
+    "description": "The ``parsecfg`` module implements a high performance configuration file \u000D\u000A## parser. The configuration file's syntax is similar to the Windows ``.ini`` \u000D\u000A## format, but much more powerful, as it is not a line based parser. String \u000D\u000A## literals, raw string literals and triple quoted string literals are supported \u000D\u000A## as in the Nimrod programming language."
+  }, 
+  {
+    "module": "parsecsv", 
+    "description": "This module implements a simple high performance `CSV`:idx:\u000D\u000A## (`comma separated value`:idx:) parser. \u000D\u000A##\u000D\u000A## Example: How to use the parser\u000D\u000A## ==============================\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##   import os, parsecsv, streams\u000D\u000A##   var s = newFileStream(ParamStr(1), fmRead)\u000D\u000A##   if s == nil: quit(\"cannot open the file\" & ParamStr(1))\u000D\u000A##   var x: TCsvParser\u000D\u000A##   open(x, s, ParamStr(1))\u000D\u000A##   while readRow(x):\u000D\u000A##     Echo \"new row: \"\u000D\u000A##     for val in items(x.row):\u000D\u000A##       Echo \"##\", val, \"##\"\u000D\u000A##   close(x)\u000D\u000A##"
+  }, 
+  {
+    "module": "parseopt", 
+    "description": "This module provides the standard Nimrod command line parser.\u000D\u000A## It supports one convenience iterator over all command line options and some\u000D\u000A## lower-level features.\u000D\u000A##\u000D\u000A## DEPRECATED. Use parseopt2 instead as this version has issues with spaces\u000D\u000A## in arguments."
+  }, 
+  {
+    "module": "parseopt2", 
+    "description": "This module provides the standard Nimrod command line parser.\u000D\u000A## It supports one convenience iterator over all command line options and some\u000D\u000A## lower-level features.\u000D\u000A##\u000D\u000A## Supported syntax:\u000D\u000A##\u000D\u000A## 1. short options - ``-abcd``, where a, b, c, d are names\u000D\u000A## 2. long option - ``--foo:bar``, ``--foo=bar`` or ``--foo``\u000D\u000A## 3. argument - everything else"
+  }, 
+  {
+    "module": "parsesql", 
+    "description": "The ``parsesql`` module implements a high performance SQL file \u000D\u000A## parser. It parses PostgreSQL syntax and the SQL ANSI standard."
+  }, 
+  {
+    "module": "parseurl", 
+    "description": "Parses & constructs URLs."
+  }, 
+  {
+    "module": "parseutils", 
+    "description": "This module contains helpers for parsing tokens, numbers, identifiers, etc."
+  }, 
+  {
+    "module": "parsexml", 
+    "description": "This module implements a simple high performance `XML`:idx: / `HTML`:idx:\u000D\u000A## parser. \u000D\u000A## The only encoding that is supported is UTF-8. The parser has been designed\u000D\u000A## to be somewhat error correcting, so that even most \"wild HTML\" found on the \u000D\u000A## web can be parsed with it. **Note:** This parser does not check that each\u000D\u000A## ``<tag>`` has a corresponding ``</tag>``! These checks have do be \u000D\u000A## implemented by the client code for various reasons: \u000D\u000A##\u000D\u000A## * Old HTML contains tags that have no end tag: ``<br>`` for example.\u000D\u000A## * HTML tags are case insensitive, XML tags are case sensitive. Since this\u000D\u000A##   library can parse both, only the client knows which comparison is to be\u000D\u000A##   used.\u000D\u000A## * Thus the checks would have been very difficult to implement properly with\u000D\u000A##   little benefit, especially since they are simple to implement in the \u000D\u000A##   client. The client should use the `errorMsgExpected` proc to generate\u000D\u000A##   a nice error message that fits the other error messages this library\u000D\u000A##   creates.\u000D\u000A##\u000D\u000A##\u000D\u000A## Example 1: Retrieve HTML title\u000D\u000A## ==============================\u000D\u000A##\u000D\u000A## The file ``examples/htmltitle.nim`` demonstrates how to use the \u000D\u000A## XML parser to accomplish a simple task: To determine the title of an HTML\u000D\u000A## document.\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##     :file: examples/htmltitle.nim\u000D\u000A##\u000D\u000A##\u000D\u000A## Example 2: Retrieve all HTML links\u000D\u000A## ==================================\u000D\u000A##\u000D\u000A## The file ``examples/htmlrefs.nim`` demonstrates how to use the \u000D\u000A## XML parser to accomplish another simple task: To determine all the links \u000D\u000A## an HTML document contains.\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##     :file: examples/htmlrefs.nim\u000D\u000A##"
+  }, 
+  {
+    "module": "pcre"
+  }, 
+  {
+    "module": "pdcurses"
+  }, 
+  {
+    "module": "pegs", 
+    "description": "Simple PEG (Parsing expression grammar) matching. Uses no memorization, but\u000D\u000A## uses superoperators and symbol inlining to improve performance. Note:\u000D\u000A## Matching performance is hopefully competitive with optimized regular\u000D\u000A## expression engines.\u000D\u000A##\u000D\u000A## .. include:: ../doc/pegdocs.txt\u000D\u000A##"
+  }, 
+  {
+    "module": "poly"
+  }, 
+  {
+    "module": "posix", 
+    "description": "This is a raw POSIX interface module. It does not not provide any\u000D\u000A## convenience: cstrings are used instead of proper Nimrod strings and\u000D\u000A## return codes indicate errors. If you want exceptions \u000D\u000A## and a proper Nimrod-like interface, use the OS module or write a wrapper."
+  }, 
+  {
+    "module": "postgres"
+  }, 
+  {
+    "module": "prelude", 
+    "description": "This is an include file that simply imports common modules for your\u000D\u000A## convenience:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##   include prelude\u000D\u000A##\u000D\u000A## Same as:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##   import os, strutils, times, parseutils, parseopt, hashes, tables, sets"
+  }, 
+  {
+    "module": "proc_index"
+  }, 
+  {
+    "module": "psapi"
+  }, 
+  {
+    "module": "queues", 
+    "description": "Implementation of a queue. The underlying implementation uses a ``seq``."
+  }, 
+  {
+    "module": "rdstdin", 
+    "description": "This module contains code for reading from `stdin`:idx:. On UNIX the GNU\u000D\u000A## readline library is wrapped and set up to provide default key bindings \u000D\u000A## (e.g. you can navigate with the arrow keys). On Windows ``system.readLine``\u000D\u000A## is used. This suffices because Windows' console already provides the \u000D\u000A## wanted functionality."
+  }, 
+  {
+    "module": "re", 
+    "description": "Regular expression support for Nimrod. Consider using the pegs module\u000D\u000A## instead.\u000D\u000A## This module is implemented by providing a wrapper around the\u000D\u000A## `PRCE (Perl-Compatible Regular Expressions) <http://www.pcre.org>`_\u000D\u000A## C library. This means that your application will depend on the PRCE\u000D\u000A## library's licence when using this module, which should not be a problem\u000D\u000A## though.\u000D\u000A## PRCE's licence follows:\u000D\u000A##\u000D\u000A## .. include:: ../doc/regexprs.txt\u000D\u000A##"
+  }, 
+  {
+    "module": "readline"
+  }, 
+  {
+    "module": "redis", 
+    "description": "This module implements a redis client. It allows you to connect to a\u000D\u000A## redis-server instance, send commands and receive replies.\u000D\u000A##\u000D\u000A## **Beware**: Most (if not all) functions that return a ``TRedisString`` may\u000D\u000A## return ``redisNil``, and functions which return a ``TRedisList`` \u000D\u000A## may return ``nil``."
+  }, 
+  {
+    "module": "rltypedefs"
+  }, 
+  {
+    "module": "romans", 
+    "description": "Module for converting an integer to a Roman numeral.\u000D\u000A## See http://en.wikipedia.org/wiki/Roman_numerals for reference."
+  }, 
+  {
+    "module": "ropes", 
+    "description": "This module contains support for a `rope`:idx: data type.\u000D\u000A## Ropes can represent very long strings efficiently; especially concatenation\u000D\u000A## is done in O(1) instead of O(n). They are essentially concatenation\u000D\u000A## trees that are only flattened when converting to a native Nimrod\u000D\u000A## string. The empty string is represented by ``nil``. Ropes are immutable and\u000D\u000A## subtrees can be shared without copying.\u000D\u000A## Leaves can be cached for better memory efficiency at the cost of\u000D\u000A## runtime efficiency."
+  }, 
+  {
+    "module": "scgi", 
+    "description": "This module implements helper procs for SCGI applications. Example:\u000D\u000A## \u000D\u000A## .. code-block:: Nimrod\u000D\u000A##\u000D\u000A##    import strtabs, sockets, scgi\u000D\u000A##\u000D\u000A##    var counter = 0\u000D\u000A##    proc handleRequest(client: TSocket, input: string, \u000D\u000A##                       headers: PStringTable): bool {.procvar.} =\u000D\u000A##      inc(counter)\u000D\u000A##      client.writeStatusOkTextContent()\u000D\u000A##      client.send(\"Hello for the $#th time.\" % $counter & \"\\c\\L\")\u000D\u000A##      return false # do not stop processing\u000D\u000A##\u000D\u000A##    run(handleRequest)\u000D\u000A##\u000D\u000A## **Warning:** The API of this module is unstable, and therefore is subject\u000D\u000A## to change."
+  }, 
+  {
+    "module": "sdl"
+  }, 
+  {
+    "module": "sdl_gfx"
+  }, 
+  {
+    "module": "sdl_image"
+  }, 
+  {
+    "module": "sdl_mixer"
+  }, 
+  {
+    "module": "sdl_mixer_nosmpeg"
+  }, 
+  {
+    "module": "sdl_net"
+  }, 
+  {
+    "module": "sdl_ttf"
+  }, 
+  {
+    "module": "sequtils", 
+    "description": ":Author: Alex Mitchell\u000D\u000A##\u000D\u000A## This module implements operations for the built-in `seq`:idx: type which\u000D\u000A## were inspired by functional programming languages. If you are looking for\u000D\u000A## the typical `map` function which applies a function to every element in a\u000D\u000A## sequence, it already exists in the `system <system.html>`_ module in both\u000D\u000A## mutable and immutable styles.\u000D\u000A##\u000D\u000A## Also, for functional style programming you may want to pass `anonymous procs\u000D\u000A## <manual.html#anonymous-procs>`_ to procs like ``filter`` to reduce typing.\u000D\u000A## Anonymous procs can use `the special do notation <manual.html#do-notation>`_\u000D\u000A## which is more convenient in certain situations.\u000D\u000A##\u000D\u000A## **Note**: This interface will change as soon as the compiler supports\u000D\u000A## closures and proper coroutines."
+  }, 
+  {
+    "module": "sets", 
+    "description": "The ``sets`` module implements an efficient hash set and ordered hash set.\u000D\u000A##\u000D\u000A## **Note**: The data types declared here have *value semantics*: This means\u000D\u000A## that ``=`` performs a copy of the set."
+  }, 
+  {
+    "module": "shellapi"
+  }, 
+  {
+    "module": "shfolder"
+  }, 
+  {
+    "module": "smpeg"
+  }, 
+  {
+    "module": "smtp", 
+    "description": "This module implements the SMTP client protocol as specified by RFC 5321, \u000D\u000A## this can be used to send mail to any SMTP Server.\u000D\u000A## \u000D\u000A## This module also implements the protocol used to format messages, \u000D\u000A## as specified by RFC 2822.\u000D\u000A## \u000D\u000A## Example gmail use:\u000D\u000A## \u000D\u000A## \u000D\u000A## .. code-block:: Nimrod\u000D\u000A##   var msg = createMessage(\"Hello from Nimrod's SMTP\", \u000D\u000A##                           \"Hello!.\\n Is this awesome or what?\", \u000D\u000A##                           @[\"foo@gmail.com\"])\u000D\u000A##   var smtp = connect(\"smtp.gmail.com\", 465, True, True)\u000D\u000A##   smtp.auth(\"username\", \"password\")\u000D\u000A##   smtp.sendmail(\"username@gmail.com\", @[\"foo@gmail.com\"], $msg)\u000D\u000A##   \u000D\u000A## \u000D\u000A## For SSL support this module relies on OpenSSL. If you want to \u000D\u000A## enable SSL, compile with ``-d:ssl``."
+  }, 
+  {
+    "module": "sockets", 
+    "description": "This module implements portable sockets, it supports a mix of different types\u000D\u000A## of sockets. Sockets are buffered by default meaning that data will be\u000D\u000A## received in ``BufferSize`` (4000) sized chunks, buffering\u000D\u000A## behaviour can be disabled by setting the ``buffered`` parameter when calling\u000D\u000A## the ``socket`` function to `false`. Be aware that some functions may not yet\u000D\u000A## support buffered sockets (mainly the recvFrom function).\u000D\u000A##\u000D\u000A## Most procedures raise EOS on error, but some may return ``-1`` or a boolean\u000D\u000A## ``false``.\u000D\u000A##\u000D\u000A## SSL is supported through the OpenSSL library. This support can be activated\u000D\u000A## by compiling with the ``-d:ssl`` switch. When an SSL socket is used it will\u000D\u000A## raise ESSL exceptions when SSL errors occur.\u000D\u000A##\u000D\u000A## Asynchronous sockets are supported, however a better alternative is to use\u000D\u000A## the `asyncio <asyncio.html>`_ module."
+  }, 
+  {
+    "module": "sphinx", 
+    "description": "Nimrod wrapper for ``sphinx``."
+  }, 
+  {
+    "module": "sqlite3"
+  }, 
+  {
+    "module": "ssl", 
+    "description": "This module provides an easy to use sockets-style \u000D\u000A## nimrod interface to the OpenSSL library."
+  }, 
+  {
+    "module": "streams", 
+    "description": "This module provides a stream interface and two implementations thereof:\u000D\u000A## the `PFileStream` and the `PStringStream` which implement the stream\u000D\u000A## interface for Nimrod file objects (`TFile`) and strings. Other modules\u000D\u000A## may provide other implementations for this standard stream interface."
+  }, 
+  {
+    "module": "strtabs", 
+    "description": "The ``strtabs`` module implements an efficient hash table that is a mapping\u000D\u000A## from strings to strings. Supports a case-sensitive, case-insensitive and\u000D\u000A## style-insensitive mode. An efficient string substitution operator  ``%``\u000D\u000A## for the string table is also provided."
+  }, 
+  {
+    "module": "strutils", 
+    "description": "This module contains various string utility routines.\u000D\u000A## See the module `re <re.html>`_ for regular expression support.\u000D\u000A## See the module `pegs <pegs.html>`_ for PEG support."
+  }, 
+  {
+    "module": "subexes", 
+    "description": "Nimrod support for `substitution expressions`:idx: (`subex`:idx:).\u000D\u000A##\u000D\u000A## .. include:: ../doc/subexes.txt\u000D\u000A##"
+  }, 
+  {
+    "module": "system", 
+    "description": "The compiler depends on the System module to work properly and the System\u000D\u000A## module depends on the compiler. Most of the routines listed here use\u000D\u000A## special compiler magic.\u000D\u000A## Each module implicitly imports the System module; it must not be listed\u000D\u000A## explicitly. Because of this there cannot be a user-defined module named\u000D\u000A## ``system``."
+  }, 
+  {
+    "module": "tables", 
+    "description": "The ``tables`` module implements an efficient hash table that is\u000D\u000A## a mapping from keys to values.\u000D\u000A##\u000D\u000A## **Note:** The data types declared here have *value semantics*: This means\u000D\u000A## that ``=`` performs a copy of the hash table."
+  }, 
+  {
+    "module": "terminal", 
+    "description": "This module contains a few procedures to control the *terminal*\u000D\u000A## (also called *console*). On UNIX, the implementation simply uses ANSI escape\u000D\u000A## sequences and does not depend on any other module, on Windows it uses the\u000D\u000A## Windows API.\u000D\u000A## Changing the style is permanent even after program termination! Use the\u000D\u000A## code ``system.addQuitProc(resetAttributes)`` to restore the defaults."
+  }, 
+  {
+    "module": "times", 
+    "description": "This module contains routines and types for dealing with time.\u000D\u000A## This module is available for the JavaScript target."
+  }, 
+  {
+    "module": "tinyc"
+  }, 
+  {
+    "module": "tre"
+  }, 
+  {
+    "module": "typeinfo", 
+    "description": "This module implements an interface to Nimrod's runtime type information.\u000D\u000A## Note that even though ``TAny`` and its operations hide the nasty low level\u000D\u000A## details from its clients, it remains inherently unsafe!"
+  }, 
+  {
+    "module": "typetraits", 
+    "description": "This module defines compile-time reflection procs for\u000D\u000A## working with types"
+  }, 
+  {
+    "module": "unicode", 
+    "description": "This module provides support to handle the Unicode UTF-8 encoding."
+  }, 
+  {
+    "module": "unidecode", 
+    "description": "This module is based on Python's Unidecode module by Tomaz Solc, \u000D\u000A## which in turn is based on the ``Text::Unidecode`` Perl module by \u000D\u000A## Sean M. Burke \u000D\u000A## (http://search.cpan.org/~sburke/Text-Unidecode-0.04/lib/Text/Unidecode.pm ).\u000D\u000A##\u000D\u000A## It provides a single proc that does Unicode to ASCII transliterations:\u000D\u000A## It finds the sequence of ASCII characters that is the closest approximation\u000D\u000A## to the Unicode string.\u000D\u000A##\u000D\u000A## For example, the closest to string \"\u00C4u\u00DFerst\" in ASCII is \"Ausserst\". Some \u000D\u000A## information is lost in this transformation, of course, since several Unicode \u000D\u000A## strings can be transformed in the same ASCII representation. So this is a\u000D\u000A## strictly one-way transformation. However a human reader will probably \u000D\u000A## still be able to guess what original string was meant from the context.\u000D\u000A##\u000D\u000A## This module needs the data file \"unidecode.dat\" to work: You can either\u000D\u000A## ship this file with your application and initialize this module with the\u000D\u000A## `loadUnidecodeTable` proc or you can define the ``embedUnidecodeTable``\u000D\u000A## symbol to embed the file as a resource into your application."
+  }, 
+  {
+    "module": "unittest", 
+    "description": ":Author: Zahary Karadjov\u000D\u000A##\u000D\u000A## This module implements the standard unit testing facilities such as\u000D\u000A## suites, fixtures and test cases as well as facilities for combinatorial \u000D\u000A## and randomzied test case generation (not yet available) \u000D\u000A## and object mocking (not yet available)\u000D\u000A##\u000D\u000A## It is loosely based on C++'s boost.test and Haskell's QuickTest"
+  }, 
+  {
+    "module": "unsigned", 
+    "description": "This module implements basic arithmetic operators for unsigned integers.\u000D\u000A## To discourage users from using ``unsigned``, it's not part of ``system``,\u000D\u000A## but an extra import."
+  }, 
+  {
+    "module": "uri"
+  }, 
+  {
+    "module": "web", 
+    "description": "This module contains simple high-level procedures for dealing with the\u000D\u000A## web. Use cases: \u000D\u000A##\u000D\u000A## * requesting URLs\u000D\u000A## * sending and retrieving emails\u000D\u000A## * sending and retrieving files from an FTP server\u000D\u000A##\u000D\u000A## Currently only requesting URLs is implemented. The implementation depends\u000D\u000A## on the libcurl library!\u000D\u000A##\u000D\u000A## **Deprecated since version 0.8.8:** Use the\u000D\u000A## `httpclient <httpclient.html>`_ module instead. \u000D\u000A##"
+  }, 
+  {
+    "module": "windows", 
+    "description": "Define ``winUnicode`` before importing this module for the\u000D\u000A## Unicode version."
+  }, 
+  {
+    "module": "winlean", 
+    "description": "This module implements a small wrapper for some needed Win API procedures,\u000D\u000A## so that the Nimrod compiler does not depend on the huge Windows module."
+  }, 
+  {
+    "module": "xmldom", 
+    "description": "This module implements XML DOM Level 2 Core specification(http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html)"
+  }, 
+  {
+    "module": "xmldomparser", 
+    "description": "This module parses a XML Document into a XML DOM Document representation."
+  }, 
+  {
+    "module": "xmlparser", 
+    "description": "This module parses an XML document and creates its XML tree representation."
+  }, 
+  {
+    "module": "xmltree", 
+    "description": "A simple XML tree. More efficient and simpler than the DOM."
+  }, 
+  {
+    "module": "zipfiles", 
+    "description": "This module implements a zip archive creator/reader/modifier."
+  }, 
+  {
+    "module": "zlib", 
+    "description": "Interface to the zlib http://www.zlib.net/ compression library."
+  }, 
+  {
+    "module": "zmq", 
+    "description": "Nimrod 0mq wrapper. This file contains the low level C wrappers as well as\u000D\u000A## some higher level constructs. The higher level constructs are easily\u000D\u000A## recognizable because they are the only ones that have documentation.\u000D\u000A##\u000D\u000A## Example of a client:\u000D\u000A## \u000D\u000A## .. code-block:: nimrod\u000D\u000A##   import zmq\u000D\u000A##   \u000D\u000A##   var connection = zmq.open(\"tcp://localhost:5555\", server=false)\u000D\u000A##   echo(\"Connecting...\")\u000D\u000A##   for i in 0..10:\u000D\u000A##     echo(\"Sending hello...\", i)\u000D\u000A##     send(connection, \"Hello\")\u000D\u000A##     var reply = receive(connection)\u000D\u000A##     echo(\"Received ...\", reply)\u000D\u000A##   close(connection)\u000D\u000A##\u000D\u000A## Example of a server:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##   \u000D\u000A##   import zmq\u000D\u000A##   var connection = zmq.open(\"tcp://*:5555\", server=true)\u000D\u000A##   while True:\u000D\u000A##     var request = receive(connection)\u000D\u000A##     echo(\"Received: \", request)\u000D\u000A##     send(connection, \"World\")\u000D\u000A##   close(connection)"
+  }, 
+  {
+    "module": "zzip", 
+    "description": "This module is an interface to the zzip library."
+  }
+]

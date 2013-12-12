@@ -1,0 +1,52 @@
+[
+  {
+    "comment": "This module implements a base object of a lexer with efficient buffer\u000D\u000A## handling. Only at line endings checks are necessary if the buffer\u000D\u000A## needs refilling."
+  }, 
+  {
+    "name": "NewLines", 
+    "type": "skConst", 
+    "code": "NewLines* = {'\\x0D', '\\x0A'}"
+  }, 
+  {
+    "name": "TBaseLexer", 
+    "type": "skType", 
+    "description": "the base lexer. Inherit your lexer from this object.", 
+    "code": "TBaseLexer* = object of TObject\u000D\u000A  bufpos*: int                ## the current position within the buffer\u000D\u000A  buf*: cstring               ## the buffer itself\u000D\u000A  bufLen*: int                ## length of buffer in characters\u000D\u000A  input: PStream              ## the input stream\u000D\u000A  LineNumber*: int            ## the current line number\u000D\u000A  sentinel: int\u000D\u000A  lineStart: int\u000D\u000A  fileOpened: bool\u000D\u000A"
+  }, 
+  {
+    "name": "open", 
+    "type": "skProc", 
+    "description": "inits the TBaseLexer with a stream to read from", 
+    "code": "proc open*(L: var TBaseLexer; input: PStream; bufLen: int = 8192)"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "closes the base lexer. This closes <cite>L</cite>'s associated stream too.", 
+    "code": "proc close*(L: var TBaseLexer)"
+  }, 
+  {
+    "name": "getCurrentLine", 
+    "type": "skProc", 
+    "description": "retrieves the current line.", 
+    "code": "proc getCurrentLine*(L: TBaseLexer; marker: bool = true): string"
+  }, 
+  {
+    "name": "getColNumber", 
+    "type": "skProc", 
+    "description": "retrieves the current column.", 
+    "code": "proc getColNumber*(L: TBaseLexer; pos: int): int"
+  }, 
+  {
+    "name": "HandleCR", 
+    "type": "skProc", 
+    "description": "Call this if you scanned over 'c' in the buffer; it returns the the position to continue the scanning from. <cite>pos</cite> must be the position of the 'c'.", 
+    "code": "proc HandleCR*(L: var TBaseLexer; pos: int): int"
+  }, 
+  {
+    "name": "HandleLF", 
+    "type": "skProc", 
+    "description": "Call this if you scanned over 'L' in the buffer; it returns the the position to continue the scanning from. <cite>pos</cite> must be the position of the 'L'.", 
+    "code": "proc HandleLF*(L: var TBaseLexer; pos: int): int"
+  }
+]

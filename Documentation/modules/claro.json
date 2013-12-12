@@ -1,0 +1,1414 @@
+[
+  {
+    "comment": "Wrapper for the Claro GUI library. \u000D\u000A## This wrapper calls ``claro_base_init`` and ``claro_graphics_init`` \u000D\u000A## automatically on startup, so you don't have to do it and in fact cannot do\u000D\u000A## it because they are not exported."
+  }, 
+  {
+    "name": "TList", 
+    "type": "skType", 
+    "code": "TList* {.pure.} = object \u000D\u000A  head*: ptr TNode\u000D\u000A  tail*: ptr TNode\u000D\u000A  count*: int32\u000D\u000A"
+  }, 
+  {
+    "name": "list_init", 
+    "type": "skProc", 
+    "code": "proc list_init*() {.cdecl, importc: \"list_init\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_create", 
+    "type": "skProc", 
+    "code": "proc list_create*(list: ptr TList) {.cdecl, importc: \"list_create\", \u000D\u000A                                     dynlib: clarodll.}"
+  }, 
+  {
+    "name": "node_create", 
+    "type": "skProc", 
+    "code": "proc node_create*(): ptr TNode {.cdecl, importc: \"node_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "node_free", 
+    "type": "skProc", 
+    "code": "proc node_free*(n: ptr TNode) {.cdecl, importc: \"node_free\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "node_add", 
+    "type": "skProc", 
+    "code": "proc node_add*(data: pointer; n: ptr TNode; L: ptr TList) {.cdecl, \u000D\u000A    importc: \"node_add\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "node_prepend", 
+    "type": "skProc", 
+    "code": "proc node_prepend*(data: pointer; n: ptr TNode; L: ptr TList) {.cdecl, \u000D\u000A    importc: \"node_prepend\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "node_del", 
+    "type": "skProc", 
+    "code": "proc node_del*(n: ptr TNode; L: ptr TList) {.cdecl, importc: \"node_del\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "node_find", 
+    "type": "skProc", 
+    "code": "proc node_find*(data: pointer; L: ptr TList): ptr TNode {.cdecl, \u000D\u000A    importc: \"node_find\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "node_move", 
+    "type": "skProc", 
+    "code": "proc node_move*(n: ptr TNode; oldlist: ptr TList; newlist: ptr TList) {.cdecl, \u000D\u000A    importc: \"node_move\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TEventHandler", 
+    "type": "skType", 
+    "code": "TEventHandler* {.pure.} = object \u000D\u000A  typ*: array[0 .. 32 - 1, char]\u000D\u000A  data*: pointer\u000D\u000A  func*: TEventFunc\u000D\u000A"
+  }, 
+  {
+    "name": "object_init", 
+    "type": "skProc", 
+    "code": "proc object_init*() {.cdecl, importc: \"object_init\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "object_override_next_size", 
+    "type": "skProc", 
+    "description": "<p>Overrides the size of next object to be created, providing the size is more than is requested by default.</p>\u000D\u000A<p><cite>size</cite> specifies the full size, which is greater than both TClaroObj and the size that will be requested automatically.</p>\u000D\u000A", 
+    "code": "proc object_override_next_size*(size: cint) {.cdecl, \u000D\u000A    importc: \"object_override_next_size\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "event_get_arg_ptr", 
+    "type": "skProc", 
+    "code": "proc event_get_arg_ptr*(e: ptr TEvent; arg: cint): pointer {.cdecl, \u000D\u000A    importc: \"event_get_arg_ptr\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "event_get_arg_double", 
+    "type": "skProc", 
+    "code": "proc event_get_arg_double*(e: ptr TEvent; arg: cint): cdouble {.cdecl, \u000D\u000A    importc: \"event_get_arg_double\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "event_get_arg_int", 
+    "type": "skProc", 
+    "code": "proc event_get_arg_int*(e: ptr TEvent; arg: cint): cint {.cdecl, \u000D\u000A    importc: \"event_get_arg_int\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "object_create", 
+    "type": "skProc", 
+    "code": "proc object_create*(parent: ptr TClaroObj; size: int32; typ: cstring): ptr TClaroObj {.\u000D\u000A    cdecl, importc: \"object_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "object_destroy", 
+    "type": "skProc", 
+    "code": "proc object_destroy*(obj: ptr TClaroObj) {.cdecl, importc: \"object_destroy\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "object_set_parent", 
+    "type": "skProc", 
+    "code": "proc object_set_parent*(obj: ptr TClaroObj; parent: ptr TClaroObj) {.cdecl, \u000D\u000A    importc: \"object_set_parent\", dynlib: clarodll.}"
+  }, 
+  {
+    "comment": "define object_cmptype(o,t) (!strcmp(((TClaroObj *)o)->type,t))"
+  }, 
+  {
+    "name": "object_addhandler", 
+    "type": "skProc", 
+    "code": "proc object_addhandler*(obj: ptr TClaroObj; event: cstring; func: TEventFunc) {.\u000D\u000A    cdecl, importc: \"object_addhandler\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "object_addhandler_interface", 
+    "type": "skProc", 
+    "code": "proc object_addhandler_interface*(obj: ptr TClaroObj; event: cstring; \u000D\u000A                                  func: TEventFunc; data: pointer) {.cdecl, \u000D\u000A    importc: \"object_addhandler_interface\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "event_send", 
+    "type": "skProc", 
+    "code": "proc event_send*(obj: ptr TClaroObj; event: cstring; fmt: cstring): cint {.\u000D\u000A    varargs, cdecl, importc: \"event_send\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "event_get_name", 
+    "type": "skProc", 
+    "code": "proc event_get_name*(event: ptr TEvent): cstring {.cdecl, \u000D\u000A    importc: \"event_get_name\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "claro_loop", 
+    "type": "skProc", 
+    "code": "proc claro_loop*() {.cdecl, importc: \"claro_loop\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "claro_run", 
+    "type": "skProc", 
+    "code": "proc claro_run*() {.cdecl, importc: \"claro_run\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "claro_shutdown", 
+    "type": "skProc", 
+    "code": "proc claro_shutdown*() {.cdecl, importc: \"claro_shutdown\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "mssleep", 
+    "type": "skProc", 
+    "code": "proc mssleep*(ms: cint) {.cdecl, importc: \"mssleep\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "cWidgetCustomDraw", 
+    "type": "skConst", 
+    "code": "cWidgetCustomDraw* = (1 shl 25)"
+  }, 
+  {
+    "name": "TBounds", 
+    "type": "skType", 
+    "code": "TBounds* {.pure.} = object \u000D\u000A  x*: cint\u000D\u000A  y*: cint\u000D\u000A  w*: cint\u000D\u000A  h*: cint\u000D\u000A  owner*: ptr TClaroObj\u000D\u000A"
+  }, 
+  {
+    "name": "cSizeRequestChanged", 
+    "type": "skConst", 
+    "code": "cSizeRequestChanged* = 1"
+  }, 
+  {
+    "name": "TWidget", 
+    "type": "skType", 
+    "code": "TWidget* {.pure.} = object of TClaroObj\u000D\u000A  size_req*: ptr TBounds\u000D\u000A  size*: TBounds\u000D\u000A  size_ct*: TBounds\u000D\u000A  supports_alpha*: cint\u000D\u000A  size_flags*: cint\u000D\u000A  flags*: cint\u000D\u000A  visible*: cint\u000D\u000A  notify_flags*: cint\u000D\u000A  font*: TFont\u000D\u000A  native*: pointer\u000D\u000A  ndata*: pointer\u000D\u000A  container*: pointer\u000D\u000A  naddress*: array[0 .. 3, pointer]\u000D\u000A"
+  }, 
+  {
+    "name": "clipboard_set_text", 
+    "type": "skProc", 
+    "description": "<p>Sets the (text) clipboard to the specified text value.</p>\u000D\u000A<p><cite>w</cite> The widget requesting the action, some platforms may use this value. <cite>text</cite> The text to place in the clipboard. returns 1 on success, 0 on failure.</p>\u000D\u000A", 
+    "code": "proc clipboard_set_text*(w: ptr TWidget; text: cstring): cint {.cdecl, \u000D\u000A    importc: \"clipboard_set_text\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "cFontDecorationUnderline", 
+    "type": "skConst", 
+    "code": "cFontDecorationUnderline* = 1"
+  }, 
+  {
+    "name": "widget_set_font", 
+    "type": "skProc", 
+    "description": "Sets the font details of the specified widget.<blockquote><p><cite>widget</cite> A widget <cite>face</cite> Font face string <cite>size</cite> Size of the font in pixels <cite>weight</cite> The weight of the font <cite>slant</cite> The sland of the font <cite>decoration</cite> The decoration of the font</p></blockquote>\u000D\u000A", 
+    "code": "proc widget_set_font*(widget: ptr TClaroObj; face: cstring; size: cint; \u000D\u000A                      weight: cint; slant: cint; decoration: cint) {.cdecl, \u000D\u000A    importc: \"widget_set_font\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_font_string_width", 
+    "type": "skProc", 
+    "description": "Calculates the pixel width of the text in the widget's font. <cite>chars</cite> is the number of characters of text to calculate. Return value is the width of the specified text in pixels.", 
+    "code": "proc widget_font_string_width*(widget: ptr TClaroObj; text: cstring; chars: cint): cint {.\u000D\u000A    cdecl, importc: \"widget_font_string_width\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "CLARO_APPLICATION", 
+    "type": "skConst", 
+    "code": "CLARO_APPLICATION* = \"claro.graphics\""
+  }, 
+  {
+    "name": "TImage", 
+    "type": "skType", 
+    "code": "TImage* {.pure.} = object of TClaroObj\u000D\u000A  width*: cint\u000D\u000A  height*: cint\u000D\u000A  native*: pointer\u000D\u000A  native2*: pointer\u000D\u000A  native3*: pointer\u000D\u000A  icon*: pointer\u000D\u000A"
+  }, 
+  {
+    "name": "image_load", 
+    "type": "skProc", 
+    "description": "<p>Loads an image from a file and returns a new image object.</p>\u000D\u000A<p>The supported formats depend on the platform. The main effort is to ensure that PNG images will always work. Generally, JPEGs and possibly GIFs will also work.</p>\u000D\u000A<p><cite>Parent</cite> object (usually the application's main window), can be nil.</p>\u000D\u000A", 
+    "code": "proc image_load*(parent: ptr TClaroObj; file: cstring): ptr TImage {.cdecl, \u000D\u000A    importc: \"image_load\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "image_load_inline_png", 
+    "type": "skProc", 
+    "description": "Loads an image from inline data and returns a new image object.<dl class=\"docutils\"><dt><cite>Parent</cite> object (usually the application's main window), can be nil.</dt>\u000D\u000A<dd>data raw PNG image len size of data</dd>\u000D\u000A</dl>\u000D\u000A", 
+    "code": "proc image_load_inline_png*(parent: ptr TClaroObj; data: cstring; len: cint): ptr TImage {.\u000D\u000A    cdecl, importc: \"image_load_inline_png\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_show", 
+    "type": "skProc", 
+    "code": "proc widget_show*(widget: ptr TWidget) {.cdecl, importc: \"widget_show\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_hide", 
+    "type": "skProc", 
+    "code": "proc widget_hide*(widget: ptr TWidget) {.cdecl, importc: \"widget_hide\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_enable", 
+    "type": "skProc", 
+    "code": "proc widget_enable*(widget: ptr TWidget) {.cdecl, importc: \"widget_enable\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_disable", 
+    "type": "skProc", 
+    "code": "proc widget_disable*(widget: ptr TWidget) {.cdecl, importc: \"widget_disable\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_focus", 
+    "type": "skProc", 
+    "code": "proc widget_focus*(widget: ptr TWidget) {.cdecl, importc: \"widget_focus\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_close", 
+    "type": "skProc", 
+    "code": "proc widget_close*(widget: ptr TWidget) {.cdecl, importc: \"widget_close\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_screen_offset", 
+    "type": "skProc", 
+    "code": "proc widget_screen_offset*(widget: ptr TWidget; dx: ptr cint; dy: ptr cint) {.\u000D\u000A    cdecl, importc: \"widget_screen_offset\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_set_notify", 
+    "type": "skProc", 
+    "code": "proc widget_set_notify*(widget: ptr TWidget; flags: cint) {.cdecl, \u000D\u000A    importc: \"widget_set_notify\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TCursorType", 
+    "type": "skType", 
+    "code": "TCursorType* {.size: sizeof(cint).} = enum \u000D\u000A  cCursorNormal = 0, cCursorTextEdit = 1, cCursorWait = 2, cCursorPoint = 3"
+  }, 
+  {
+    "name": "widget_set_cursor", 
+    "type": "skProc", 
+    "code": "proc widget_set_cursor*(widget: ptr TWidget; cursor: TCursorType) {.cdecl, \u000D\u000A    importc: \"widget_set_cursor\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_get_notify_key", 
+    "type": "skProc", 
+    "code": "proc widget_get_notify_key*(widget: ptr TWidget; event: ptr TEvent): cint {.\u000D\u000A    cdecl, importc: \"widget_get_notify_key\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "bounds_set", 
+    "type": "skProc", 
+    "code": "proc bounds_set*(bounds: ptr TBounds; x: cint; y: cint; w: cint; h: cint) {.\u000D\u000A    cdecl, importc: \"bounds_set\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "new_bounds", 
+    "type": "skProc", 
+    "code": "proc new_bounds*(x: cint; y: cint; w: cint; h: cint): ptr TBounds {.cdecl, \u000D\u000A    importc: \"new_bounds\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "get_req_bounds", 
+    "type": "skProc", 
+    "code": "proc get_req_bounds*(widget: ptr TWidget): ptr TBounds {.cdecl, \u000D\u000A    importc: \"get_req_bounds\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "noBounds", 
+    "type": "skTemplate", 
+    "code": "template noBounds*(): expr"
+  }, 
+  {
+    "name": "widget_pre_init", 
+    "type": "skProc", 
+    "code": "proc widget_pre_init*(widget: ptr TWidget) {.cdecl, importc: \"widget_pre_init\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_post_init", 
+    "type": "skProc", 
+    "code": "proc widget_post_init*(widget: ptr TWidget) {.cdecl, \u000D\u000A    importc: \"widget_post_init\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_resized_handle", 
+    "type": "skProc", 
+    "code": "proc widget_resized_handle*(obj: ptr TWidget; event: ptr TEvent) {.cdecl, \u000D\u000A    importc: \"widget_resized_handle\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TcgraphicsCreateFunction", 
+    "type": "skType", 
+    "code": "TcgraphicsCreateFunction* = proc (widget: ptr TWidget) {.cdecl.}"
+  }, 
+  {
+    "name": "newdefault", 
+    "type": "skProc", 
+    "code": "proc newdefault*(parent: ptr TWidget; widget_size: int; widget_name: cstring; \u000D\u000A                 size_req: ptr TBounds; flags: cint; \u000D\u000A                 creator: TcgraphicsCreateFunction): ptr TWidget {.cdecl, \u000D\u000A    importc: \"default_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_get_container", 
+    "type": "skProc", 
+    "code": "proc widget_get_container*(widget: ptr TWidget): pointer {.cdecl, \u000D\u000A    importc: \"widget_get_container\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_set_content_size", 
+    "type": "skProc", 
+    "code": "proc widget_set_content_size*(widget: ptr TWidget; w: cint; h: cint; event: cint) {.\u000D\u000A    cdecl, importc: \"widget_set_content_size\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_set_size", 
+    "type": "skProc", 
+    "code": "proc widget_set_size*(widget: ptr TWidget; w: cint; h: cint; event: cint) {.\u000D\u000A    cdecl, importc: \"widget_set_size\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_set_content_position", 
+    "type": "skProc", 
+    "code": "proc widget_set_content_position*(widget: ptr TWidget; x: cint; y: cint; \u000D\u000A                                  event: cint) {.cdecl, \u000D\u000A    importc: \"widget_set_content_position\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_set_position", 
+    "type": "skProc", 
+    "code": "proc widget_set_position*(widget: ptr TWidget; x: cint; y: cint; event: cint) {.\u000D\u000A    cdecl, importc: \"widget_set_position\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "widget_destroy", 
+    "type": "skProc", 
+    "code": "proc widget_destroy*(widget: ptr TWidget) {.cdecl, importc: \"widget_destroy\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TOpenglWidget", 
+    "type": "skType", 
+    "code": "TOpenglWidget* {.pure.} = object of TWidget\u000D\u000A  gldata*: pointer\u000D\u000A"
+  }, 
+  {
+    "name": "newopengl", 
+    "type": "skProc", 
+    "code": "proc newopengl*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TOpenglWidget {.\u000D\u000A    cdecl, importc: \"opengl_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "opengl_flip", 
+    "type": "skProc", 
+    "code": "proc opengl_flip*(widget: ptr TOpenglWidget) {.cdecl, importc: \"opengl_flip\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "opengl_activate", 
+    "type": "skProc", 
+    "code": "proc opengl_activate*(widget: ptr TOpenglWidget) {.cdecl, \u000D\u000A    importc: \"opengl_activate\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TButton", 
+    "type": "skType", 
+    "code": "TButton* {.pure.} = object of TWidget\u000D\u000A  text*: array[0 .. 256 - 1, char]\u000D\u000A"
+  }, 
+  {
+    "name": "newbutton", 
+    "type": "skProc", 
+    "code": "proc newbutton*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TButton {.\u000D\u000A    cdecl, importc: \"button_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "newbutton", 
+    "type": "skProc", 
+    "code": "proc newbutton*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint; \u000D\u000A                label: cstring): ptr TButton {.cdecl, \u000D\u000A    importc: \"button_widget_create_with_label\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "button_set_text", 
+    "type": "skProc", 
+    "code": "proc button_set_text*(obj: ptr TButton; label: cstring) {.cdecl, \u000D\u000A    importc: \"button_set_label\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "button_set_image", 
+    "type": "skProc", 
+    "code": "proc button_set_image*(obj: ptr TButton; image: ptr TImage) {.cdecl, \u000D\u000A    importc: \"button_set_image\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "CTEXT_EXTRA_UNDERLINE", 
+    "type": "skConst", 
+    "code": "CTEXT_EXTRA_UNDERLINE* = cFontDecorationUnderline"
+  }, 
+  {
+    "name": "TCanvas", 
+    "type": "skType", 
+    "code": "TCanvas* {.pure.} = object of TWidget\u000D\u000A  surface*: cairo.PSurface\u000D\u000A  cr*: Cairo.PContext\u000D\u000A  surfdata*: pointer\u000D\u000A  fontdata*: pointer\u000D\u000A  font_height*: cint\u000D\u000A  fr*: cfloat\u000D\u000A  fg*: cfloat\u000D\u000A  fb*: cfloat\u000D\u000A  fa*: cfloat\u000D\u000A  br*: cfloat\u000D\u000A  bg*: cfloat\u000D\u000A  bb*: cfloat\u000D\u000A  ba*: cfloat\u000D\u000A  charsize*: array[0 .. 256 - 1, cairo.TTextExtents]\u000D\u000A  csz_loaded*: cint\u000D\u000A  fontsize*: cint\u000D\u000A"
+  }, 
+  {
+    "name": "newcanvas", 
+    "type": "skProc", 
+    "code": "proc newcanvas*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TCanvas {.\u000D\u000A    cdecl, importc: \"canvas_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_redraw", 
+    "type": "skProc", 
+    "code": "proc canvas_redraw*(widget: ptr TCanvas) {.cdecl, importc: \"canvas_redraw\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_set_text_color", 
+    "type": "skProc", 
+    "code": "proc canvas_set_text_color*(widget: ptr TCanvas; r: cdouble; g: cdouble; \u000D\u000A                            b: cdouble; a: cdouble) {.cdecl, \u000D\u000A    importc: \"canvas_set_text_color\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_set_text_bgcolor", 
+    "type": "skProc", 
+    "code": "proc canvas_set_text_bgcolor*(widget: ptr TCanvas; r: cdouble; g: cdouble; \u000D\u000A                              b: cdouble; a: cdouble) {.cdecl, \u000D\u000A    importc: \"canvas_set_text_bgcolor\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_set_text_font", 
+    "type": "skProc", 
+    "code": "proc canvas_set_text_font*(widget: ptr TCanvas; face: cstring; size: cint; \u000D\u000A                           weight: cint; slant: cint; decoration: cint) {.cdecl, \u000D\u000A    importc: \"canvas_set_text_font\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_text_width", 
+    "type": "skProc", 
+    "code": "proc canvas_text_width*(widget: ptr TCanvas; text: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"canvas_text_width\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_text_box_width", 
+    "type": "skProc", 
+    "code": "proc canvas_text_box_width*(widget: ptr TCanvas; text: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"canvas_text_box_width\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_text_display_count", 
+    "type": "skProc", 
+    "code": "proc canvas_text_display_count*(widget: ptr TCanvas; text: cstring; width: cint): cint {.\u000D\u000A    cdecl, importc: \"canvas_text_display_count\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_show_text", 
+    "type": "skProc", 
+    "code": "proc canvas_show_text*(widget: ptr TCanvas; x: cint; y: cint; text: cstring; \u000D\u000A                       len: cint) {.cdecl, importc: \"canvas_show_text\", \u000D\u000A                                    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_fill_rect", 
+    "type": "skProc", 
+    "code": "proc canvas_fill_rect*(widget: ptr TCanvas; x: cint; y: cint; w: cint; h: cint; \u000D\u000A                       r, g, b, a: cdouble) {.cdecl, \u000D\u000A    importc: \"canvas_fill_rect\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_draw_image", 
+    "type": "skProc", 
+    "code": "proc canvas_draw_image*(widget: ptr TCanvas; image: ptr TImage; x: cint; y: cint) {.\u000D\u000A    cdecl, importc: \"canvas_draw_image\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_cairo_buffered_text_width", 
+    "type": "skProc", 
+    "code": "proc canvas_cairo_buffered_text_width*(widget: ptr TCanvas; text: cstring; \u000D\u000A                                       len: cint): cint {.cdecl, \u000D\u000A    importc: \"canvas_cairo_buffered_text_width\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_cairo_buffered_text_display_count", 
+    "type": "skProc", 
+    "code": "proc canvas_cairo_buffered_text_display_count*(widget: ptr TCanvas; \u000D\u000A    text: cstring; width: cint): cint {.cdecl, importc: \"canvas_cairo_buffered_text_display_count\", \u000D\u000A                                        dynlib: clarodll.}"
+  }, 
+  {
+    "name": "canvas_get_cairo_context", 
+    "type": "skProc", 
+    "code": "proc canvas_get_cairo_context*(widget: ptr TCanvas): Cairo.PContext {.cdecl, \u000D\u000A    importc: \"canvas_get_cairo_context\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TCheckBox", 
+    "type": "skType", 
+    "code": "TCheckBox* {.pure.} = object of TWidget\u000D\u000A  text*: array[0 .. 256 - 1, char]\u000D\u000A  checked*: cint\u000D\u000A"
+  }, 
+  {
+    "name": "newcheckbox", 
+    "type": "skProc", 
+    "code": "proc newcheckbox*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TCheckBox {.\u000D\u000A    cdecl, importc: \"checkbox_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "newcheckbox", 
+    "type": "skProc", 
+    "code": "proc newcheckbox*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint; \u000D\u000A                  label: cstring): ptr TCheckBox {.cdecl, \u000D\u000A    importc: \"checkbox_widget_create_with_label\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "checkbox_set_text", 
+    "type": "skProc", 
+    "code": "proc checkbox_set_text*(obj: ptr TCheckBox; label: cstring) {.cdecl, \u000D\u000A    importc: \"checkbox_set_label\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "checkbox_checked", 
+    "type": "skProc", 
+    "code": "proc checkbox_checked*(obj: ptr TCheckBox): cint {.cdecl, \u000D\u000A    importc: \"checkbox_get_checked\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "checkbox_set_checked", 
+    "type": "skProc", 
+    "code": "proc checkbox_set_checked*(obj: ptr TCheckBox; checked: cint) {.cdecl, \u000D\u000A    importc: \"checkbox_set_checked\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TCombo", 
+    "type": "skType", 
+    "code": "TCombo* {.pure.} = object of TListWidget\u000D\u000A  selected*: ptr TListItem\u000D\u000A"
+  }, 
+  {
+    "name": "newcombo", 
+    "type": "skProc", 
+    "code": "proc newcombo*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TCombo {.\u000D\u000A    cdecl, importc: \"combo_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "combo_append_row", 
+    "type": "skProc", 
+    "code": "proc combo_append_row*(combo: ptr TCombo; text: cstring): ptr TListItem {.cdecl, \u000D\u000A    importc: \"combo_append_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "combo_insert_row", 
+    "type": "skProc", 
+    "code": "proc combo_insert_row*(combo: ptr TCombo; pos: cint; text: cstring): ptr TListItem {.\u000D\u000A    cdecl, importc: \"combo_insert_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "combo_move_row", 
+    "type": "skProc", 
+    "code": "proc combo_move_row*(combo: ptr TCombo; item: ptr TListItem; row: cint) {.cdecl, \u000D\u000A    importc: \"combo_move_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "combo_remove_row", 
+    "type": "skProc", 
+    "code": "proc combo_remove_row*(combo: ptr TCombo; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"combo_remove_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "combo_get_selected", 
+    "type": "skProc", 
+    "code": "proc combo_get_selected*(obj: ptr TCombo): ptr TListItem {.cdecl, \u000D\u000A    importc: \"combo_get_selected\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "combo_get_rows", 
+    "type": "skProc", 
+    "code": "proc combo_get_rows*(obj: ptr TCombo): cint {.cdecl, importc: \"combo_get_rows\", \u000D\u000A    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "combo_select_item", 
+    "type": "skProc", 
+    "code": "proc combo_select_item*(obj: ptr TCombo; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"combo_select_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "combo_clear", 
+    "type": "skProc", 
+    "code": "proc combo_clear*(obj: ptr TCombo) {.cdecl, importc: \"combo_clear\", \u000D\u000A                                     dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TContainerWidget", 
+    "type": "skType", 
+    "code": "TContainerWidget* {.pure.} = object of TWidget"
+  }, 
+  {
+    "name": "newcontainer", 
+    "type": "skProc", 
+    "code": "proc newcontainer*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TContainerWidget {.\u000D\u000A    cdecl, importc: \"container_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "newdialog", 
+    "type": "skProc", 
+    "code": "proc newdialog*(parent: ptr TClaroObj; bounds: ptr TBounds; format: cstring; \u000D\u000A                flags: cint): ptr TClaroObj {.cdecl, \u000D\u000A    importc: \"dialog_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "dialog_set_text", 
+    "type": "skProc", 
+    "code": "proc dialog_set_text*(obj: ptr TClaroObj; text: cstring) {.cdecl, \u000D\u000A    importc: \"dialog_set_text\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "dialog_set_default_icon", 
+    "type": "skProc", 
+    "code": "proc dialog_set_default_icon*(typ: cstring; file: cstring) {.cdecl, \u000D\u000A    importc: \"dialog_set_default_icon\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "dialog_get_default_icon", 
+    "type": "skProc", 
+    "code": "proc dialog_get_default_icon*(dialog_type: cint): cstring {.cdecl, \u000D\u000A    importc: \"dialog_get_default_icon\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "dialog_warning", 
+    "type": "skProc", 
+    "code": "proc dialog_warning*(format: cstring; text: cstring): cint {.cdecl, \u000D\u000A    importc: \"dialog_warning\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "dialog_info", 
+    "type": "skProc", 
+    "code": "proc dialog_info*(format: cstring; text: cstring): cint {.cdecl, \u000D\u000A    importc: \"dialog_info\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "dialog_error", 
+    "type": "skProc", 
+    "code": "proc dialog_error*(format: cstring; text: cstring): cint {.cdecl, \u000D\u000A    importc: \"dialog_error\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "dialog_other", 
+    "type": "skProc", 
+    "code": "proc dialog_other*(format: cstring; text: cstring; default_icon: cstring): cint {.\u000D\u000A    cdecl, importc: \"dialog_other\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TFontDialog", 
+    "type": "skType", 
+    "code": "TFontDialog* {.pure.} = object of TWidget\u000D\u000A  selected*: TFont\u000D\u000A"
+  }, 
+  {
+    "name": "newFontDialog", 
+    "type": "skProc", 
+    "code": "proc newFontDialog*(parent: ptr TClaroObj; flags: cint): ptr TFontDialog {.\u000D\u000A    cdecl, importc: \"font_dialog_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "font_dialog_set_font", 
+    "type": "skProc", 
+    "code": "proc font_dialog_set_font*(obj: ptr TFontDialog; face: cstring; size: cint; \u000D\u000A                           weight: cint; slant: cint; decoration: cint) {.cdecl, \u000D\u000A    importc: \"font_dialog_set_font\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "font_dialog_get_font", 
+    "type": "skProc", 
+    "code": "proc font_dialog_get_font*(obj: ptr TFontDialog): ptr TFont {.cdecl, \u000D\u000A    importc: \"font_dialog_get_font\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TFrame", 
+    "type": "skType", 
+    "code": "TFrame* {.pure.} = object of TWidget\u000D\u000A  text*: array[0 .. 256 - 1, char]\u000D\u000A"
+  }, 
+  {
+    "name": "newframe", 
+    "type": "skProc", 
+    "code": "proc newframe*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TFrame {.\u000D\u000A    cdecl, importc: \"frame_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "newframe", 
+    "type": "skProc", 
+    "code": "proc newframe*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint; \u000D\u000A               label: cstring): ptr TFrame {.cdecl, \u000D\u000A    importc: \"frame_widget_create_with_label\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "frame_set_text", 
+    "type": "skProc", 
+    "code": "proc frame_set_text*(frame: ptr TFrame; label: cstring) {.cdecl, \u000D\u000A    importc: \"frame_set_label\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TImageWidget", 
+    "type": "skType", 
+    "code": "TImageWidget* {.pure.} = object of TWidget\u000D\u000A  src*: ptr TImage\u000D\u000A"
+  }, 
+  {
+    "name": "newimageWidget", 
+    "type": "skProc", 
+    "code": "proc newimageWidget*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TImageWidget {.\u000D\u000A    cdecl, importc: \"image_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "newimageWidget", 
+    "type": "skProc", 
+    "code": "proc newimageWidget*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint; \u000D\u000A                     image: ptr TImage): ptr TImageWidget {.cdecl, \u000D\u000A    importc: \"image_widget_create_with_image\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "image_set_image", 
+    "type": "skProc", 
+    "code": "proc image_set_image*(image: ptr TImageWidget; src: ptr TImage) {.cdecl, \u000D\u000A    importc: \"image_set_image\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TcLabelJustify", 
+    "type": "skType", 
+    "code": "TcLabelJustify* = enum \u000D\u000A  cLabelLeft = 0x00000001, cLabelRight = 0x00000002, cLabelCenter = 0x00000004, \u000D\u000A  cLabelFill = 0x00000008"
+  }, 
+  {
+    "name": "newlabel", 
+    "type": "skProc", 
+    "code": "proc newlabel*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TLabel {.\u000D\u000A    cdecl, importc: \"label_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "newLabel", 
+    "type": "skProc", 
+    "code": "proc newLabel*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint; \u000D\u000A               text: cstring): ptr TLabel {.cdecl, \u000D\u000A    importc: \"label_widget_create_with_text\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "label_set_text", 
+    "type": "skProc", 
+    "code": "proc label_set_text*(obj: ptr TLabel; text: cstring) {.cdecl, \u000D\u000A    importc: \"label_set_text\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "label_set_justify", 
+    "type": "skProc", 
+    "code": "proc label_set_justify*(obj: ptr TLabel; flags: cint) {.cdecl, \u000D\u000A    importc: \"label_set_justify\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "CLIST_TYPE_DOUBLE", 
+    "type": "skConst", 
+    "code": "CLIST_TYPE_DOUBLE* = 4"
+  }, 
+  {
+    "name": "list_widget_init_ptr", 
+    "type": "skProc", 
+    "code": "proc list_widget_init_ptr*(obj: ptr TListWidget; col_num: cint; cols: ptr cint) {.\u000D\u000A    cdecl, importc: \"list_widget_init_ptr\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_widget_init", 
+    "type": "skProc", 
+    "code": "proc list_widget_init*(obj: ptr TListWidget; col_num: cint) {.varargs, cdecl, \u000D\u000A    importc: \"list_widget_init\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_widget_row_append", 
+    "type": "skProc", 
+    "code": "proc list_widget_row_append*(list: ptr TListWidget; parent: ptr TListItem): ptr TListItem {.\u000D\u000A    varargs, cdecl, importc: \"list_widget_row_append\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_widget_row_insert", 
+    "type": "skProc", 
+    "code": "proc list_widget_row_insert*(list: ptr TListWidget; parent: ptr TListItem; \u000D\u000A                             pos: cint): ptr TListItem {.varargs, cdecl, \u000D\u000A    importc: \"list_widget_row_insert\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_widget_row_remove", 
+    "type": "skProc", 
+    "code": "proc list_widget_row_remove*(list: ptr TListWidget; item: ptr TListItem) {.\u000D\u000A    cdecl, importc: \"list_widget_row_remove\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_widget_row_move", 
+    "type": "skProc", 
+    "code": "proc list_widget_row_move*(list: ptr TListWidget; item: ptr TListItem; row: cint) {.\u000D\u000A    cdecl, importc: \"list_widget_row_move\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_widget_get_row", 
+    "type": "skProc", 
+    "code": "proc list_widget_get_row*(list: ptr TListWidget; parent: ptr TListItem; \u000D\u000A                          row: cint): ptr TListItem {.cdecl, \u000D\u000A    importc: \"list_widget_get_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_widget_edit_row", 
+    "type": "skProc", 
+    "code": "proc list_widget_edit_row*(list: ptr TListWidget; item: ptr TListItem) {.\u000D\u000A    varargs, cdecl, importc: \"list_widget_edit_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_item_set_text_color", 
+    "type": "skProc", 
+    "code": "proc list_item_set_text_color*(item: ptr TListItem; r: cfloat; g: cfloat; \u000D\u000A                               b: cfloat; a: cfloat) {.cdecl, \u000D\u000A    importc: \"list_item_set_text_color\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_item_set_text_bgcolor", 
+    "type": "skProc", 
+    "code": "proc list_item_set_text_bgcolor*(item: ptr TListItem; r: cfloat; g: cfloat; \u000D\u000A                                 b: cfloat; a: cfloat) {.cdecl, \u000D\u000A    importc: \"list_item_set_text_bgcolor\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_item_set_sel_text_color", 
+    "type": "skProc", 
+    "code": "proc list_item_set_sel_text_color*(item: ptr TListItem; r: cfloat; g: cfloat; \u000D\u000A                                   b: cfloat; a: cfloat) {.cdecl, \u000D\u000A    importc: \"list_item_set_sel_text_color\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_item_set_sel_text_bgcolor", 
+    "type": "skProc", 
+    "code": "proc list_item_set_sel_text_bgcolor*(item: ptr TListItem; r: cfloat; g: cfloat; \u000D\u000A                                     b: cfloat; a: cfloat) {.cdecl, \u000D\u000A    importc: \"list_item_set_sel_text_bgcolor\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "list_item_set_font_extra", 
+    "type": "skProc", 
+    "code": "proc list_item_set_font_extra*(item: ptr TListItem; weight: cint; slant: cint; \u000D\u000A                               decoration: cint) {.cdecl, \u000D\u000A    importc: \"list_item_set_font_extra\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TListbox", 
+    "type": "skType", 
+    "code": "TListbox* {.pure.} = object of TListWidget\u000D\u000A  selected*: ptr TListItem\u000D\u000A"
+  }, 
+  {
+    "name": "newlistbox", 
+    "type": "skProc", 
+    "code": "proc newlistbox*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TListbox {.\u000D\u000A    cdecl, importc: \"listbox_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listbox_insert_row", 
+    "type": "skProc", 
+    "code": "proc listbox_insert_row*(listbox: ptr TListbox; pos: cint; text: cstring): ptr TListItem {.\u000D\u000A    cdecl, importc: \"listbox_insert_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listbox_append_row", 
+    "type": "skProc", 
+    "code": "proc listbox_append_row*(listbox: ptr TListbox; text: cstring): ptr TListItem {.\u000D\u000A    cdecl, importc: \"listbox_append_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listbox_move_row", 
+    "type": "skProc", 
+    "code": "proc listbox_move_row*(listbox: ptr TListbox; item: ptr TListItem; row: cint) {.\u000D\u000A    cdecl, importc: \"listbox_move_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listbox_remove_row", 
+    "type": "skProc", 
+    "code": "proc listbox_remove_row*(listbox: ptr TListbox; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"listbox_remove_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listbox_get_selected", 
+    "type": "skProc", 
+    "code": "proc listbox_get_selected*(obj: ptr TListbox): ptr TListItem {.cdecl, \u000D\u000A    importc: \"listbox_get_selected\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listbox_get_rows", 
+    "type": "skProc", 
+    "code": "proc listbox_get_rows*(obj: ptr TListbox): cint {.cdecl, \u000D\u000A    importc: \"listbox_get_rows\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listbox_select_item", 
+    "type": "skProc", 
+    "code": "proc listbox_select_item*(obj: ptr TListbox; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"listbox_select_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "cListViewTypeProgress", 
+    "type": "skConst", 
+    "code": "cListViewTypeProgress* = 3"
+  }, 
+  {
+    "name": "cListViewRowCheckBoxes", 
+    "type": "skConst", 
+    "code": "cListViewRowCheckBoxes* = 1"
+  }, 
+  {
+    "name": "TListview", 
+    "type": "skType", 
+    "code": "TListview* {.pure.} = object of TListWidget\u000D\u000A  titles*: cstringArray\u000D\u000A  nativep*: pointer\u000D\u000A  selected*: ptr TListItem\u000D\u000A"
+  }, 
+  {
+    "name": "newlistview", 
+    "type": "skProc", 
+    "code": "proc newlistview*(parent: ptr TClaroObj; bounds: ptr TBounds; columns: cint; \u000D\u000A                  flags: cint): ptr TListview {.varargs, cdecl, \u000D\u000A    importc: \"listview_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listview_append_row", 
+    "type": "skProc", 
+    "code": "proc listview_append_row*(listview: ptr TListview): ptr TListItem {.varargs, \u000D\u000A    cdecl, importc: \"listview_append_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listview_insert_row", 
+    "type": "skProc", 
+    "code": "proc listview_insert_row*(listview: ptr TListview; pos: cint): ptr TListItem {.\u000D\u000A    varargs, cdecl, importc: \"listview_insert_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listview_move_row", 
+    "type": "skProc", 
+    "code": "proc listview_move_row*(listview: ptr TListview; item: ptr TListItem; row: cint) {.\u000D\u000A    cdecl, importc: \"listview_move_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listview_remove_row", 
+    "type": "skProc", 
+    "code": "proc listview_remove_row*(listview: ptr TListview; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"listview_remove_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listview_get_selected", 
+    "type": "skProc", 
+    "code": "proc listview_get_selected*(obj: ptr TListview): ptr TListItem {.cdecl, \u000D\u000A    importc: \"listview_get_selected\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listview_get_rows", 
+    "type": "skProc", 
+    "code": "proc listview_get_rows*(obj: ptr TListview): cint {.cdecl, \u000D\u000A    importc: \"listview_get_rows\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "listview_select_item", 
+    "type": "skProc", 
+    "code": "proc listview_select_item*(obj: ptr TListview; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"listview_select_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "cMenuPopupAtCursor", 
+    "type": "skConst", 
+    "code": "cMenuPopupAtCursor* = 1"
+  }, 
+  {
+    "name": "TMenu", 
+    "type": "skType", 
+    "code": "TMenu* {.pure.} = object of TListWidget"
+  }, 
+  {
+    "name": "newmenu", 
+    "type": "skProc", 
+    "code": "proc newmenu*(parent: ptr TClaroObj; flags: cint): ptr TMenu {.cdecl, \u000D\u000A    importc: \"menu_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menu_append_item", 
+    "type": "skProc", 
+    "code": "proc menu_append_item*(menu: ptr TMenu; parent: ptr TListItem; \u000D\u000A                       image: ptr TImage; title: cstring): ptr TListItem {.\u000D\u000A    cdecl, importc: \"menu_append_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menu_insert_item", 
+    "type": "skProc", 
+    "code": "proc menu_insert_item*(menu: ptr TMenu; parent: ptr TListItem; pos: cint; \u000D\u000A                       image: ptr TImage; title: cstring): ptr TListItem {.\u000D\u000A    cdecl, importc: \"menu_insert_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menu_append_separator", 
+    "type": "skProc", 
+    "code": "proc menu_append_separator*(menu: ptr TMenu; parent: ptr TListItem): ptr TListItem {.\u000D\u000A    cdecl, importc: \"menu_append_separator\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menu_insert_separator", 
+    "type": "skProc", 
+    "code": "proc menu_insert_separator*(menu: ptr TMenu; parent: ptr TListItem; pos: cint): ptr TListItem {.\u000D\u000A    cdecl, importc: \"menu_insert_separator\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menu_move_item", 
+    "type": "skProc", 
+    "code": "proc menu_move_item*(menu: ptr TMenu; item: ptr TListItem; row: cint) {.cdecl, \u000D\u000A    importc: \"menu_move_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menu_remove_item", 
+    "type": "skProc", 
+    "code": "proc menu_remove_item*(menu: ptr TMenu; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"menu_remove_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menu_item_count", 
+    "type": "skProc", 
+    "code": "proc menu_item_count*(obj: ptr TMenu; parent: ptr TListItem): cint {.cdecl, \u000D\u000A    importc: \"menu_item_count\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menu_disable_item", 
+    "type": "skProc", 
+    "code": "proc menu_disable_item*(menu: ptr TMenu; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"menu_disable_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menu_enable_item", 
+    "type": "skProc", 
+    "code": "proc menu_enable_item*(menu: ptr TMenu; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"menu_enable_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menu_popup", 
+    "type": "skProc", 
+    "code": "proc menu_popup*(menu: ptr TMenu; x: cint; y: cint; flags: cint) {.cdecl, \u000D\u000A    importc: \"menu_popup\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "cModifierCommand", 
+    "type": "skConst", 
+    "code": "cModifierCommand* = 1 shl 1"
+  }, 
+  {
+    "name": "TMenubar", 
+    "type": "skType", 
+    "code": "TMenubar* {.pure.} = object of TListWidget"
+  }, 
+  {
+    "name": "newmenubar", 
+    "type": "skProc", 
+    "code": "proc newmenubar*(parent: ptr TClaroObj; flags: cint): ptr TMenubar {.cdecl, \u000D\u000A    importc: \"menubar_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menubar_add_key_binding", 
+    "type": "skProc", 
+    "code": "proc menubar_add_key_binding*(menubar: ptr TMenubar; item: ptr TListItem; \u000D\u000A                              utf8_key: cstring; modifier: cint) {.cdecl, \u000D\u000A    importc: \"menubar_add_key_binding\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menubar_append_item", 
+    "type": "skProc", 
+    "code": "proc menubar_append_item*(menubar: ptr TMenubar; parent: ptr TListItem; \u000D\u000A                          image: ptr TImage; title: cstring): ptr TListItem {.\u000D\u000A    cdecl, importc: \"menubar_append_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menubar_insert_item", 
+    "type": "skProc", 
+    "code": "proc menubar_insert_item*(menubar: ptr TMenubar; parent: ptr TListItem; \u000D\u000A                          pos: cint; image: ptr TImage; title: cstring): ptr TListItem {.\u000D\u000A    cdecl, importc: \"menubar_insert_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menubar_append_separator", 
+    "type": "skProc", 
+    "code": "proc menubar_append_separator*(menubar: ptr TMenubar; parent: ptr TListItem): ptr TListItem {.\u000D\u000A    cdecl, importc: \"menubar_append_separator\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menubar_insert_separator", 
+    "type": "skProc", 
+    "code": "proc menubar_insert_separator*(menubar: ptr TMenubar; parent: ptr TListItem; \u000D\u000A                               pos: cint): ptr TListItem {.cdecl, \u000D\u000A    importc: \"menubar_insert_separator\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menubar_move_item", 
+    "type": "skProc", 
+    "code": "proc menubar_move_item*(menubar: ptr TMenubar; item: ptr TListItem; row: cint) {.\u000D\u000A    cdecl, importc: \"menubar_move_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menubar_remove_item", 
+    "type": "skProc", 
+    "code": "proc menubar_remove_item*(menubar: ptr TMenubar; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"menubar_remove_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menubar_item_count", 
+    "type": "skProc", 
+    "code": "proc menubar_item_count*(obj: ptr TMenubar; parent: ptr TListItem): cint {.\u000D\u000A    cdecl, importc: \"menubar_item_count\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menubar_disable_item", 
+    "type": "skProc", 
+    "code": "proc menubar_disable_item*(menubar: ptr TMenubar; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"menubar_disable_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "menubar_enable_item", 
+    "type": "skProc", 
+    "code": "proc menubar_enable_item*(menubar: ptr TMenubar; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"menubar_enable_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TcProgressStyle", 
+    "type": "skType", 
+    "code": "TcProgressStyle* = enum \u000D\u000A  cProgressLeftRight = 0x00000000, cProgressRightLeft = 0x00000001, \u000D\u000A  cProgressTopBottom = 0x00000002, cProgressBottomTop = 0x00000004"
+  }, 
+  {
+    "name": "newprogress", 
+    "type": "skProc", 
+    "code": "proc newprogress*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TProgress {.\u000D\u000A    cdecl, importc: \"progress_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "progress_set_level", 
+    "type": "skProc", 
+    "code": "proc progress_set_level*(progress: ptr TProgress; percentage: cdouble) {.cdecl, \u000D\u000A    importc: \"progress_set_level\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "progress_set_orientation", 
+    "type": "skProc", 
+    "code": "proc progress_set_orientation*(progress: ptr TProgress; flags: cint) {.cdecl, \u000D\u000A    importc: \"progress_set_orientation\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TRadioButton", 
+    "type": "skType", 
+    "code": "TRadioButton* {.pure.} = object of TWidget\u000D\u000A  text*: array[0 .. 256 - 1, char]\u000D\u000A  group*: ptr TRadioGroup\u000D\u000A"
+  }, 
+  {
+    "name": "newRadiogroup", 
+    "type": "skProc", 
+    "code": "proc newRadiogroup*(parent: ptr TClaroObj; flags: cint): ptr TRadioGroup {.\u000D\u000A    cdecl, importc: \"radiogroup_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "newradiobutton", 
+    "type": "skProc", 
+    "code": "proc newradiobutton*(parent: ptr TClaroObj; group: ptr TRadioGroup; \u000D\u000A                     bounds: ptr TBounds; label: cstring; flags: cint): ptr TRadioButton {.\u000D\u000A    cdecl, importc: \"radiobutton_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "radiobutton_set_text", 
+    "type": "skProc", 
+    "code": "proc radiobutton_set_text*(obj: ptr TRadioButton; label: cstring) {.cdecl, \u000D\u000A    importc: \"radiobutton_set_label\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "radiobutton_set_group", 
+    "type": "skProc", 
+    "code": "proc radiobutton_set_group*(rbutton: ptr TRadioButton; group: ptr TRadioGroup) {.\u000D\u000A    cdecl, importc: \"radiobutton_set_group\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "CLARO_SCROLLBAR_MAXIMUM", 
+    "type": "skConst", 
+    "code": "CLARO_SCROLLBAR_MAXIMUM* = 256"
+  }, 
+  {
+    "name": "TScrollbar", 
+    "type": "skType", 
+    "code": "TScrollbar* {.pure.} = object of TWidget\u000D\u000A  min*: cint\u000D\u000A  max*: cint\u000D\u000A  pagesize*: cint\u000D\u000A"
+  }, 
+  {
+    "name": "cScrollbarVertical", 
+    "type": "skConst", 
+    "code": "cScrollbarVertical* = 1"
+  }, 
+  {
+    "name": "newscrollbar", 
+    "type": "skProc", 
+    "code": "proc newscrollbar*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TScrollbar {.\u000D\u000A    cdecl, importc: \"scrollbar_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "scrollbar_get_sys_width", 
+    "type": "skProc", 
+    "code": "proc scrollbar_get_sys_width*(): cint {.cdecl, \u000D\u000A                                        importc: \"scrollbar_get_sys_width\", \u000D\u000A                                        dynlib: clarodll.}"
+  }, 
+  {
+    "name": "scrollbar_set_range", 
+    "type": "skProc", 
+    "code": "proc scrollbar_set_range*(w: ptr TScrollbar; min: cint; max: cint) {.cdecl, \u000D\u000A    importc: \"scrollbar_set_range\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "scrollbar_set_pos", 
+    "type": "skProc", 
+    "code": "proc scrollbar_set_pos*(w: ptr TScrollbar; pos: cint) {.cdecl, \u000D\u000A    importc: \"scrollbar_set_pos\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "scrollbar_get_pos", 
+    "type": "skProc", 
+    "code": "proc scrollbar_get_pos*(w: ptr TScrollbar): cint {.cdecl, \u000D\u000A    importc: \"scrollbar_get_pos\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "scrollbar_set_pagesize", 
+    "type": "skProc", 
+    "code": "proc scrollbar_set_pagesize*(w: ptr TScrollbar; pagesize: cint) {.cdecl, \u000D\u000A    importc: \"scrollbar_set_pagesize\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TSplitter", 
+    "type": "skType", 
+    "code": "TSplitter* {.pure.} = object of TWidget\u000D\u000A  pair*: array[0 .. 1, TSplitterChild]\u000D\u000A"
+  }, 
+  {
+    "name": "cSplitterVertical", 
+    "type": "skConst", 
+    "code": "cSplitterVertical* = 1"
+  }, 
+  {
+    "name": "newsplitter", 
+    "type": "skProc", 
+    "code": "proc newsplitter*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TSplitter {.\u000D\u000A    cdecl, importc: \"splitter_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "splitter_set_info", 
+    "type": "skProc", 
+    "code": "proc splitter_set_info*(splitter: ptr TSplitter; child: cint; flex: cint; \u000D\u000A                        size: cint) {.cdecl, importc: \"splitter_set_info\", \u000D\u000A                                      dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TStatusbar", 
+    "type": "skType", 
+    "code": "TStatusbar* {.pure.} = object of TWidget\u000D\u000A  text*: array[0 .. 256 - 1, char]\u000D\u000A"
+  }, 
+  {
+    "name": "newstatusbar", 
+    "type": "skProc", 
+    "code": "proc newstatusbar*(parent: ptr TClaroObj; flags: cint): ptr TStatusbar {.cdecl, \u000D\u000A    importc: \"statusbar_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "statusbar_set_text", 
+    "type": "skProc", 
+    "code": "proc statusbar_set_text*(obj: ptr TStatusbar; text: cstring) {.cdecl, \u000D\u000A    importc: \"statusbar_set_text\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "stock_get_image", 
+    "type": "skProc", 
+    "code": "proc stock_get_image*(stock_id: cstring): ptr TImage {.cdecl, \u000D\u000A    importc: \"stock_get_image\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "stock_add_image", 
+    "type": "skProc", 
+    "code": "proc stock_add_image*(stock_id: cstring; img: ptr TImage) {.cdecl, \u000D\u000A    importc: \"stock_add_image\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TTextArea", 
+    "type": "skType", 
+    "code": "TTextArea* {.pure.} = object of TWidget\u000D\u000A  text*: array[0 .. CLARO_TEXTAREA_MAXIMUM - 1, char]\u000D\u000A"
+  }, 
+  {
+    "name": "newtextarea", 
+    "type": "skProc", 
+    "code": "proc newtextarea*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TTextArea {.\u000D\u000A    cdecl, importc: \"textarea_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "textarea_set_text", 
+    "type": "skProc", 
+    "code": "proc textarea_set_text*(obj: ptr TTextArea; text: cstring) {.cdecl, \u000D\u000A    importc: \"textarea_set_text\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "textarea_get_text", 
+    "type": "skProc", 
+    "code": "proc textarea_get_text*(obj: ptr TTextArea): cstring {.cdecl, \u000D\u000A    importc: \"textarea_get_text\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TTextBox", 
+    "type": "skType", 
+    "code": "TTextBox* {.pure.} = object of TWidget\u000D\u000A  text*: array[0 .. CLARO_TEXTBOX_MAXIMUM - 1, char]\u000D\u000A"
+  }, 
+  {
+    "name": "cTextBoxTypePassword", 
+    "type": "skConst", 
+    "code": "cTextBoxTypePassword* = 1"
+  }, 
+  {
+    "name": "newtextbox", 
+    "type": "skProc", 
+    "code": "proc newtextbox*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TTextBox {.\u000D\u000A    cdecl, importc: \"textbox_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "textbox_set_text", 
+    "type": "skProc", 
+    "code": "proc textbox_set_text*(obj: ptr TTextBox; text: cstring) {.cdecl, \u000D\u000A    importc: \"textbox_set_text\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "textbox_get_text", 
+    "type": "skProc", 
+    "code": "proc textbox_get_text*(obj: ptr TTextBox): cstring {.cdecl, \u000D\u000A    importc: \"textbox_get_text\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "textbox_get_pos", 
+    "type": "skProc", 
+    "code": "proc textbox_get_pos*(obj: ptr TTextBox): cint {.cdecl, \u000D\u000A    importc: \"textbox_get_pos\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "textbox_set_pos", 
+    "type": "skProc", 
+    "code": "proc textbox_set_pos*(obj: ptr TTextBox; pos: cint) {.cdecl, \u000D\u000A    importc: \"textbox_set_pos\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "cToolbarAutoSizeButtons", 
+    "type": "skConst", 
+    "code": "cToolbarAutoSizeButtons* = 4"
+  }, 
+  {
+    "name": "TToolbar", 
+    "type": "skType", 
+    "code": "TToolbar* {.pure.} = object of TListWidget"
+  }, 
+  {
+    "name": "newtoolbar", 
+    "type": "skProc", 
+    "code": "proc newtoolbar*(parent: ptr TClaroObj; flags: cint): ptr TToolbar {.cdecl, \u000D\u000A    importc: \"toolbar_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "toolbar_append_icon", 
+    "type": "skProc", 
+    "code": "proc toolbar_append_icon*(toolbar: ptr TToolbar; image: ptr TImage; \u000D\u000A                          title: cstring; tooltip: cstring): ptr TListItem {.\u000D\u000A    cdecl, importc: \"toolbar_append_icon\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "toolbar_insert_icon", 
+    "type": "skProc", 
+    "code": "proc toolbar_insert_icon*(toolbar: ptr TToolbar; pos: cint; image: ptr TImage; \u000D\u000A                          title: cstring; tooltip: cstring): ptr TListItem {.\u000D\u000A    cdecl, importc: \"toolbar_insert_icon\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "toolbar_append_separator", 
+    "type": "skProc", 
+    "code": "proc toolbar_append_separator*(toolbar: ptr TToolbar): ptr TListItem {.cdecl, \u000D\u000A    importc: \"toolbar_append_separator\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "toolbar_insert_separator", 
+    "type": "skProc", 
+    "code": "proc toolbar_insert_separator*(toolbar: ptr TToolbar; pos: cint): ptr TListItem {.\u000D\u000A    cdecl, importc: \"toolbar_insert_separator\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "toolbar_set_item_menu", 
+    "type": "skProc", 
+    "code": "proc toolbar_set_item_menu*(toolbar: ptr TToolbar; item: ptr TListItem; \u000D\u000A                            menu: ptr TMenu) {.cdecl, \u000D\u000A    importc: \"toolbar_set_item_menu\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "toolbar_move_icon", 
+    "type": "skProc", 
+    "code": "proc toolbar_move_icon*(toolbar: ptr TToolbar; item: ptr TListItem; row: cint) {.\u000D\u000A    cdecl, importc: \"toolbar_move_icon\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "toolbar_remove_icon", 
+    "type": "skProc", 
+    "code": "proc toolbar_remove_icon*(toolbar: ptr TToolbar; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"toolbar_remove_icon\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "toolbar_item_count", 
+    "type": "skProc", 
+    "code": "proc toolbar_item_count*(obj: ptr TToolbar): cint {.cdecl, \u000D\u000A    importc: \"toolbar_item_count\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "TTreeview", 
+    "type": "skType", 
+    "code": "TTreeview* {.pure.} = object of TListWidget\u000D\u000A  selected*: ptr TListItem\u000D\u000A"
+  }, 
+  {
+    "name": "newtreeview", 
+    "type": "skProc", 
+    "code": "proc newtreeview*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TTreeview {.\u000D\u000A    cdecl, importc: \"treeview_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "treeview_append_row", 
+    "type": "skProc", 
+    "code": "proc treeview_append_row*(treeview: ptr TTreeview; parent: ptr TListItem; \u000D\u000A                          image: ptr TImage; title: cstring): ptr TListItem {.\u000D\u000A    cdecl, importc: \"treeview_append_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "treeview_insert_row", 
+    "type": "skProc", 
+    "code": "proc treeview_insert_row*(treeview: ptr TTreeview; parent: ptr TListItem; \u000D\u000A                          pos: cint; image: ptr TImage; title: cstring): ptr TListItem {.\u000D\u000A    cdecl, importc: \"treeview_insert_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "treeview_move_row", 
+    "type": "skProc", 
+    "code": "proc treeview_move_row*(treeview: ptr TTreeview; item: ptr TListItem; row: cint) {.\u000D\u000A    cdecl, importc: \"treeview_move_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "treeview_remove_row", 
+    "type": "skProc", 
+    "code": "proc treeview_remove_row*(treeview: ptr TTreeview; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"treeview_remove_row\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "treeview_expand", 
+    "type": "skProc", 
+    "code": "proc treeview_expand*(treeview: ptr TTreeview; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"treeview_expand\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "treeview_collapse", 
+    "type": "skProc", 
+    "code": "proc treeview_collapse*(treeview: ptr TTreeview; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"treeview_collapse\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "treeview_get_selected", 
+    "type": "skProc", 
+    "code": "proc treeview_get_selected*(obj: ptr TTreeview): ptr TListItem {.cdecl, \u000D\u000A    importc: \"treeview_get_selected\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "treeview_get_rows", 
+    "type": "skProc", 
+    "code": "proc treeview_get_rows*(obj: ptr TTreeview; parent: ptr TListItem): cint {.\u000D\u000A    cdecl, importc: \"treeview_get_rows\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "treeview_select_item", 
+    "type": "skProc", 
+    "code": "proc treeview_select_item*(obj: ptr TTreeview; item: ptr TListItem) {.cdecl, \u000D\u000A    importc: \"treeview_select_item\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "cWindowNoResizing", 
+    "type": "skConst", 
+    "code": "cWindowNoResizing* = 4"
+  }, 
+  {
+    "name": "TWindow", 
+    "type": "skType", 
+    "code": "TWindow* {.pure.} = object of TWidget\u000D\u000A  title*: array[0 .. 512 - 1, char]\u000D\u000A  icon*: ptr TImage\u000D\u000A  menubar*: ptr TWidget\u000D\u000A  workspace*: ptr TWidget\u000D\u000A  exsp_tools*: cint\u000D\u000A  exsp_status*: cint\u000D\u000A  exsp_init*: cint\u000D\u000A"
+  }, 
+  {
+    "name": "cWindowFixedSize", 
+    "type": "skConst", 
+    "code": "cWindowFixedSize* = 1"
+  }, 
+  {
+    "name": "newwindow", 
+    "type": "skProc", 
+    "code": "proc newwindow*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TWindow {.\u000D\u000A    cdecl, importc: \"window_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "window_set_title", 
+    "type": "skProc", 
+    "code": "proc window_set_title*(w: ptr TWindow; title: cstring) {.cdecl, \u000D\u000A    importc: \"window_set_title\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "window_show", 
+    "type": "skProc", 
+    "code": "proc window_show*(w: ptr TWindow) {.cdecl, importc: \"window_show\", \u000D\u000A                                    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "window_hide", 
+    "type": "skProc", 
+    "code": "proc window_hide*(w: ptr TWindow) {.cdecl, importc: \"window_hide\", \u000D\u000A                                    dynlib: clarodll.}"
+  }, 
+  {
+    "name": "window_focus", 
+    "type": "skProc", 
+    "code": "proc window_focus*(w: ptr TWindow) {.cdecl, importc: \"window_focus\", \u000D\u000A                                     dynlib: clarodll.}"
+  }, 
+  {
+    "name": "window_maximize", 
+    "type": "skProc", 
+    "code": "proc window_maximize*(w: ptr TWindow) {.cdecl, importc: \"window_maximise\", \u000D\u000A                                        dynlib: clarodll.}"
+  }, 
+  {
+    "name": "window_minimize", 
+    "type": "skProc", 
+    "code": "proc window_minimize*(w: ptr TWindow) {.cdecl, importc: \"window_minimise\", \u000D\u000A                                        dynlib: clarodll.}"
+  }, 
+  {
+    "name": "window_restore", 
+    "type": "skProc", 
+    "code": "proc window_restore*(w: ptr TWindow) {.cdecl, importc: \"window_restore\", \u000D\u000A                                       dynlib: clarodll.}"
+  }, 
+  {
+    "name": "window_set_icon", 
+    "type": "skProc", 
+    "code": "proc window_set_icon*(w: ptr TWindow; icon: ptr TImage) {.cdecl, \u000D\u000A    importc: \"window_set_icon\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "cWorkspaceTileVertically", 
+    "type": "skConst", 
+    "code": "cWorkspaceTileVertically* = 1"
+  }, 
+  {
+    "name": "TWorkspaceWindow", 
+    "type": "skType", 
+    "code": "TWorkspaceWindow* {.pure.} = object of TWidget\u000D\u000A  icon*: ptr TImage\u000D\u000A  title*: array[0 .. 512 - 1, char]\u000D\u000A  workspace*: ptr TWorkspace\u000D\u000A"
+  }, 
+  {
+    "name": "newworkspace", 
+    "type": "skProc", 
+    "code": "proc newworkspace*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TWorkspace {.\u000D\u000A    cdecl, importc: \"workspace_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "workspace_set_active", 
+    "type": "skProc", 
+    "code": "proc workspace_set_active*(workspace: ptr TWorkspace; child: ptr TClaroObj) {.\u000D\u000A    cdecl, importc: \"workspace_set_active\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "workspace_get_active", 
+    "type": "skProc", 
+    "code": "proc workspace_get_active*(workspace: ptr TWorkspace): ptr TWorkspace {.cdecl, \u000D\u000A    importc: \"workspace_get_active\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "workspace_cascade", 
+    "type": "skProc", 
+    "code": "proc workspace_cascade*(workspace: ptr TWorkspace) {.cdecl, \u000D\u000A    importc: \"workspace_cascade\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "workspace_tile", 
+    "type": "skProc", 
+    "code": "proc workspace_tile*(workspace: ptr TWorkspace; dir: cint) {.cdecl, \u000D\u000A    importc: \"workspace_tile\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "newWorkspaceWindow", 
+    "type": "skProc", 
+    "code": "proc newWorkspaceWindow*(parent: ptr TClaroObj; bounds: ptr TBounds; flags: cint): ptr TWorkspaceWindow {.\u000D\u000A    cdecl, importc: \"workspace_window_widget_create\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "workspace_window_set_title", 
+    "type": "skProc", 
+    "code": "proc workspace_window_set_title*(window: ptr TWorkspaceWindow; title: cstring) {.\u000D\u000A    cdecl, importc: \"workspace_window_set_title\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "workspace_window_show", 
+    "type": "skProc", 
+    "code": "proc workspace_window_show*(window: ptr TWorkspaceWindow) {.cdecl, \u000D\u000A    importc: \"workspace_window_show\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "workspace_window_hide", 
+    "type": "skProc", 
+    "code": "proc workspace_window_hide*(window: ptr TWorkspaceWindow) {.cdecl, \u000D\u000A    importc: \"workspace_window_hide\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "workspace_window_restore", 
+    "type": "skProc", 
+    "code": "proc workspace_window_restore*(window: ptr TWorkspaceWindow) {.cdecl, \u000D\u000A    importc: \"workspace_window_restore\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "workspace_window_minimize", 
+    "type": "skProc", 
+    "code": "proc workspace_window_minimize*(window: ptr TWorkspaceWindow) {.cdecl, \u000D\u000A    importc: \"workspace_window_minimise\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "workspace_window_maximize", 
+    "type": "skProc", 
+    "code": "proc workspace_window_maximize*(window: ptr TWorkspaceWindow) {.cdecl, \u000D\u000A    importc: \"workspace_window_maximise\", dynlib: clarodll.}"
+  }, 
+  {
+    "name": "workspace_window_set_icon", 
+    "type": "skProc", 
+    "code": "proc workspace_window_set_icon*(w: ptr TWorkspaceWindow; icon: ptr TImage) {.\u000D\u000A    cdecl, importc: \"workspace_window_set_icon\", dynlib: clarodll.}"
+  }
+]

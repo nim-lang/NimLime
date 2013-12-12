@@ -1,0 +1,207 @@
+[
+  {
+    "name": "MAX_UDPADDRESSES", 
+    "type": "skConst", 
+    "code": "MAX_UDPADDRESSES* = 4"
+  }, 
+  {
+    "name": "TGenericSocket", 
+    "type": "skType", 
+    "code": "TGenericSocket* {.final.} = object \u000D\u000A  ready*: int\u000D\u000A"
+  }, 
+  {
+    "name": "VERSION", 
+    "type": "skProc", 
+    "code": "proc VERSION*(X: var Tversion)"
+  }, 
+  {
+    "name": "Init", 
+    "type": "skProc", 
+    "code": "proc Init*(): int {.cdecl, importc: \"SDLNet_Init\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "Quit", 
+    "type": "skProc", 
+    "code": "proc Quit*() {.cdecl, importc: \"SDLNet_Quit\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "ResolveHost", 
+    "type": "skProc", 
+    "code": "proc ResolveHost*(address: var TIPaddress; host: cstring; port: Uint16): int {.\u000D\u000A    cdecl, importc: \"SDLNet_ResolveHost\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "ResolveIP", 
+    "type": "skProc", 
+    "code": "proc ResolveIP*(ip: var TIPaddress): cstring {.cdecl, \u000D\u000A    importc: \"SDLNet_ResolveIP\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "TCP_Open", 
+    "type": "skProc", 
+    "code": "proc TCP_Open*(ip: var TIPaddress): PTCPSocket {.cdecl, \u000D\u000A    importc: \"SDLNet_TCP_Open\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "TCP_Accept", 
+    "type": "skProc", 
+    "code": "proc TCP_Accept*(server: PTCPsocket): PTCPSocket {.cdecl, \u000D\u000A    importc: \"SDLNet_TCP_Accept\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "TCP_GetPeerAddress", 
+    "type": "skProc", 
+    "code": "proc TCP_GetPeerAddress*(sock: PTCPsocket): PIPAddress {.cdecl, \u000D\u000A    importc: \"SDLNet_TCP_GetPeerAddress\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "TCP_Send", 
+    "type": "skProc", 
+    "code": "proc TCP_Send*(sock: PTCPsocket; data: Pointer; length: int): int {.cdecl, \u000D\u000A    importc: \"SDLNet_TCP_Send\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "TCP_Recv", 
+    "type": "skProc", 
+    "code": "proc TCP_Recv*(sock: PTCPsocket; data: Pointer; maxlen: int): int {.cdecl, \u000D\u000A    importc: \"SDLNet_TCP_Recv\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "TCP_Close", 
+    "type": "skProc", 
+    "code": "proc TCP_Close*(sock: PTCPsocket) {.cdecl, importc: \"SDLNet_TCP_Close\", \u000D\u000A                                    dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "AllocPacket", 
+    "type": "skProc", 
+    "code": "proc AllocPacket*(size: int): PUDPpacket {.cdecl, importc: \"SDLNet_AllocPacket\", \u000D\u000A    dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "ResizePacket", 
+    "type": "skProc", 
+    "code": "proc ResizePacket*(packet: PUDPpacket; newsize: int): int {.cdecl, \u000D\u000A    importc: \"SDLNet_ResizePacket\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "FreePacket", 
+    "type": "skProc", 
+    "code": "proc FreePacket*(packet: PUDPpacket) {.cdecl, importc: \"SDLNet_FreePacket\", \u000D\u000A                                       dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "AllocPacketV", 
+    "type": "skProc", 
+    "code": "proc AllocPacketV*(howmany: int; size: int): PUDPpacket {.cdecl, \u000D\u000A    importc: \"SDLNet_AllocPacketV\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "FreePacketV", 
+    "type": "skProc", 
+    "code": "proc FreePacketV*(packetV: PUDPpacket) {.cdecl, importc: \"SDLNet_FreePacketV\", \u000D\u000A    dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "UDP_Open", 
+    "type": "skProc", 
+    "code": "proc UDP_Open*(port: Uint16): PUDPsocket {.cdecl, importc: \"SDLNet_UDP_Open\", \u000D\u000A    dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "UDP_Bind", 
+    "type": "skProc", 
+    "code": "proc UDP_Bind*(sock: PUDPsocket; channel: int; address: var TIPaddress): int {.\u000D\u000A    cdecl, importc: \"SDLNet_UDP_Bind\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "UDP_Unbind", 
+    "type": "skProc", 
+    "code": "proc UDP_Unbind*(sock: PUDPsocket; channel: int) {.cdecl, \u000D\u000A    importc: \"SDLNet_UDP_Unbind\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "UDP_GetPeerAddress", 
+    "type": "skProc", 
+    "code": "proc UDP_GetPeerAddress*(sock: PUDPsocket; channel: int): PIPAddress {.cdecl, \u000D\u000A    importc: \"SDLNet_UDP_GetPeerAddress\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "UDP_SendV", 
+    "type": "skProc", 
+    "code": "proc UDP_SendV*(sock: PUDPsocket; packets: PPUDPpacket; npackets: int): int {.\u000D\u000A    cdecl, importc: \"SDLNet_UDP_SendV\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "UDP_Send", 
+    "type": "skProc", 
+    "code": "proc UDP_Send*(sock: PUDPsocket; channel: int; packet: PUDPpacket): int {.cdecl, \u000D\u000A    importc: \"SDLNet_UDP_Send\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "UDP_RecvV", 
+    "type": "skProc", 
+    "code": "proc UDP_RecvV*(sock: PUDPsocket; packets: PPUDPpacket): int {.cdecl, \u000D\u000A    importc: \"SDLNet_UDP_RecvV\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "UDP_Recv", 
+    "type": "skProc", 
+    "code": "proc UDP_Recv*(sock: PUDPsocket; packet: PUDPpacket): int {.cdecl, \u000D\u000A    importc: \"SDLNet_UDP_Recv\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "UDP_Close", 
+    "type": "skProc", 
+    "code": "proc UDP_Close*(sock: PUDPsocket) {.cdecl, importc: \"SDLNet_UDP_Close\", \u000D\u000A                                    dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "AllocSocketSet", 
+    "type": "skProc", 
+    "code": "proc AllocSocketSet*(maxsockets: int): PSocketSet {.cdecl, \u000D\u000A    importc: \"SDLNet_AllocSocketSet\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "AddSocket", 
+    "type": "skProc", 
+    "code": "proc AddSocket*(theSet: PSocketSet; sock: PGenericSocket): int {.cdecl, \u000D\u000A    importc: \"SDLNet_AddSocket\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "TCP_AddSocket", 
+    "type": "skProc", 
+    "code": "proc TCP_AddSocket*(theSet: PSocketSet; sock: PTCPSocket): int"
+  }, 
+  {
+    "name": "UDP_AddSocket", 
+    "type": "skProc", 
+    "code": "proc UDP_AddSocket*(theSet: PSocketSet; sock: PUDPSocket): int"
+  }, 
+  {
+    "name": "DelSocket", 
+    "type": "skProc", 
+    "code": "proc DelSocket*(theSet: PSocketSet; sock: PGenericSocket): int {.cdecl, \u000D\u000A    importc: \"SDLNet_DelSocket\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "TCP_DelSocket", 
+    "type": "skProc", 
+    "code": "proc TCP_DelSocket*(theSet: PSocketSet; sock: PTCPSocket): int"
+  }, 
+  {
+    "name": "UDP_DelSocket", 
+    "type": "skProc", 
+    "code": "proc UDP_DelSocket*(theSet: PSocketSet; sock: PUDPSocket): int"
+  }, 
+  {
+    "name": "CheckSockets", 
+    "type": "skProc", 
+    "code": "proc CheckSockets*(theSet: PSocketSet; timeout: int32): int {.cdecl, \u000D\u000A    importc: \"SDLNet_CheckSockets\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "SocketReady", 
+    "type": "skProc", 
+    "code": "proc SocketReady*(sock: PGenericSocket): bool"
+  }, 
+  {
+    "name": "FreeSocketSet", 
+    "type": "skProc", 
+    "code": "proc FreeSocketSet*(theSet: PSocketSet) {.cdecl, \u000D\u000A    importc: \"SDLNet_FreeSocketSet\", dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "Write16", 
+    "type": "skProc", 
+    "code": "proc Write16*(value: Uint16; area: Pointer) {.cdecl, importc: \"SDLNet_Write16\", \u000D\u000A    dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "Write32", 
+    "type": "skProc", 
+    "code": "proc Write32*(value: Uint32; area: Pointer) {.cdecl, importc: \"SDLNet_Write32\", \u000D\u000A    dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "Read16", 
+    "type": "skProc", 
+    "code": "proc Read16*(area: Pointer): Uint16 {.cdecl, importc: \"SDLNet_Read16\", \u000D\u000A                                      dynlib: NetLibName.}"
+  }, 
+  {
+    "name": "Read32", 
+    "type": "skProc", 
+    "code": "proc Read32*(area: Pointer): Uint32 {.cdecl, importc: \"SDLNet_Read32\", \u000D\u000A                                      dynlib: NetLibName.}"
+  }
+]

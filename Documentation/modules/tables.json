@@ -1,0 +1,305 @@
+[
+  {
+    "comment": "The ``tables`` module implements an efficient hash table that is\u000D\u000A## a mapping from keys to values.\u000D\u000A##\u000D\u000A## **Note:** The data types declared here have *value semantics*: This means\u000D\u000A## that ``=`` performs a copy of the hash table."
+  }, 
+  {
+    "name": "TTable", 
+    "type": "skType", 
+    "description": "generic hash table", 
+    "code": "TTable* {.final, myShallow.}[A, B] = object \u000D\u000A  data: TKeyValuePairSeq[A, B]\u000D\u000A  counter: int\u000D\u000A"
+  }, 
+  {
+    "name": "len", 
+    "type": "skProc", 
+    "description": "returns the number of keys in <cite>t</cite>.", 
+    "code": "proc len*[A, B](t: TTable[A, B]): int"
+  }, 
+  {
+    "name": "pairs", 
+    "type": "skIterator", 
+    "description": "iterates over any (key, value) pair in the table <cite>t</cite>.", 
+    "code": "iterator pairs*[A, B](t: TTable[A, B]): tuple[key: A, val: B]"
+  }, 
+  {
+    "name": "mpairs", 
+    "type": "skIterator", 
+    "description": "iterates over any (key, value) pair in the table <cite>t</cite>. The values can be modified.", 
+    "code": "iterator mpairs*[A, B](t: var TTable[A, B]): tuple[key: A, val: var B]"
+  }, 
+  {
+    "name": "keys", 
+    "type": "skIterator", 
+    "description": "iterates over any key in the table <cite>t</cite>.", 
+    "code": "iterator keys*[A, B](t: TTable[A, B]): A"
+  }, 
+  {
+    "name": "values", 
+    "type": "skIterator", 
+    "description": "iterates over any value in the table <cite>t</cite>.", 
+    "code": "iterator values*[A, B](t: TTable[A, B]): B"
+  }, 
+  {
+    "name": "mvalues", 
+    "type": "skIterator", 
+    "description": "iterates over any value in the table <cite>t</cite>. The values can be modified.", 
+    "code": "iterator mvalues*[A, B](t: var TTable[A, B]): var B"
+  }, 
+  {
+    "name": "`[]`", 
+    "type": "skProc", 
+    "description": "retrieves the value at <tt class=\"docutils literal\"><span class=\"pre\">t[key]</span></tt>. If <cite>key</cite> is not in <cite>t</cite>, default empty value for the type <cite>B</cite> is returned and no exception is raised. One can check with <tt class=\"docutils literal\"><span class=\"pre\">hasKey</span></tt> whether the key exists.", 
+    "code": "proc `[]`*[A, B](t: TTable[A, B]; key: A): B"
+  }, 
+  {
+    "name": "mget", 
+    "type": "skProc", 
+    "description": "retrieves the value at <tt class=\"docutils literal\"><span class=\"pre\">t[key]</span></tt>. The value can be modified. If <cite>key</cite> is not in <cite>t</cite>, the <tt class=\"docutils literal\"><span class=\"pre\">EInvalidKey</span></tt> exception is raised.", 
+    "code": "proc mget*[A, B](t: var TTable[A, B]; key: A): var B"
+  }, 
+  {
+    "name": "hasKey", 
+    "type": "skProc", 
+    "description": "returns true iff <cite>key</cite> is in the table <cite>t</cite>.", 
+    "code": "proc hasKey*[A, B](t: TTable[A, B]; key: A): bool"
+  }, 
+  {
+    "name": "`[]=`", 
+    "type": "skProc", 
+    "description": "puts a (key, value)-pair into <cite>t</cite>.", 
+    "code": "proc `[] =`*[A, B](t: var TTable[A, B]; key: A; val: B)"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "puts a new (key, value)-pair into <cite>t</cite> even if <tt class=\"docutils literal\"><span class=\"pre\">t[key]</span></tt> already exists.", 
+    "code": "proc add*[A, B](t: var TTable[A, B]; key: A; val: B)"
+  }, 
+  {
+    "name": "del", 
+    "type": "skProc", 
+    "description": "deletes <cite>key</cite> from hash table <cite>t</cite>.", 
+    "code": "proc del*[A, B](t: var TTable[A, B]; key: A)"
+  }, 
+  {
+    "name": "initTable", 
+    "type": "skProc", 
+    "description": "<p>creates a new hash table that is empty.</p>\u000D\u000A<p><cite>initialSize</cite> needs to be a power of two. If you need to accept runtime values for this you could use the <tt class=\"docutils literal\"><span class=\"pre\">nextPowerOfTwo</span></tt> proc from the <a class=\"reference external\" href=\"math.html\">math</a> module.</p>\u000D\u000A", 
+    "code": "proc initTable*[A, B](initialSize = 64): TTable[A, B]"
+  }, 
+  {
+    "name": "toTable", 
+    "type": "skProc", 
+    "description": "creates a new hash table that contains the given <cite>pairs</cite>.", 
+    "code": "proc toTable*[A, B](pairs: openarray[tuple[key: A, val: B]]): TTable[A, B]"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "The <cite>$</cite> operator for hash tables.", 
+    "code": "proc `$`*[A, B](t: TTable[A, B]): string"
+  }, 
+  {
+    "name": "TOrderedTable", 
+    "type": "skType", 
+    "description": "table that remembers insertion order", 
+    "code": "TOrderedTable* {.final, myShallow.}[A, B] = object \u000D\u000A  data: TOrderedKeyValuePairSeq[A, B]\u000D\u000A  counter, first, last: int\u000D\u000A"
+  }, 
+  {
+    "name": "len", 
+    "type": "skProc", 
+    "description": "returns the number of keys in <cite>t</cite>.", 
+    "code": "proc len*[A, B](t: TOrderedTable[A, B]): int {.inline.}"
+  }, 
+  {
+    "name": "pairs", 
+    "type": "skIterator", 
+    "description": "iterates over any (key, value) pair in the table <cite>t</cite> in insertion order.", 
+    "code": "iterator pairs*[A, B](t: TOrderedTable[A, B]): tuple[key: A, val: B]"
+  }, 
+  {
+    "name": "mpairs", 
+    "type": "skIterator", 
+    "description": "iterates over any (key, value) pair in the table <cite>t</cite> in insertion order. The values can be modified.", 
+    "code": "iterator mpairs*[A, B](t: var TOrderedTable[A, B]): tuple[key: A, val: var B]"
+  }, 
+  {
+    "name": "keys", 
+    "type": "skIterator", 
+    "description": "iterates over any key in the table <cite>t</cite> in insertion order.", 
+    "code": "iterator keys*[A, B](t: TOrderedTable[A, B]): A"
+  }, 
+  {
+    "name": "values", 
+    "type": "skIterator", 
+    "description": "iterates over any value in the table <cite>t</cite> in insertion order.", 
+    "code": "iterator values*[A, B](t: TOrderedTable[A, B]): B"
+  }, 
+  {
+    "name": "mvalues", 
+    "type": "skIterator", 
+    "description": "iterates over any value in the table <cite>t</cite> in insertion order. The values can be modified.", 
+    "code": "iterator mvalues*[A, B](t: var TOrderedTable[A, B]): var B"
+  }, 
+  {
+    "name": "`[]`", 
+    "type": "skProc", 
+    "description": "retrieves the value at <tt class=\"docutils literal\"><span class=\"pre\">t[key]</span></tt>. If <cite>key</cite> is not in <cite>t</cite>, default empty value for the type <cite>B</cite> is returned and no exception is raised. One can check with <tt class=\"docutils literal\"><span class=\"pre\">hasKey</span></tt> whether the key exists.", 
+    "code": "proc `[]`*[A, B](t: TOrderedTable[A, B]; key: A): B"
+  }, 
+  {
+    "name": "mget", 
+    "type": "skProc", 
+    "description": "retrieves the value at <tt class=\"docutils literal\"><span class=\"pre\">t[key]</span></tt>. The value can be modified. If <cite>key</cite> is not in <cite>t</cite>, the <tt class=\"docutils literal\"><span class=\"pre\">EInvalidKey</span></tt> exception is raised.", 
+    "code": "proc mget*[A, B](t: var TOrderedTable[A, B]; key: A): var B"
+  }, 
+  {
+    "name": "hasKey", 
+    "type": "skProc", 
+    "description": "returns true iff <cite>key</cite> is in the table <cite>t</cite>.", 
+    "code": "proc hasKey*[A, B](t: TOrderedTable[A, B]; key: A): bool"
+  }, 
+  {
+    "name": "`[]=`", 
+    "type": "skProc", 
+    "description": "puts a (key, value)-pair into <cite>t</cite>.", 
+    "code": "proc `[] =`*[A, B](t: var TOrderedTable[A, B]; key: A; val: B)"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "puts a new (key, value)-pair into <cite>t</cite> even if <tt class=\"docutils literal\"><span class=\"pre\">t[key]</span></tt> already exists.", 
+    "code": "proc add*[A, B](t: var TOrderedTable[A, B]; key: A; val: B)"
+  }, 
+  {
+    "name": "initOrderedTable", 
+    "type": "skProc", 
+    "description": "<p>creates a new ordered hash table that is empty.</p>\u000D\u000A<p><cite>initialSize</cite> needs to be a power of two. If you need to accept runtime values for this you could use the <tt class=\"docutils literal\"><span class=\"pre\">nextPowerOfTwo</span></tt> proc from the <a class=\"reference external\" href=\"math.html\">math</a> module.</p>\u000D\u000A", 
+    "code": "proc initOrderedTable*[A, B](initialSize = 64): TOrderedTable[A, B]"
+  }, 
+  {
+    "name": "toOrderedTable", 
+    "type": "skProc", 
+    "description": "creates a new ordered hash table that contains the given <cite>pairs</cite>.", 
+    "code": "proc toOrderedTable*[A, B](pairs: openarray[tuple[key: A, val: B]]): TOrderedTable[\u000D\u000A    A, B]"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "The <cite>$</cite> operator for ordered hash tables.", 
+    "code": "proc `$`*[A, B](t: TOrderedTable[A, B]): string"
+  }, 
+  {
+    "name": "sort", 
+    "type": "skProc", 
+    "description": "sorts <cite>t</cite> according to <cite>cmp</cite>. This modifies the internal list that kept the insertion order, so insertion order is lost after this call but key lookup and insertions remain possible after <cite>sort</cite> (in contrast to the <cite>sort</cite> for count tables).", 
+    "code": "proc sort*[A, B](t: var TOrderedTable[A, B]; \u000D\u000A                 cmp: proc (x, y: tuple[key: A, val: B]): int)"
+  }, 
+  {
+    "name": "TCountTable", 
+    "type": "skType", 
+    "description": "table that counts the number of each key", 
+    "code": "TCountTable* {.final, myShallow.}[A] = object \u000D\u000A  data: seq[tuple[key: A, val: int]]\u000D\u000A  counter: int\u000D\u000A"
+  }, 
+  {
+    "name": "len", 
+    "type": "skProc", 
+    "description": "returns the number of keys in <cite>t</cite>.", 
+    "code": "proc len*[A](t: TCountTable[A]): int"
+  }, 
+  {
+    "name": "pairs", 
+    "type": "skIterator", 
+    "description": "iterates over any (key, value) pair in the table <cite>t</cite>.", 
+    "code": "iterator pairs*[A](t: TCountTable[A]): tuple[key: A, val: int]"
+  }, 
+  {
+    "name": "mpairs", 
+    "type": "skIterator", 
+    "description": "iterates over any (key, value) pair in the table <cite>t</cite>. The values can be modified.", 
+    "code": "iterator mpairs*[A](t: var TCountTable[A]): tuple[key: A, val: var int]"
+  }, 
+  {
+    "name": "keys", 
+    "type": "skIterator", 
+    "description": "iterates over any key in the table <cite>t</cite>.", 
+    "code": "iterator keys*[A](t: TCountTable[A]): A"
+  }, 
+  {
+    "name": "values", 
+    "type": "skIterator", 
+    "description": "iterates over any value in the table <cite>t</cite>.", 
+    "code": "iterator values*[A](t: TCountTable[A]): int"
+  }, 
+  {
+    "name": "mvalues", 
+    "type": "skIterator", 
+    "description": "iterates over any value in the table <cite>t</cite>. The values can be modified.", 
+    "code": "iterator mvalues*[A](t: TCountTable[A]): var int"
+  }, 
+  {
+    "name": "`[]`", 
+    "type": "skProc", 
+    "description": "retrieves the value at <tt class=\"docutils literal\"><span class=\"pre\">t[key]</span></tt>. If <cite>key</cite> is not in <cite>t</cite>, 0 is returned. One can check with <tt class=\"docutils literal\"><span class=\"pre\">hasKey</span></tt> whether the key exists.", 
+    "code": "proc `[]`*[A](t: TCountTable[A]; key: A): int"
+  }, 
+  {
+    "name": "mget", 
+    "type": "skProc", 
+    "description": "retrieves the value at <tt class=\"docutils literal\"><span class=\"pre\">t[key]</span></tt>. The value can be modified. If <cite>key</cite> is not in <cite>t</cite>, the <tt class=\"docutils literal\"><span class=\"pre\">EInvalidKey</span></tt> exception is raised.", 
+    "code": "proc mget*[A](t: var TCountTable[A]; key: A): var int"
+  }, 
+  {
+    "name": "hasKey", 
+    "type": "skProc", 
+    "description": "returns true iff <cite>key</cite> is in the table <cite>t</cite>.", 
+    "code": "proc hasKey*[A](t: TCountTable[A]; key: A): bool"
+  }, 
+  {
+    "name": "`[]=`", 
+    "type": "skProc", 
+    "description": "puts a (key, value)-pair into <cite>t</cite>. <cite>val</cite> has to be positive.", 
+    "code": "proc `[] =`*[A](t: var TCountTable[A]; key: A; val: int)"
+  }, 
+  {
+    "name": "initCountTable", 
+    "type": "skProc", 
+    "description": "<p>creates a new count table that is empty.</p>\u000D\u000A<p><cite>initialSize</cite> needs to be a power of two. If you need to accept runtime values for this you could use the <tt class=\"docutils literal\"><span class=\"pre\">nextPowerOfTwo</span></tt> proc from the <a class=\"reference external\" href=\"math.html\">math</a> module.</p>\u000D\u000A", 
+    "code": "proc initCountTable*[A](initialSize = 64): TCountTable[A]"
+  }, 
+  {
+    "name": "toCountTable", 
+    "type": "skProc", 
+    "description": "creates a new count table with every key in <cite>keys</cite> having a count of 1.", 
+    "code": "proc toCountTable*[A](keys: openArray[A]): TCountTable[A]"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "The <cite>$</cite> operator for count tables.", 
+    "code": "proc `$`*[A](t: TCountTable[A]): string"
+  }, 
+  {
+    "name": "inc", 
+    "type": "skProc", 
+    "description": "increments <cite>t[key]</cite> by <cite>val</cite>.", 
+    "code": "proc inc*[A](t: var TCountTable[A]; key: A; val = 1)"
+  }, 
+  {
+    "name": "Smallest", 
+    "type": "skProc", 
+    "description": "returns the largest (key,val)-pair. Efficiency: O(n)", 
+    "code": "proc Smallest*[A](t: TCountTable[A]): tuple[key: A, val: int]"
+  }, 
+  {
+    "name": "Largest", 
+    "type": "skProc", 
+    "description": "returns the (key,val)-pair with the largest <cite>val</cite>. Efficiency: O(n)", 
+    "code": "proc Largest*[A](t: TCountTable[A]): tuple[key: A, val: int]"
+  }, 
+  {
+    "name": "sort", 
+    "type": "skProc", 
+    "description": "sorts the count table so that the entry with the highest counter comes first. This is destructive! You must not modify <cite>t</cite> afterwards! You can use the iterators <cite>pairs</cite>,  <cite>keys</cite>, and <cite>values</cite> to iterate over <cite>t</cite> in the sorted order.", 
+    "code": "proc sort*[A](t: var TCountTable[A])"
+  }
+]

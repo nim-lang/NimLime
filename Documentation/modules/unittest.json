@@ -1,0 +1,58 @@
+[
+  {
+    "comment": ":Author: Zahary Karadjov\u000D\u000A##\u000D\u000A## This module implements the standard unit testing facilities such as\u000D\u000A## suites, fixtures and test cases as well as facilities for combinatorial \u000D\u000A## and randomzied test case generation (not yet available) \u000D\u000A## and object mocking (not yet available)\u000D\u000A##\u000D\u000A## It is loosely based on C++'s boost.test and Haskell's QuickTest"
+  }, 
+  {
+    "name": "TOutputLevel", 
+    "type": "skType", 
+    "code": "TOutputLevel* = enum \u000D\u000A  PRINT_ALL, PRINT_FAILURES, PRINT_NONE"
+  }, 
+  {
+    "name": "TestSetupIMPL", 
+    "type": "skTemplate", 
+    "code": "template TestSetupIMPL*(): stmt {.immediate, dirty.}"
+  }, 
+  {
+    "name": "TestTeardownIMPL", 
+    "type": "skTemplate", 
+    "code": "template TestTeardownIMPL*(): stmt {.immediate, dirty.}"
+  }, 
+  {
+    "name": "suite", 
+    "type": "skTemplate", 
+    "code": "template suite*(name: expr; body: stmt): stmt {.immediate, dirty.}"
+  }, 
+  {
+    "name": "test", 
+    "type": "skTemplate", 
+    "code": "template test*(name: expr; body: stmt): stmt {.immediate, dirty.}"
+  }, 
+  {
+    "name": "checkpoint", 
+    "type": "skProc", 
+    "code": "proc checkpoint*(msg: string)"
+  }, 
+  {
+    "name": "fail", 
+    "type": "skTemplate", 
+    "code": "template fail*()"
+  }, 
+  {
+    "name": "check", 
+    "type": "skMacro", 
+    "code": "macro check*(conditions: stmt): stmt {.immediate.}"
+  }, 
+  {
+    "name": "require", 
+    "type": "skTemplate", 
+    "code": "template require*(conditions: stmt): stmt {.immediate, dirty.}"
+  }, 
+  {
+    "name": "expect", 
+    "type": "skMacro", 
+    "code": "macro expect*(exceptions: varargs[expr]; body: stmt): stmt {.immediate.}"
+  }, 
+  {
+    "comment": "Reading settings"
+  }
+]

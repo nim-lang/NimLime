@@ -1,0 +1,22 @@
+[
+  {
+    "comment": "Parses & constructs URLs."
+  }, 
+  {
+    "name": "TUrl", 
+    "type": "skType", 
+    "description": "represents a <em>Uniform Resource Locator</em> (URL) any optional component is &quot;&quot; if it does not exist", 
+    "code": "TUrl* = tuple[scheme, username, password, hostname, port, path, query, anchor: string]"
+  }, 
+  {
+    "name": "parseUrl", 
+    "type": "skProc", 
+    "code": "proc parseUrl*(url: string): TUrl"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "turns the URL <cite>u</cite> into its string representation.", 
+    "code": "proc `$`*(u: TUrl): string"
+  }
+]

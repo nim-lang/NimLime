@@ -1,0 +1,52 @@
+[
+  {
+    "comment": "This module implements the SMTP client protocol as specified by RFC 5321, \u000D\u000A## this can be used to send mail to any SMTP Server.\u000D\u000A## \u000D\u000A## This module also implements the protocol used to format messages, \u000D\u000A## as specified by RFC 2822.\u000D\u000A## \u000D\u000A## Example gmail use:\u000D\u000A## \u000D\u000A## \u000D\u000A## .. code-block:: Nimrod\u000D\u000A##   var msg = createMessage(\"Hello from Nimrod's SMTP\", \u000D\u000A##                           \"Hello!.\\n Is this awesome or what?\", \u000D\u000A##                           @[\"foo@gmail.com\"])\u000D\u000A##   var smtp = connect(\"smtp.gmail.com\", 465, True, True)\u000D\u000A##   smtp.auth(\"username\", \"password\")\u000D\u000A##   smtp.sendmail(\"username@gmail.com\", @[\"foo@gmail.com\"], $msg)\u000D\u000A##   \u000D\u000A## \u000D\u000A## For SSL support this module relies on OpenSSL. If you want to \u000D\u000A## enable SSL, compile with ``-d:ssl``."
+  }, 
+  {
+    "name": "EInvalidReply", 
+    "type": "skType", 
+    "code": "EInvalidReply* = object of EIO"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "description": "Establishes a connection with a SMTP server. May fail with EInvalidReply or with a socket error.", 
+    "code": "proc connect*(address: string; port = 25; ssl = false; debug = false): TSMTP"
+  }, 
+  {
+    "name": "auth", 
+    "type": "skProc", 
+    "description": "Sends an AUTH command to the server to login as the <cite>username</cite> using <cite>password</cite>. May fail with EInvalidReply.", 
+    "code": "proc auth*(smtp: var TSMTP; username, password: string)"
+  }, 
+  {
+    "name": "sendmail", 
+    "type": "skProc", 
+    "description": "Sends <cite>msg</cite> from <cite>fromaddr</cite> to <cite>toaddr</cite>. Messages may be formed using <tt class=\"docutils literal\"><span class=\"pre\">createMessage</span></tt> by converting the TMessage into a string.", 
+    "code": "proc sendmail*(smtp: var TSMTP; fromaddr: string; toaddrs: seq[string]; \u000D\u000A               msg: string)"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "Disconnects from the SMTP server and closes the socket.", 
+    "code": "proc close*(smtp: TSMTP)"
+  }, 
+  {
+    "name": "createMessage", 
+    "type": "skProc", 
+    "description": "Creates a new MIME compliant message.", 
+    "code": "proc createMessage*(mSubject, mBody: string; mTo, mCc: seq[string]; \u000D\u000A                    otherHeaders: openarray[tuple[name, value: string]]): TMessage"
+  }, 
+  {
+    "name": "createMessage", 
+    "type": "skProc", 
+    "description": "Alternate version of the above.", 
+    "code": "proc createMessage*(mSubject, mBody: string; mTo, mCc: seq[string] = @ []): TMessage"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "stringify for <tt class=\"docutils literal\"><span class=\"pre\">TMessage</span></tt>.", 
+    "code": "proc `$`*(msg: TMessage): string"
+  }
+]

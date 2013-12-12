@@ -1,0 +1,133 @@
+[
+  {
+    "name": "TErrorFunc", 
+    "type": "skType", 
+    "code": "TErrorFunc* = proc (opaque: pointer; msg: cstring) {.cdecl.}"
+  }, 
+  {
+    "name": "openCCState", 
+    "type": "skProc", 
+    "description": "create a new TCC compilation context", 
+    "code": "proc openCCState*(): PccState {.importc: \"tcc_new\", cdecl.}"
+  }, 
+  {
+    "name": "closeCCState", 
+    "type": "skProc", 
+    "description": "free a TCC compilation context", 
+    "code": "proc closeCCState*(s: PccState) {.importc: \"tcc_delete\", cdecl.}"
+  }, 
+  {
+    "name": "enableDebug", 
+    "type": "skProc", 
+    "description": "add debug information in the generated code", 
+    "code": "proc enableDebug*(s: PccState) {.importc: \"tcc_enable_debug\", cdecl.}"
+  }, 
+  {
+    "name": "setErrorFunc", 
+    "type": "skProc", 
+    "description": "set error/warning display callback", 
+    "code": "proc setErrorFunc*(s: PccState; errorOpaque: pointer; errorFun: TErrorFunc) {.\u000D\u000A    cdecl, importc: \"tcc_set_error_func\".}"
+  }, 
+  {
+    "name": "setWarning", 
+    "type": "skProc", 
+    "description": "set/reset a warning", 
+    "code": "proc setWarning*(s: PccState; warningName: cstring; value: int) {.cdecl, \u000D\u000A    importc: \"tcc_set_warning\".}"
+  }, 
+  {
+    "name": "addIncludePath", 
+    "type": "skProc", 
+    "description": "add include path", 
+    "code": "proc addIncludePath*(s: PccState; pathname: cstring) {.cdecl, \u000D\u000A    importc: \"tcc_add_include_path\".}"
+  }, 
+  {
+    "name": "addSysincludePath", 
+    "type": "skProc", 
+    "description": "add in system include path", 
+    "code": "proc addSysincludePath*(s: PccState; pathname: cstring) {.cdecl, \u000D\u000A    importc: \"tcc_add_sysinclude_path\".}"
+  }, 
+  {
+    "name": "defineSymbol", 
+    "type": "skProc", 
+    "description": "define preprocessor symbol 'sym'. Can put optional value", 
+    "code": "proc defineSymbol*(s: PccState; sym, value: cstring) {.cdecl, \u000D\u000A    importc: \"tcc_define_symbol\".}"
+  }, 
+  {
+    "name": "undefineSymbol", 
+    "type": "skProc", 
+    "description": "undefine preprocess symbol 'sym'", 
+    "code": "proc undefineSymbol*(s: PccState; sym: cstring) {.cdecl, \u000D\u000A    importc: \"tcc_undefine_symbol\".}"
+  }, 
+  {
+    "name": "addFile", 
+    "type": "skProc", 
+    "description": "add a file (either a C file, dll, an object, a library or an ld script). Return -1 if error.", 
+    "code": "proc addFile*(s: PccState; filename: cstring): cint {.cdecl, \u000D\u000A    importc: \"tcc_add_file\".}"
+  }, 
+  {
+    "name": "compileString", 
+    "type": "skProc", 
+    "description": "compile a string containing a C source. Return non zero if error.", 
+    "code": "proc compileString*(s: PccState; buf: cstring): cint {.cdecl, \u000D\u000A    importc: \"tcc_compile_string\".}"
+  }, 
+  {
+    "name": "OutputFormatCoff", 
+    "type": "skConst", 
+    "description": "COFF", 
+    "code": "OutputFormatCoff*: cint = 2"
+  }, 
+  {
+    "name": "setOutputType", 
+    "type": "skProc", 
+    "description": "set output type. MUST BE CALLED before any compilation", 
+    "code": "proc setOutputType*(s: PCCState; outputType: cint): cint {.cdecl, \u000D\u000A    importc: \"tcc_set_output_type\".}"
+  }, 
+  {
+    "name": "addLibraryPath", 
+    "type": "skProc", 
+    "description": "equivalent to -Lpath option", 
+    "code": "proc addLibraryPath*(s: PccState; pathname: cstring): cint {.cdecl, \u000D\u000A    importc: \"tcc_add_library_path\".}"
+  }, 
+  {
+    "name": "addLibrary", 
+    "type": "skProc", 
+    "description": "the library name is the same as the argument of the '-l' option", 
+    "code": "proc addLibrary*(s: PCCState; libraryname: cstring): cint {.cdecl, \u000D\u000A    importc: \"tcc_add_library\".}"
+  }, 
+  {
+    "name": "addSymbol", 
+    "type": "skProc", 
+    "description": "add a symbol to the compiled program", 
+    "code": "proc addSymbol*(s: PccState; name: cstring; val: pointer): cint {.cdecl, \u000D\u000A    importc: \"tcc_add_symbol\".}"
+  }, 
+  {
+    "name": "outputFile", 
+    "type": "skProc", 
+    "description": "output an executable, library or object file. DO NOT call tcc_relocate() before.", 
+    "code": "proc outputFile*(s: PccState; filename: cstring): cint {.cdecl, \u000D\u000A    importc: \"tcc_output_file\".}"
+  }, 
+  {
+    "name": "run", 
+    "type": "skProc", 
+    "description": "link and run main() function and return its value. DO NOT call tcc_relocate() before.", 
+    "code": "proc run*(s: PccState; argc: cint; argv: cstringArray): cint {.cdecl, \u000D\u000A    importc: \"tcc_run\".}"
+  }, 
+  {
+    "name": "relocate", 
+    "type": "skProc", 
+    "description": "copy code into memory passed in by the caller and do all relocations (needed before using tcc_get_symbol()). returns -1 on error and required size if ptr is NULL", 
+    "code": "proc relocate*(s: PccState; p: pointer): cint {.cdecl, importc: \"tcc_relocate\".}"
+  }, 
+  {
+    "name": "getSymbol", 
+    "type": "skProc", 
+    "description": "return symbol value or NULL if not found", 
+    "code": "proc getSymbol*(s: PccState; name: cstring): pointer {.cdecl, \u000D\u000A    importc: \"tcc_get_symbol\".}"
+  }, 
+  {
+    "name": "setLibPath", 
+    "type": "skProc", 
+    "description": "set CONFIG_TCCDIR at runtime", 
+    "code": "proc setLibPath*(s: PccState; path: cstring) {.cdecl, \u000D\u000A    importc: \"tcc_set_lib_path\".}"
+  }
+]

@@ -1,0 +1,21 @@
+[
+  {
+    "comment": "Profiling support for Nimrod. This is an embedded profiler that requires\u000D\u000A## ``--profiler:on``. You only need to import this module to get a profiling\u000D\u000A## report at program exit."
+  }, 
+  {
+    "name": "setSamplingFrequency", 
+    "type": "skProc", 
+    "description": "set this to change the sampling frequency. Default value is 5ms. Set it to 0 to disable time based profiling; it uses an imprecise instruction count measure instead then.", 
+    "code": "proc setSamplingFrequency*(intervalInUs: int)"
+  }, 
+  {
+    "name": "disableProfiling", 
+    "type": "skProc", 
+    "code": "proc disableProfiling*()"
+  }, 
+  {
+    "name": "enableProfiling", 
+    "type": "skProc", 
+    "code": "proc enableProfiling*()"
+  }
+]

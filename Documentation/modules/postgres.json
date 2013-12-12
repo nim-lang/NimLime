@@ -1,0 +1,512 @@
+[
+  {
+    "name": "Oid", 
+    "type": "skType", 
+    "code": "Oid* = int32"
+  }, 
+  {
+    "name": "CMDSTATUS_LEN", 
+    "type": "skConst", 
+    "code": "CMDSTATUS_LEN* = 40"
+  }, 
+  {
+    "name": "PQArgBlock", 
+    "type": "skType", 
+    "code": "PQArgBlock* {.pure, final.} = object \u000D\u000A  length*: int32\u000D\u000A  isint*: int32\u000D\u000A  p*: pointer\u000D\u000A"
+  }, 
+  {
+    "name": "PQconnectStart", 
+    "type": "skProc", 
+    "code": "proc PQconnectStart*(conninfo: cstring): PPGconn {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQconnectStart\".}"
+  }, 
+  {
+    "name": "PQconnectPoll", 
+    "type": "skProc", 
+    "code": "proc PQconnectPoll*(conn: PPGconn): PostgresPollingStatusType {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQconnectPoll\".}"
+  }, 
+  {
+    "name": "PQconnectdb", 
+    "type": "skProc", 
+    "code": "proc PQconnectdb*(conninfo: cstring): PPGconn {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQconnectdb\".}"
+  }, 
+  {
+    "name": "PQsetdbLogin", 
+    "type": "skProc", 
+    "code": "proc PQsetdbLogin*(pghost: cstring; pgport: cstring; pgoptions: cstring; \u000D\u000A                   pgtty: cstring; dbName: cstring; login: cstring; pwd: cstring): PPGconn {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQsetdbLogin\".}"
+  }, 
+  {
+    "name": "PQsetdb", 
+    "type": "skProc", 
+    "code": "proc PQsetdb*(M_PGHOST, M_PGPORT, M_PGOPT, M_PGTTY, M_DBNAME: cstring): ppgconn"
+  }, 
+  {
+    "name": "PQfinish", 
+    "type": "skProc", 
+    "code": "proc PQfinish*(conn: PPGconn) {.cdecl, dynlib: dllName, importc: \"PQfinish\".}"
+  }, 
+  {
+    "name": "PQconndefaults", 
+    "type": "skProc", 
+    "code": "proc PQconndefaults*(): PPQconninfoOption {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQconndefaults\".}"
+  }, 
+  {
+    "name": "PQconninfoFree", 
+    "type": "skProc", 
+    "code": "proc PQconninfoFree*(connOptions: PPQconninfoOption) {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQconninfoFree\".}"
+  }, 
+  {
+    "name": "PQresetStart", 
+    "type": "skProc", 
+    "code": "proc PQresetStart*(conn: PPGconn): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQresetStart\".}"
+  }, 
+  {
+    "name": "PQresetPoll", 
+    "type": "skProc", 
+    "code": "proc PQresetPoll*(conn: PPGconn): PostgresPollingStatusType {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQresetPoll\".}"
+  }, 
+  {
+    "name": "PQreset", 
+    "type": "skProc", 
+    "code": "proc PQreset*(conn: PPGconn) {.cdecl, dynlib: dllName, importc: \"PQreset\".}"
+  }, 
+  {
+    "name": "PQrequestCancel", 
+    "type": "skProc", 
+    "code": "proc PQrequestCancel*(conn: PPGconn): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQrequestCancel\".}"
+  }, 
+  {
+    "name": "PQdb", 
+    "type": "skProc", 
+    "code": "proc PQdb*(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: \"PQdb\".}"
+  }, 
+  {
+    "name": "PQuser", 
+    "type": "skProc", 
+    "code": "proc PQuser*(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: \"PQuser\".}"
+  }, 
+  {
+    "name": "PQpass", 
+    "type": "skProc", 
+    "code": "proc PQpass*(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: \"PQpass\".}"
+  }, 
+  {
+    "name": "PQhost", 
+    "type": "skProc", 
+    "code": "proc PQhost*(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: \"PQhost\".}"
+  }, 
+  {
+    "name": "PQport", 
+    "type": "skProc", 
+    "code": "proc PQport*(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: \"PQport\".}"
+  }, 
+  {
+    "name": "PQtty", 
+    "type": "skProc", 
+    "code": "proc PQtty*(conn: PPGconn): cstring {.cdecl, dynlib: dllName, importc: \"PQtty\".}"
+  }, 
+  {
+    "name": "PQoptions", 
+    "type": "skProc", 
+    "code": "proc PQoptions*(conn: PPGconn): cstring {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQoptions\".}"
+  }, 
+  {
+    "name": "PQstatus", 
+    "type": "skProc", 
+    "code": "proc PQstatus*(conn: PPGconn): TConnStatusType {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQstatus\".}"
+  }, 
+  {
+    "name": "PQtransactionStatus", 
+    "type": "skProc", 
+    "code": "proc PQtransactionStatus*(conn: PPGconn): PGTransactionStatusType {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQtransactionStatus\".}"
+  }, 
+  {
+    "name": "PQparameterStatus", 
+    "type": "skProc", 
+    "code": "proc PQparameterStatus*(conn: PPGconn; paramName: cstring): cstring {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQparameterStatus\".}"
+  }, 
+  {
+    "name": "PQprotocolVersion", 
+    "type": "skProc", 
+    "code": "proc PQprotocolVersion*(conn: PPGconn): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQprotocolVersion\".}"
+  }, 
+  {
+    "name": "PQerrorMessage", 
+    "type": "skProc", 
+    "code": "proc PQerrorMessage*(conn: PPGconn): cstring {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQerrorMessage\".}"
+  }, 
+  {
+    "name": "PQsocket", 
+    "type": "skProc", 
+    "code": "proc PQsocket*(conn: PPGconn): int32 {.cdecl, dynlib: dllName, \u000D\u000A                                       importc: \"PQsocket\".}"
+  }, 
+  {
+    "name": "PQbackendPID", 
+    "type": "skProc", 
+    "code": "proc PQbackendPID*(conn: PPGconn): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQbackendPID\".}"
+  }, 
+  {
+    "name": "PQclientEncoding", 
+    "type": "skProc", 
+    "code": "proc PQclientEncoding*(conn: PPGconn): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQclientEncoding\".}"
+  }, 
+  {
+    "name": "PQsetClientEncoding", 
+    "type": "skProc", 
+    "code": "proc PQsetClientEncoding*(conn: PPGconn; encoding: cstring): int32 {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQsetClientEncoding\".}"
+  }, 
+  {
+    "name": "PQgetssl", 
+    "type": "skProc", 
+    "code": "proc PQgetssl*(conn: PPGconn): PSSL {.cdecl, dynlib: dllName, \u000D\u000A                                      importc: \"PQgetssl\".}"
+  }, 
+  {
+    "name": "PQsetErrorVerbosity", 
+    "type": "skProc", 
+    "code": "proc PQsetErrorVerbosity*(conn: PPGconn; verbosity: PGVerbosity): PGVerbosity {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQsetErrorVerbosity\".}"
+  }, 
+  {
+    "name": "PQtrace", 
+    "type": "skProc", 
+    "code": "proc PQtrace*(conn: PPGconn; debug_port: TFile) {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQtrace\".}"
+  }, 
+  {
+    "name": "PQuntrace", 
+    "type": "skProc", 
+    "code": "proc PQuntrace*(conn: PPGconn) {.cdecl, dynlib: dllName, importc: \"PQuntrace\".}"
+  }, 
+  {
+    "name": "PQsetNoticeReceiver", 
+    "type": "skProc", 
+    "code": "proc PQsetNoticeReceiver*(conn: PPGconn; theProc: PQnoticeReceiver; arg: pointer): PQnoticeReceiver {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQsetNoticeReceiver\".}"
+  }, 
+  {
+    "name": "PQsetNoticeProcessor", 
+    "type": "skProc", 
+    "code": "proc PQsetNoticeProcessor*(conn: PPGconn; theProc: PQnoticeProcessor; \u000D\u000A                           arg: pointer): PQnoticeProcessor {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQsetNoticeProcessor\".}"
+  }, 
+  {
+    "name": "PQexec", 
+    "type": "skProc", 
+    "code": "proc PQexec*(conn: PPGconn; query: cstring): PPGresult {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQexec\".}"
+  }, 
+  {
+    "name": "PQexecParams", 
+    "type": "skProc", 
+    "code": "proc PQexecParams*(conn: PPGconn; command: cstring; nParams: int32; \u000D\u000A                   paramTypes: POid; paramValues: cstringArray; \u000D\u000A                   paramLengths, paramFormats: ptr int32; resultFormat: int32): PPGresult {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQexecParams\".}"
+  }, 
+  {
+    "name": "PQexecPrepared", 
+    "type": "skProc", 
+    "code": "proc PQexecPrepared*(conn: PPGconn; stmtName: cstring; nParams: int32; \u000D\u000A                     paramValues: cstringArray; \u000D\u000A                     paramLengths, paramFormats: ptr int32; resultFormat: int32): PPGresult {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQexecPrepared\".}"
+  }, 
+  {
+    "name": "PQsendQuery", 
+    "type": "skProc", 
+    "code": "proc PQsendQuery*(conn: PPGconn; query: cstring): int32 {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQsendQuery\".}"
+  }, 
+  {
+    "name": "PQsendQueryParams", 
+    "type": "skProc", 
+    "code": "proc PQsendQueryParams*(conn: PPGconn; command: cstring; nParams: int32; \u000D\u000A                        paramTypes: POid; paramValues: cstringArray; \u000D\u000A                        paramLengths, paramFormats: ptr int32; \u000D\u000A                        resultFormat: int32): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQsendQueryParams\".}"
+  }, 
+  {
+    "name": "PQsendQueryPrepared", 
+    "type": "skProc", 
+    "code": "proc PQsendQueryPrepared*(conn: PPGconn; stmtName: cstring; nParams: int32; \u000D\u000A                          paramValues: cstringArray; \u000D\u000A                          paramLengths, paramFormats: ptr int32; \u000D\u000A                          resultFormat: int32): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQsendQueryPrepared\".}"
+  }, 
+  {
+    "name": "PQgetResult", 
+    "type": "skProc", 
+    "code": "proc PQgetResult*(conn: PPGconn): PPGresult {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQgetResult\".}"
+  }, 
+  {
+    "name": "PQisBusy", 
+    "type": "skProc", 
+    "code": "proc PQisBusy*(conn: PPGconn): int32 {.cdecl, dynlib: dllName, \u000D\u000A                                       importc: \"PQisBusy\".}"
+  }, 
+  {
+    "name": "PQconsumeInput", 
+    "type": "skProc", 
+    "code": "proc PQconsumeInput*(conn: PPGconn): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQconsumeInput\".}"
+  }, 
+  {
+    "name": "PQnotifies", 
+    "type": "skProc", 
+    "code": "proc PQnotifies*(conn: PPGconn): PPGnotify {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQnotifies\".}"
+  }, 
+  {
+    "name": "PQputCopyData", 
+    "type": "skProc", 
+    "code": "proc PQputCopyData*(conn: PPGconn; buffer: cstring; nbytes: int32): int32 {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQputCopyData\".}"
+  }, 
+  {
+    "name": "PQputCopyEnd", 
+    "type": "skProc", 
+    "code": "proc PQputCopyEnd*(conn: PPGconn; errormsg: cstring): int32 {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQputCopyEnd\".}"
+  }, 
+  {
+    "name": "PQgetCopyData", 
+    "type": "skProc", 
+    "code": "proc PQgetCopyData*(conn: PPGconn; buffer: cstringArray; async: int32): int32 {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQgetCopyData\".}"
+  }, 
+  {
+    "name": "PQgetline", 
+    "type": "skProc", 
+    "code": "proc PQgetline*(conn: PPGconn; str: cstring; len: int32): int32 {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQgetline\".}"
+  }, 
+  {
+    "name": "PQputline", 
+    "type": "skProc", 
+    "code": "proc PQputline*(conn: PPGconn; str: cstring): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQputline\".}"
+  }, 
+  {
+    "name": "PQgetlineAsync", 
+    "type": "skProc", 
+    "code": "proc PQgetlineAsync*(conn: PPGconn; buffer: cstring; bufsize: int32): int32 {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQgetlineAsync\".}"
+  }, 
+  {
+    "name": "PQputnbytes", 
+    "type": "skProc", 
+    "code": "proc PQputnbytes*(conn: PPGconn; buffer: cstring; nbytes: int32): int32 {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQputnbytes\".}"
+  }, 
+  {
+    "name": "PQendcopy", 
+    "type": "skProc", 
+    "code": "proc PQendcopy*(conn: PPGconn): int32 {.cdecl, dynlib: dllName, \u000D\u000A                                        importc: \"PQendcopy\".}"
+  }, 
+  {
+    "name": "PQsetnonblocking", 
+    "type": "skProc", 
+    "code": "proc PQsetnonblocking*(conn: PPGconn; arg: int32): int32 {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQsetnonblocking\".}"
+  }, 
+  {
+    "name": "PQisnonblocking", 
+    "type": "skProc", 
+    "code": "proc PQisnonblocking*(conn: PPGconn): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQisnonblocking\".}"
+  }, 
+  {
+    "name": "PQflush", 
+    "type": "skProc", 
+    "code": "proc PQflush*(conn: PPGconn): int32 {.cdecl, dynlib: dllName, importc: \"PQflush\".}"
+  }, 
+  {
+    "name": "PQfn", 
+    "type": "skProc", 
+    "code": "proc PQfn*(conn: PPGconn; fnid: int32; result_buf, result_len: ptr int32; \u000D\u000A           result_is_int: int32; args: PPQArgBlock; nargs: int32): PPGresult {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQfn\".}"
+  }, 
+  {
+    "name": "PQresultStatus", 
+    "type": "skProc", 
+    "code": "proc PQresultStatus*(res: PPGresult): TExecStatusType {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQresultStatus\".}"
+  }, 
+  {
+    "name": "PQresStatus", 
+    "type": "skProc", 
+    "code": "proc PQresStatus*(status: TExecStatusType): cstring {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQresStatus\".}"
+  }, 
+  {
+    "name": "PQresultErrorMessage", 
+    "type": "skProc", 
+    "code": "proc PQresultErrorMessage*(res: PPGresult): cstring {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQresultErrorMessage\".}"
+  }, 
+  {
+    "name": "PQresultErrorField", 
+    "type": "skProc", 
+    "code": "proc PQresultErrorField*(res: PPGresult; fieldcode: int32): cstring {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQresultErrorField\".}"
+  }, 
+  {
+    "name": "PQntuples", 
+    "type": "skProc", 
+    "code": "proc PQntuples*(res: PPGresult): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQntuples\".}"
+  }, 
+  {
+    "name": "PQnfields", 
+    "type": "skProc", 
+    "code": "proc PQnfields*(res: PPGresult): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQnfields\".}"
+  }, 
+  {
+    "name": "PQbinaryTuples", 
+    "type": "skProc", 
+    "code": "proc PQbinaryTuples*(res: PPGresult): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQbinaryTuples\".}"
+  }, 
+  {
+    "name": "PQfname", 
+    "type": "skProc", 
+    "code": "proc PQfname*(res: PPGresult; field_num: int32): cstring {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQfname\".}"
+  }, 
+  {
+    "name": "PQfnumber", 
+    "type": "skProc", 
+    "code": "proc PQfnumber*(res: PPGresult; field_name: cstring): int32 {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQfnumber\".}"
+  }, 
+  {
+    "name": "PQftable", 
+    "type": "skProc", 
+    "code": "proc PQftable*(res: PPGresult; field_num: int32): Oid {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQftable\".}"
+  }, 
+  {
+    "name": "PQftablecol", 
+    "type": "skProc", 
+    "code": "proc PQftablecol*(res: PPGresult; field_num: int32): int32 {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQftablecol\".}"
+  }, 
+  {
+    "name": "PQfformat", 
+    "type": "skProc", 
+    "code": "proc PQfformat*(res: PPGresult; field_num: int32): int32 {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQfformat\".}"
+  }, 
+  {
+    "name": "PQftype", 
+    "type": "skProc", 
+    "code": "proc PQftype*(res: PPGresult; field_num: int32): Oid {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQftype\".}"
+  }, 
+  {
+    "name": "PQfsize", 
+    "type": "skProc", 
+    "code": "proc PQfsize*(res: PPGresult; field_num: int32): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQfsize\".}"
+  }, 
+  {
+    "name": "PQfmod", 
+    "type": "skProc", 
+    "code": "proc PQfmod*(res: PPGresult; field_num: int32): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQfmod\".}"
+  }, 
+  {
+    "name": "PQcmdStatus", 
+    "type": "skProc", 
+    "code": "proc PQcmdStatus*(res: PPGresult): cstring {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQcmdStatus\".}"
+  }, 
+  {
+    "name": "PQoidStatus", 
+    "type": "skProc", 
+    "code": "proc PQoidStatus*(res: PPGresult): cstring {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQoidStatus\".}"
+  }, 
+  {
+    "name": "PQoidValue", 
+    "type": "skProc", 
+    "code": "proc PQoidValue*(res: PPGresult): Oid {.cdecl, dynlib: dllName, \u000D\u000A                                        importc: \"PQoidValue\".}"
+  }, 
+  {
+    "name": "PQcmdTuples", 
+    "type": "skProc", 
+    "code": "proc PQcmdTuples*(res: PPGresult): cstring {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQcmdTuples\".}"
+  }, 
+  {
+    "name": "PQgetvalue", 
+    "type": "skProc", 
+    "code": "proc PQgetvalue*(res: PPGresult; tup_num: int32; field_num: int32): cstring {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQgetvalue\".}"
+  }, 
+  {
+    "name": "PQgetlength", 
+    "type": "skProc", 
+    "code": "proc PQgetlength*(res: PPGresult; tup_num: int32; field_num: int32): int32 {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQgetlength\".}"
+  }, 
+  {
+    "name": "PQgetisnull", 
+    "type": "skProc", 
+    "code": "proc PQgetisnull*(res: PPGresult; tup_num: int32; field_num: int32): int32 {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQgetisnull\".}"
+  }, 
+  {
+    "name": "PQclear", 
+    "type": "skProc", 
+    "code": "proc PQclear*(res: PPGresult) {.cdecl, dynlib: dllName, importc: \"PQclear\".}"
+  }, 
+  {
+    "name": "PQfreemem", 
+    "type": "skProc", 
+    "code": "proc PQfreemem*(p: pointer) {.cdecl, dynlib: dllName, importc: \"PQfreemem\".}"
+  }, 
+  {
+    "name": "PQmakeEmptyPGresult", 
+    "type": "skProc", 
+    "code": "proc PQmakeEmptyPGresult*(conn: PPGconn; status: TExecStatusType): PPGresult {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQmakeEmptyPGresult\".}"
+  }, 
+  {
+    "name": "PQescapeString", 
+    "type": "skProc", 
+    "code": "proc PQescapeString*(till, `from`: cstring; len: int): int {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQescapeString\".}"
+  }, 
+  {
+    "name": "PQescapeBytea", 
+    "type": "skProc", 
+    "code": "proc PQescapeBytea*(bintext: cstring; binlen: int; bytealen: var int): cstring {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQescapeBytea\".}"
+  }, 
+  {
+    "name": "PQunescapeBytea", 
+    "type": "skProc", 
+    "code": "proc PQunescapeBytea*(strtext: cstring; retbuflen: var int): cstring {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQunescapeBytea\".}"
+  }, 
+  {
+    "name": "PQprint", 
+    "type": "skProc", 
+    "code": "proc PQprint*(fout: TFile; res: PPGresult; ps: PPQprintOpt) {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"PQprint\".}"
+  }, 
+  {
+    "name": "PQdisplayTuples", 
+    "type": "skProc", 
+    "code": "proc PQdisplayTuples*(res: PPGresult; fp: TFile; fillAlign: int32; \u000D\u000A                      fieldSep: cstring; printHeader: int32; quiet: int32) {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"PQdisplayTuples\".}"
+  }, 
+  {
+    "name": "PQprintTuples", 
+    "type": "skProc", 
+    "code": "proc PQprintTuples*(res: PPGresult; fout: TFile; printAttName: int32; \u000D\u000A                    terseOutput: int32; width: int32) {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQprintTuples\".}"
+  }, 
+  {
+    "name": "lo_open", 
+    "type": "skProc", 
+    "code": "proc lo_open*(conn: PPGconn; lobjId: Oid; mode: int32): int32 {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"lo_open\".}"
+  }, 
+  {
+    "name": "lo_close", 
+    "type": "skProc", 
+    "code": "proc lo_close*(conn: PPGconn; fd: int32): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"lo_close\".}"
+  }, 
+  {
+    "name": "lo_read", 
+    "type": "skProc", 
+    "code": "proc lo_read*(conn: PPGconn; fd: int32; buf: cstring; length: int): int32 {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"lo_read\".}"
+  }, 
+  {
+    "name": "lo_write", 
+    "type": "skProc", 
+    "code": "proc lo_write*(conn: PPGconn; fd: int32; buf: cstring; length: int): int32 {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"lo_write\".}"
+  }, 
+  {
+    "name": "lo_lseek", 
+    "type": "skProc", 
+    "code": "proc lo_lseek*(conn: PPGconn; fd: int32; offset: int32; whence: int32): int32 {.\u000D\u000A    cdecl, dynlib: dllName, importc: \"lo_lseek\".}"
+  }, 
+  {
+    "name": "lo_creat", 
+    "type": "skProc", 
+    "code": "proc lo_creat*(conn: PPGconn; mode: int32): Oid {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"lo_creat\".}"
+  }, 
+  {
+    "name": "lo_tell", 
+    "type": "skProc", 
+    "code": "proc lo_tell*(conn: PPGconn; fd: int32): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"lo_tell\".}"
+  }, 
+  {
+    "name": "lo_unlink", 
+    "type": "skProc", 
+    "code": "proc lo_unlink*(conn: PPGconn; lobjId: Oid): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"lo_unlink\".}"
+  }, 
+  {
+    "name": "lo_import", 
+    "type": "skProc", 
+    "code": "proc lo_import*(conn: PPGconn; filename: cstring): Oid {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"lo_import\".}"
+  }, 
+  {
+    "name": "lo_export", 
+    "type": "skProc", 
+    "code": "proc lo_export*(conn: PPGconn; lobjId: Oid; filename: cstring): int32 {.cdecl, \u000D\u000A    dynlib: dllName, importc: \"lo_export\".}"
+  }, 
+  {
+    "name": "PQmblen", 
+    "type": "skProc", 
+    "code": "proc PQmblen*(s: cstring; encoding: int32): int32 {.cdecl, dynlib: dllName, \u000D\u000A    importc: \"PQmblen\".}"
+  }, 
+  {
+    "name": "PQenv2encoding", 
+    "type": "skProc", 
+    "code": "proc PQenv2encoding*(): int32 {.cdecl, dynlib: dllName, \u000D\u000A                                importc: \"PQenv2encoding\".}"
+  }
+]

@@ -1,0 +1,143 @@
+[
+  {
+    "comment": "This module implements an advanced facility for executing OS processes\u000D\u000A## and process communication."
+  }, 
+  {
+    "name": "TProcessOption", 
+    "type": "skType", 
+    "description": "options that can be passed <cite>startProcess</cite>", 
+    "code": "TProcessOption* = enum \u000D\u000A  poEchoCmd,                  ## echo the command before execution\u000D\u000A  poUseShell, ## use the shell to execute the command; NOTE: This\u000D\u000A              ## often creates a security hole!\u000D\u000A  poStdErrToStdOut,           ## merge stdout and stderr to the stdout stream\u000D\u000A  poParentStreams             ## use the parent's streams"
+  }, 
+  {
+    "name": "execProcess", 
+    "type": "skProc", 
+    "description": "A convenience procedure that executes <tt class=\"docutils literal\"><span class=\"pre\">command</span></tt> with <tt class=\"docutils literal\"><span class=\"pre\">startProcess</span></tt> and returns its output as a string.", 
+    "code": "proc execProcess*(command: string; \u000D\u000A                  options: set[TProcessOption] = {poStdErrToStdOut, poUseShell}): TaintedString {.\u000D\u000A    rtl, extern: \"nosp$1\", tags: [FExecIO, FReadIO].}"
+  }, 
+  {
+    "name": "execCmd", 
+    "type": "skProc", 
+    "description": "Executes <tt class=\"docutils literal\"><span class=\"pre\">command</span></tt> and returns its error code. Standard input, output, error streams are inherited from the calling process. This operation is also often called <span id=\"system_61989944\">system</span>.", 
+    "code": "proc execCmd*(command: string): int {.rtl, extern: \"nosp$1\", tags: [FExecIO].}"
+  }, 
+  {
+    "name": "startProcess", 
+    "type": "skProc", 
+    "description": "<p>Starts a process. <cite>Command</cite> is the executable file, <cite>workingDir</cite> is the process's working directory. If <tt class=\"docutils literal\"><span class=\"pre\">workingDir == &quot;&quot;</span></tt> the current directory is used. <cite>args</cite> are the command line arguments that are passed to the process. On many operating systems, the first command line argument is the name of the executable. <cite>args</cite> should not contain this argument! <cite>env</cite> is the environment that will be passed to the process. If <tt class=\"docutils literal\"><span class=\"pre\">env == nil</span></tt> the environment is inherited of the parent process. <cite>options</cite> are additional flags that may be passed to <cite>startProcess</cite>. See the documentation of <tt class=\"docutils literal\"><span class=\"pre\">TProcessOption</span></tt> for the meaning of these flags. You need to <cite>close</cite> the process when done.</p>\u000D\u000A<p>Return value: The newly created process object. Nil is never returned, but <tt class=\"docutils literal\"><span class=\"pre\">EOS</span></tt> is raised in case of an error.</p>\u000D\u000A", 
+    "code": "proc startProcess*(command: string; workingDir: string = \"\"; \u000D\u000A                   args: openarray[string] = []; env: PStringTable = nil; \u000D\u000A                   options: set[TProcessOption] = {poStdErrToStdOut}): PProcess {.\u000D\u000A    rtl, extern: \"nosp$1\", tags: [FExecIO, FReadEnv].}"
+  }, 
+  {
+    "name": "startCmd", 
+    "type": "skProc", 
+    "description": "a simpler version of <cite>startProcess</cite> that parses the command line into program and arguments and then calls <cite>startProcess</cite> with the empty string for <cite>workingDir</cite> and the nil string table for <cite>env</cite>.", 
+    "code": "proc startCmd*(command: string; \u000D\u000A               options: set[TProcessOption] = {poStdErrToStdOut, poUseShell}): PProcess {.\u000D\u000A    tags: [FExecIO, FReadEnv].}"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "When the process has finished executing, cleanup related handles", 
+    "code": "proc close*(p: PProcess) {.rtl, extern: \"nosp$1\", tags: [].}"
+  }, 
+  {
+    "name": "suspend", 
+    "type": "skProc", 
+    "description": "Suspends the process <cite>p</cite>.", 
+    "code": "proc suspend*(p: PProcess) {.rtl, extern: \"nosp$1\", tags: [].}"
+  }, 
+  {
+    "name": "resume", 
+    "type": "skProc", 
+    "description": "Resumes the process <cite>p</cite>.", 
+    "code": "proc resume*(p: PProcess) {.rtl, extern: \"nosp$1\", tags: [].}"
+  }, 
+  {
+    "name": "terminate", 
+    "type": "skProc", 
+    "description": "Terminates the process <cite>p</cite>.", 
+    "code": "proc terminate*(p: PProcess) {.rtl, extern: \"nosp$1\", tags: [].}"
+  }, 
+  {
+    "name": "running", 
+    "type": "skProc", 
+    "description": "Returns true iff the process <cite>p</cite> is still running. Returns immediately.", 
+    "code": "proc running*(p: PProcess): bool {.rtl, extern: \"nosp$1\", tags: [].}"
+  }, 
+  {
+    "name": "processID", 
+    "type": "skProc", 
+    "description": "returns <cite>p</cite>'s process ID.", 
+    "code": "proc processID*(p: PProcess): int {.rtl, extern: \"nosp$1\".}"
+  }, 
+  {
+    "name": "waitForExit", 
+    "type": "skProc", 
+    "description": "waits for the process to finish and returns <cite>p</cite>'s error code.", 
+    "code": "proc waitForExit*(p: PProcess; timeout: int = - 1): int {.rtl, extern: \"nosp$1\", \u000D\u000A    tags: [].}"
+  }, 
+  {
+    "name": "peekExitCode", 
+    "type": "skProc", 
+    "description": "return -1 if the process is still running. Otherwise the process' exit code", 
+    "code": "proc peekExitCode*(p: PProcess): int {.tags: [].}"
+  }, 
+  {
+    "name": "inputStream", 
+    "type": "skProc", 
+    "description": "<p>returns <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>'s input stream for writing to.</p>\u000D\u000A<p><strong>Warning</strong>: The returned <cite>PStream</cite> should not be closed manually as it is closed when closing the PProcess <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>.</p>\u000D\u000A", 
+    "code": "proc inputStream*(p: PProcess): PStream {.rtl, extern: \"nosp$1\", tags: [].}"
+  }, 
+  {
+    "name": "outputStream", 
+    "type": "skProc", 
+    "description": "<p>returns <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>'s output stream for reading from.</p>\u000D\u000A<p><strong>Warning</strong>: The returned <cite>PStream</cite> should not be closed manually as it is closed when closing the PProcess <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>.</p>\u000D\u000A", 
+    "code": "proc outputStream*(p: PProcess): PStream {.rtl, extern: \"nosp$1\", tags: [].}"
+  }, 
+  {
+    "name": "errorStream", 
+    "type": "skProc", 
+    "description": "<p>returns <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>'s error stream for reading from.</p>\u000D\u000A<p><strong>Warning</strong>: The returned <cite>PStream</cite> should not be closed manually as it is closed when closing the PProcess <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>.</p>\u000D\u000A", 
+    "code": "proc errorStream*(p: PProcess): PStream {.rtl, extern: \"nosp$1\", tags: [].}"
+  }, 
+  {
+    "name": "inputHandle", 
+    "type": "skProc", 
+    "description": "<p>returns <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>'s input file handle for writing to.</p>\u000D\u000A<p><strong>Warning</strong>: The returned <cite>TFileHandle</cite> should not be closed manually as it is closed when closing the PProcess <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>.</p>\u000D\u000A", 
+    "code": "proc inputHandle*(p: PProcess): TFileHandle {.rtl, extern: \"nosp$1\", tags: [].}"
+  }, 
+  {
+    "name": "outputHandle", 
+    "type": "skProc", 
+    "description": "<p>returns <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>'s output file handle for reading from.</p>\u000D\u000A<p><strong>Warning</strong>: The returned <cite>TFileHandle</cite> should not be closed manually as it is closed when closing the PProcess <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>.</p>\u000D\u000A", 
+    "code": "proc outputHandle*(p: PProcess): TFileHandle {.rtl, extern: \"nosp$1\", tags: [].}"
+  }, 
+  {
+    "name": "errorHandle", 
+    "type": "skProc", 
+    "description": "<p>returns <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>'s error file handle for reading from.</p>\u000D\u000A<p><strong>Warning</strong>: The returned <cite>TFileHandle</cite> should not be closed manually as it is closed when closing the PProcess <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt>.</p>\u000D\u000A", 
+    "code": "proc errorHandle*(p: PProcess): TFileHandle {.rtl, extern: \"nosp$1\", tags: [].}"
+  }, 
+  {
+    "name": "countProcessors", 
+    "type": "skProc", 
+    "description": "returns the numer of the processors/cores the machine has. Returns 0 if it cannot be detected.", 
+    "code": "proc countProcessors*(): int {.rtl, extern: \"nosp$1\".}"
+  }, 
+  {
+    "name": "execProcesses", 
+    "type": "skProc", 
+    "description": "executes the commands <cite>cmds</cite> in parallel. Creates <cite>n</cite> processes that execute in parallel. The highest return value of all processes is returned.", 
+    "code": "proc execProcesses*(cmds: openArray[string]; \u000D\u000A                    options = {poStdErrToStdOut, poParentStreams}; \u000D\u000A                    n = countProcessors()): int {.rtl, extern: \"nosp$1\", \u000D\u000A    tags: [FExecIO, FTime, FReadEnv].}"
+  }, 
+  {
+    "name": "select", 
+    "type": "skProc", 
+    "description": "<p><cite>select</cite> with a sensible Nimrod interface. <cite>timeout</cite> is in miliseconds. Specify -1 for no timeout. Returns the number of processes that are ready to read from. The processes that are ready to be read from are removed from <cite>readfds</cite>.</p>\u000D\u000A<p><strong>Warning</strong>: This function may give unexpected or completely wrong results on Windows.</p>\u000D\u000A", 
+    "code": "proc select*(readfds: var seq[PProcess]; timeout = 500): int"
+  }, 
+  {
+    "name": "execCmdEx", 
+    "type": "skProc", 
+    "description": "a convenience proc that runs the <cite>command</cite>, grabs all its output and exit code and returns both.", 
+    "code": "proc execCmdEx*(command: string; \u000D\u000A                options: set[TProcessOption] = {poStdErrToStdOut, poUseShell}): tuple[\u000D\u000A    output: TaintedString, exitCode: int] {.tags: [FExecIO, FReadIO].}"
+  }
+]

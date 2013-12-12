@@ -1,0 +1,185 @@
+[
+  {
+    "comment": "This module contains routines and types for dealing with time.\u000D\u000A## This module is available for the JavaScript target."
+  }, 
+  {
+    "name": "TWeekDay", 
+    "type": "skType", 
+    "description": "represents a weekday", 
+    "code": "TWeekDay* = enum \u000D\u000A  dMon, dTue, dWed, dThu, dFri, dSat, dSun"
+  }, 
+  {
+    "name": "TTimeInterval", 
+    "type": "skType", 
+    "description": "a time interval", 
+    "code": "TTimeInterval* {.pure.} = object \u000D\u000A  miliseconds*: int           ## The number of miliseconds\u000D\u000A  seconds*: int               ## The number of seconds\u000D\u000A  minutes*: int               ## The number of minutes\u000D\u000A  hours*: int                 ## The number of hours\u000D\u000A  days*: int                  ## The number of days\u000D\u000A  months*: int                ## The number of months\u000D\u000A  years*: int                 ## The number of years\u000D\u000A  "
+  }, 
+  {
+    "name": "getTime", 
+    "type": "skProc", 
+    "description": "gets the current calendar time as a UNIX epoch value (number of seconds elapsed since 1970) with integer precission. Use epochTime for higher resolution.", 
+    "code": "proc getTime*(): TTime {.tags: [FTime].}"
+  }, 
+  {
+    "name": "getLocalTime", 
+    "type": "skProc", 
+    "description": "converts the calendar time <cite>t</cite> to broken-time representation, expressed relative to the user's specified time zone.", 
+    "code": "proc getLocalTime*(t: TTime): TTimeInfo {.tags: [FTime], raises: [].}"
+  }, 
+  {
+    "name": "getGMTime", 
+    "type": "skProc", 
+    "description": "converts the calendar time <cite>t</cite> to broken-down time representation, expressed in Coordinated Universal Time (UTC).", 
+    "code": "proc getGMTime*(t: TTime): TTimeInfo {.tags: [FTime], raises: [].}"
+  }, 
+  {
+    "name": "TimeInfoToTime", 
+    "type": "skProc", 
+    "description": "converts a broken-down time structure to calendar time representation. The function ignores the specified contents of the structure members <cite>weekday</cite> and <cite>yearday</cite> and recomputes them from the other information in the broken-down time structure.", 
+    "code": "proc TimeInfoToTime*(timeInfo: TTimeInfo): TTime {.tags: [].}"
+  }, 
+  {
+    "name": "fromSeconds", 
+    "type": "skProc", 
+    "description": "Takes a float which contains the number of seconds since the unix epoch and returns a time object.", 
+    "code": "proc fromSeconds*(since1970: float): TTime {.tags: [], raises: [].}"
+  }, 
+  {
+    "name": "fromSeconds", 
+    "type": "skProc", 
+    "description": "Takes an int which contains the number of seconds since the unix epoch and returns a time object.", 
+    "code": "proc fromSeconds*(since1970: int64): TTime {.tags: [], raises: [].}"
+  }, 
+  {
+    "name": "toSeconds", 
+    "type": "skProc", 
+    "description": "Returns the time in seconds since the unix epoch.", 
+    "code": "proc toSeconds*(time: TTime): float {.tags: [], raises: [].}"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "converts a <cite>TTimeInfo</cite> object to a string representation.", 
+    "code": "proc `$`*(timeInfo: TTimeInfo): string {.tags: [], raises: [].}"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "converts a calendar time to a string representation.", 
+    "code": "proc `$`*(time: TTime): string {.tags: [], raises: [].}"
+  }, 
+  {
+    "name": "`-`", 
+    "type": "skProc", 
+    "description": "computes the difference of two calendar times. Result is in seconds.", 
+    "code": "proc `-`*(a, b: TTime): int64 {.rtl, extern: \"ntDiffTime\", tags: [], raises: [].}"
+  }, 
+  {
+    "name": "`&lt;`", 
+    "type": "skProc", 
+    "description": "returns true iff <tt class=\"docutils literal\"><span class=\"pre\">a &lt; b</span></tt>, that is iff a happened before b.", 
+    "code": "proc `<`*(a, b: TTime): bool {.rtl, extern: \"ntLtTime\", tags: [], raises: [].}"
+  }, 
+  {
+    "name": "`&lt;=`", 
+    "type": "skProc", 
+    "description": "returns true iff <tt class=\"docutils literal\"><span class=\"pre\">a &lt;= b</span></tt>.", 
+    "code": "proc `<=`*(a, b: TTime): bool {.rtl, extern: \"ntLeTime\", tags: [], raises: [].}"
+  }, 
+  {
+    "name": "`==`", 
+    "type": "skProc", 
+    "description": "returns true if <tt class=\"docutils literal\"><span class=\"pre\">a == b</span></tt>, that is if both times represent the same value", 
+    "code": "proc `==`*(a, b: TTime): bool {.rtl, extern: \"ntEqTime\", tags: [], raises: [].}"
+  }, 
+  {
+    "name": "getTzname", 
+    "type": "skProc", 
+    "description": "returns the local timezone; <tt class=\"docutils literal\"><span class=\"pre\">nonDST</span></tt> is the name of the local non-DST timezone, <tt class=\"docutils literal\"><span class=\"pre\">DST</span></tt> is the name of the local DST timezone.", 
+    "code": "proc getTzname*(): tuple[nonDST, DST: string] {.tags: [FTime], raises: [].}"
+  }, 
+  {
+    "name": "getTimezone", 
+    "type": "skProc", 
+    "description": "returns the offset of the local (non-DST) timezone in seconds west of UTC.", 
+    "code": "proc getTimezone*(): int {.tags: [FTime], raises: [].}"
+  }, 
+  {
+    "name": "getStartMilsecs", 
+    "type": "skProc", 
+    "description": "get the miliseconds from the start of the program. <strong>Deprecated since version 0.8.10.</strong> Use <tt class=\"docutils literal\"><span class=\"pre\">epochTime</span></tt> or <tt class=\"docutils literal\"><span class=\"pre\">cpuTime</span></tt> instead.", 
+    "code": "proc getStartMilsecs*(): int {.deprecated, tags: [FTime].}"
+  }, 
+  {
+    "name": "initInterval", 
+    "type": "skProc", 
+    "description": "creates a new <tt class=\"docutils literal\"><span class=\"pre\">TTimeInterval</span></tt>.", 
+    "code": "proc initInterval*(miliseconds, seconds, minutes, hours, days, months, years: int = 0): TTimeInterval"
+  }, 
+  {
+    "name": "`+`", 
+    "type": "skProc", 
+    "description": "<p>adds <tt class=\"docutils literal\"><span class=\"pre\">interval</span></tt> time.</p>\u000D\u000A<p><strong>Note:</strong> This has been only briefly tested and it may not be very accurate.</p>\u000D\u000A", 
+    "code": "proc `+`*(a: TTimeInfo; interval: TTimeInterval): TTimeInfo"
+  }, 
+  {
+    "name": "`-`", 
+    "type": "skProc", 
+    "description": "<p>subtracts <tt class=\"docutils literal\"><span class=\"pre\">interval</span></tt> time.</p>\u000D\u000A<p><strong>Note:</strong> This has been only briefly tested, it is inaccurate especially when you subtract so much that you reach the Julian calendar.</p>\u000D\u000A", 
+    "code": "proc `-`*(a: TTimeInfo; interval: TTimeInterval): TTimeInfo"
+  }, 
+  {
+    "name": "epochTime", 
+    "type": "skProc", 
+    "description": "gets time after the UNIX epoch (1970) in seconds. It is a float because sub-second resolution is likely to be supported (depending on the hardware/OS).", 
+    "code": "proc epochTime*(): float {.rtl, extern: \"nt$1\", tags: [FTime].}"
+  }, 
+  {
+    "name": "cpuTime", 
+    "type": "skProc", 
+    "description": "gets time spent that the CPU spent to run the current process in seconds. This may be more useful for benchmarking than <tt class=\"docutils literal\"><span class=\"pre\">epochTime</span></tt>. However, it may measure the real time instead (depending on the OS). The value of the result has no meaning. To generate useful timing values, take the difference between the results of two <tt class=\"docutils literal\"><span class=\"pre\">cpuTime</span></tt> calls:<pre><span class=\"Keyword\">var</span> <span class=\"Identifier\">t0</span> <span class=\"Operator\">=</span> <span class=\"Identifier\">cpuTime</span><span class=\"Punctation\">(</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Identifier\">doWork</span><span class=\"Punctation\">(</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Identifier\">echo</span> <span class=\"StringLit\">&quot;CPU time [s] &quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">cpuTime</span><span class=\"Punctation\">(</span><span class=\"Punctation\">)</span> <span class=\"Operator\">-</span> <span class=\"Identifier\">t0</span></pre>", 
+    "code": "proc cpuTime*(): float {.rtl, extern: \"nt$1\", tags: [FTime].}"
+  }, 
+  {
+    "name": "unixTimeToWinTime", 
+    "type": "skProc", 
+    "description": "converts a UNIX <cite>TTime</cite> (<tt class=\"docutils literal\"><span class=\"pre\">time_t</span></tt>) to a Windows file time", 
+    "code": "proc unixTimeToWinTime*(t: TTime): int64"
+  }, 
+  {
+    "name": "winTimeToUnixTime", 
+    "type": "skProc", 
+    "description": "converts a Windows time to a UNIX <cite>TTime</cite> (<tt class=\"docutils literal\"><span class=\"pre\">time_t</span></tt>)", 
+    "code": "proc winTimeToUnixTime*(t: int64): TTime"
+  }, 
+  {
+    "name": "getDateStr", 
+    "type": "skProc", 
+    "description": "gets the current date as a string of the format <tt class=\"docutils literal\"><span class=\"pre\">YYYY-MM-DD</span></tt>.", 
+    "code": "proc getDateStr*(): string {.rtl, extern: \"nt$1\", tags: [FTime].}"
+  }, 
+  {
+    "name": "getClockStr", 
+    "type": "skProc", 
+    "description": "gets the current clock time as a string of the format <tt class=\"docutils literal\"><span class=\"pre\">HH:MM:SS</span></tt>.", 
+    "code": "proc getClockStr*(): string {.rtl, extern: \"nt$1\", tags: [FTime].}"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "stingify operator for <tt class=\"docutils literal\"><span class=\"pre\">TWeekDay</span></tt>.", 
+    "code": "proc `$`*(day: TWeekDay): string"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "stingify operator for <tt class=\"docutils literal\"><span class=\"pre\">TMonth</span></tt>.", 
+    "code": "proc `$`*(m: TMonth): string"
+  }, 
+  {
+    "name": "format", 
+    "type": "skProc", 
+    "description": "This function formats <cite>info</cite> as specified by <cite>f</cite>. The following format specifiers are available:<table border=\"1\" class=\"docutils\"><tr><th>Specifier</th><th>Description</th><th>Example</th></tr>\u000D\u000A<tr><td>d</td><td>Numeric value of the day of the month, it will be one or two digits long.</td><td><tt class=\"docutils literal\"><span class=\"pre\">1/04/2012 -&gt; 1</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">21/04/2012 -&gt; 21</span></tt></td></tr>\u000D\u000A<tr><td>dd</td><td>Same as above, but always two digits.</td><td><tt class=\"docutils literal\"><span class=\"pre\">1/04/2012 -&gt; 01</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">21/04/2012 -&gt; 21</span></tt></td></tr>\u000D\u000A<tr><td>ddd</td><td>Three letter string which indicates the day of the week.</td><td><tt class=\"docutils literal\"><span class=\"pre\">Saturday -&gt; Sat</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">Monday -&gt; Mon</span></tt></td></tr>\u000D\u000A<tr><td>dddd</td><td>Full string for the day of the week.</td><td><tt class=\"docutils literal\"><span class=\"pre\">Saturday -&gt; Saturday</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">Monday -&gt; Monday</span></tt></td></tr>\u000D\u000A<tr><td>h</td><td>The hours in one digit if possible. Ranging from 0-12.</td><td><tt class=\"docutils literal\"><span class=\"pre\">5pm -&gt; 5</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">2am -&gt; 2</span></tt></td></tr>\u000D\u000A<tr><td>hh</td><td>The hours in two digits always. If the hour is one digit 0 is prepended.</td><td><tt class=\"docutils literal\"><span class=\"pre\">5pm -&gt; 05</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">11am -&gt; 11</span></tt></td></tr>\u000D\u000A<tr><td>H</td><td>The hours in one digit if possible, randing from 0-24.</td><td><tt class=\"docutils literal\"><span class=\"pre\">5pm -&gt; 17</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">2am -&gt; 2</span></tt></td></tr>\u000D\u000A<tr><td>HH</td><td>The hours in two digits always. 0 is prepended if the hour is one digit.</td><td><tt class=\"docutils literal\"><span class=\"pre\">5pm -&gt; 17</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">2am -&gt; 02</span></tt></td></tr>\u000D\u000A<tr><td>m</td><td>The minutes in 1 digit if possible.</td><td><tt class=\"docutils literal\"><span class=\"pre\">5:30 -&gt; 30</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">2:01 -&gt; 1</span></tt></td></tr>\u000D\u000A<tr><td>mm</td><td>Same as above but always 2 digits, 0 is prepended if the minute is one digit.</td><td><tt class=\"docutils literal\"><span class=\"pre\">5:30 -&gt; 30</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">2:01 -&gt; 01</span></tt></td></tr>\u000D\u000A<tr><td>M</td><td>The month in one digit if possible.</td><td><tt class=\"docutils literal\"><span class=\"pre\">September -&gt; 9</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">December -&gt; 12</span></tt></td></tr>\u000D\u000A<tr><td>MM</td><td>The month in two digits always. 0 is prepended.</td><td><tt class=\"docutils literal\"><span class=\"pre\">September -&gt; 09</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">December -&gt; 12</span></tt></td></tr>\u000D\u000A<tr><td>MMM</td><td>Abbreviated three-letter form of the month.</td><td><tt class=\"docutils literal\"><span class=\"pre\">September -&gt; Sep</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">December -&gt; Dec</span></tt></td></tr>\u000D\u000A<tr><td>MMMM</td><td>Full month string, properly capitalized.</td><td><tt class=\"docutils literal\"><span class=\"pre\">September -&gt; September</span></tt></td></tr>\u000D\u000A<tr><td>s</td><td>Seconds as one digit if possible.</td><td><tt class=\"docutils literal\"><span class=\"pre\">00:00:06 -&gt; 6</span></tt></td></tr>\u000D\u000A<tr><td>ss</td><td>Same as above but always two digits. 0 is prepended.</td><td><tt class=\"docutils literal\"><span class=\"pre\">00:00:06 -&gt; 06</span></tt></td></tr>\u000D\u000A<tr><td>t</td><td><tt class=\"docutils literal\"><span class=\"pre\">A</span></tt> when time is in the AM. <tt class=\"docutils literal\"><span class=\"pre\">P</span></tt> when time is in the PM.</td><td></td></tr>\u000D\u000A<tr><td>tt</td><td>Same as above, but <tt class=\"docutils literal\"><span class=\"pre\">AM</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">PM</span></tt> instead of <tt class=\"docutils literal\"><span class=\"pre\">A</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">P</span></tt> respectively.</td><td></td></tr>\u000D\u000A<tr><td>y(yyyy)</td><td>This displays the year to different digits. You most likely only want 2 or 4 'y's</td><td></td></tr>\u000D\u000A<tr><td>yy</td><td>Displays the year to two digits.</td><td><tt class=\"docutils literal\"><span class=\"pre\">2012 -&gt; 12</span></tt></td></tr>\u000D\u000A<tr><td>yyyy</td><td>Displays the year to four digits.</td><td><tt class=\"docutils literal\"><span class=\"pre\">2012 -&gt; 2012</span></tt></td></tr>\u000D\u000A<tr><td>z</td><td>Displays the timezone offset from UTC.</td><td><tt class=\"docutils literal\"><span class=\"pre\">GMT+7 -&gt; +7</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">GMT-5 -&gt; -5</span></tt></td></tr>\u000D\u000A<tr><td>zz</td><td>Same as above but with leading 0.</td><td><tt class=\"docutils literal\"><span class=\"pre\">GMT+7 -&gt; +07</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">GMT-5 -&gt; -05</span></tt></td></tr>\u000D\u000A<tr><td>zzz</td><td>Same as above but with <tt class=\"docutils literal\"><span class=\"pre\">:00</span></tt>.</td><td><tt class=\"docutils literal\"><span class=\"pre\">GMT+7 -&gt; +07:00</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">GMT-5 -&gt; -05:00</span></tt></td></tr>\u000D\u000A<tr><td>ZZZ</td><td>Displays the name of the timezone.</td><td><tt class=\"docutils literal\"><span class=\"pre\">GMT -&gt; GMT</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">EST -&gt; EST</span></tt></td></tr>\u000D\u000A</table><p>Other strings can be inserted by putting them in <tt class=\"docutils literal\"><span class=\"pre\">''</span></tt>. For example <tt class=\"docutils literal\"><span class=\"pre\">hh'-&gt;'mm</span></tt> will give <tt class=\"docutils literal\"><span class=\"pre\">01-&gt;56</span></tt>. The following characters can be inserted without quoting them: <tt class=\"docutils literal\"><span class=\"pre\">:</span></tt> <tt class=\"docutils literal\"><span class=\"pre\">-</span></tt> <tt class=\"docutils literal\"><span class=\"pre\">(</span></tt> <tt class=\"docutils literal\"><span class=\"pre\">)</span></tt> <tt class=\"docutils literal\"><span class=\"pre\">/</span></tt> <tt class=\"docutils literal\"><span class=\"pre\">[</span></tt> <tt class=\"docutils literal\"><span class=\"pre\">]</span></tt> <tt class=\"docutils literal\"><span class=\"pre\">,</span></tt></p>\u000D\u000A", 
+    "code": "proc format*(info: TTimeInfo; f: string): string"
+  }
+]

@@ -1,0 +1,267 @@
+[
+  {
+    "name": "PSQLHANDLE", 
+    "type": "skType", 
+    "code": "PSQLHANDLE* = ptr TSqlHandle"
+  }, 
+  {
+    "name": "SQL_GUID", 
+    "type": "skConst", 
+    "code": "SQL_GUID* = - 11"
+  }, 
+  {
+    "name": "SQL_INTERVAL_MINUTE_TO_SECOND", 
+    "type": "skConst", 
+    "code": "SQL_INTERVAL_MINUTE_TO_SECOND* = 100 + SQL_CODE_MINUTE_TO_SECOND"
+  }, 
+  {
+    "name": "SQL_UNICODE_CHAR", 
+    "type": "skConst", 
+    "code": "SQL_UNICODE_CHAR* = SQL_UNICODE"
+  }, 
+  {
+    "name": "SQL_TYPE_NULL", 
+    "type": "skConst", 
+    "code": "SQL_TYPE_NULL* = 0"
+  }, 
+  {
+    "name": "SQL_TYPE_MAX", 
+    "type": "skConst", 
+    "code": "SQL_TYPE_MAX* = SQL_VARCHAR"
+  }, 
+  {
+    "name": "SQL_NO_TOTAL", 
+    "type": "skConst", 
+    "code": "SQL_NO_TOTAL* = - 4"
+  }, 
+  {
+    "name": "PSQL_TIMESTAMP_STRUCT", 
+    "type": "skType", 
+    "code": "PSQL_TIMESTAMP_STRUCT* = ptr SQL_TIMESTAMP_STRUCT"
+  }, 
+  {
+    "name": "ODBC_REMOVE_SYS_DSN", 
+    "type": "skConst", 
+    "code": "ODBC_REMOVE_SYS_DSN* = 6"
+  }, 
+  {
+    "name": "SQLAllocHandle", 
+    "type": "skProc", 
+    "code": "proc SQLAllocHandle*(HandleType: TSqlSmallInt; InputHandle: TSqlHandle; \u000D\u000A                     OutputHandlePtr: var TSqlHandle): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLSetEnvAttr", 
+    "type": "skProc", 
+    "code": "proc SQLSetEnvAttr*(EnvironmentHandle: TSqlHEnv; Attribute: TSqlInteger; \u000D\u000A                    Value: TSqlPointer; StringLength: TSqlInteger): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLGetEnvAttr", 
+    "type": "skProc", 
+    "code": "proc SQLGetEnvAttr*(EnvironmentHandle: TSqlHEnv; Attribute: TSqlInteger; \u000D\u000A                    Value: TSqlPointer; BufferLength: TSqlInteger; \u000D\u000A                    StringLength: PSQLINTEGER): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLFreeHandle", 
+    "type": "skProc", 
+    "code": "proc SQLFreeHandle*(HandleType: TSqlSmallInt; Handle: TSqlHandle): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLGetDiagRec", 
+    "type": "skProc", 
+    "code": "proc SQLGetDiagRec*(HandleType: TSqlSmallInt; Handle: TSqlHandle; \u000D\u000A                    RecNumber: TSqlSmallInt; Sqlstate: PSQLCHAR; \u000D\u000A                    NativeError: var TSqlInteger; MessageText: PSQLCHAR; \u000D\u000A                    BufferLength: TSqlSmallInt; TextLength: var TSqlSmallInt): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLGetDiagField", 
+    "type": "skProc", 
+    "code": "proc SQLGetDiagField*(HandleType: TSqlSmallInt; Handle: TSqlHandle; \u000D\u000A                      RecNumber: TSqlSmallInt; DiagIdentifier: TSqlSmallInt; \u000D\u000A                      DiagInfoPtr: TSqlPointer; BufferLength: TSqlSmallInt; \u000D\u000A                      StringLengthPtr: var TSqlSmallInt): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLConnect", 
+    "type": "skProc", 
+    "code": "proc SQLConnect*(ConnectionHandle: TSqlHDBC; ServerName: PSQLCHAR; \u000D\u000A                 NameLength1: TSqlSmallInt; UserName: PSQLCHAR; \u000D\u000A                 NameLength2: TSqlSmallInt; Authentication: PSQLCHAR; \u000D\u000A                 NameLength3: TSqlSmallInt): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLDisconnect", 
+    "type": "skProc", 
+    "code": "proc SQLDisconnect*(ConnectionHandle: TSqlHDBC): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLDriverConnect", 
+    "type": "skProc", 
+    "code": "proc SQLDriverConnect*(hdbc: TSqlHDBC; hwnd: TSqlHWND; szCsin: cstring; \u000D\u000A                       szCLen: TSqlSmallInt; szCsout: cstring; \u000D\u000A                       cbCSMax: TSqlSmallInt; cbCsOut: var TSqlSmallInt; \u000D\u000A                       f: TSqlUSmallInt): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLBrowseConnect", 
+    "type": "skProc", 
+    "code": "proc SQLBrowseConnect*(hdbc: TSqlHDBC; szConnStrIn: PSQLCHAR; \u000D\u000A                       cbConnStrIn: TSqlSmallInt; szConnStrOut: PSQLCHAR; \u000D\u000A                       cbConnStrOutMax: TSqlSmallInt; \u000D\u000A                       cbConnStrOut: var TSqlSmallInt): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLExecDirect", 
+    "type": "skProc", 
+    "code": "proc SQLExecDirect*(StatementHandle: TSqlHStmt; StatementText: PSQLCHAR; \u000D\u000A                    TextLength: TSqlInteger): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLPrepare", 
+    "type": "skProc", 
+    "code": "proc SQLPrepare*(StatementHandle: TSqlHStmt; StatementText: PSQLCHAR; \u000D\u000A                 TextLength: TSqlInteger): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLCloseCursor", 
+    "type": "skProc", 
+    "code": "proc SQLCloseCursor*(StatementHandle: TSqlHStmt): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLExecute", 
+    "type": "skProc", 
+    "code": "proc SQLExecute*(StatementHandle: TSqlHStmt): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLFetch", 
+    "type": "skProc", 
+    "code": "proc SQLFetch*(StatementHandle: TSqlHStmt): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLNumResultCols", 
+    "type": "skProc", 
+    "code": "proc SQLNumResultCols*(StatementHandle: TSqlHStmt; ColumnCount: var TSqlSmallInt): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLDescribeCol", 
+    "type": "skProc", 
+    "code": "proc SQLDescribeCol*(StatementHandle: TSqlHStmt; ColumnNumber: TSqlUSmallInt; \u000D\u000A                     ColumnName: PSQLCHAR; BufferLength: TSqlSmallInt; \u000D\u000A                     NameLength: var TSqlSmallInt; DataType: var TSqlSmallInt; \u000D\u000A                     ColumnSize: var TSqlUInteger; \u000D\u000A                     DecimalDigits: var TSqlSmallInt; Nullable: var TSqlSmallInt): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLFetchScroll", 
+    "type": "skProc", 
+    "code": "proc SQLFetchScroll*(StatementHandle: TSqlHStmt; FetchOrientation: TSqlSmallInt; \u000D\u000A                     FetchOffset: TSqlInteger): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLExtendedFetch", 
+    "type": "skProc", 
+    "code": "proc SQLExtendedFetch*(hstmt: TSqlHStmt; fFetchType: TSqlUSmallInt; \u000D\u000A                       irow: TSqlInteger; pcrow: PSQLUINTEGER; \u000D\u000A                       rgfRowStatus: PSQLUSMALLINT): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLGetData", 
+    "type": "skProc", 
+    "code": "proc SQLGetData*(StatementHandle: TSqlHStmt; ColumnNumber: TSqlUSmallInt; \u000D\u000A                 TargetType: TSqlSmallInt; TargetValue: TSqlPointer; \u000D\u000A                 BufferLength: TSqlInteger; StrLen_or_Ind: PSQLINTEGER): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLSetStmtAttr", 
+    "type": "skProc", 
+    "code": "proc SQLSetStmtAttr*(StatementHandle: TSqlHStmt; Attribute: TSqlInteger; \u000D\u000A                     Value: TSqlPointer; StringLength: TSqlInteger): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLGetStmtAttr", 
+    "type": "skProc", 
+    "code": "proc SQLGetStmtAttr*(StatementHandle: TSqlHStmt; Attribute: TSqlInteger; \u000D\u000A                     Value: TSqlPointer; BufferLength: TSqlInteger; \u000D\u000A                     StringLength: PSQLINTEGER): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLGetInfo", 
+    "type": "skProc", 
+    "code": "proc SQLGetInfo*(ConnectionHandle: TSqlHDBC; InfoType: TSqlUSmallInt; \u000D\u000A                 InfoValue: TSqlPointer; BufferLength: TSqlSmallInt; \u000D\u000A                 StringLength: PSQLSMALLINT): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLBulkOperations", 
+    "type": "skProc", 
+    "code": "proc SQLBulkOperations*(StatementHandle: TSqlHStmt; Operation: TSqlSmallInt): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLPutData", 
+    "type": "skProc", 
+    "code": "proc SQLPutData*(StatementHandle: TSqlHStmt; Data: TSqlPointer; \u000D\u000A                 StrLen_or_Ind: TSqlInteger): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLBindCol", 
+    "type": "skProc", 
+    "code": "proc SQLBindCol*(StatementHandle: TSqlHStmt; ColumnNumber: TSqlUSmallInt; \u000D\u000A                 TargetType: TSqlSmallInt; TargetValue: TSqlPointer; \u000D\u000A                 BufferLength: TSqlInteger; StrLen_or_Ind: PSQLINTEGER): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLSetPos", 
+    "type": "skProc", 
+    "code": "proc SQLSetPos*(hstmt: TSqlHStmt; irow: TSqlUSmallInt; fOption: TSqlUSmallInt; \u000D\u000A                fLock: TSqlUSmallInt): TSqlSmallInt {.dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLDataSources", 
+    "type": "skProc", 
+    "code": "proc SQLDataSources*(EnvironmentHandle: TSqlHEnv; Direction: TSqlUSmallInt; \u000D\u000A                     ServerName: PSQLCHAR; BufferLength1: TSqlSmallInt; \u000D\u000A                     NameLength1: PSQLSMALLINT; Description: PSQLCHAR; \u000D\u000A                     BufferLength2: TSqlSmallInt; NameLength2: PSQLSMALLINT): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLDrivers", 
+    "type": "skProc", 
+    "code": "proc SQLDrivers*(EnvironmentHandle: TSqlHEnv; Direction: TSqlUSmallInt; \u000D\u000A                 DriverDescription: PSQLCHAR; BufferLength1: TSqlSmallInt; \u000D\u000A                 DescriptionLength1: PSQLSMALLINT; DriverAttributes: PSQLCHAR; \u000D\u000A                 BufferLength2: TSqlSmallInt; AttributesLength2: PSQLSMALLINT): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLSetConnectAttr", 
+    "type": "skProc", 
+    "code": "proc SQLSetConnectAttr*(ConnectionHandle: TSqlHDBC; Attribute: TSqlInteger; \u000D\u000A                        Value: TSqlPointer; StringLength: TSqlInteger): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLGetCursorName", 
+    "type": "skProc", 
+    "code": "proc SQLGetCursorName*(StatementHandle: TSqlHStmt; CursorName: PSQLCHAR; \u000D\u000A                       BufferLength: TSqlSmallInt; NameLength: PSQLSMALLINT): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLSetCursorName", 
+    "type": "skProc", 
+    "code": "proc SQLSetCursorName*(StatementHandle: TSqlHStmt; CursorName: PSQLCHAR; \u000D\u000A                       NameLength: TSqlSmallInt): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLRowCount", 
+    "type": "skProc", 
+    "code": "proc SQLRowCount*(StatementHandle: TSqlHStmt; RowCount: var TSqlInteger): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLBindParameter", 
+    "type": "skProc", 
+    "code": "proc SQLBindParameter*(hstmt: TSqlHStmt; ipar: TSqlUSmallInt; \u000D\u000A                       fParamType: TSqlSmallInt; fCType: TSqlSmallInt; \u000D\u000A                       fSqlType: TSqlSmallInt; cbColDef: TSqlUInteger; \u000D\u000A                       ibScale: TSqlSmallInt; rgbValue: TSqlPointer; \u000D\u000A                       cbValueMax: TSqlInteger; pcbValue: PSQLINTEGER): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLFreeStmt", 
+    "type": "skProc", 
+    "code": "proc SQLFreeStmt*(StatementHandle: TSqlHStmt; Option: TSqlUSmallInt): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLColAttribute", 
+    "type": "skProc", 
+    "code": "proc SQLColAttribute*(StatementHandle: TSqlHStmt; ColumnNumber: TSqlUSmallInt; \u000D\u000A                      FieldIdentifier: TSqlUSmallInt; \u000D\u000A                      CharacterAttribute: PSQLCHAR; BufferLength: TSqlSmallInt; \u000D\u000A                      StringLength: PSQLSMALLINT; NumericAttribute: TSqlPointer): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLEndTran", 
+    "type": "skProc", 
+    "code": "proc SQLEndTran*(HandleType: TSqlSmallInt; Handle: TSqlHandle; \u000D\u000A                 CompletionType: TSqlSmallInt): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLTables", 
+    "type": "skProc", 
+    "code": "proc SQLTables*(hstmt: TSqlHStmt; szTableQualifier: PSQLCHAR; \u000D\u000A                cbTableQualifier: TSqlSmallInt; szTableOwner: PSQLCHAR; \u000D\u000A                cbTableOwner: TSqlSmallInt; szTableName: PSQLCHAR; \u000D\u000A                cbTableName: TSqlSmallInt; szTableType: PSQLCHAR; \u000D\u000A                cbTableType: TSqlSmallInt): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLColumns", 
+    "type": "skProc", 
+    "code": "proc SQLColumns*(hstmt: TSqlHStmt; szTableQualifier: PSQLCHAR; \u000D\u000A                 cbTableQualifier: TSqlSmallInt; szTableOwner: PSQLCHAR; \u000D\u000A                 cbTableOwner: TSqlSmallInt; szTableName: PSQLCHAR; \u000D\u000A                 cbTableName: TSqlSmallInt; szColumnName: PSQLCHAR; \u000D\u000A                 cbColumnName: TSqlSmallInt): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLSpecialColumns", 
+    "type": "skProc", 
+    "code": "proc SQLSpecialColumns*(StatementHandle: TSqlHStmt; \u000D\u000A                        IdentifierType: TSqlUSmallInt; CatalogName: PSQLCHAR; \u000D\u000A                        NameLength1: TSqlSmallInt; SchemaName: PSQLCHAR; \u000D\u000A                        NameLength2: TSqlSmallInt; TableName: PSQLCHAR; \u000D\u000A                        NameLength3: TSqlSmallInt; Scope: TSqlUSmallInt; \u000D\u000A                        Nullable: TSqlUSmallInt): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLProcedures", 
+    "type": "skProc", 
+    "code": "proc SQLProcedures*(hstmt: TSqlHStmt; szTableQualifier: PSQLCHAR; \u000D\u000A                    cbTableQualifier: TSqlSmallInt; szTableOwner: PSQLCHAR; \u000D\u000A                    cbTableOwner: TSqlSmallInt; szTableName: PSQLCHAR; \u000D\u000A                    cbTableName: TSqlSmallInt): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLPrimaryKeys", 
+    "type": "skProc", 
+    "code": "proc SQLPrimaryKeys*(hstmt: TSqlHStmt; CatalogName: PSQLCHAR; \u000D\u000A                     NameLength1: TSqlSmallInt; SchemaName: PSQLCHAR; \u000D\u000A                     NameLength2: TSqlSmallInt; TableName: PSQLCHAR; \u000D\u000A                     NameLength3: TSqlSmallInt): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }, 
+  {
+    "name": "SQLProcedureColumns", 
+    "type": "skProc", 
+    "code": "proc SQLProcedureColumns*(hstmt: TSqlHStmt; CatalogName: PSQLCHAR; \u000D\u000A                          NameLength1: TSqlSmallInt; SchemaName: PSQLCHAR; \u000D\u000A                          NameLength2: TSqlSmallInt; ProcName: PSQLCHAR; \u000D\u000A                          NameLength3: TSqlSmallInt; ColumnName: PSQLCHAR; \u000D\u000A                          NameLength4: TSqlSmallInt): TSqlSmallInt {.\u000D\u000A    dynlib: odbclib, importc.}"
+  }, 
+  {
+    "name": "SQLStatistics", 
+    "type": "skProc", 
+    "code": "proc SQLStatistics*(hstmt: TSqlHStmt; CatalogName: PSQLCHAR; \u000D\u000A                    NameLength1: TSqlSmallInt; SchemaName: PSQLCHAR; \u000D\u000A                    NameLength2: TSqlSmallInt; TableName: PSQLCHAR; \u000D\u000A                    NameLength3: TSqlSmallInt; Unique: TSqlUSmallInt; \u000D\u000A                    Reserved: TSqlUSmallInt): TSqlSmallInt {.dynlib: odbclib, \u000D\u000A    importc.}"
+  }
+]

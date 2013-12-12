@@ -1,0 +1,32 @@
+[
+  {
+    "name": "LibName", 
+    "type": "skConst", 
+    "code": "LibName* = \"SHFolder.dll\""
+  }, 
+  {
+    "name": "CSIDL_FLAG_CREATE", 
+    "type": "skConst", 
+    "code": "CSIDL_FLAG_CREATE* = 0x00008000"
+  }, 
+  {
+    "name": "SHGetFolderPathA", 
+    "type": "skProc", 
+    "code": "proc SHGetFolderPathA*(Ahwnd: HWND; Csidl: int; Token: THandle; Flags: DWord; \u000D\u000A                       Path: cstring): HRESULT {.stdcall, dynlib: LibName, \u000D\u000A    importc: \"SHGetFolderPathA\".}"
+  }, 
+  {
+    "name": "SHGetFolderPathW", 
+    "type": "skProc", 
+    "code": "proc SHGetFolderPathW*(Ahwnd: HWND; Csidl: int; Token: THandle; Flags: DWord; \u000D\u000A                       Path: cstring): HRESULT {.stdcall, dynlib: LibName, \u000D\u000A    importc: \"SHGetFolderPathW\".}"
+  }, 
+  {
+    "name": "SHGetFolderPath", 
+    "type": "skProc", 
+    "code": "proc SHGetFolderPath*(Ahwnd: HWND; Csidl: int; Token: THandle; Flags: DWord; \u000D\u000A                      Path: cstring): HRESULT {.stdcall, dynlib: LibName, \u000D\u000A    importc: \"SHGetFolderPathA\".}"
+  }, 
+  {
+    "name": "TSHGetFolderPath", 
+    "type": "skType", 
+    "code": "TSHGetFolderPath* = TSHGetFolderPathA"
+  }
+]

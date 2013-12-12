@@ -1,0 +1,13 @@
+[
+  {
+    "name": "TOneVarFunction", 
+    "type": "skType", 
+    "code": "TOneVarFunction* = proc (x: float): float"
+  }, 
+  {
+    "name": "brent", 
+    "type": "skProc", 
+    "description": "Searches <cite>function</cite> for a root between <cite>xmin</cite> and <cite>xmax</cite> using brents method. If the function value at <cite>xmin`and `xmax</cite> has the same sign, <cite>rootx</cite>/<cite>rooty</cite> is set too the extrema value closest to x-axis and succes is set to false. Otherwise there exists at least one root and success is set to true. This root is searched for at most <cite>maxiter</cite> iterations. If <cite>tol</cite> tolerance is reached within <cite>maxiter</cite> iterations the root refinement stops and success=true.", 
+    "code": "proc brent*(xmin, xmax: float; function: TOneVarFunction; tol: float; \u000D\u000A            maxiter = 1000): tuple[rootx, rooty: float, success: bool]"
+  }
+]

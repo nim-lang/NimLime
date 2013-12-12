@@ -1,0 +1,23 @@
+[
+  {
+    "comment": ":Authors: Zahary Karadjov, Andreas Rumpf\u000D\u000A##\u000D\u000A## This module provides support for `memory mapped files`:idx:\u000D\u000A## (Posix's `mmap`:idx:) on the different operating systems."
+  }, 
+  {
+    "name": "TMemFile", 
+    "type": "skType", 
+    "description": "represents a memory mapped file", 
+    "code": "TMemFile* = object  {.pure.}\u000D\u000A  mem*: pointer ## a pointer to the memory mapped file. The pointer\u000D\u000A                ## can be used directly to change the contents of the\u000D\u000A                ## file, if it was opened with write access.\u000D\u000A  size*: int                  ## size of the memory mapped file\u000D\u000A  when defined(windows): \u000D\u000A      fHandle: int\u000D\u000A      mapHandle: int\u000D\u000A\u000D\u000A  else: \u000D\u000A      handle: cint\u000D\u000A\u000D\u000A  "
+  }, 
+  {
+    "name": "open", 
+    "type": "skProc", 
+    "description": "opens a memory mapped file. If this fails, <tt class=\"docutils literal\"><span class=\"pre\">EOS</span></tt> is raised. <cite>newFileSize</cite> can only be set if the file is not opened with <tt class=\"docutils literal\"><span class=\"pre\">fmRead</span></tt> access. <cite>mappedSize</cite> and <cite>offset</cite> can be used to map only a slice of the file.", 
+    "code": "proc open*(filename: string; mode: TFileMode = fmRead; mappedSize = - 1; \u000D\u000A           offset = 0; newFileSize = - 1): TMemFile"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "closes the memory mapped file <cite>f</cite>. All changes are written back to the file system, if <cite>f</cite> was opened with write access.", 
+    "code": "proc close*(f: var TMemFile)"
+  }
+]

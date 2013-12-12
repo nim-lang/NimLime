@@ -1,0 +1,17 @@
+[
+  {
+    "comment": "This module defines compile-time reflection procs for\u000D\u000A## working with types"
+  }, 
+  {
+    "name": "name", 
+    "type": "skProc", 
+    "description": "Returns the name of the given type", 
+    "code": "proc name*(t: typedesc): string {.magic: \"TypeTrait\".}"
+  }, 
+  {
+    "name": "arity", 
+    "type": "skProc", 
+    "description": "Returns the arity of the given type", 
+    "code": "proc arity*(t: typedesc): int {.magic: \"TypeTrait\".}"
+  }
+]

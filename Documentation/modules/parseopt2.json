@@ -1,0 +1,51 @@
+[
+  {
+    "comment": "This module provides the standard Nimrod command line parser.\u000D\u000A## It supports one convenience iterator over all command line options and some\u000D\u000A## lower-level features.\u000D\u000A##\u000D\u000A## Supported syntax:\u000D\u000A##\u000D\u000A## 1. short options - ``-abcd``, where a, b, c, d are names\u000D\u000A## 2. long option - ``--foo:bar``, ``--foo=bar`` or ``--foo``\u000D\u000A## 3. argument - everything else"
+  }, 
+  {
+    "name": "TOptParser", 
+    "type": "skType", 
+    "description": "this object implements the command line parser", 
+    "code": "TOptParser* = object of TObject\u000D\u000A  cmd: seq[string]\u000D\u000A  pos: int\u000D\u000A  remainingShortOptions: string\u000D\u000A  kind*: TCmdLineKind         ## the dected command line token\u000D\u000A  key*, val*: TaintedString   ## key and value pair; ``key`` is the option\u000D\u000A                              ## or the argument, ``value`` is not \"\" if\u000D\u000A                              ## the option was given a value\u000D\u000A  "
+  }, 
+  {
+    "name": "initOptParser", 
+    "type": "skProc", 
+    "description": "Initalizes option parses with cmdline. cmdline should not contain argument 0 - program name. If cmdline == nil default to current command line arguments.", 
+    "code": "proc initOptParser*(cmdline: seq[string]): TOptParser {.rtl.}"
+  }, 
+  {
+    "name": "initOptParser", 
+    "type": "skProc", 
+    "description": "Initalizes option parses with cmdline. Splits cmdline in on spaces and calls initOptParser(openarray[string]) Do not use.", 
+    "code": "proc initOptParser*(cmdline: string): TOptParser {.rtl, deprecated.}"
+  }, 
+  {
+    "name": "initOptParser", 
+    "type": "skProc", 
+    "description": "Initializes option parser from current command line arguments.", 
+    "code": "proc initOptParser*(): TOptParser"
+  }, 
+  {
+    "name": "next", 
+    "type": "skProc", 
+    "code": "proc next*(p: var TOptParser) {.rtl, extern: \"npo$1\".}"
+  }, 
+  {
+    "name": "cmdLineRest", 
+    "type": "skProc", 
+    "description": "Returns part of command line string that has not been parsed yet. Do not use - does not correctly handle whitespace.", 
+    "code": "proc cmdLineRest*(p: TOptParser): TaintedString {.rtl, extern: \"npo$1\", \u000D\u000A    deprecated.}"
+  }, 
+  {
+    "name": "TGetoptResult", 
+    "type": "skType", 
+    "code": "TGetoptResult* = tuple[kind: TCmdLineKind, key, val: TaintedString]"
+  }, 
+  {
+    "name": "getopt", 
+    "type": "skIterator", 
+    "description": "This is an convenience iterator for iterating over the command line. This uses the TOptParser object. Example:<pre><span class=\"Keyword\">var</span>\u000D\u000A  <span class=\"Identifier\">filename</span> <span class=\"Operator\">=</span> <span class=\"StringLit\">&quot;&quot;</span>\u000D\u000A<span class=\"Keyword\">for</span> <span class=\"Identifier\">kind</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">key</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">val</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">getopt</span><span class=\"Punctation\">(</span><span class=\"Punctation\">)</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Keyword\">case</span> <span class=\"Identifier\">kind</span>\u000D\u000A  <span class=\"Keyword\">of</span> <span class=\"Identifier\">cmdArgument</span><span class=\"Punctation\">:</span>\u000D\u000A    <span class=\"Identifier\">filename</span> <span class=\"Operator\">=</span> <span class=\"Identifier\">key</span>\u000D\u000A  <span class=\"Keyword\">of</span> <span class=\"Identifier\">cmdLongOption</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">cmdShortOption</span><span class=\"Punctation\">:</span>\u000D\u000A    <span class=\"Keyword\">case</span> <span class=\"Identifier\">key</span>\u000D\u000A    <span class=\"Keyword\">of</span> <span class=\"StringLit\">&quot;help&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;h&quot;</span><span class=\"Punctation\">:</span> <span class=\"Identifier\">writeHelp</span><span class=\"Punctation\">(</span><span class=\"Punctation\">)</span>\u000D\u000A    <span class=\"Keyword\">of</span> <span class=\"StringLit\">&quot;version&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;v&quot;</span><span class=\"Punctation\">:</span> <span class=\"Identifier\">writeVersion</span><span class=\"Punctation\">(</span><span class=\"Punctation\">)</span>\u000D\u000A  <span class=\"Keyword\">of</span> <span class=\"Identifier\">cmdEnd</span><span class=\"Punctation\">:</span> <span class=\"Identifier\">assert</span><span class=\"Punctation\">(</span><span class=\"Identifier\">false</span><span class=\"Punctation\">)</span> <span class=\"Comment\"># cannot happen</span>\u000D\u000A<span class=\"Keyword\">if</span> <span class=\"Identifier\">filename</span> <span class=\"Operator\">==</span> <span class=\"StringLit\">&quot;&quot;</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Comment\"># no filename has been given, so we show the help:</span>\u000D\u000A  <span class=\"Identifier\">writeHelp</span><span class=\"Punctation\">(</span><span class=\"Punctation\">)</span></pre>", 
+    "code": "iterator getopt*(): TGetoptResult"
+  }
+]

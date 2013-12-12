@@ -1,0 +1,536 @@
+[
+  {
+    "comment": "Basic 2d support with vectors, points, matrices and some basic utilities.\u000D\u000A## Vectors are implemented as direction vectors, ie. when transformed with a matrix\u000D\u000A## the translation part of matrix is ignored. \u000D\u000A## Operators `+` , `-` , `*` , `/` , `+=` , `-=` , `*=` and `/=` are implemented for vectors and scalars.\u000D\u000A##\u000D\u000A## Quick start example:\u000D\u000A##   \u000D\u000A##   # Create a matrix wich first rotates, then scales and at last translates\u000D\u000A##   \u000D\u000A##   var m:TMatrix2d=rotate(DEG90) & scale(2.0) & move(100.0,200.0)\u000D\u000A##   \u000D\u000A##   # Create a 2d point at (100,0) and a vector (5,2)\u000D\u000A##   \u000D\u000A##   var pt:TPoint2d=point2d(100.0,0.0) \u000D\u000A##   \u000D\u000A##   var vec:TVector2d=vector2d(5.0,2.0)\u000D\u000A##   \u000D\u000A##   \u000D\u000A##   pt &= m # transforms pt in place\u000D\u000A##   \u000D\u000A##   var pt2:TPoint2d=pt & m #concatenates pt with m and returns a new point\u000D\u000A##   \u000D\u000A##   var vec2:TVector2d=vec & m #concatenates vec with m and returns a new vector"
+  }, 
+  {
+    "name": "TVector2d", 
+    "type": "skType", 
+    "description": "Implements a 2d <strong>direction vector</strong> stored as an <cite>x</cite> coordinate and an <cite>y</cite> coordinate. Direction vector means, that when transforming a vector with a matrix, the translational part of the matrix is ignored.", 
+    "code": "TVector2d* = object \u000D\u000A  x*, y*: float\u000D\u000A"
+  }, 
+  {
+    "name": "matrix2d", 
+    "type": "skProc", 
+    "description": "Creates a new matrix. <cite>ax</cite>,`ay` is the local x axis <cite>bx</cite>,`by` is the local y axis <cite>tx</cite>,`ty` is the translation", 
+    "code": "proc matrix2d*(ax, ay, bx, by, tx, ty: float): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "vector2d", 
+    "type": "skProc", 
+    "description": "Returns a new vector (<cite>x</cite>,`y`)", 
+    "code": "proc vector2d*(x, y: float): TVector2d {.noInit, inline.}"
+  }, 
+  {
+    "name": "point2d", 
+    "type": "skProc", 
+    "description": "Returns a new point (<cite>x</cite>,`y`)", 
+    "code": "proc point2d*(x, y: float): TPoint2d {.noInit, inline.}"
+  }, 
+  {
+    "name": "YAXIS", 
+    "type": "skLet", 
+    "description": "Quick acces to an 2d y-axis unit vector", 
+    "code": "YAXIS*: TVector2d = vector2d(0.0000000000000000e+000, 1.0000000000000000e+000)"
+  }, 
+  {
+    "name": "setElements", 
+    "type": "skProc", 
+    "description": "Sets arbitrary elements in an existing matrix.", 
+    "code": "proc setElements*(t: var TMatrix2d; ax, ay, bx, by, tx, ty: float) {.inline.}"
+  }, 
+  {
+    "name": "matrix2d", 
+    "type": "skProc", 
+    "code": "proc matrix2d*(ax, ay, bx, by, tx, ty: float): TMatrix2d"
+  }, 
+  {
+    "name": "`&amp;`", 
+    "type": "skProc", 
+    "description": "Concatenates matrices returning a new matrix.", 
+    "code": "proc `&`*(a, b: TMatrix2d): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "scale", 
+    "type": "skProc", 
+    "description": "Returns a new scale matrix.", 
+    "code": "proc scale*(s: float): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "scale", 
+    "type": "skProc", 
+    "description": "Returns a new scale matrix using, <cite>org</cite> as scale origin.", 
+    "code": "proc scale*(s: float; org: TPoint2d): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "stretch", 
+    "type": "skProc", 
+    "description": "Returns new a stretch matrix, which is a scale matrix with non uniform scale in x and y.", 
+    "code": "proc stretch*(sx, sy: float): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "stretch", 
+    "type": "skProc", 
+    "description": "Returns a new stretch matrix, which is a scale matrix with non uniform scale in x and y. <cite>org</cite> is used as stretch origin.", 
+    "code": "proc stretch*(sx, sy: float; org: TPoint2d): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "move", 
+    "type": "skProc", 
+    "description": "Returns a new translation matrix.", 
+    "code": "proc move*(dx, dy: float): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "move", 
+    "type": "skProc", 
+    "description": "Returns a new translation matrix from a vector.", 
+    "code": "proc move*(v: TVector2d): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "rotate", 
+    "type": "skProc", 
+    "description": "Returns a new rotation matrix, which represents a rotation by <cite>rad</cite> radians", 
+    "code": "proc rotate*(rad: float): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "rotate", 
+    "type": "skProc", 
+    "description": "Returns a new rotation matrix, which represents a rotation by <cite>rad</cite> radians around the origin <cite>org</cite>", 
+    "code": "proc rotate*(rad: float; org: TPoint2d): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "mirror", 
+    "type": "skProc", 
+    "description": "Returns a new mirror matrix, mirroring around the line that passes through origo and has the direction of <cite>v</cite>", 
+    "code": "proc mirror*(v: TVector2d): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "mirror", 
+    "type": "skProc", 
+    "description": "Returns a new mirror matrix, mirroring around the line that passes through <cite>org</cite> and has the direction of <cite>v</cite>", 
+    "code": "proc mirror*(org: TPoint2d; v: TVector2d): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "skew", 
+    "type": "skProc", 
+    "description": "Returns a new skew matrix, which has its x axis rotated <cite>xskew</cite> radians from the local x axis, and y axis rotated <cite>yskew</cite> radians from the local y axis", 
+    "code": "proc skew*(xskew, yskew: float): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "Returns a string representation of the matrix", 
+    "code": "proc `$`*(t: TMatrix2d): string {.noInit.}"
+  }, 
+  {
+    "name": "isUniform", 
+    "type": "skProc", 
+    "description": "Checks if the transform is uniform, that is perpendicular axes of equal lenght, which means (for example) it cannot transform a circle into an ellipse. <cite>tol</cite> is used as tolerance for both equal length comparison and perp. comparison.", 
+    "code": "proc isUniform*(t: TMatrix2d; tol = 9.9999999999999995e-007): bool"
+  }, 
+  {
+    "name": "determinant", 
+    "type": "skProc", 
+    "description": "Computes the determinant of the matrix.", 
+    "code": "proc determinant*(t: TMatrix2d): float"
+  }, 
+  {
+    "name": "isMirroring", 
+    "type": "skProc", 
+    "description": "Checks if the <cite>m</cite> is a mirroring matrix, which means it will reverse direction of a curve transformed with it", 
+    "code": "proc isMirroring*(m: TMatrix2d): bool"
+  }, 
+  {
+    "name": "inverse", 
+    "type": "skProc", 
+    "description": "Returns a new matrix, which is the inverse of the matrix If the matrix is not invertible (determinant=0), an EDivByZero will be raised.", 
+    "code": "proc inverse*(m: TMatrix2d): TMatrix2d {.noInit.}"
+  }, 
+  {
+    "name": "equals", 
+    "type": "skProc", 
+    "description": "Checks if all elements of <cite>m1`and `m2</cite> is equal within a given tolerance <cite>tol</cite>.", 
+    "code": "proc equals*(m1: TMatrix2d; m2: TMatrix2d; tol = 9.9999999999999995e-007): bool"
+  }, 
+  {
+    "name": "`=~`", 
+    "type": "skProc", 
+    "description": "Checks if <cite>m1`and `m2</cite> is aproximately equal, using a tolerance of 1e-6.", 
+    "code": "proc `=~`*(m1, m2: TMatrix2d): bool"
+  }, 
+  {
+    "name": "isIdentity", 
+    "type": "skProc", 
+    "description": "Checks is a matrix is approximately an identity matrix, using <cite>tol</cite> as tolerance for each element.", 
+    "code": "proc isIdentity*(m: TMatrix2d; tol = 9.9999999999999995e-007): bool"
+  }, 
+  {
+    "name": "apply", 
+    "type": "skProc", 
+    "description": "Applies transformation <cite>m</cite> onto <cite>x</cite>,`y`, optionally using the translation part of the matrix.", 
+    "code": "proc apply*(m: TMatrix2d; x, y: var float; translate = false)"
+  }, 
+  {
+    "name": "vector2d", 
+    "type": "skProc", 
+    "code": "proc vector2d*(x, y: float): TVector2d"
+  }, 
+  {
+    "name": "polarVector2d", 
+    "type": "skProc", 
+    "description": "Returns a new vector with angle <cite>ang</cite> and magnitude <cite>len</cite>", 
+    "code": "proc polarVector2d*(ang: float; len: float): TVector2d {.noInit.}"
+  }, 
+  {
+    "name": "slopeVector2d", 
+    "type": "skProc", 
+    "description": "Returns a new vector having slope (dy/dx) given by <cite>slope</cite>, and a magnitude of <cite>len</cite>", 
+    "code": "proc slopeVector2d*(slope: float; len: float): TVector2d {.noInit.}"
+  }, 
+  {
+    "name": "len", 
+    "type": "skProc", 
+    "description": "Returns the length of the vector.", 
+    "code": "proc len*(v: TVector2d): float {.inline.}"
+  }, 
+  {
+    "name": "`len=`", 
+    "type": "skProc", 
+    "description": "Sets the length of the vector, keeping its angle.", 
+    "code": "proc `len =`*(v: var TVector2d; newlen: float) {.noInit.}"
+  }, 
+  {
+    "name": "sqrLen", 
+    "type": "skProc", 
+    "description": "Computes the squared length of the vector, which is faster than computing the absolute length.", 
+    "code": "proc sqrLen*(v: TVector2d): float {.inline.}"
+  }, 
+  {
+    "name": "angle", 
+    "type": "skProc", 
+    "description": "Returns the angle of the vector. (The counter clockwise plane angle between posetive x axis and <cite>v</cite>)", 
+    "code": "proc angle*(v: TVector2d): float"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "String representation of <cite>v</cite>", 
+    "code": "proc `$`*(v: TVector2d): string"
+  }, 
+  {
+    "name": "`&amp;`", 
+    "type": "skProc", 
+    "description": "Concatenate vector <cite>v</cite> with a transformation matrix. Transforming a vector ignores the translational part of the matrix.", 
+    "code": "proc `&`*(v: TVector2d; m: TMatrix2d): TVector2d {.noInit.}"
+  }, 
+  {
+    "name": "`&amp;=`", 
+    "type": "skProc", 
+    "description": "Applies transformation <cite>m</cite> onto <cite>v</cite> in place. Transforming a vector ignores the translational part of the matrix.", 
+    "code": "proc `&=`*(v: var TVector2d; m: TMatrix2d) {.inline.}"
+  }, 
+  {
+    "name": "tryNormalize", 
+    "type": "skProc", 
+    "description": "Modifies <cite>v</cite> to have a length of 1.0, keeping its angle. If <cite>v</cite> has zero length (and thus no angle), it is left unmodified and false is returned, otherwise true is returned.", 
+    "code": "proc tryNormalize*(v: var TVector2d): bool"
+  }, 
+  {
+    "name": "normalize", 
+    "type": "skProc", 
+    "description": "Modifies <cite>v</cite> to have a length of 1.0, keeping its angle. If  <cite>v</cite> has zero length, an EDivByZero will be raised.", 
+    "code": "proc normalize*(v: var TVector2d) {.inline.}"
+  }, 
+  {
+    "name": "transformNorm", 
+    "type": "skProc", 
+    "description": "Applies a normal direction transformation <cite>t</cite> onto <cite>v</cite> in place. The resulting vector is <em>not</em> normalized.  Transforming a vector ignores the translational part of the matrix. If the matrix is not invertible (determinant=0), an EDivByZero will be raised.", 
+    "code": "proc transformNorm*(v: var TVector2d; t: TMatrix2d)"
+  }, 
+  {
+    "name": "transformInv", 
+    "type": "skProc", 
+    "description": "Applies inverse of a transformation <cite>t</cite> to <cite>v</cite> in place. This is faster than creating an inverse matrix and apply() it. Transforming a vector ignores the translational part of the matrix. If the matrix is not invertible (determinant=0), an EDivByZero will be raised.", 
+    "code": "proc transformInv*(v: var TVector2d; t: TMatrix2d)"
+  }, 
+  {
+    "name": "transformNormInv", 
+    "type": "skProc", 
+    "description": "Applies an inverse normal direction transformation <cite>t</cite> onto <cite>v</cite> in place. This is faster than creating an inverse matrix and transformNorm(...) it. Transforming a vector ignores the translational part of the matrix.", 
+    "code": "proc transformNormInv*(v: var TVector2d; t: TMatrix2d)"
+  }, 
+  {
+    "name": "rotate90", 
+    "type": "skProc", 
+    "description": "Quickly rotates vector <cite>v</cite> 90 degrees counter clockwise, without using any trigonometrics.", 
+    "code": "proc rotate90*(v: var TVector2d) {.inline.}"
+  }, 
+  {
+    "name": "rotate180", 
+    "type": "skProc", 
+    "description": "Quickly rotates vector <cite>v</cite> 180 degrees counter clockwise, without using any trigonometrics.", 
+    "code": "proc rotate180*(v: var TVector2d) {.inline.}"
+  }, 
+  {
+    "name": "rotate270", 
+    "type": "skProc", 
+    "description": "Quickly rotates vector <cite>v</cite> 270 degrees counter clockwise, without using any trigonometrics.", 
+    "code": "proc rotate270*(v: var TVector2d) {.inline.}"
+  }, 
+  {
+    "name": "rotate", 
+    "type": "skProc", 
+    "description": "Rotates vector <cite>v</cite> <cite>rad</cite> radians in place.", 
+    "code": "proc rotate*(v: var TVector2d; rad: float)"
+  }, 
+  {
+    "name": "scale", 
+    "type": "skProc", 
+    "description": "Scales vector <cite>v</cite> <cite>rad</cite> radians in place.", 
+    "code": "proc scale*(v: var TVector2d; fac: float) {.inline.}"
+  }, 
+  {
+    "name": "stretch", 
+    "type": "skProc", 
+    "description": "Stretches vector <cite>v</cite> <cite>facx</cite> times horizontally, and <cite>facy</cite> times vertically.", 
+    "code": "proc stretch*(v: var TVector2d; facx, facy: float) {.inline.}"
+  }, 
+  {
+    "name": "mirror", 
+    "type": "skProc", 
+    "description": "Mirrors vector <cite>v</cite> using <cite>mirrvec</cite> as mirror direction.", 
+    "code": "proc mirror*(v: var TVector2d; mirrvec: TVector2d)"
+  }, 
+  {
+    "name": "`-`", 
+    "type": "skProc", 
+    "description": "Negates a vector", 
+    "code": "proc `-`*(v: TVector2d): TVector2d"
+  }, 
+  {
+    "name": "dot", 
+    "type": "skProc", 
+    "description": "Computes the dot product of two vectors. Returns 0.0 if the vectors are perpendicular.", 
+    "code": "proc dot*(v1, v2: TVector2d): float"
+  }, 
+  {
+    "name": "cross", 
+    "type": "skProc", 
+    "description": "Computes the cross product of two vectors, also called the 'perpendicular dot product' in 2d. Returns 0.0 if the vectors are parallel.", 
+    "code": "proc cross*(v1, v2: TVector2d): float"
+  }, 
+  {
+    "name": "equals", 
+    "type": "skProc", 
+    "description": "Checks if two vectors approximately equals with a tolerance.", 
+    "code": "proc equals*(v1, v2: TVector2d; tol = 9.9999999999999995e-007): bool"
+  }, 
+  {
+    "name": "`=~`", 
+    "type": "skProc", 
+    "description": "Checks if two vectors approximately equals with a hardcoded tolerance 1e-6", 
+    "code": "proc `=~`*(v1, v2: TVector2d): bool"
+  }, 
+  {
+    "name": "angleTo", 
+    "type": "skProc", 
+    "description": "Returns the smallest of the two possible angles between <cite>v1</cite> and <cite>v2</cite> in radians.", 
+    "code": "proc angleTo*(v1, v2: TVector2d): float"
+  }, 
+  {
+    "name": "angleCCW", 
+    "type": "skProc", 
+    "description": "Returns the counter clockwise plane angle from <cite>v1</cite> to <cite>v2</cite>, in range 0 - 2*PI", 
+    "code": "proc angleCCW*(v1, v2: TVector2d): float"
+  }, 
+  {
+    "name": "angleCW", 
+    "type": "skProc", 
+    "description": "Returns the clockwise plane angle from <cite>v1</cite> to <cite>v2</cite>, in range 0 - 2*PI", 
+    "code": "proc angleCW*(v1, v2: TVector2d): float"
+  }, 
+  {
+    "name": "turnAngle", 
+    "type": "skProc", 
+    "description": "Returns the amount v1 should be rotated (in radians) to equal v2, in range -PI to PI", 
+    "code": "proc turnAngle*(v1, v2: TVector2d): float"
+  }, 
+  {
+    "name": "bisect", 
+    "type": "skProc", 
+    "description": "Computes the bisector between v1 and v2 as a normalized vector. If one of the input vectors has zero length, a normalized version of the other is returned. If both input vectors has zero length, an arbitrary normalized vector is returned.", 
+    "code": "proc bisect*(v1, v2: TVector2d): TVector2d {.noInit.}"
+  }, 
+  {
+    "name": "point2d", 
+    "type": "skProc", 
+    "code": "proc point2d*(x, y: float): TPoint2d"
+  }, 
+  {
+    "name": "sqrDist", 
+    "type": "skProc", 
+    "description": "Computes the squared distance between <cite>a</cite> and <cite>b</cite>", 
+    "code": "proc sqrDist*(a, b: TPoint2d): float"
+  }, 
+  {
+    "name": "dist", 
+    "type": "skProc", 
+    "description": "Computes the absolute distance between <cite>a</cite> and <cite>b</cite>", 
+    "code": "proc dist*(a, b: TPoint2d): float {.inline.}"
+  }, 
+  {
+    "name": "angle", 
+    "type": "skProc", 
+    "description": "Computes the angle of the vector <cite>b</cite>-<cite>a</cite>", 
+    "code": "proc angle*(a, b: TPoint2d): float"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "String representation of <cite>p</cite>", 
+    "code": "proc `$`*(p: TPoint2d): string"
+  }, 
+  {
+    "name": "`&amp;`", 
+    "type": "skProc", 
+    "description": "Concatenates a point <cite>p</cite> with a transform <cite>t</cite>, resulting in a new, transformed point.", 
+    "code": "proc `&`*(p: TPoint2d; t: TMatrix2d): TPoint2d {.noInit, inline.}"
+  }, 
+  {
+    "name": "`&amp;=`", 
+    "type": "skProc", 
+    "description": "Applies transformation <cite>t</cite> onto <cite>p</cite> in place.", 
+    "code": "proc `&=`*(p: var TPoint2d; t: TMatrix2d) {.inline.}"
+  }, 
+  {
+    "name": "transformInv", 
+    "type": "skProc", 
+    "description": "Applies the inverse of transformation <cite>t</cite> onto <cite>p</cite> in place. If the matrix is not invertable (determinant=0) , EDivByZero will be raised.", 
+    "code": "proc transformInv*(p: var TPoint2d; t: TMatrix2d) {.inline.}"
+  }, 
+  {
+    "name": "`+`", 
+    "type": "skProc", 
+    "description": "Adds a vector <cite>v</cite> to a point <cite>p</cite>, resulting in a new point.", 
+    "code": "proc `+`*(p: TPoint2d; v: TVector2d): TPoint2d {.noInit, inline.}"
+  }, 
+  {
+    "name": "`+=`", 
+    "type": "skProc", 
+    "description": "Adds a vector <cite>v</cite> to a point <cite>p</cite> in place.", 
+    "code": "proc `+=`*(p: var TPoint2d; v: TVector2d) {.noInit, inline.}"
+  }, 
+  {
+    "name": "`-`", 
+    "type": "skProc", 
+    "description": "Subtracts a vector <cite>v</cite> from a point <cite>p</cite>, resulting in a new point.", 
+    "code": "proc `-`*(p: TPoint2d; v: TVector2d): TPoint2d {.noInit, inline.}"
+  }, 
+  {
+    "name": "`-`", 
+    "type": "skProc", 
+    "description": "Subtracts <cite>p2`from `p1</cite> resulting in a difference vector.", 
+    "code": "proc `-`*(p1, p2: TPoint2d): TVector2d {.noInit, inline.}"
+  }, 
+  {
+    "name": "`-=`", 
+    "type": "skProc", 
+    "description": "Subtracts a vector <cite>v</cite> from a point <cite>p</cite> in place.", 
+    "code": "proc `-=`*(p: var TPoint2d; v: TVector2d) {.noInit, inline.}"
+  }, 
+  {
+    "name": "`=~`", 
+    "type": "skProc", 
+    "description": "Checks if two vectors approximately equals with a hardcoded tolerance 1e-6", 
+    "code": "proc `=~`*(p1, p2: TPoint2d): bool {.inline.}"
+  }, 
+  {
+    "name": "polar", 
+    "type": "skProc", 
+    "description": "Returns a point with a given angle and distance away from <cite>p</cite>", 
+    "code": "proc polar*(p: TPoint2d; ang, dist: float): TPoint2d {.noInit.}"
+  }, 
+  {
+    "name": "rotate", 
+    "type": "skProc", 
+    "description": "Rotates a point in place <cite>rad</cite> radians around origo.", 
+    "code": "proc rotate*(p: var TPoint2d; rad: float)"
+  }, 
+  {
+    "name": "rotate", 
+    "type": "skProc", 
+    "description": "Rotates a point in place <cite>rad</cite> radians using <cite>org</cite> as center of rotation.", 
+    "code": "proc rotate*(p: var TPoint2d; rad: float; org: TPoint2d)"
+  }, 
+  {
+    "name": "scale", 
+    "type": "skProc", 
+    "description": "Scales a point in place <cite>fac</cite> times with world origo as origin.", 
+    "code": "proc scale*(p: var TPoint2d; fac: float) {.inline.}"
+  }, 
+  {
+    "name": "scale", 
+    "type": "skProc", 
+    "description": "Scales the point in place <cite>fac</cite> times with <cite>org</cite> as origin.", 
+    "code": "proc scale*(p: var TPoint2d; fac: float; org: TPoint2d) {.inline.}"
+  }, 
+  {
+    "name": "stretch", 
+    "type": "skProc", 
+    "description": "Scales a point in place non uniformly <cite>facx</cite> and <cite>facy</cite> times with world origo as origin.", 
+    "code": "proc stretch*(p: var TPoint2d; facx, facy: float) {.inline.}"
+  }, 
+  {
+    "name": "stretch", 
+    "type": "skProc", 
+    "description": "Scales the point in place non uniformly <cite>facx</cite> and <cite>facy</cite> times with <cite>org</cite> as origin.", 
+    "code": "proc stretch*(p: var TPoint2d; facx, facy: float; org: TPoint2d) {.inline.}"
+  }, 
+  {
+    "name": "move", 
+    "type": "skProc", 
+    "description": "Translates a point <cite>dx</cite>, <cite>dy</cite> in place.", 
+    "code": "proc move*(p: var TPoint2d; dx, dy: float) {.inline.}"
+  }, 
+  {
+    "name": "move", 
+    "type": "skProc", 
+    "description": "Translates a point with vector <cite>v</cite> in place.", 
+    "code": "proc move*(p: var TPoint2d; v: TVector2d) {.inline.}"
+  }, 
+  {
+    "name": "sgnArea", 
+    "type": "skProc", 
+    "description": "Computes the signed area of the triangle thru points <cite>a</cite>,`b` and <cite>c</cite> result&gt;0.0 for counter clockwise triangle result&lt;0.0 for clockwise triangle This is commonly used to determinate side of a point with respect to a line.", 
+    "code": "proc sgnArea*(a, b, c: TPoint2d): float"
+  }, 
+  {
+    "name": "area", 
+    "type": "skProc", 
+    "description": "Computes the area of the triangle thru points <cite>a</cite>,`b` and <cite>c</cite>", 
+    "code": "proc area*(a, b, c: TPoint2d): float"
+  }, 
+  {
+    "name": "closestPoint", 
+    "type": "skProc", 
+    "description": "Returns a point selected from <cite>pts</cite>, that has the closest euclidean distance to <cite>p</cite>", 
+    "code": "proc closestPoint*(p: TPoint2d; pts: varargs[TPoint2d]): TPoint2d"
+  }, 
+  {
+    "name": "normAngle", 
+    "type": "skProc", 
+    "description": "Returns an angle in radians, that is equal to <cite>ang</cite>, but in the range 0 to &lt;2*PI", 
+    "code": "proc normAngle*(ang: float): float"
+  }, 
+  {
+    "name": "degToRad", 
+    "type": "skProc", 
+    "description": "converts <cite>deg</cite> degrees to radians", 
+    "code": "proc degToRad*(deg: float): float {.inline.}"
+  }, 
+  {
+    "name": "radToDeg", 
+    "type": "skProc", 
+    "description": "converts <cite>rad</cite> radians to degrees", 
+    "code": "proc radToDeg*(rad: float): float {.inline.}"
+  }
+]

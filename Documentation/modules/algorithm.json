@@ -1,0 +1,47 @@
+[
+  {
+    "comment": "This module implements some common generic algorithms."
+  }, 
+  {
+    "name": "TSortOrder", 
+    "type": "skType", 
+    "description": "sort order", 
+    "code": "TSortOrder* = enum \u000D\u000A  Descending, Ascending"
+  }, 
+  {
+    "name": "`*`", 
+    "type": "skProc", 
+    "description": "flips <cite>x</cite> if <tt class=\"docutils literal\"><span class=\"pre\">order == Descending</span></tt>; if <tt class=\"docutils literal\"><span class=\"pre\">order == Ascending</span></tt> then <cite>x</cite> is returned. <cite>x</cite> is supposed to be the result of a comparator, ie <tt class=\"docutils literal\"><span class=\"pre\">&lt; 0</span></tt> for <em>less than</em>, <tt class=\"docutils literal\"><span class=\"pre\">== 0</span></tt> for <em>equal</em>, <tt class=\"docutils literal\"><span class=\"pre\">&gt; 0</span></tt> for <em>greater than</em>.", 
+    "code": "proc `*`*(x: int; order: TSortOrder): int {.inline.}"
+  }, 
+  {
+    "name": "reverse", 
+    "type": "skProc", 
+    "description": "reverses the array <tt class=\"docutils literal\"><span class=\"pre\">a[first..last]</span></tt>.", 
+    "code": "proc reverse*[T](a: var openArray[T]; first, last: int)"
+  }, 
+  {
+    "name": "reverse", 
+    "type": "skProc", 
+    "description": "reverses the array <cite>a</cite>.", 
+    "code": "proc reverse*[T](a: var openArray[T])"
+  }, 
+  {
+    "name": "binarySearch", 
+    "type": "skProc", 
+    "description": "binary search for <cite>key</cite> in <cite>a</cite>. Returns -1 if not found.", 
+    "code": "proc binarySearch*[T](a: openarray[T]; key: T): int"
+  }, 
+  {
+    "name": "smartBinarySearch", 
+    "type": "skProc", 
+    "description": "<tt class=\"docutils literal\"><span class=\"pre\">a.len</span></tt> must be a power of 2 for this to work.", 
+    "code": "proc smartBinarySearch*[T](a: openArray[T]; key: T): int"
+  }, 
+  {
+    "name": "sort", 
+    "type": "skProc", 
+    "description": "Default Nimrod sort. The sorting is guaranteed to be stable and the worst case is guaranteed to be O(n log n). The current implementation uses an iterative mergesort to achieve this. It uses a temporary sequence of length <tt class=\"docutils literal\"><span class=\"pre\">a.len div 2</span></tt>. Currently Nimrod does not support a sensible default argument for <tt class=\"docutils literal\"><span class=\"pre\">cmp</span></tt>, so you have to provide one of your own. However, the <tt class=\"docutils literal\"><span class=\"pre\">system.cmp</span></tt> procs can be used:<pre><span class=\"Identifier\">sort</span><span class=\"Punctation\">(</span><span class=\"Identifier\">myIntArray</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">system</span><span class=\"Operator\">.</span><span class=\"Identifier\">cmp</span><span class=\"Punctation\">[</span><span class=\"Identifier\">int</span><span class=\"Punctation\">]</span><span class=\"Punctation\">)</span>\u000D\u000A\u000D\u000A<span class=\"Comment\"># do not use cmp[string] here as we want to use the specialized</span>\u000D\u000A<span class=\"Comment\"># overload:</span>\u000D\u000A<span class=\"Identifier\">sort</span><span class=\"Punctation\">(</span><span class=\"Identifier\">myStrArray</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">system</span><span class=\"Operator\">.</span><span class=\"Identifier\">cmp</span><span class=\"Punctation\">)</span></pre>", 
+    "code": "proc sort*[T](a: var openArray[T]; cmp: proc (x, y: T): int {.closure.}; \u000D\u000A              order = TSortOrder.Ascending)"
+  }
+]

@@ -1,0 +1,281 @@
+[
+  {
+    "comment": "This module implements a simple high performance `JSON`:idx:\u000D\u000A## parser. JSON (JavaScript Object Notation) is a lightweight \u000D\u000A## data-interchange format that is easy for humans to read and write \u000D\u000A## (unlike XML). It is easy for machines to parse and generate.\u000D\u000A## JSON is based on a subset of the JavaScript Programming Language,\u000D\u000A## Standard ECMA-262 3rd Edition - December 1999.\u000D\u000A##\u000D\u000A## Usage example:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##  let\u000D\u000A##    small_json = \"\"\"{\"test\": 1.3, \"key2\": true}\"\"\"\u000D\u000A##    jobj = parseJson(small_json)\u000D\u000A##  assert (jobj.kind == JObject)\u000D\u000A##  echo($jobj[\"test\"].fnum)\u000D\u000A##  echo($jobj[\"key2\"].bval)\u000D\u000A##\u000D\u000A## Results in:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##\u000D\u000A##   1.3000000000000000e+00\u000D\u000A##   true"
+  }, 
+  {
+    "name": "TJsonParser", 
+    "type": "skType", 
+    "description": "the parser object.", 
+    "code": "TJsonParser* = object of TBaseLexer\u000D\u000A  a: string\u000D\u000A  tok: TTokKind\u000D\u000A  kind: TJsonEventKind\u000D\u000A  err: TJsonError\u000D\u000A  state: seq[TParserState]\u000D\u000A  filename: string\u000D\u000A"
+  }, 
+  {
+    "name": "open", 
+    "type": "skProc", 
+    "description": "initializes the parser with an input stream. <cite>Filename</cite> is only used for nice error messages.", 
+    "code": "proc open*(my: var TJsonParser; input: PStream; filename: string)"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "closes the parser <cite>my</cite> and its associated input stream.", 
+    "code": "proc close*(my: var TJsonParser) {.inline.}"
+  }, 
+  {
+    "name": "str", 
+    "type": "skProc", 
+    "description": "returns the character data for the events: <tt class=\"docutils literal\"><span class=\"pre\">jsonInt</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">jsonFloat</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">jsonString</span></tt>", 
+    "code": "proc str*(my: TJsonParser): string {.inline.}"
+  }, 
+  {
+    "name": "getInt", 
+    "type": "skProc", 
+    "description": "returns the number for the event: <tt class=\"docutils literal\"><span class=\"pre\">jsonInt</span></tt>", 
+    "code": "proc getInt*(my: TJsonParser): biggestInt {.inline.}"
+  }, 
+  {
+    "name": "getFloat", 
+    "type": "skProc", 
+    "description": "returns the number for the event: <tt class=\"docutils literal\"><span class=\"pre\">jsonFloat</span></tt>", 
+    "code": "proc getFloat*(my: TJsonParser): float {.inline.}"
+  }, 
+  {
+    "name": "kind", 
+    "type": "skProc", 
+    "description": "returns the current event type for the JSON parser", 
+    "code": "proc kind*(my: TJsonParser): TJsonEventKind {.inline.}"
+  }, 
+  {
+    "name": "getColumn", 
+    "type": "skProc", 
+    "description": "get the current column the parser has arrived at.", 
+    "code": "proc getColumn*(my: TJsonParser): int {.inline.}"
+  }, 
+  {
+    "name": "getLine", 
+    "type": "skProc", 
+    "description": "get the current line the parser has arrived at.", 
+    "code": "proc getLine*(my: TJsonParser): int {.inline.}"
+  }, 
+  {
+    "name": "getFilename", 
+    "type": "skProc", 
+    "description": "get the filename of the file that the parser processes.", 
+    "code": "proc getFilename*(my: TJsonParser): string {.inline.}"
+  }, 
+  {
+    "name": "errorMsg", 
+    "type": "skProc", 
+    "description": "returns a helpful error message for the event <tt class=\"docutils literal\"><span class=\"pre\">jsonError</span></tt>", 
+    "code": "proc errorMsg*(my: TJsonParser): string"
+  }, 
+  {
+    "name": "errorMsgExpected", 
+    "type": "skProc", 
+    "description": "returns an error message &quot;<cite>e</cite> expected&quot; in the same format as the other error messages ", 
+    "code": "proc errorMsgExpected*(my: TJsonParser; e: string): string"
+  }, 
+  {
+    "name": "next", 
+    "type": "skProc", 
+    "description": "retrieves the first/next event. This controls the parser.", 
+    "code": "proc next*(my: var TJsonParser)"
+  }, 
+  {
+    "name": "EJsonParsingError", 
+    "type": "skType", 
+    "description": "is raised for a JSON error", 
+    "code": "EJsonParsingError* = object of EInvalidValue"
+  }, 
+  {
+    "name": "raiseParseErr", 
+    "type": "skProc", 
+    "description": "raises an <cite>EJsonParsingError</cite> exception.", 
+    "code": "proc raiseParseErr*(p: TJsonParser; msg: string) {.noinline, noreturn.}"
+  }, 
+  {
+    "name": "newJString", 
+    "type": "skProc", 
+    "description": "Creates a new <cite>JString PJsonNode</cite>.", 
+    "code": "proc newJString*(s: String): PJsonNode"
+  }, 
+  {
+    "name": "newJInt", 
+    "type": "skProc", 
+    "description": "Creates a new <cite>JInt PJsonNode</cite>.", 
+    "code": "proc newJInt*(n: biggestInt): PJsonNode"
+  }, 
+  {
+    "name": "newJFloat", 
+    "type": "skProc", 
+    "description": "Creates a new <cite>JFloat PJsonNode</cite>.", 
+    "code": "proc newJFloat*(n: Float): PJsonNode"
+  }, 
+  {
+    "name": "newJBool", 
+    "type": "skProc", 
+    "description": "Creates a new <cite>JBool PJsonNode</cite>.", 
+    "code": "proc newJBool*(b: Bool): PJsonNode"
+  }, 
+  {
+    "name": "newJNull", 
+    "type": "skProc", 
+    "description": "Creates a new <cite>JNull PJsonNode</cite>.", 
+    "code": "proc newJNull*(): PJsonNode"
+  }, 
+  {
+    "name": "newJObject", 
+    "type": "skProc", 
+    "description": "Creates a new <cite>JObject PJsonNode</cite>", 
+    "code": "proc newJObject*(): PJsonNode"
+  }, 
+  {
+    "name": "newJArray", 
+    "type": "skProc", 
+    "description": "Creates a new <cite>JArray PJsonNode</cite>", 
+    "code": "proc newJArray*(): PJsonNode"
+  }, 
+  {
+    "name": "`%`", 
+    "type": "skProc", 
+    "description": "Generic constructor for JSON data. Creates a new <cite>JString PJsonNode</cite>.", 
+    "code": "proc `%`*(s: string): PJsonNode"
+  }, 
+  {
+    "name": "`%`", 
+    "type": "skProc", 
+    "description": "Generic constructor for JSON data. Creates a new <cite>JInt PJsonNode</cite>.", 
+    "code": "proc `%`*(n: biggestInt): PJsonNode"
+  }, 
+  {
+    "name": "`%`", 
+    "type": "skProc", 
+    "description": "Generic constructor for JSON data. Creates a new <cite>JFloat PJsonNode</cite>.", 
+    "code": "proc `%`*(n: float): PJsonNode"
+  }, 
+  {
+    "name": "`%`", 
+    "type": "skProc", 
+    "description": "Generic constructor for JSON data. Creates a new <cite>JBool PJsonNode</cite>.", 
+    "code": "proc `%`*(b: bool): PJsonNode"
+  }, 
+  {
+    "name": "`%`", 
+    "type": "skProc", 
+    "description": "Generic constructor for JSON data. Creates a new <cite>JObject PJsonNode</cite>", 
+    "code": "proc `%`*(keyVals: openArray[tuple[key: string, val: PJsonNode]]): PJsonNode"
+  }, 
+  {
+    "name": "`%`", 
+    "type": "skProc", 
+    "description": "Generic constructor for JSON data. Creates a new <cite>JArray PJsonNode</cite>", 
+    "code": "proc `%`*(elements: openArray[PJSonNode]): PJsonNode"
+  }, 
+  {
+    "name": "len", 
+    "type": "skProc", 
+    "description": "If <cite>n</cite> is a <cite>JArray</cite>, it returns the number of elements. If <cite>n</cite> is a <cite>JObject</cite>, it returns the number of pairs. Else it returns 0.", 
+    "code": "proc len*(n: PJsonNode): int"
+  }, 
+  {
+    "name": "`[]`", 
+    "type": "skProc", 
+    "description": "Gets a field from a <cite>JObject</cite>. Returns nil if the key is not found.", 
+    "code": "proc `[]`*(node: PJsonNode; name: String): PJsonNode"
+  }, 
+  {
+    "name": "`[]`", 
+    "type": "skProc", 
+    "description": "Gets the node at <cite>index</cite> in an Array.", 
+    "code": "proc `[]`*(node: PJsonNode; index: Int): PJsonNode"
+  }, 
+  {
+    "name": "hasKey", 
+    "type": "skProc", 
+    "description": "Checks if <cite>key</cite> exists in <cite>node</cite>.", 
+    "code": "proc hasKey*(node: PJsonNode; key: String): Bool"
+  }, 
+  {
+    "name": "existsKey", 
+    "type": "skProc", 
+    "description": "Deprecated for <cite>hasKey</cite>", 
+    "code": "proc existsKey*(node: PJsonNode; key: String): Bool {.deprecated.}"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "Adds <cite>child</cite> to a JArray node <cite>father</cite>. ", 
+    "code": "proc add*(father, child: PJsonNode)"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "Adds <tt class=\"docutils literal\"><span class=\"pre\">(key, val)</span></tt> pair to the JObject node <cite>obj</cite>. For speed reasons no check for duplicate keys is performed! But <tt class=\"docutils literal\"><span class=\"pre\">[]=</span></tt> performs the check.", 
+    "code": "proc add*(obj: PJsonNode; key: string; val: PJsonNode)"
+  }, 
+  {
+    "name": "`[]=`", 
+    "type": "skProc", 
+    "description": "Sets a field from a <cite>JObject</cite>. Performs a check for duplicate keys.", 
+    "code": "proc `[] =`*(obj: PJsonNode; key: String; val: PJsonNode)"
+  }, 
+  {
+    "name": "delete", 
+    "type": "skProc", 
+    "description": "Deletes <tt class=\"docutils literal\"><span class=\"pre\">obj[key]</span></tt> preserving the order of the other (key, value)-pairs.", 
+    "code": "proc delete*(obj: PJsonNode; key: string)"
+  }, 
+  {
+    "name": "copy", 
+    "type": "skProc", 
+    "description": "Performs a deep copy of <cite>a</cite>.", 
+    "code": "proc copy*(p: PJsonNode): PJsonNode"
+  }, 
+  {
+    "name": "escapeJson", 
+    "type": "skProc", 
+    "description": "Converts a string <cite>s</cite> to its JSON representation.", 
+    "code": "proc escapeJson*(s: string): string"
+  }, 
+  {
+    "name": "pretty", 
+    "type": "skProc", 
+    "description": "Converts <cite>node</cite> to its JSON Representation, with indentation and on multiple lines.", 
+    "code": "proc pretty*(node: PJsonNode; indent = 2): String"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "Converts <cite>node</cite> to its JSON Representation on one line.", 
+    "code": "proc `$`*(node: PJsonNode): String"
+  }, 
+  {
+    "name": "items", 
+    "type": "skIterator", 
+    "description": "Iterator for the items of <cite>node</cite>. <cite>node</cite> has to be a JArray.", 
+    "code": "iterator items*(node: PJsonNode): PJSonNode"
+  }, 
+  {
+    "name": "pairs", 
+    "type": "skIterator", 
+    "description": "Iterator for the child elements of <cite>node</cite>. <cite>node</cite> has to be a JObject.", 
+    "code": "iterator pairs*(node: PJsonNode): tuple[key: string, val: PJsonNode]"
+  }, 
+  {
+    "name": "parseJson", 
+    "type": "skProc", 
+    "description": "Parses from a stream <cite>s</cite> into a <cite>PJsonNode</cite>. <cite>filename</cite> is only needed for nice error messages.", 
+    "code": "proc parseJson*(s: PStream; filename: string): PJsonNode"
+  }, 
+  {
+    "name": "parseJson", 
+    "type": "skProc", 
+    "description": "Parses JSON from <cite>buffer</cite>.", 
+    "code": "proc parseJson*(buffer: string): PJsonNode"
+  }, 
+  {
+    "name": "parseFile", 
+    "type": "skProc", 
+    "description": "Parses <cite>file</cite> into a <cite>PJsonNode</cite>.", 
+    "code": "proc parseFile*(filename: string): PJsonNode"
+  }
+]

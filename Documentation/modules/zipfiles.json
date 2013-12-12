@@ -1,0 +1,83 @@
+[
+  {
+    "comment": "This module implements a zip archive creator/reader/modifier."
+  }, 
+  {
+    "name": "TZipArchive", 
+    "type": "skType", 
+    "description": "represents a zip archive", 
+    "code": "TZipArchive* = object of TObject\u000D\u000A  mode: TFileMode\u000D\u000A  w: PZip\u000D\u000A"
+  }, 
+  {
+    "name": "open", 
+    "type": "skProc", 
+    "description": "Opens a zip file for reading, writing or appending. All file modes are supported. Returns true iff successful, false otherwise.", 
+    "code": "proc open*(z: var TZipArchive; filename: string; mode: TFileMode = fmRead): bool"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "Closes a zip file.", 
+    "code": "proc close*(z: var TZipArchive)"
+  }, 
+  {
+    "name": "createDir", 
+    "type": "skProc", 
+    "description": "Creates a directory within the <cite>z</cite> archive. This does not fail if the directory already exists. Note that for adding a file like <tt class=\"docutils literal\"><span class=\"pre\">&quot;path1/path2/filename&quot;</span></tt> it is not necessary to create the <tt class=\"docutils literal\"><span class=\"pre\">&quot;path/path2&quot;</span></tt> subdirectories - it will be done automatically by <tt class=\"docutils literal\"><span class=\"pre\">addFile</span></tt>. ", 
+    "code": "proc createDir*(z: var TZipArchive; dir: string)"
+  }, 
+  {
+    "name": "addFile", 
+    "type": "skProc", 
+    "description": "Adds the file <cite>src</cite> to the archive <cite>z</cite> with the name <cite>dest</cite>. <cite>dest</cite> may contain a path that will be created. ", 
+    "code": "proc addFile*(z: var TZipArchive; dest, src: string)"
+  }, 
+  {
+    "name": "addFile", 
+    "type": "skProc", 
+    "description": "A shortcut for <tt class=\"docutils literal\"><span class=\"pre\">addFile(z, file, file)</span></tt>, i.e. the name of the source is the name of the destination.", 
+    "code": "proc addFile*(z: var TZipArchive; file: string)"
+  }, 
+  {
+    "name": "addFile", 
+    "type": "skProc", 
+    "description": "Adds a file named with <cite>dest</cite> to the archive <cite>z</cite>. <cite>dest</cite> may contain a path. The file's content is read from the <cite>src</cite> stream.", 
+    "code": "proc addFile*(z: var TZipArchive; dest: string; src: PStream)"
+  }, 
+  {
+    "name": "PZipFileStream", 
+    "type": "skType", 
+    "description": "a reader stream of a file within a zip archive ", 
+    "code": "PZipFileStream* = ref TZipFileStream"
+  }, 
+  {
+    "name": "getStream", 
+    "type": "skProc", 
+    "description": "returns a stream that can be used to read the file named <cite>filename</cite> from the archive <cite>z</cite>. Returns nil in case of an error. The returned stream does not support the <cite>setPosition</cite>, <cite>getPosition</cite>, <cite>writeData</cite> or <cite>atEnd</cite> methods.", 
+    "code": "proc getStream*(z: var TZipArchive; filename: string): PZipFileStream"
+  }, 
+  {
+    "name": "walkFiles", 
+    "type": "skIterator", 
+    "description": "walks over all files in the archive <cite>z</cite> and returns the filename (including the path).", 
+    "code": "iterator walkFiles*(z: var TZipArchive): string"
+  }, 
+  {
+    "name": "extractFile", 
+    "type": "skProc", 
+    "description": "extracts a file from the zip archive <cite>z</cite> to the destination stream.", 
+    "code": "proc extractFile*(z: var TZipArchive; srcFile: string; dest: PStream)"
+  }, 
+  {
+    "name": "extractFile", 
+    "type": "skProc", 
+    "description": "extracts a file from the zip archive <cite>z</cite> to the destination filename.", 
+    "code": "proc extractFile*(z: var TZipArchive; srcFile: string; dest: string)"
+  }, 
+  {
+    "name": "extractAll", 
+    "type": "skProc", 
+    "description": "extracts all files from archive <cite>z</cite> to the destination directory.", 
+    "code": "proc extractAll*(z: var TZipArchive; dest: string)"
+  }
+]

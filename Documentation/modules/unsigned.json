@@ -1,0 +1,89 @@
+[
+  {
+    "comment": "This module implements basic arithmetic operators for unsigned integers.\u000D\u000A## To discourage users from using ``unsigned``, it's not part of ``system``,\u000D\u000A## but an extra import."
+  }, 
+  {
+    "name": "`not`", 
+    "type": "skProc", 
+    "description": "computes the <cite>bitwise complement</cite> of the integer <cite>x</cite>.", 
+    "code": "proc `not`*[T: SomeUInt](x: T): T {.magic: \"BitnotI\", noSideEffect.}"
+  }, 
+  {
+    "name": "`shr`", 
+    "type": "skProc", 
+    "description": "computes the <cite>shift right</cite> operation of <cite>x</cite> and <cite>y</cite>.", 
+    "code": "proc `shr`*[T: SomeUInt](x, y: T): T {.magic: \"ShrI\", noSideEffect.}"
+  }, 
+  {
+    "name": "`shl`", 
+    "type": "skProc", 
+    "description": "computes the <cite>shift left</cite> operation of <cite>x</cite> and <cite>y</cite>.", 
+    "code": "proc `shl`*[T: SomeUInt](x, y: T): T {.magic: \"ShlI\", noSideEffect.}"
+  }, 
+  {
+    "name": "`and`", 
+    "type": "skProc", 
+    "description": "computes the <cite>bitwise and</cite> of numbers <cite>x</cite> and <cite>y</cite>.", 
+    "code": "proc `and`*[T: SomeUInt](x, y: T): T {.magic: \"BitandI\", noSideEffect.}"
+  }, 
+  {
+    "name": "`or`", 
+    "type": "skProc", 
+    "description": "computes the <cite>bitwise or</cite> of numbers <cite>x</cite> and <cite>y</cite>.", 
+    "code": "proc `or`*[T: SomeUInt](x, y: T): T {.magic: \"BitorI\", noSideEffect.}"
+  }, 
+  {
+    "name": "`xor`", 
+    "type": "skProc", 
+    "description": "computes the <cite>bitwise xor</cite> of numbers <cite>x</cite> and <cite>y</cite>.", 
+    "code": "proc `xor`*[T: SomeUInt](x, y: T): T {.magic: \"BitxorI\", noSideEffect.}"
+  }, 
+  {
+    "name": "`==`", 
+    "type": "skProc", 
+    "description": "Compares two unsigned integers for equality.", 
+    "code": "proc `==`*[T: SomeUInt](x, y: T): bool {.magic: \"EqI\", noSideEffect.}"
+  }, 
+  {
+    "name": "`+`", 
+    "type": "skProc", 
+    "description": "Binary <cite>+</cite> operator for unsigned integers.", 
+    "code": "proc `+`*[T: SomeUInt](x, y: T): T {.magic: \"AddU\", noSideEffect.}"
+  }, 
+  {
+    "name": "`-`", 
+    "type": "skProc", 
+    "description": "Binary <cite>-</cite> operator for unsigned integers.", 
+    "code": "proc `-`*[T: SomeUInt](x, y: T): T {.magic: \"SubU\", noSideEffect.}"
+  }, 
+  {
+    "name": "`*`", 
+    "type": "skProc", 
+    "description": "Binary <cite>*</cite> operator for unsigned integers.", 
+    "code": "proc `*`*[T: SomeUInt](x, y: T): T {.magic: \"MulU\", noSideEffect.}"
+  }, 
+  {
+    "name": "`div`", 
+    "type": "skProc", 
+    "description": "computes the integer division. This is roughly the same as <tt class=\"docutils literal\"><span class=\"pre\">floor(x/y)</span></tt>.", 
+    "code": "proc `div`*[T: SomeUInt](x, y: T): T {.magic: \"DivU\", noSideEffect.}"
+  }, 
+  {
+    "name": "`mod`", 
+    "type": "skProc", 
+    "description": "computes the integer modulo operation. This is the same as <tt class=\"docutils literal\"><span class=\"pre\">x - (x div y) * y</span></tt>.", 
+    "code": "proc `mod`*[T: SomeUInt](x, y: T): T {.magic: \"ModU\", noSideEffect.}"
+  }, 
+  {
+    "name": "`&lt;=`", 
+    "type": "skProc", 
+    "description": "Returns true iff <tt class=\"docutils literal\"><span class=\"pre\">x &lt;= y</span></tt>.", 
+    "code": "proc `<=`*[T: SomeUInt](x, y: T): bool {.magic: \"LeU\", noSideEffect.}"
+  }, 
+  {
+    "name": "`&lt;`", 
+    "type": "skProc", 
+    "description": "Returns true iff <tt class=\"docutils literal\"><span class=\"pre\">unsigned(x) &lt; unsigned(y)</span></tt>.", 
+    "code": "proc `<`*[T: SomeUInt](x, y: T): bool {.magic: \"LtU\", noSideEffect.}"
+  }
+]

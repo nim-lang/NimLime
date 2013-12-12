@@ -1,0 +1,424 @@
+[
+  {
+    "comment": "This module contains various string utility routines.\u000D\u000A## See the module `re <re.html>`_ for regular expression support.\u000D\u000A## See the module `pegs <pegs.html>`_ for PEG support."
+  }, 
+  {
+    "name": "TCharSet", 
+    "type": "skType", 
+    "code": "TCharSet* = set[char]"
+  }, 
+  {
+    "name": "NewLines", 
+    "type": "skConst", 
+    "description": "the set of characters a newline terminator can start with", 
+    "code": "NewLines* = {'\\x0D', '\\x0A'}"
+  }, 
+  {
+    "name": "toLower", 
+    "type": "skProc", 
+    "description": "Converts <cite>c</cite> into lower case. This works only for the letters A-Z. See <cite>unicode.toLower</cite> for a version that works for any Unicode character.", 
+    "code": "proc toLower*(c: Char): Char {.noSideEffect, procvar, rtl, \u000D\u000A                               extern: \"nsuToLowerChar\".}"
+  }, 
+  {
+    "name": "toLower", 
+    "type": "skProc", 
+    "description": "Converts <cite>s</cite> into lower case. This works only for the letters A-Z. See <cite>unicode.toLower</cite> for a version that works for any Unicode character.", 
+    "code": "proc toLower*(s: string): string {.noSideEffect, procvar, rtl, \u000D\u000A                                   extern: \"nsuToLowerStr\".}"
+  }, 
+  {
+    "name": "toUpper", 
+    "type": "skProc", 
+    "description": "Converts <cite>c</cite> into upper case. This works only for the letters a-z. See <cite>unicode.toUpper</cite> for a version that works for any Unicode character.", 
+    "code": "proc toUpper*(c: Char): Char {.noSideEffect, procvar, rtl, \u000D\u000A                               extern: \"nsuToUpperChar\".}"
+  }, 
+  {
+    "name": "toUpper", 
+    "type": "skProc", 
+    "description": "Converts <cite>s</cite> into upper case. This works only for the letters a-z. See <cite>unicode.toUpper</cite> for a version that works for any Unicode character.", 
+    "code": "proc toUpper*(s: string): string {.noSideEffect, procvar, rtl, \u000D\u000A                                   extern: \"nsuToUpperStr\".}"
+  }, 
+  {
+    "name": "capitalize", 
+    "type": "skProc", 
+    "description": "Converts the first character of <cite>s</cite> into upper case. This works only for the letters a-z.", 
+    "code": "proc capitalize*(s: string): string {.noSideEffect, procvar, rtl, \u000D\u000A                                      extern: \"nsuCapitalize\".}"
+  }, 
+  {
+    "name": "normalize", 
+    "type": "skProc", 
+    "description": "Normalizes the string <cite>s</cite>. That means to convert it to lower case and remove any '_'. This is needed for Nimrod identifiers for example.", 
+    "code": "proc normalize*(s: string): string {.noSideEffect, procvar, rtl, \u000D\u000A                                     extern: \"nsuNormalize\".}"
+  }, 
+  {
+    "name": "cmpIgnoreCase", 
+    "type": "skProc", 
+    "description": "Compares two strings in a case insensitive manner. Returns:<p>0 iff a == b<br />&lt; 0 iff a &lt; b<br />&gt; 0 iff a &gt; b<br /></p>", 
+    "code": "proc cmpIgnoreCase*(a, b: string): int {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuCmpIgnoreCase\", procvar, operator: 4.}"
+  }, 
+  {
+    "name": "cmpIgnoreStyle", 
+    "type": "skProc", 
+    "description": "Compares two strings normalized (i.e. case and underscores do not matter). Returns:<p>0 iff a == b<br />&lt; 0 iff a &lt; b<br />&gt; 0 iff a &gt; b<br /></p>", 
+    "code": "proc cmpIgnoreStyle*(a, b: string): int {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuCmpIgnoreStyle\", procvar, operator: 3.}"
+  }, 
+  {
+    "name": "strip", 
+    "type": "skProc", 
+    "description": "Strips whitespace from <cite>s</cite> and returns the resulting string. If <cite>leading</cite> is true, leading whitespace is stripped. If <cite>trailing</cite> is true, trailing whitespace is stripped.", 
+    "code": "proc strip*(s: string; leading = true; trailing = true): string {.noSideEffect, \u000D\u000A    rtl, extern: \"nsuStrip\", operator: 5.}"
+  }, 
+  {
+    "name": "toOctal", 
+    "type": "skProc", 
+    "description": "Converts a character <cite>c</cite> to its octal representation. The resulting string may not have a leading zero. Its length is always exactly 3.", 
+    "code": "proc toOctal*(c: char): string {.noSideEffect, rtl, extern: \"nsuToOctal\".}"
+  }, 
+  {
+    "name": "split", 
+    "type": "skIterator", 
+    "description": "<p>Splits the string <cite>s</cite> into substrings using a group of separators.</p>\u000D\u000A<p>Substrings are separated by a substring containing only <cite>seps</cite>. Note that whole sequences of characters found in <tt class=\"docutils literal\"><span class=\"pre\">seps</span></tt> will be counted as a single split point and leading/trailing separators will be ignored. The following example:</p>\u000D\u000A<pre><span class=\"Keyword\">for</span> <span class=\"Identifier\">word</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">split</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;  this is an  example  &quot;</span><span class=\"Punctation\">)</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Identifier\">writeln</span><span class=\"Punctation\">(</span><span class=\"Identifier\">stdout</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">word</span><span class=\"Punctation\">)</span></pre><p>...generates this output:</p>\u000D\u000A<pre><span class=\"StringLit\">&quot;this&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;is&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;an&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;example&quot;</span></pre><p>And the following code:</p>\u000D\u000A<pre><span class=\"Keyword\">for</span> <span class=\"Identifier\">word</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">split</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;;;this;is;an;;example;;;&quot;</span><span class=\"Punctation\">,</span> <span class=\"Punctation\">{</span><span class=\"CharLit\">';'</span><span class=\"Punctation\">}</span><span class=\"Punctation\">)</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Identifier\">writeln</span><span class=\"Punctation\">(</span><span class=\"Identifier\">stdout</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">word</span><span class=\"Punctation\">)</span></pre><p>...produces the same output as the first example. The code:</p>\u000D\u000A<pre><span class=\"Keyword\">let</span> <span class=\"Identifier\">date</span> <span class=\"Operator\">=</span> <span class=\"StringLit\">&quot;2012-11-20T22:08:08.398990&quot;</span>\u000D\u000A<span class=\"Keyword\">let</span> <span class=\"Identifier\">separators</span> <span class=\"Operator\">=</span> <span class=\"Punctation\">{</span><span class=\"CharLit\">' '</span><span class=\"Punctation\">,</span> <span class=\"CharLit\">'-'</span><span class=\"Punctation\">,</span> <span class=\"CharLit\">':'</span><span class=\"Punctation\">,</span> <span class=\"CharLit\">'T'</span><span class=\"Punctation\">}</span>\u000D\u000A<span class=\"Keyword\">for</span> <span class=\"Identifier\">number</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">split</span><span class=\"Punctation\">(</span><span class=\"Identifier\">date</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">separators</span><span class=\"Punctation\">)</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Identifier\">writeln</span><span class=\"Punctation\">(</span><span class=\"Identifier\">stdout</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">number</span><span class=\"Punctation\">)</span></pre><p>...results in:</p>\u000D\u000A<pre><span class=\"StringLit\">&quot;2012&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;11&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;20&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;22&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;08&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;08.398990&quot;</span></pre>", 
+    "code": "iterator split*(s: string; seps: set[char] = Whitespace): string"
+  }, 
+  {
+    "name": "split", 
+    "type": "skIterator", 
+    "description": "<p>Splits the string <cite>s</cite> into substrings using a single separator.</p>\u000D\u000A<p>Substrings are separated by the character <cite>sep</cite>. Unlike the version of the iterator which accepts a set of separator characters, this proc will not coalesce groups of the separator, returning a string for each found character. The code:</p>\u000D\u000A<pre><span class=\"Keyword\">for</span> <span class=\"Identifier\">word</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">split</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;;;this;is;an;;example;;;&quot;</span><span class=\"Punctation\">,</span> <span class=\"CharLit\">';'</span><span class=\"Punctation\">)</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Identifier\">writeln</span><span class=\"Punctation\">(</span><span class=\"Identifier\">stdout</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">word</span><span class=\"Punctation\">)</span></pre><p>Results in:</p>\u000D\u000A<pre><span class=\"StringLit\">&quot;&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;this&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;is&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;an&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;example&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;&quot;</span></pre>", 
+    "code": "iterator split*(s: string; sep: char): string"
+  }, 
+  {
+    "name": "splitLines", 
+    "type": "skIterator", 
+    "description": "<p>Splits the string <cite>s</cite> into its containing lines. Every newline combination (CR, LF, CR-LF) is supported. The result strings contain no trailing <tt class=\"docutils literal\"><span class=\"pre\">\\n</span></tt>.</p>\u000D\u000A<p>Example:</p>\u000D\u000A<pre><span class=\"Keyword\">for</span> <span class=\"Identifier\">line</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">splitLines</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;</span><span class=\"EscapeSequence\">\\n</span><span class=\"EscapeSequence\">this\\n</span><span class=\"EscapeSequence\">is\\n</span><span class=\"EscapeSequence\">an\\n</span><span class=\"EscapeSequence\">\\n</span><span class=\"EscapeSequence\">example\\n</span><span class=\"StringLit\">&quot;</span><span class=\"Punctation\">)</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Identifier\">writeln</span><span class=\"Punctation\">(</span><span class=\"Identifier\">stdout</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">line</span><span class=\"Punctation\">)</span></pre><p>Results in:</p>\u000D\u000A<pre><span class=\"StringLit\">&quot;&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;this&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;is&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;an&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;example&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;&quot;</span></pre>", 
+    "code": "iterator splitLines*(s: string): string"
+  }, 
+  {
+    "name": "splitLines", 
+    "type": "skProc", 
+    "description": "The same as the <cite>splitLines</cite> iterator, but is a proc that returns a sequence of substrings.", 
+    "code": "proc splitLines*(s: string): seq[string] {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuSplitLines\".}"
+  }, 
+  {
+    "name": "countLines", 
+    "type": "skProc", 
+    "description": "same as <tt class=\"docutils literal\"><span class=\"pre\">len(splitLines(s))</span></tt>, but much more efficient.", 
+    "code": "proc countLines*(s: string): int {.noSideEffect, rtl, extern: \"nsuCountLines\".}"
+  }, 
+  {
+    "name": "split", 
+    "type": "skProc", 
+    "description": "The same as the <cite>split</cite> iterator, but is a proc that returns a sequence of substrings.", 
+    "code": "proc split*(s: string; seps: set[char] = Whitespace): seq[string] {.\u000D\u000A    noSideEffect, rtl, extern: \"nsuSplitCharSet\".}"
+  }, 
+  {
+    "name": "split", 
+    "type": "skProc", 
+    "description": "The same as the <cite>split</cite> iterator, but is a proc that returns a sequence of substrings.", 
+    "code": "proc split*(s: string; sep: char): seq[string] {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuSplitChar\".}"
+  }, 
+  {
+    "name": "toHex", 
+    "type": "skProc", 
+    "description": "Converts <cite>x</cite> to its hexadecimal representation. The resulting string will be exactly <cite>len</cite> characters long. No prefix like <tt class=\"docutils literal\"><span class=\"pre\">0x</span></tt> is generated. <cite>x</cite> is treated as an unsigned value.", 
+    "code": "proc toHex*(x: BiggestInt; len: int): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuToHex\".}"
+  }, 
+  {
+    "name": "intToStr", 
+    "type": "skProc", 
+    "description": "Converts <cite>x</cite> to its decimal representation. The resulting string will be minimally <cite>minchars</cite> characters long. This is achieved by adding leading zeros.", 
+    "code": "proc intToStr*(x: int; minchars: int = 1): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuIntToStr\".}"
+  }, 
+  {
+    "name": "ParseInt", 
+    "type": "skProc", 
+    "description": "Parses a decimal integer value contained in <cite>s</cite>. If <cite>s</cite> is not a valid integer, <cite>EInvalidValue</cite> is raised.", 
+    "code": "proc ParseInt*(s: string): int {.noSideEffect, procvar, rtl, \u000D\u000A                                 extern: \"nsuParseInt\".}"
+  }, 
+  {
+    "name": "ParseBiggestInt", 
+    "type": "skProc", 
+    "description": "Parses a decimal integer value contained in <cite>s</cite>. If <cite>s</cite> is not a valid integer, <cite>EInvalidValue</cite> is raised.", 
+    "code": "proc ParseBiggestInt*(s: string): biggestInt {.noSideEffect, procvar, rtl, \u000D\u000A    extern: \"nsuParseBiggestInt\".}"
+  }, 
+  {
+    "name": "ParseFloat", 
+    "type": "skProc", 
+    "description": "Parses a decimal floating point value contained in <cite>s</cite>. If <cite>s</cite> is not a valid floating point number, <cite>EInvalidValue</cite> is raised. <tt class=\"docutils literal\"><span class=\"pre\">NAN</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">INF</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">-INF</span></tt> are also supported (case insensitive comparison).", 
+    "code": "proc ParseFloat*(s: string): float {.noSideEffect, procvar, rtl, \u000D\u000A                                     extern: \"nsuParseFloat\".}"
+  }, 
+  {
+    "name": "ParseHexInt", 
+    "type": "skProc", 
+    "description": "Parses a hexadecimal integer value contained in <cite>s</cite>. If <cite>s</cite> is not a valid integer, <cite>EInvalidValue</cite> is raised. <cite>s</cite> can have one of the following optional prefixes: <tt class=\"docutils literal\"><span class=\"pre\">0x</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">0X</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">#</span></tt>. Underscores within <cite>s</cite> are ignored.", 
+    "code": "proc ParseHexInt*(s: string): int {.noSideEffect, procvar, rtl, \u000D\u000A                                    extern: \"nsuParseHexInt\".}"
+  }, 
+  {
+    "name": "parseBool", 
+    "type": "skProc", 
+    "description": "Parses a value into a <cite>bool</cite>. If <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> is one of the following values: <tt class=\"docutils literal\"><span class=\"pre\">y, yes, true, 1, on</span></tt>, then returns <cite>true</cite>. If <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> is one of the following values: <tt class=\"docutils literal\"><span class=\"pre\">n, no, false, 0, off</span></tt>, then returns <cite>false</cite>. If <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> is something else a <tt class=\"docutils literal\"><span class=\"pre\">EInvalidValue</span></tt> exception is raised.", 
+    "code": "proc parseBool*(s: string): bool"
+  }, 
+  {
+    "name": "parseEnum", 
+    "type": "skProc", 
+    "description": "parses an enum <tt class=\"docutils literal\"><span class=\"pre\">T</span></tt>. Raises <tt class=\"docutils literal\"><span class=\"pre\">EInvalidValue</span></tt> for an invalid value in <cite>s</cite>. The comparison is done in a style insensitive way.", 
+    "code": "proc parseEnum*[T: enum](s: string): T"
+  }, 
+  {
+    "name": "parseEnum", 
+    "type": "skProc", 
+    "description": "parses an enum <tt class=\"docutils literal\"><span class=\"pre\">T</span></tt>. Uses <cite>default</cite> for an invalid value in <cite>s</cite>. The comparison is done in a style insensitive way.", 
+    "code": "proc parseEnum*[T: enum](s: string; default: T): T"
+  }, 
+  {
+    "name": "repeatChar", 
+    "type": "skProc", 
+    "description": "Returns a string of length <cite>count</cite> consisting only of the character <cite>c</cite>. You can use this proc to left align strings. Example:<pre><span class=\"Keyword\">let</span>\u000D\u000A  <span class=\"Identifier\">width</span> <span class=\"Operator\">=</span> <span class=\"DecNumber\">15</span>\u000D\u000A  <span class=\"Identifier\">text1</span> <span class=\"Operator\">=</span> <span class=\"StringLit\">&quot;Hello user!&quot;</span>\u000D\u000A  <span class=\"Identifier\">text2</span> <span class=\"Operator\">=</span> <span class=\"StringLit\">&quot;This is a very long string&quot;</span>\u000D\u000A<span class=\"Identifier\">echo</span> <span class=\"Identifier\">text1</span> <span class=\"Operator\">&amp;</span> <span class=\"Identifier\">repeatChar</span><span class=\"Punctation\">(</span><span class=\"Identifier\">max</span><span class=\"Punctation\">(</span><span class=\"DecNumber\">0</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">width</span> <span class=\"Operator\">-</span> <span class=\"Identifier\">text1</span><span class=\"Operator\">.</span><span class=\"Identifier\">len</span><span class=\"Punctation\">)</span><span class=\"Punctation\">)</span> <span class=\"Operator\">&amp;</span> <span class=\"StringLit\">&quot;|&quot;</span>\u000D\u000A<span class=\"Identifier\">echo</span> <span class=\"Identifier\">text2</span> <span class=\"Operator\">&amp;</span> <span class=\"Identifier\">repeatChar</span><span class=\"Punctation\">(</span><span class=\"Identifier\">max</span><span class=\"Punctation\">(</span><span class=\"DecNumber\">0</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">width</span> <span class=\"Operator\">-</span> <span class=\"Identifier\">text2</span><span class=\"Operator\">.</span><span class=\"Identifier\">len</span><span class=\"Punctation\">)</span><span class=\"Punctation\">)</span> <span class=\"Operator\">&amp;</span> <span class=\"StringLit\">&quot;|&quot;</span></pre>", 
+    "code": "proc repeatChar*(count: int; c: Char = ' '): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuRepeatChar\".}"
+  }, 
+  {
+    "name": "repeatStr", 
+    "type": "skProc", 
+    "description": "Returns <cite>s</cite> concatenated <cite>count</cite> times.", 
+    "code": "proc repeatStr*(count: int; s: string): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuRepeatStr\".}"
+  }, 
+  {
+    "name": "align", 
+    "type": "skProc", 
+    "description": "Aligns a string <cite>s</cite> with <cite>padding</cite>, so that is of length <cite>count</cite>. <cite>padding</cite> characters (by default spaces) are added before <cite>s</cite> resulting in right alignment. If <tt class=\"docutils literal\"><span class=\"pre\">s.len &gt;= count</span></tt>, no spaces are added and <cite>s</cite> is returned unchanged. If you need to left align a string use the <tt class=\"docutils literal\"><span class=\"pre\">repeatChar</span></tt> proc. Example:<pre><span class=\"Identifier\">assert</span> <span class=\"Identifier\">align</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;abc&quot;</span><span class=\"Punctation\">,</span> <span class=\"DecNumber\">4</span><span class=\"Punctation\">)</span> <span class=\"Operator\">==</span> <span class=\"StringLit\">&quot; abc&quot;</span>\u000D\u000A<span class=\"Identifier\">assert</span> <span class=\"Identifier\">align</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;a&quot;</span><span class=\"Punctation\">,</span> <span class=\"DecNumber\">0</span><span class=\"Punctation\">)</span> <span class=\"Operator\">==</span> <span class=\"StringLit\">&quot;a&quot;</span>\u000D\u000A<span class=\"Identifier\">assert</span> <span class=\"Identifier\">align</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;1232&quot;</span><span class=\"Punctation\">,</span> <span class=\"DecNumber\">6</span><span class=\"Punctation\">)</span> <span class=\"Operator\">==</span> <span class=\"StringLit\">&quot;  1232&quot;</span>\u000D\u000A<span class=\"Identifier\">assert</span> <span class=\"Identifier\">align</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;1232&quot;</span><span class=\"Punctation\">,</span> <span class=\"DecNumber\">6</span><span class=\"Punctation\">,</span> <span class=\"CharLit\">'#'</span><span class=\"Punctation\">)</span> <span class=\"Operator\">==</span> <span class=\"StringLit\">&quot;##1232&quot;</span></pre>", 
+    "code": "proc align*(s: string; count: int; padding = ' '): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuAlignString\".}"
+  }, 
+  {
+    "name": "tokenize", 
+    "type": "skIterator", 
+    "description": "<p>Tokenizes the string <cite>s</cite> into substrings.</p>\u000D\u000A<p>Substrings are separated by a substring containing only <cite>seps</cite>. Examples:</p>\u000D\u000A<pre><span class=\"Keyword\">for</span> <span class=\"Identifier\">word</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">tokenize</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;  this is an  example  &quot;</span><span class=\"Punctation\">)</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Identifier\">writeln</span><span class=\"Punctation\">(</span><span class=\"Identifier\">stdout</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">word</span><span class=\"Punctation\">)</span></pre><p>Results in:</p>\u000D\u000A<pre><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;  &quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">true</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;this&quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">false</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"StringLit\">&quot; &quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">true</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;is&quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">false</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"StringLit\">&quot; &quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">true</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;an&quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">false</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;  &quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">true</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;example&quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">false</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;  &quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">true</span><span class=\"Punctation\">)</span></pre>", 
+    "code": "iterator tokenize*(s: string; seps: set[char] = Whitespace): tuple[\u000D\u000A    token: string, isSep: bool]"
+  }, 
+  {
+    "name": "wordWrap", 
+    "type": "skProc", 
+    "description": "word wraps <cite>s</cite>.", 
+    "code": "proc wordWrap*(s: string; maxLineWidth = 80; splitLongWords = true; \u000D\u000A               seps: set[char] = whitespace; newLine = \"\\x0D\\x0A\"): string {.\u000D\u000A    noSideEffect, rtl, extern: \"nsuWordWrap\".}"
+  }, 
+  {
+    "name": "unindent", 
+    "type": "skProc", 
+    "description": "unindents <cite>s</cite>.", 
+    "code": "proc unindent*(s: string; eatAllIndent = false): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuUnindent\".}"
+  }, 
+  {
+    "name": "startsWith", 
+    "type": "skProc", 
+    "description": "Returns true iff <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> starts with <tt class=\"docutils literal\"><span class=\"pre\">prefix</span></tt>. If <tt class=\"docutils literal\"><span class=\"pre\">prefix == &quot;&quot;</span></tt> true is returned.", 
+    "code": "proc startsWith*(s, prefix: string): bool {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuStartsWith\".}"
+  }, 
+  {
+    "name": "endsWith", 
+    "type": "skProc", 
+    "description": "Returns true iff <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> ends with <tt class=\"docutils literal\"><span class=\"pre\">suffix</span></tt>. If <tt class=\"docutils literal\"><span class=\"pre\">suffix == &quot;&quot;</span></tt> true is returned.", 
+    "code": "proc endsWith*(s, suffix: string): bool {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuEndsWith\".}"
+  }, 
+  {
+    "name": "continuesWith", 
+    "type": "skProc", 
+    "description": "Returns true iff <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> continues with <tt class=\"docutils literal\"><span class=\"pre\">substr</span></tt> at position <tt class=\"docutils literal\"><span class=\"pre\">start</span></tt>. If <tt class=\"docutils literal\"><span class=\"pre\">substr == &quot;&quot;</span></tt> true is returned.", 
+    "code": "proc continuesWith*(s, substr: string; start: int): bool {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuContinuesWith\".}"
+  }, 
+  {
+    "name": "addSep", 
+    "type": "skProc", 
+    "description": "A shorthand for:<pre><span class=\"Keyword\">if</span> <span class=\"Identifier\">dest</span><span class=\"Operator\">.</span><span class=\"Identifier\">len</span> <span class=\"Operator\">&gt;</span> <span class=\"Identifier\">startLen</span><span class=\"Punctation\">:</span> <span class=\"Identifier\">add</span><span class=\"Punctation\">(</span><span class=\"Identifier\">dest</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">sep</span><span class=\"Punctation\">)</span></pre><p>This is often useful for generating some code where the items need to be <em>separated</em> by <cite>sep</cite>. <cite>sep</cite> is only added if <cite>dest</cite> is longer than <cite>startLen</cite>. The following example creates a string describing an array of integers:</p>\u000D\u000A<pre><span class=\"Keyword\">var</span> <span class=\"Identifier\">arr</span> <span class=\"Operator\">=</span> <span class=\"StringLit\">&quot;[&quot;</span>\u000D\u000A<span class=\"Keyword\">for</span> <span class=\"Identifier\">x</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">items</span><span class=\"Punctation\">(</span><span class=\"Punctation\">[</span><span class=\"DecNumber\">2</span><span class=\"Punctation\">,</span> <span class=\"DecNumber\">3</span><span class=\"Punctation\">,</span> <span class=\"DecNumber\">5</span><span class=\"Punctation\">,</span> <span class=\"DecNumber\">7</span><span class=\"Punctation\">,</span> <span class=\"DecNumber\">11</span><span class=\"Punctation\">]</span><span class=\"Punctation\">)</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Identifier\">addSep</span><span class=\"Punctation\">(</span><span class=\"Identifier\">arr</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">startLen</span><span class=\"Operator\">=</span><span class=\"Identifier\">len</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;[&quot;</span><span class=\"Punctation\">)</span><span class=\"Punctation\">)</span>\u000D\u000A  <span class=\"Identifier\">add</span><span class=\"Punctation\">(</span><span class=\"Identifier\">arr</span><span class=\"Punctation\">,</span> <span class=\"Operator\">$</span><span class=\"Identifier\">x</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Identifier\">add</span><span class=\"Punctation\">(</span><span class=\"Identifier\">arr</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;]&quot;</span><span class=\"Punctation\">)</span></pre>", 
+    "code": "proc addSep*(dest: var string; sep = \", \"; startLen = 0) {.noSideEffect, inline.}"
+  }, 
+  {
+    "name": "allCharsInSet", 
+    "type": "skProc", 
+    "description": "returns true iff each character of <cite>s</cite> is in the set <cite>theSet</cite>.", 
+    "code": "proc allCharsInSet*(s: string; theSet: TCharSet): bool"
+  }, 
+  {
+    "name": "abbrev", 
+    "type": "skProc", 
+    "description": "returns the index of the first item in <cite>possibilities</cite> if not ambiguous; -1 if no item has been found; -2 if multiple items match.", 
+    "code": "proc abbrev*(s: string; possibilities: openarray[string]): int"
+  }, 
+  {
+    "name": "join", 
+    "type": "skProc", 
+    "description": "concatenates all strings in <cite>a</cite> separating them with <cite>sep</cite>.", 
+    "code": "proc join*(a: openArray[string]; sep: string): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuJoinSep\".}"
+  }, 
+  {
+    "name": "join", 
+    "type": "skProc", 
+    "description": "concatenates all strings in <cite>a</cite>.", 
+    "code": "proc join*(a: openArray[string]): string {.noSideEffect, rtl, extern: \"nsuJoin\".}"
+  }, 
+  {
+    "name": "find", 
+    "type": "skProc", 
+    "description": "Searches for <cite>sub</cite> in <cite>s</cite> starting at position <cite>start</cite>. Searching is case-sensitive. If <cite>sub</cite> is not in <cite>s</cite>, -1 is returned.", 
+    "code": "proc find*(s, sub: string; start: int = 0): int {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuFindStr\", operator: 6.}"
+  }, 
+  {
+    "name": "find", 
+    "type": "skProc", 
+    "description": "Searches for <cite>sub</cite> in <cite>s</cite> starting at position <cite>start</cite>. Searching is case-sensitive. If <cite>sub</cite> is not in <cite>s</cite>, -1 is returned.", 
+    "code": "proc find*(s: string; sub: char; start: int = 0): int {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuFindChar\".}"
+  }, 
+  {
+    "name": "find", 
+    "type": "skProc", 
+    "description": "Searches for <cite>chars</cite> in <cite>s</cite> starting at position <cite>start</cite>. If <cite>s</cite> contains none of the characters in <cite>chars</cite>, -1 is returned.", 
+    "code": "proc find*(s: string; chars: set[char]; start: int = 0): int {.noSideEffect, \u000D\u000A    rtl, extern: \"nsuFindCharSet\".}"
+  }, 
+  {
+    "name": "rfind", 
+    "type": "skProc", 
+    "description": "Searches for <cite>sub</cite> in <cite>s</cite> in reverse, starting at <cite>start</cite> and going backwards to 0. Searching is case-sensitive. If <cite>sub</cite> is not in <cite>s</cite>, -1 is returned.", 
+    "code": "proc rfind*(s, sub: string; start: int = - 1): int {.noSideEffect.}"
+  }, 
+  {
+    "name": "quoteIfContainsWhite", 
+    "type": "skProc", 
+    "description": "returns <tt class=\"docutils literal\"><span class=\"pre\">'&quot;' &amp; s &amp; '&quot;'</span></tt> if <cite>s</cite> contains a space and does not start with a quote, else returns <cite>s</cite>", 
+    "code": "proc quoteIfContainsWhite*(s: string): string"
+  }, 
+  {
+    "name": "contains", 
+    "type": "skProc", 
+    "description": "Same as <tt class=\"docutils literal\"><span class=\"pre\">find(s, c) &gt;= 0</span></tt>.", 
+    "code": "proc contains*(s: string; c: char): bool {.noSideEffect.}"
+  }, 
+  {
+    "name": "contains", 
+    "type": "skProc", 
+    "description": "Same as <tt class=\"docutils literal\"><span class=\"pre\">find(s, sub) &gt;= 0</span></tt>.", 
+    "code": "proc contains*(s, sub: string): bool {.noSideEffect.}"
+  }, 
+  {
+    "name": "contains", 
+    "type": "skProc", 
+    "description": "Same as <tt class=\"docutils literal\"><span class=\"pre\">find(s, chars) &gt;= 0</span></tt>.", 
+    "code": "proc contains*(s: string; chars: set[char]): bool {.noSideEffect.}"
+  }, 
+  {
+    "name": "replace", 
+    "type": "skProc", 
+    "description": "Replaces <cite>sub</cite> in <cite>s</cite> by the string <cite>by</cite>.", 
+    "code": "proc replace*(s, sub: string; by = \"\"): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuReplaceStr\", operator: 1.}"
+  }, 
+  {
+    "name": "replace", 
+    "type": "skProc", 
+    "description": "optimized version for characters.", 
+    "code": "proc replace*(s: string; sub, by: char): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuReplaceChar\".}"
+  }, 
+  {
+    "name": "replaceWord", 
+    "type": "skProc", 
+    "description": "Replaces <cite>sub</cite> in <cite>s</cite> by the string <cite>by</cite>. Each occurance of <cite>sub</cite> has to be surrounded by word boundaries (comparable to <tt class=\"docutils literal\"><span class=\"pre\">\\\\w</span></tt> in regular expressions), otherwise it is not replaced.", 
+    "code": "proc replaceWord*(s, sub: string; by = \"\"): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuReplaceWord\".}"
+  }, 
+  {
+    "name": "delete", 
+    "type": "skProc", 
+    "description": "Deletes in <cite>s</cite> the characters at position <cite>first</cite> .. <cite>last</cite>. This modifies <cite>s</cite> itself, it does not return a copy.", 
+    "code": "proc delete*(s: var string; first, last: int) {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuDelete\".}"
+  }, 
+  {
+    "name": "ParseOctInt", 
+    "type": "skProc", 
+    "description": "Parses an octal integer value contained in <cite>s</cite>. If <cite>s</cite> is not a valid integer, <cite>EInvalidValue</cite> is raised. <cite>s</cite> can have one of the following optional prefixes: <tt class=\"docutils literal\"><span class=\"pre\">0o</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">0O</span></tt>. Underscores within <cite>s</cite> are ignored.", 
+    "code": "proc ParseOctInt*(s: string): int {.noSideEffect, rtl, extern: \"nsuParseOctInt\".}"
+  }, 
+  {
+    "name": "toOct", 
+    "type": "skProc", 
+    "description": "converts <cite>x</cite> into its octal representation. The resulting string is always <cite>len</cite> characters long. No leading <tt class=\"docutils literal\"><span class=\"pre\">0o</span></tt> prefix is generated.", 
+    "code": "proc toOct*(x: BiggestInt; len: int): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuToOct\".}"
+  }, 
+  {
+    "name": "toBin", 
+    "type": "skProc", 
+    "description": "converts <cite>x</cite> into its binary representation. The resulting string is always <cite>len</cite> characters long. No leading <tt class=\"docutils literal\"><span class=\"pre\">0b</span></tt> prefix is generated.", 
+    "code": "proc toBin*(x: BiggestInt; len: int): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuToBin\".}"
+  }, 
+  {
+    "name": "insertSep", 
+    "type": "skProc", 
+    "description": "inserts the separator <cite>sep</cite> after <cite>digits</cite> digits from right to left. Even though the algorithm works with any string <cite>s</cite>, it is only useful if <cite>s</cite> contains a number. Example: <tt class=\"docutils literal\"><span class=\"pre\">insertSep(&quot;1000000&quot;) == &quot;1_000_000&quot;</span></tt>", 
+    "code": "proc insertSep*(s: string; sep = '_'; digits = 3): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuInsertSep\".}"
+  }, 
+  {
+    "name": "escape", 
+    "type": "skProc", 
+    "description": "Escapes a string <cite>s</cite>. This does these operations (at the same time):<ul class=\"simple\"><li>replaces any <tt class=\"docutils literal\"><span class=\"pre\">\\</span></tt> by <tt class=\"docutils literal\"><span class=\"pre\">\\\\</span></tt></li>\u000D\u000A<li>replaces any <tt class=\"docutils literal\"><span class=\"pre\">'</span></tt> by <tt class=\"docutils literal\"><span class=\"pre\">\\'</span></tt></li>\u000D\u000A<li>replaces any <tt class=\"docutils literal\"><span class=\"pre\">&quot;</span></tt> by <tt class=\"docutils literal\"><span class=\"pre\">\\&quot;</span></tt></li>\u000D\u000A<li>replaces any other character in the set <tt class=\"docutils literal\"><span class=\"pre\">{'\\0'..'\\31', '\\128'..'\\255'}</span></tt> by <tt class=\"docutils literal\"><span class=\"pre\">\\xHH</span></tt> where <tt class=\"docutils literal\"><span class=\"pre\">HH</span></tt> is its hexadecimal value.</li>\u000D\u000A</ul>\u000D\u000A<p>The procedure has been designed so that its output is usable for many different common syntaxes. The resulting string is prefixed with <cite>prefix</cite> and suffixed with <cite>suffix</cite>. Both may be empty strings.</p>\u000D\u000A", 
+    "code": "proc escape*(s: string; prefix = \"\\\"\"; suffix = \"\\\"\"): string {.noSideEffect, \u000D\u000A    rtl, extern: \"nsuEscape\".}"
+  }, 
+  {
+    "name": "unescape", 
+    "type": "skProc", 
+    "description": "<p>Unescapes a string <cite>s</cite>. This complements <tt class=\"docutils literal\"><span class=\"pre\">escape</span></tt> as it performs the opposite operations.</p>\u000D\u000A<p>If <cite>s</cite> does not begin with <tt class=\"docutils literal\"><span class=\"pre\">prefix</span></tt> and end with <tt class=\"docutils literal\"><span class=\"pre\">suffix</span></tt> a EInvalidValue exception will be raised.</p>\u000D\u000A", 
+    "code": "proc unescape*(s: string; prefix = \"\\\"\"; suffix = \"\\\"\"): string {.noSideEffect, \u000D\u000A    rtl, extern: \"nsuUnescape\".}"
+  }, 
+  {
+    "name": "validIdentifier", 
+    "type": "skProc", 
+    "description": "returns true if <cite>s</cite> is a valid identifier. A valid identifier starts with a character of the set <cite>IdentStartChars</cite> and is followed by any number of characters of the set <cite>IdentChars</cite>.", 
+    "code": "proc validIdentifier*(s: string): bool {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuValidIdentifier\".}"
+  }, 
+  {
+    "name": "editDistance", 
+    "type": "skProc", 
+    "description": "returns the edit distance between <cite>a</cite> and <cite>b</cite>. This uses the <span id=\"levenshtein_2017863935\">Levenshtein</span> distance algorithm with only a linear memory overhead. This implementation is highly optimized!", 
+    "code": "proc editDistance*(a, b: string): int {.noSideEffect, rtl, \u000D\u000A                                        extern: \"nsuEditDistance\".}"
+  }, 
+  {
+    "name": "TFloatFormat", 
+    "type": "skType", 
+    "description": "the different modes of floating point formating", 
+    "code": "TFloatFormat* = enum \u000D\u000A  ffDefault,                  ## use the shorter floating point notation\u000D\u000A  ffDecimal,                  ## use decimal floating point notation\u000D\u000A  ffScientific                ## use scientific notation (using ``e`` character)"
+  }, 
+  {
+    "name": "formatBiggestFloat", 
+    "type": "skProc", 
+    "description": "<p>converts a floating point value <cite>f</cite> to a string.</p>\u000D\u000A<p>If <tt class=\"docutils literal\"><span class=\"pre\">format == ffDecimal</span></tt> then precision is the number of digits to be printed after the decimal point. If <tt class=\"docutils literal\"><span class=\"pre\">format == ffScientific</span></tt> then precision is the maximum number of significant digits to be printed. <cite>precision</cite>'s default value is the maximum number of meaningful digits after the decimal point for Nimrod's <tt class=\"docutils literal\"><span class=\"pre\">biggestFloat</span></tt> type.</p>\u000D\u000A<p>If <tt class=\"docutils literal\"><span class=\"pre\">precision == 0</span></tt>, it tries to format it nicely.</p>\u000D\u000A", 
+    "code": "proc formatBiggestFloat*(f: BiggestFloat; format: TFloatFormat = ffDefault; \u000D\u000A                         precision: range[0 .. 32] = 16): string {.noSideEffect, \u000D\u000A    operator: 2, rtl, extern: \"nsu$1\".}"
+  }, 
+  {
+    "name": "formatFloat", 
+    "type": "skProc", 
+    "description": "<p>converts a floating point value <cite>f</cite> to a string.</p>\u000D\u000A<p>If <tt class=\"docutils literal\"><span class=\"pre\">format == ffDecimal</span></tt> then precision is the number of digits to be printed after the decimal point. If <tt class=\"docutils literal\"><span class=\"pre\">format == ffScientific</span></tt> then precision is the maximum number of significant digits to be printed. <cite>precision</cite>'s default value is the maximum number of meaningful digits after the decimal point for Nimrod's <tt class=\"docutils literal\"><span class=\"pre\">float</span></tt> type.</p>\u000D\u000A", 
+    "code": "proc formatFloat*(f: float; format: TFloatFormat = ffDefault; \u000D\u000A                  precision: range[0 .. 32] = 16): string {.noSideEffect, \u000D\u000A    operator: 2, rtl, extern: \"nsu$1\".}"
+  }, 
+  {
+    "name": "formatSize", 
+    "type": "skProc", 
+    "description": "Rounds and formats <cite>bytes</cite>. Examples:<pre><span class=\"Identifier\">formatSize</span><span class=\"Punctation\">(</span><span class=\"DecNumber\">1'i64</span> <span class=\"Keyword\">shl</span> <span class=\"DecNumber\">31</span> <span class=\"Operator\">+</span> <span class=\"DecNumber\">300'i64</span><span class=\"Punctation\">)</span> <span class=\"Operator\">==</span> <span class=\"StringLit\">&quot;2.204GB&quot;</span>\u000D\u000A<span class=\"Identifier\">formatSize</span><span class=\"Punctation\">(</span><span class=\"DecNumber\">4096</span><span class=\"Punctation\">)</span> <span class=\"Operator\">==</span> <span class=\"StringLit\">&quot;4KB&quot;</span></pre>", 
+    "code": "proc formatSize*(bytes: biggestInt; decimalSep = '.'): string"
+  }, 
+  {
+    "name": "addf", 
+    "type": "skProc", 
+    "description": "The same as <tt class=\"docutils literal\"><span class=\"pre\">add(s, formatstr % a)</span></tt>, but more efficient.", 
+    "code": "proc addf*(s: var string; formatstr: string; a: varargs[string, `$`]) {.\u000D\u000A    noSideEffect, rtl, extern: \"nsuAddf\".}"
+  }, 
+  {
+    "name": "`%`", 
+    "type": "skProc", 
+    "description": "<p>The <span id=\"substitution_260228394\">substitution</span> operator performs string substitutions in <cite>formatstr</cite> and returns a modified <cite>formatstr</cite>. This is often called <span id=\"string-interpolation_1953426395\">string interpolation</span>.</p>\u000D\u000A<p>This is best explained by an example:</p>\u000D\u000A<pre><span class=\"StringLit\">&quot;$1 eats $2.&quot;</span> <span class=\"Operator\">%</span> <span class=\"Punctation\">[</span><span class=\"StringLit\">&quot;The cat&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;fish&quot;</span><span class=\"Punctation\">]</span></pre><p>Results in:</p>\u000D\u000A<pre><span class=\"StringLit\">&quot;The cat eats fish.&quot;</span></pre><p>The substitution variables (the thing after the <tt class=\"docutils literal\"><span class=\"pre\">$</span></tt>) are enumerated from 1 to <tt class=\"docutils literal\"><span class=\"pre\">a.len</span></tt>. To produce a verbatim <tt class=\"docutils literal\"><span class=\"pre\">$</span></tt>, use <tt class=\"docutils literal\"><span class=\"pre\">$$</span></tt>. The notation <tt class=\"docutils literal\"><span class=\"pre\">$#</span></tt> can be used to refer to the next substitution variable:</p>\u000D\u000A<pre><span class=\"StringLit\">&quot;$# eats $#.&quot;</span> <span class=\"Operator\">%</span> <span class=\"Punctation\">[</span><span class=\"StringLit\">&quot;The cat&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;fish&quot;</span><span class=\"Punctation\">]</span></pre><p>Substitution variables can also be words (that is <tt class=\"docutils literal\"><span class=\"pre\">[A-Za-z_]+[A-Za-z0-9_]*</span></tt>) in which case the arguments in <cite>a</cite> with even indices are keys and with odd indices are the corresponding values. An example:</p>\u000D\u000A<pre><span class=\"StringLit\">&quot;$animal eats $food.&quot;</span> <span class=\"Operator\">%</span> <span class=\"Punctation\">[</span><span class=\"StringLit\">&quot;animal&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;The cat&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;food&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;fish&quot;</span><span class=\"Punctation\">]</span></pre><p>Results in:</p>\u000D\u000A<pre><span class=\"StringLit\">&quot;The cat eats fish.&quot;</span></pre><p>The variables are compared with <cite>cmpIgnoreStyle</cite>. <cite>EInvalidValue</cite> is raised if an ill-formed format string has been passed to the <cite>%</cite> operator.</p>\u000D\u000A", 
+    "code": "proc `%`*(formatstr: string; a: openarray[string]): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuFormatOpenArray\".}"
+  }, 
+  {
+    "name": "`%`", 
+    "type": "skProc", 
+    "description": "This is the same as <tt class=\"docutils literal\"><span class=\"pre\">formatstr % [a]</span></tt>.", 
+    "code": "proc `%`*(formatstr, a: string): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuFormatSingleElem\".}"
+  }, 
+  {
+    "name": "format", 
+    "type": "skProc", 
+    "description": "This is the same as <tt class=\"docutils literal\"><span class=\"pre\">formatstr % a</span></tt> except that it supports auto stringification.", 
+    "code": "proc format*(formatstr: string; a: varargs[string, `$`]): string {.noSideEffect, \u000D\u000A    rtl, extern: \"nsuFormatVarargs\".}"
+  }
+]

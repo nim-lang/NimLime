@@ -10,5 +10,14 @@
     {
     	"caption": "Nimrod: Go To Definition",
     	"command": "lookup"
+    },
+
+    {
+        "caption": "Nimrod: Modules",
+        "command": "list_modules"
+    },
+    {
+        "caption": "Nimrod: Index",
+        "command": "list_all"
     }
 ]

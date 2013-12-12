@@ -1,0 +1,95 @@
+[
+  {
+    "comment": "The ``strtabs`` module implements an efficient hash table that is a mapping\u000D\u000A## from strings to strings. Supports a case-sensitive, case-insensitive and\u000D\u000A## style-insensitive mode. An efficient string substitution operator  ``%``\u000D\u000A## for the string table is also provided."
+  }, 
+  {
+    "name": "PStringTable", 
+    "type": "skType", 
+    "description": "use this type to declare string tables", 
+    "code": "PStringTable* = ref TStringTable"
+  }, 
+  {
+    "name": "len", 
+    "type": "skProc", 
+    "description": "returns the number of keys in <cite>t</cite>.", 
+    "code": "proc len*(t: PStringTable): int {.rtl, extern: \"nst$1\".}"
+  }, 
+  {
+    "name": "pairs", 
+    "type": "skIterator", 
+    "description": "iterates over every (key, value) pair in the table <cite>t</cite>.", 
+    "code": "iterator pairs*(t: PStringTable): tuple[key, value: string]"
+  }, 
+  {
+    "name": "keys", 
+    "type": "skIterator", 
+    "description": "iterates over every key in the table <cite>t</cite>.", 
+    "code": "iterator keys*(t: PStringTable): string"
+  }, 
+  {
+    "name": "values", 
+    "type": "skIterator", 
+    "description": "iterates over every value in the table <cite>t</cite>.", 
+    "code": "iterator values*(t: PStringTable): string"
+  }, 
+  {
+    "name": "TFormatFlag", 
+    "type": "skType", 
+    "description": "flags for the <cite>%</cite> operator", 
+    "code": "TFormatFlag* = enum \u000D\u000A  useEnvironment,             ## use environment variable if the ``$key``\u000D\u000A                              ## is not found in the table\u000D\u000A  useEmpty,                   ## use the empty string as a default, thus it\u000D\u000A                              ## won't throw an exception if ``$key`` is not\u000D\u000A                              ## in the table\u000D\u000A  useKey                      ## do not replace ``$key`` if it is not found\u000D\u000A                              ## in the table (or in the environment)"
+  }, 
+  {
+    "name": "`[]`", 
+    "type": "skProc", 
+    "description": "retrieves the value at <tt class=\"docutils literal\"><span class=\"pre\">t[key]</span></tt>. If <cite>key</cite> is not in <cite>t</cite>, &quot;&quot; is returned and no exception is raised. One can check with <tt class=\"docutils literal\"><span class=\"pre\">hasKey</span></tt> whether the key exists.", 
+    "code": "proc `[]`*(t: PStringTable; key: string): string {.rtl, extern: \"nstGet\".}"
+  }, 
+  {
+    "name": "mget", 
+    "type": "skProc", 
+    "description": "retrieves the location at <tt class=\"docutils literal\"><span class=\"pre\">t[key]</span></tt>. If <cite>key</cite> is not in <cite>t</cite>, the <tt class=\"docutils literal\"><span class=\"pre\">EInvalidKey</span></tt> exception is raised.", 
+    "code": "proc mget*(t: PStringTable; key: string): var string {.rtl, extern: \"nstTake\".}"
+  }, 
+  {
+    "name": "hasKey", 
+    "type": "skProc", 
+    "description": "returns true iff <cite>key</cite> is in the table <cite>t</cite>.", 
+    "code": "proc hasKey*(t: PStringTable; key: string): bool {.rtl, extern: \"nst$1\".}"
+  }, 
+  {
+    "name": "`[]=`", 
+    "type": "skProc", 
+    "description": "puts a (key, value)-pair into <cite>t</cite>.", 
+    "code": "proc `[] =`*(t: PStringTable; key, val: string) {.rtl, extern: \"nstPut\".}"
+  }, 
+  {
+    "name": "newStringTable", 
+    "type": "skProc", 
+    "description": "creates a new string table that is empty.", 
+    "code": "proc newStringTable*(mode: TStringTableMode): PStringTable {.rtl, \u000D\u000A    extern: \"nst$1\".}"
+  }, 
+  {
+    "name": "newStringTable", 
+    "type": "skProc", 
+    "description": "creates a new string table with given key value pairs. Example:<pre>var mytab = newStringTable(&quot;key1&quot;, &quot;val1&quot;, &quot;key2&quot;, &quot;val2&quot;,\u000D\u000A                           modeCaseInsensitive)</pre>\u000D\u000A", 
+    "code": "proc newStringTable*(keyValuePairs: varargs[string]; mode: TStringTableMode): PStringTable {.\u000D\u000A    rtl, extern: \"nst$1WithPairs\".}"
+  }, 
+  {
+    "name": "newStringTable", 
+    "type": "skProc", 
+    "description": "creates a new string table with given key value pairs. Example:<pre>var mytab = newStringTable({&quot;key1&quot;: &quot;val1&quot;, &quot;key2&quot;: &quot;val2&quot;},\u000D\u000A                           modeCaseInsensitive)</pre>\u000D\u000A", 
+    "code": "proc newStringTable*(keyValuePairs: varargs[tuple[key, val: string]]; \u000D\u000A                     mode: TStringTableMode = modeCaseSensitive): PStringTable {.\u000D\u000A    rtl, extern: \"nst$1WithTableConstr\".}"
+  }, 
+  {
+    "name": "`%`", 
+    "type": "skProc", 
+    "description": "The <cite>%</cite> operator for string tables.", 
+    "code": "proc `%`*(f: string; t: PStringTable; flags: set[TFormatFlag] = {}): string {.\u000D\u000A    rtl, extern: \"nstFormat\".}"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "The <cite>$</cite> operator for string tables.", 
+    "code": "proc `$`*(t: PStringTable): string {.rtl, extern: \"nstDollar\".}"
+  }
+]

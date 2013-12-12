@@ -1,0 +1,202 @@
+[
+  {
+    "name": "FILTER_INFO_PIXEL_ERROR", 
+    "type": "skConst", 
+    "code": "FILTER_INFO_PIXEL_ERROR* = 2"
+  }, 
+  {
+    "name": "TFilter", 
+    "type": "skType", 
+    "code": "TFilter* {.final.} = object \u000D\u000A  flags*: Uint32\u000D\u000A  data*: Pointer\u000D\u000A  callback*: TFilterCallback\u000D\u000A  destroy*: TFilterDestroy\u000D\u000A"
+  }, 
+  {
+    "name": "filter_null", 
+    "type": "skProc", 
+    "code": "proc filter_null*(): PFilter {.cdecl, importc: \"SMPEGfilter_null\", \u000D\u000A                               dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "filter_bilinear", 
+    "type": "skProc", 
+    "code": "proc filter_bilinear*(): PFilter {.cdecl, importc: \"SMPEGfilter_bilinear\", \u000D\u000A                                   dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "filter_deblocking", 
+    "type": "skProc", 
+    "code": "proc filter_deblocking*(): PFilter {.cdecl, importc: \"SMPEGfilter_deblocking\", \u000D\u000A                                     dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "PATCHLEVEL", 
+    "type": "skConst", 
+    "code": "PATCHLEVEL* = 2"
+  }, 
+  {
+    "name": "PInfo", 
+    "type": "skType", 
+    "code": "PInfo* = ptr TInfo"
+  }, 
+  {
+    "name": "STATUS_PLAYING", 
+    "type": "skConst", 
+    "code": "STATUS_PLAYING* = 1"
+  }, 
+  {
+    "name": "TDisplayCallback", 
+    "type": "skType", 
+    "code": "TDisplayCallback* = proc (dst: PSurface; x, y: int; w, h: int): Pointer {.cdecl.}"
+  }, 
+  {
+    "name": "SMPEG_new", 
+    "type": "skProc", 
+    "code": "proc SMPEG_new*(theFile: cstring; info: PInfo; audio: int): PSMPEG {.cdecl, \u000D\u000A    importc: \"SMPEG_new\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "new_descr", 
+    "type": "skProc", 
+    "code": "proc new_descr*(theFile: int; info: PInfo; audio: int): PSMPEG {.cdecl, \u000D\u000A    importc: \"SMPEG_new_descr\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "new_data", 
+    "type": "skProc", 
+    "code": "proc new_data*(data: Pointer; size: int; info: PInfo; audio: int): PSMPEG {.\u000D\u000A    cdecl, importc: \"SMPEG_new_data\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "getinfo", 
+    "type": "skProc", 
+    "code": "proc getinfo*(mpeg: PSMPEG; info: PInfo) {.cdecl, importc: \"SMPEG_getinfo\", \u000D\u000A    dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "enableaudio", 
+    "type": "skProc", 
+    "code": "proc enableaudio*(mpeg: PSMPEG; enable: int) {.cdecl, \u000D\u000A    importc: \"SMPEG_enableaudio\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "enablevideo", 
+    "type": "skProc", 
+    "code": "proc enablevideo*(mpeg: PSMPEG; enable: int) {.cdecl, \u000D\u000A    importc: \"SMPEG_enablevideo\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "delete", 
+    "type": "skProc", 
+    "code": "proc delete*(mpeg: PSMPEG) {.cdecl, importc: \"SMPEG_delete\", \u000D\u000A                             dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "status", 
+    "type": "skProc", 
+    "code": "proc status*(mpeg: PSMPEG): Tstatus {.cdecl, importc: \"SMPEG_status\", \u000D\u000A                                      dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "setvolume", 
+    "type": "skProc", 
+    "code": "proc setvolume*(mpeg: PSMPEG; volume: int) {.cdecl, importc: \"SMPEG_setvolume\", \u000D\u000A    dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "setdisplay", 
+    "type": "skProc", 
+    "code": "proc setdisplay*(mpeg: PSMPEG; dst: PSurface; surfLock: Pmutex; \u000D\u000A                 callback: TDisplayCallback) {.cdecl, \u000D\u000A    importc: \"SMPEG_setdisplay\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "loop", 
+    "type": "skProc", 
+    "code": "proc loop*(mpeg: PSMPEG; repeat: int) {.cdecl, importc: \"SMPEG_loop\", \u000D\u000A                                        dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "scaleXY", 
+    "type": "skProc", 
+    "code": "proc scaleXY*(mpeg: PSMPEG; width, height: int) {.cdecl, \u000D\u000A    importc: \"SMPEG_scaleXY\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "scale", 
+    "type": "skProc", 
+    "code": "proc scale*(mpeg: PSMPEG; scale: int) {.cdecl, importc: \"SMPEG_scale\", \u000D\u000A                                        dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "Double", 
+    "type": "skProc", 
+    "code": "proc Double*(mpeg: PSMPEG; doubleit: bool)"
+  }, 
+  {
+    "name": "move", 
+    "type": "skProc", 
+    "code": "proc move*(mpeg: PSMPEG; x, y: int) {.cdecl, importc: \"SMPEG_move\", \u000D\u000A                                      dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "setdisplayregion", 
+    "type": "skProc", 
+    "code": "proc setdisplayregion*(mpeg: PSMPEG; x, y, w, h: int) {.cdecl, \u000D\u000A    importc: \"SMPEG_setdisplayregion\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "play", 
+    "type": "skProc", 
+    "code": "proc play*(mpeg: PSMPEG) {.cdecl, importc: \"SMPEG_play\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "pause", 
+    "type": "skProc", 
+    "code": "proc pause*(mpeg: PSMPEG) {.cdecl, importc: \"SMPEG_pause\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "stop", 
+    "type": "skProc", 
+    "code": "proc stop*(mpeg: PSMPEG) {.cdecl, importc: \"SMPEG_stop\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "rewind", 
+    "type": "skProc", 
+    "code": "proc rewind*(mpeg: PSMPEG) {.cdecl, importc: \"SMPEG_rewind\", \u000D\u000A                             dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "seek", 
+    "type": "skProc", 
+    "code": "proc seek*(mpeg: PSMPEG; bytes: int) {.cdecl, importc: \"SMPEG_seek\", \u000D\u000A                                       dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "skip", 
+    "type": "skProc", 
+    "code": "proc skip*(mpeg: PSMPEG; seconds: float32) {.cdecl, importc: \"SMPEG_skip\", \u000D\u000A    dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "renderFrame", 
+    "type": "skProc", 
+    "code": "proc renderFrame*(mpeg: PSMPEG; framenum: int) {.cdecl, \u000D\u000A    importc: \"SMPEG_renderFrame\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "renderFinal", 
+    "type": "skProc", 
+    "code": "proc renderFinal*(mpeg: PSMPEG; dst: PSurface; x, y: int) {.cdecl, \u000D\u000A    importc: \"SMPEG_renderFinal\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "filter", 
+    "type": "skProc", 
+    "code": "proc filter*(mpeg: PSMPEG; filter: PFilter): PFilter {.cdecl, \u000D\u000A    importc: \"SMPEG_filter\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "error", 
+    "type": "skProc", 
+    "code": "proc error*(mpeg: PSMPEG): cstring {.cdecl, importc: \"SMPEG_error\", \u000D\u000A                                     dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "playAudio", 
+    "type": "skProc", 
+    "code": "proc playAudio*(mpeg: PSMPEG; stream: pointer; length: int): int {.cdecl, \u000D\u000A    importc: \"SMPEG_playAudio\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "playAudioSDL", 
+    "type": "skProc", 
+    "code": "proc playAudioSDL*(mpeg: Pointer; stream: pointer; length: int) {.cdecl, \u000D\u000A    importc: \"SMPEG_playAudioSDL\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "wantedSpec", 
+    "type": "skProc", 
+    "code": "proc wantedSpec*(mpeg: PSMPEG; wanted: PAudioSpec): int {.cdecl, \u000D\u000A    importc: \"SMPEG_wantedSpec\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "actualSpec", 
+    "type": "skProc", 
+    "code": "proc actualSpec*(mpeg: PSMPEG; spec: PAudioSpec) {.cdecl, \u000D\u000A    importc: \"SMPEG_actualSpec\", dynlib: SmpegLibName.}"
+  }, 
+  {
+    "name": "GETVERSION", 
+    "type": "skProc", 
+    "code": "proc GETVERSION*(X: var Tversion)"
+  }
+]

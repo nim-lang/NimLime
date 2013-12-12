@@ -1,0 +1,65 @@
+[
+  {
+    "comment": "Declaration of the Document Object Model for the JavaScript backend."
+  }, 
+  {
+    "name": "TInterval", 
+    "type": "skType", 
+    "code": "TInterval* {.importc.} = object of TObject"
+  }, 
+  {
+    "name": "screen", 
+    "type": "skVar", 
+    "code": "screen* {.importc, nodecl.}: ref TScreen"
+  }, 
+  {
+    "name": "decodeURI", 
+    "type": "skProc", 
+    "code": "proc decodeURI*(uri: cstring): cstring {.importc, nodecl.}"
+  }, 
+  {
+    "name": "encodeURI", 
+    "type": "skProc", 
+    "code": "proc encodeURI*(uri: cstring): cstring {.importc, nodecl.}"
+  }, 
+  {
+    "name": "escape", 
+    "type": "skProc", 
+    "code": "proc escape*(uri: cstring): cstring {.importc, nodecl.}"
+  }, 
+  {
+    "name": "unescape", 
+    "type": "skProc", 
+    "code": "proc unescape*(uri: cstring): cstring {.importc, nodecl.}"
+  }, 
+  {
+    "name": "decodeURIComponent", 
+    "type": "skProc", 
+    "code": "proc decodeURIComponent*(uri: cstring): cstring {.importc, nodecl.}"
+  }, 
+  {
+    "name": "encodeURIComponent", 
+    "type": "skProc", 
+    "code": "proc encodeURIComponent*(uri: cstring): cstring {.importc, nodecl.}"
+  }, 
+  {
+    "name": "isFinite", 
+    "type": "skProc", 
+    "code": "proc isFinite*(x: biggestFloat): bool {.importc, nodecl.}"
+  }, 
+  {
+    "name": "isNaN", 
+    "type": "skProc", 
+    "code": "proc isNaN*(x: biggestFloat): bool {.importc, nodecl.}"
+  }, 
+  {
+    "name": "parseFloat", 
+    "type": "skProc", 
+    "code": "proc parseFloat*(s: cstring): biggestFloat {.importc, nodecl.}"
+  }, 
+  {
+    "name": "parseInt", 
+    "type": "skProc", 
+    "code": "proc parseInt*(s: cstring): int {.importc, nodecl.}"
+  }
+]

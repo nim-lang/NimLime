@@ -1,0 +1,172 @@
+[
+  {
+    "name": "IMAGE_PATCHLEVEL", 
+    "type": "skConst", 
+    "code": "IMAGE_PATCHLEVEL* = 5"
+  }, 
+  {
+    "name": "IMAGE_VERSION", 
+    "type": "skProc", 
+    "code": "proc IMAGE_VERSION*(X: var TVersion)"
+  }, 
+  {
+    "name": "IMG_Linked_Version", 
+    "type": "skProc", 
+    "code": "proc IMG_Linked_Version*(): Pversion {.importc: \"IMG_Linked_Version\", \u000D\u000A                                       dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_INIT_WEBP", 
+    "type": "skConst", 
+    "code": "IMG_INIT_WEBP* = 0x00000008"
+  }, 
+  {
+    "name": "IMG_Init", 
+    "type": "skProc", 
+    "code": "proc IMG_Init*(flags: cint): int {.cdecl, importc: \"IMG_Init\", \u000D\u000A                                   dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_Quit", 
+    "type": "skProc", 
+    "code": "proc IMG_Quit*() {.cdecl, importc: \"IMG_Quit\", dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadTyped_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadTyped_RW*(src: PRWops; freesrc: cint; theType: cstring): PSurface {.\u000D\u000A    cdecl, importc: \"IMG_LoadTyped_RW\", dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_Load", 
+    "type": "skProc", 
+    "code": "proc IMG_Load*(theFile: cstring): PSurface {.cdecl, importc: \"IMG_Load\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_Load_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_Load_RW*(src: PRWops; freesrc: cint): PSurface {.cdecl, \u000D\u000A    importc: \"IMG_Load_RW\", dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_InvertAlpha", 
+    "type": "skProc", 
+    "code": "proc IMG_InvertAlpha*(theOn: cint): cint {.cdecl, importc: \"IMG_InvertAlpha\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_isBMP", 
+    "type": "skProc", 
+    "code": "proc IMG_isBMP*(src: PRWops): cint {.cdecl, importc: \"IMG_isBMP\", \u000D\u000A                                     dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_isGIF", 
+    "type": "skProc", 
+    "code": "proc IMG_isGIF*(src: PRWops): cint {.cdecl, importc: \"IMG_isGIF\", \u000D\u000A                                     dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_isJPG", 
+    "type": "skProc", 
+    "code": "proc IMG_isJPG*(src: PRWops): cint {.cdecl, importc: \"IMG_isJPG\", \u000D\u000A                                     dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_isLBM", 
+    "type": "skProc", 
+    "code": "proc IMG_isLBM*(src: PRWops): cint {.cdecl, importc: \"IMG_isLBM\", \u000D\u000A                                     dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_isPCX", 
+    "type": "skProc", 
+    "code": "proc IMG_isPCX*(src: PRWops): cint {.cdecl, importc: \"IMG_isPCX\", \u000D\u000A                                     dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_isPNG", 
+    "type": "skProc", 
+    "code": "proc IMG_isPNG*(src: PRWops): cint {.cdecl, importc: \"IMG_isPNG\", \u000D\u000A                                     dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_isPNM", 
+    "type": "skProc", 
+    "code": "proc IMG_isPNM*(src: PRWops): cint {.cdecl, importc: \"IMG_isPNM\", \u000D\u000A                                     dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_isTIF", 
+    "type": "skProc", 
+    "code": "proc IMG_isTIF*(src: PRWops): cint {.cdecl, importc: \"IMG_isTIF\", \u000D\u000A                                     dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_isXCF", 
+    "type": "skProc", 
+    "code": "proc IMG_isXCF*(src: PRWops): cint {.cdecl, importc: \"IMG_isXCF\", \u000D\u000A                                     dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_isXPM", 
+    "type": "skProc", 
+    "code": "proc IMG_isXPM*(src: PRWops): cint {.cdecl, importc: \"IMG_isXPM\", \u000D\u000A                                     dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_isXV", 
+    "type": "skProc", 
+    "code": "proc IMG_isXV*(src: PRWops): cint {.cdecl, importc: \"IMG_isXV\", \u000D\u000A                                    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadBMP_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadBMP_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadBMP_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadGIF_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadGIF_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadGIF_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadJPG_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadJPG_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadJPG_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadLBM_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadLBM_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadLBM_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadPCX_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadPCX_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadPCX_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadPNM_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadPNM_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadPNM_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadPNG_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadPNG_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadPNG_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadTGA_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadTGA_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadTGA_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadTIF_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadTIF_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadTIF_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadXCF_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadXCF_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadXCF_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadXPM_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadXPM_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadXPM_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_LoadXV_RW", 
+    "type": "skProc", 
+    "code": "proc IMG_LoadXV_RW*(src: PRWops): PSurface {.cdecl, importc: \"IMG_LoadXV_RW\", \u000D\u000A    dynlib: ImageLibName.}"
+  }, 
+  {
+    "name": "IMG_ReadXPMFromArray", 
+    "type": "skProc", 
+    "code": "proc IMG_ReadXPMFromArray*(xpm: cstringArray): PSurface {.cdecl, \u000D\u000A    importc: \"IMG_ReadXPMFromArray\", dynlib: ImageLibName.}"
+  }
+]

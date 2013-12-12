@@ -1,0 +1,2499 @@
+[
+  {
+    "comment": "This is a raw POSIX interface module. It does not not provide any\u000D\u000A## convenience: cstrings are used instead of proper Nimrod strings and\u000D\u000A## return codes indicate errors. If you want exceptions \u000D\u000A## and a proper Nimrod-like interface, use the OS module or write a wrapper."
+  }, 
+  {
+    "comment": "Coding conventions:\u000D\u000A## ALL types are named the same as in the POSIX standard except that they start\u000D\u000A## with 'T' or 'P' (if they are pointers) and without the '_t' suffix to be\u000D\u000A## consistent with Nimrod conventions. If an identifier is a Nimrod keyword\u000D\u000A## the \\`identifier\\` notation is used.\u000D\u000A##\u000D\u000A## This library relies on the header files of your C compiler. The\u000D\u000A## resulting C code will just ``#include <XYZ.h>`` and *not* define the\u000D\u000A## symbols declared here."
+  }, 
+  {
+    "name": "STDOUT_FILENO", 
+    "type": "skConst", 
+    "description": "File number of stdout; ", 
+    "code": "STDOUT_FILENO* = 1"
+  }, 
+  {
+    "name": "TDIR", 
+    "type": "skType", 
+    "description": "A type representing a directory stream. ", 
+    "code": "TDIR* {.importc: \"DIR\", header: \"<dirent.h>\", final, pure, incompleteStruct.} = object \u000D\u000A  "
+  }, 
+  {
+    "name": "Tucontext", 
+    "type": "skType", 
+    "description": "ucontext_t", 
+    "code": "Tucontext* {.importc: \"ucontext_t\", header: \"<ucontext.h>\", final, pure.} = object \u000D\u000A  uc_link*: ptr Tucontext     ## Pointer to the context that is resumed \u000D\u000A                              ## when this context returns. \u000D\u000A  uc_sigmask*: Tsigset        ## The set of signals that are blocked when this \u000D\u000A                              ## context is active. \u000D\u000A  uc_stack*: TStack           ## The stack used by this context. \u000D\u000A  uc_mcontext*: Tmcontext     ## A machine-specific representation of the saved \u000D\u000A                              ## context. \u000D\u000A  "
+  }, 
+  {
+    "name": "Taiocb", 
+    "type": "skType", 
+    "description": "struct aiocb", 
+    "code": "Taiocb* {.importc: \"struct aiocb\", header: \"<aio.h>\", final, pure.} = object \u000D\u000A  aio_fildes*: cint           ## File descriptor. \u000D\u000A  aio_offset*: TOff           ## File offset. \u000D\u000A  aio_buf*: pointer           ## Location of buffer. \u000D\u000A  aio_nbytes*: int            ## Length of transfer. \u000D\u000A  aio_reqprio*: cint          ## Request priority offset. \u000D\u000A  aio_sigevent*: TSigEvent    ## Signal number and value. \u000D\u000A  aio_lio_opcode: cint        ## Operation to be performed. \u000D\u000A  "
+  }, 
+  {
+    "name": "Tposix_spawn_file_actions", 
+    "type": "skType", 
+    "code": "Tposix_spawn_file_actions* {.importc: \"posix_spawn_file_actions_t\", \u000D\u000A                             header: \"<spawn.h>\", final, pure.} = object "
+  }, 
+  {
+    "name": "Tnfds", 
+    "type": "skType", 
+    "code": "Tnfds* {.importc: \"nfds_t\", header: \"<poll.h>\".} = cint"
+  }, 
+  {
+    "name": "timezone", 
+    "type": "skVar", 
+    "code": "timezone* {.importc, header: \"<time.h>\".}: int"
+  }, 
+  {
+    "name": "LIO_WRITE", 
+    "type": "skVar", 
+    "description": "A lio_listio() element operation option requesting a write.", 
+    "code": "LIO_WRITE* {.importc, header: \"<aio.h>\".}: cint"
+  }, 
+  {
+    "name": "FE_DFL_ENV", 
+    "type": "skVar", 
+    "code": "FE_DFL_ENV* {.importc, header: \"<fenv.h>\".}: cint"
+  }, 
+  {
+    "name": "MM_NOCON", 
+    "type": "skVar", 
+    "description": "The function was unable to generate a console message, but otherwise succeeded. ", 
+    "code": "MM_NOCON* {.importc, header: \"<fmtmsg.h>\".}: cint"
+  }, 
+  {
+    "name": "POLLNVAL", 
+    "type": "skVar", 
+    "description": "Invalid fd member (revents only). ", 
+    "code": "POLLNVAL* {.importc, header: \"<poll.h>\".}: cshort"
+  }, 
+  {
+    "name": "POSIX_SPAWN_SETSIGMASK", 
+    "type": "skVar", 
+    "code": "POSIX_SPAWN_SETSIGMASK* {.importc, header: \"<spawn.h>\".}: cint"
+  }, 
+  {
+    "name": "POSIX_SPAWN_USEVFORK", 
+    "type": "skVar", 
+    "code": "POSIX_SPAWN_USEVFORK* {.importc, header: \"<spawn.h>\".}: cint"
+  }, 
+  {
+    "name": "aio_cancel", 
+    "type": "skProc", 
+    "code": "proc aio_cancel*(a1: cint; a2: ptr Taiocb): cint {.importc, header: \"<aio.h>\".}"
+  }, 
+  {
+    "name": "aio_error", 
+    "type": "skProc", 
+    "code": "proc aio_error*(a1: ptr Taiocb): cint {.importc, header: \"<aio.h>\".}"
+  }, 
+  {
+    "name": "aio_fsync", 
+    "type": "skProc", 
+    "code": "proc aio_fsync*(a1: cint; a2: ptr Taiocb): cint {.importc, header: \"<aio.h>\".}"
+  }, 
+  {
+    "name": "aio_read", 
+    "type": "skProc", 
+    "code": "proc aio_read*(a1: ptr Taiocb): cint {.importc, header: \"<aio.h>\".}"
+  }, 
+  {
+    "name": "aio_return", 
+    "type": "skProc", 
+    "code": "proc aio_return*(a1: ptr Taiocb): int {.importc, header: \"<aio.h>\".}"
+  }, 
+  {
+    "name": "aio_suspend", 
+    "type": "skProc", 
+    "code": "proc aio_suspend*(a1: ptr ptr Taiocb; a2: cint; a3: ptr ttimespec): cint {.\u000D\u000A    importc, header: \"<aio.h>\".}"
+  }, 
+  {
+    "name": "aio_write", 
+    "type": "skProc", 
+    "code": "proc aio_write*(a1: ptr Taiocb): cint {.importc, header: \"<aio.h>\".}"
+  }, 
+  {
+    "name": "lio_listio", 
+    "type": "skProc", 
+    "code": "proc lio_listio*(a1: cint; a2: ptr ptr Taiocb; a3: cint; a4: ptr Tsigevent): cint {.\u000D\u000A    importc, header: \"<aio.h>\".}"
+  }, 
+  {
+    "name": "htonl", 
+    "type": "skProc", 
+    "code": "proc htonl*(a1: int32): int32 {.importc, header: \"<arpa/inet.h>\".}"
+  }, 
+  {
+    "name": "htons", 
+    "type": "skProc", 
+    "code": "proc htons*(a1: int16): int16 {.importc, header: \"<arpa/inet.h>\".}"
+  }, 
+  {
+    "name": "ntohl", 
+    "type": "skProc", 
+    "code": "proc ntohl*(a1: int32): int32 {.importc, header: \"<arpa/inet.h>\".}"
+  }, 
+  {
+    "name": "ntohs", 
+    "type": "skProc", 
+    "code": "proc ntohs*(a1: int16): int16 {.importc, header: \"<arpa/inet.h>\".}"
+  }, 
+  {
+    "name": "inet_addr", 
+    "type": "skProc", 
+    "code": "proc inet_addr*(a1: cstring): TInAddrT {.importc, header: \"<arpa/inet.h>\".}"
+  }, 
+  {
+    "name": "inet_ntoa", 
+    "type": "skProc", 
+    "code": "proc inet_ntoa*(a1: TInAddr): cstring {.importc, header: \"<arpa/inet.h>\".}"
+  }, 
+  {
+    "name": "inet_ntop", 
+    "type": "skProc", 
+    "code": "proc inet_ntop*(a1: cint; a2: pointer; a3: cstring; a4: int32): cstring {.\u000D\u000A    importc, header: \"<arpa/inet.h>\".}"
+  }, 
+  {
+    "name": "inet_pton", 
+    "type": "skProc", 
+    "code": "proc inet_pton*(a1: cint; a2: cstring; a3: pointer): cint {.importc, \u000D\u000A    header: \"<arpa/inet.h>\".}"
+  }, 
+  {
+    "name": "in6addr_loopback", 
+    "type": "skVar", 
+    "code": "in6addr_loopback* {.importc, header: \"<netinet/in.h>\".}: TIn6Addr"
+  }, 
+  {
+    "name": "IN6ADDR_ANY_INIT", 
+    "type": "skProc", 
+    "code": "proc IN6ADDR_ANY_INIT*(): TIn6Addr {.importc, header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6ADDR_LOOPBACK_INIT", 
+    "type": "skProc", 
+    "code": "proc IN6ADDR_LOOPBACK_INIT*(): TIn6Addr {.importc, header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "closedir", 
+    "type": "skProc", 
+    "code": "proc closedir*(a1: ptr TDIR): cint {.importc, header: \"<dirent.h>\".}"
+  }, 
+  {
+    "name": "opendir", 
+    "type": "skProc", 
+    "code": "proc opendir*(a1: cstring): ptr TDir {.importc, header: \"<dirent.h>\".}"
+  }, 
+  {
+    "name": "readdir", 
+    "type": "skProc", 
+    "code": "proc readdir*(a1: ptr TDIR): ptr TDirent {.importc, header: \"<dirent.h>\".}"
+  }, 
+  {
+    "name": "readdir_r", 
+    "type": "skProc", 
+    "code": "proc readdir_r*(a1: ptr TDIR; a2: ptr Tdirent; a3: ptr ptr TDirent): cint {.\u000D\u000A    importc, header: \"<dirent.h>\".}"
+  }, 
+  {
+    "name": "rewinddir", 
+    "type": "skProc", 
+    "code": "proc rewinddir*(a1: ptr TDIR) {.importc, header: \"<dirent.h>\".}"
+  }, 
+  {
+    "name": "seekdir", 
+    "type": "skProc", 
+    "code": "proc seekdir*(a1: ptr TDIR; a2: int) {.importc, header: \"<dirent.h>\".}"
+  }, 
+  {
+    "name": "telldir", 
+    "type": "skProc", 
+    "code": "proc telldir*(a1: ptr TDIR): int {.importc, header: \"<dirent.h>\".}"
+  }, 
+  {
+    "name": "dlclose", 
+    "type": "skProc", 
+    "code": "proc dlclose*(a1: pointer): cint {.importc, header: \"<dlfcn.h>\".}"
+  }, 
+  {
+    "name": "dlerror", 
+    "type": "skProc", 
+    "code": "proc dlerror*(): cstring {.importc, header: \"<dlfcn.h>\".}"
+  }, 
+  {
+    "name": "dlopen", 
+    "type": "skProc", 
+    "code": "proc dlopen*(a1: cstring; a2: cint): pointer {.importc, header: \"<dlfcn.h>\".}"
+  }, 
+  {
+    "name": "dlsym", 
+    "type": "skProc", 
+    "code": "proc dlsym*(a1: pointer; a2: cstring): pointer {.importc, header: \"<dlfcn.h>\".}"
+  }, 
+  {
+    "name": "creat", 
+    "type": "skProc", 
+    "code": "proc creat*(a1: cstring; a2: Tmode): cint {.importc, header: \"<fcntl.h>\".}"
+  }, 
+  {
+    "name": "fcntl", 
+    "type": "skProc", 
+    "code": "proc fcntl*(a1: cint | TSocketHandle; a2: cint): cint {.varargs, importc, \u000D\u000A    header: \"<fcntl.h>\".}"
+  }, 
+  {
+    "name": "open", 
+    "type": "skProc", 
+    "code": "proc open*(a1: cstring; a2: cint): cint {.varargs, importc, header: \"<fcntl.h>\".}"
+  }, 
+  {
+    "name": "posix_fadvise", 
+    "type": "skProc", 
+    "code": "proc posix_fadvise*(a1: cint; a2, a3: Toff; a4: cint): cint {.importc, \u000D\u000A    header: \"<fcntl.h>\".}"
+  }, 
+  {
+    "name": "posix_fallocate", 
+    "type": "skProc", 
+    "code": "proc posix_fallocate*(a1: cint; a2, a3: Toff): cint {.importc, \u000D\u000A    header: \"<fcntl.h>\".}"
+  }, 
+  {
+    "name": "feclearexcept", 
+    "type": "skProc", 
+    "code": "proc feclearexcept*(a1: cint): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fegetexceptflag", 
+    "type": "skProc", 
+    "code": "proc fegetexceptflag*(a1: ptr Tfexcept; a2: cint): cint {.importc, \u000D\u000A    header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "feraiseexcept", 
+    "type": "skProc", 
+    "code": "proc feraiseexcept*(a1: cint): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fesetexceptflag", 
+    "type": "skProc", 
+    "code": "proc fesetexceptflag*(a1: ptr Tfexcept; a2: cint): cint {.importc, \u000D\u000A    header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fetestexcept", 
+    "type": "skProc", 
+    "code": "proc fetestexcept*(a1: cint): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fegetround", 
+    "type": "skProc", 
+    "code": "proc fegetround*(): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fesetround", 
+    "type": "skProc", 
+    "code": "proc fesetround*(a1: cint): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fegetenv", 
+    "type": "skProc", 
+    "code": "proc fegetenv*(a1: ptr Tfenv): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "feholdexcept", 
+    "type": "skProc", 
+    "code": "proc feholdexcept*(a1: ptr Tfenv): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fesetenv", 
+    "type": "skProc", 
+    "code": "proc fesetenv*(a1: ptr Tfenv): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "feupdateenv", 
+    "type": "skProc", 
+    "code": "proc feupdateenv*(a1: ptr TFenv): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fmtmsg", 
+    "type": "skProc", 
+    "code": "proc fmtmsg*(a1: int; a2: cstring; a3: cint; a4, a5, a6: cstring): cint {.\u000D\u000A    importc, header: \"<fmtmsg.h>\".}"
+  }, 
+  {
+    "name": "fnmatch", 
+    "type": "skProc", 
+    "code": "proc fnmatch*(a1, a2: cstring; a3: cint): cint {.importc, header: \"<fnmatch.h>\".}"
+  }, 
+  {
+    "name": "ftw", 
+    "type": "skProc", 
+    "code": "proc ftw*(a1: cstring; \u000D\u000A          a2: proc (x1: cstring; x2: ptr TStat; x3: cint): cint {.noconv.}; \u000D\u000A          a3: cint): cint {.importc, header: \"<ftw.h>\".}"
+  }, 
+  {
+    "name": "nftw", 
+    "type": "skProc", 
+    "code": "proc nftw*(a1: cstring; a2: proc (x1: cstring; x2: ptr TStat; x3: cint; \u000D\u000A                                  x4: ptr TFTW): cint {.noconv.}; a3: cint; \u000D\u000A           a4: cint): cint {.importc, header: \"<ftw.h>\".}"
+  }, 
+  {
+    "name": "glob", 
+    "type": "skProc", 
+    "code": "proc glob*(a1: cstring; a2: cint; \u000D\u000A           a3: proc (x1: cstring; x2: cint): cint {.noconv.}; a4: ptr Tglob): cint {.\u000D\u000A    importc, header: \"<glob.h>\".}"
+  }, 
+  {
+    "name": "globfree", 
+    "type": "skProc", 
+    "code": "proc globfree*(a1: ptr TGlob) {.importc, header: \"<glob.h>\".}"
+  }, 
+  {
+    "name": "getgrgid", 
+    "type": "skProc", 
+    "code": "proc getgrgid*(a1: TGid): ptr TGroup {.importc, header: \"<grp.h>\".}"
+  }, 
+  {
+    "name": "getgrnam", 
+    "type": "skProc", 
+    "code": "proc getgrnam*(a1: cstring): ptr TGroup {.importc, header: \"<grp.h>\".}"
+  }, 
+  {
+    "name": "getgrgid_r", 
+    "type": "skProc", 
+    "code": "proc getgrgid_r*(a1: Tgid; a2: ptr TGroup; a3: cstring; a4: int; \u000D\u000A                 a5: ptr ptr TGroup): cint {.importc, header: \"<grp.h>\".}"
+  }, 
+  {
+    "name": "getgrnam_r", 
+    "type": "skProc", 
+    "code": "proc getgrnam_r*(a1: cstring; a2: ptr TGroup; a3: cstring; a4: int; \u000D\u000A                 a5: ptr ptr TGroup): cint {.importc, header: \"<grp.h>\".}"
+  }, 
+  {
+    "name": "getgrent", 
+    "type": "skProc", 
+    "code": "proc getgrent*(): ptr TGroup {.importc, header: \"<grp.h>\".}"
+  }, 
+  {
+    "name": "endgrent", 
+    "type": "skProc", 
+    "code": "proc endgrent*() {.importc, header: \"<grp.h>\".}"
+  }, 
+  {
+    "name": "setgrent", 
+    "type": "skProc", 
+    "code": "proc setgrent*() {.importc, header: \"<grp.h>\".}"
+  }, 
+  {
+    "name": "iconv_open", 
+    "type": "skProc", 
+    "code": "proc iconv_open*(a1, a2: cstring): TIconv {.importc, header: \"<iconv.h>\".}"
+  }, 
+  {
+    "name": "iconv", 
+    "type": "skProc", 
+    "code": "proc iconv*(a1: Ticonv; a2: var cstring; a3: var int; a4: var cstring; \u000D\u000A            a5: var int): int {.importc, header: \"<iconv.h>\".}"
+  }, 
+  {
+    "name": "iconv_close", 
+    "type": "skProc", 
+    "code": "proc iconv_close*(a1: Ticonv): cint {.importc, header: \"<iconv.h>\".}"
+  }, 
+  {
+    "name": "nl_langinfo", 
+    "type": "skProc", 
+    "code": "proc nl_langinfo*(a1: Tnl_item): cstring {.importc, header: \"<langinfo.h>\".}"
+  }, 
+  {
+    "name": "basename", 
+    "type": "skProc", 
+    "code": "proc basename*(a1: cstring): cstring {.importc, header: \"<libgen.h>\".}"
+  }, 
+  {
+    "name": "dirname", 
+    "type": "skProc", 
+    "code": "proc dirname*(a1: cstring): cstring {.importc, header: \"<libgen.h>\".}"
+  }, 
+  {
+    "name": "localeconv", 
+    "type": "skProc", 
+    "code": "proc localeconv*(): ptr Tlconv {.importc, header: \"<locale.h>\".}"
+  }, 
+  {
+    "name": "setlocale", 
+    "type": "skProc", 
+    "code": "proc setlocale*(a1: cint; a2: cstring): cstring {.importc, header: \"<locale.h>\".}"
+  }, 
+  {
+    "name": "strfmon", 
+    "type": "skProc", 
+    "code": "proc strfmon*(a1: cstring; a2: int; a3: cstring): int {.varargs, importc, \u000D\u000A    header: \"<monetary.h>\".}"
+  }, 
+  {
+    "name": "mq_close", 
+    "type": "skProc", 
+    "code": "proc mq_close*(a1: Tmqd): cint {.importc, header: \"<mqueue.h>\".}"
+  }, 
+  {
+    "name": "mq_getattr", 
+    "type": "skProc", 
+    "code": "proc mq_getattr*(a1: Tmqd; a2: ptr Tmq_attr): cint {.importc, \u000D\u000A    header: \"<mqueue.h>\".}"
+  }, 
+  {
+    "name": "mq_notify", 
+    "type": "skProc", 
+    "code": "proc mq_notify*(a1: Tmqd; a2: ptr Tsigevent): cint {.importc, \u000D\u000A    header: \"<mqueue.h>\".}"
+  }, 
+  {
+    "name": "mq_open", 
+    "type": "skProc", 
+    "code": "proc mq_open*(a1: cstring; a2: cint): TMqd {.varargs, importc, \u000D\u000A    header: \"<mqueue.h>\".}"
+  }, 
+  {
+    "name": "mq_receive", 
+    "type": "skProc", 
+    "code": "proc mq_receive*(a1: Tmqd; a2: cstring; a3: int; a4: var int): int {.importc, \u000D\u000A    header: \"<mqueue.h>\".}"
+  }, 
+  {
+    "name": "mq_send", 
+    "type": "skProc", 
+    "code": "proc mq_send*(a1: Tmqd; a2: cstring; a3: int; a4: int): cint {.importc, \u000D\u000A    header: \"<mqueue.h>\".}"
+  }, 
+  {
+    "name": "mq_setattr", 
+    "type": "skProc", 
+    "code": "proc mq_setattr*(a1: Tmqd; a2, a3: ptr Tmq_attr): cint {.importc, \u000D\u000A    header: \"<mqueue.h>\".}"
+  }, 
+  {
+    "name": "mq_timedreceive", 
+    "type": "skProc", 
+    "code": "proc mq_timedreceive*(a1: Tmqd; a2: cstring; a3: int; a4: int; a5: ptr TTimespec): int {.\u000D\u000A    importc, header: \"<mqueue.h>\".}"
+  }, 
+  {
+    "name": "mq_timedsend", 
+    "type": "skProc", 
+    "code": "proc mq_timedsend*(a1: Tmqd; a2: cstring; a3: int; a4: int; a5: ptr TTimeSpec): cint {.\u000D\u000A    importc, header: \"<mqueue.h>\".}"
+  }, 
+  {
+    "name": "mq_unlink", 
+    "type": "skProc", 
+    "code": "proc mq_unlink*(a1: cstring): cint {.importc, header: \"<mqueue.h>\".}"
+  }, 
+  {
+    "name": "getpwnam", 
+    "type": "skProc", 
+    "code": "proc getpwnam*(a1: cstring): ptr TPasswd {.importc, header: \"<pwd.h>\".}"
+  }, 
+  {
+    "name": "getpwuid", 
+    "type": "skProc", 
+    "code": "proc getpwuid*(a1: Tuid): ptr TPasswd {.importc, header: \"<pwd.h>\".}"
+  }, 
+  {
+    "name": "getpwnam_r", 
+    "type": "skProc", 
+    "code": "proc getpwnam_r*(a1: cstring; a2: ptr Tpasswd; a3: cstring; a4: int; \u000D\u000A                 a5: ptr ptr Tpasswd): cint {.importc, header: \"<pwd.h>\".}"
+  }, 
+  {
+    "name": "getpwuid_r", 
+    "type": "skProc", 
+    "code": "proc getpwuid_r*(a1: Tuid; a2: ptr Tpasswd; a3: cstring; a4: int; \u000D\u000A                 a5: ptr ptr Tpasswd): cint {.importc, header: \"<pwd.h>\".}"
+  }, 
+  {
+    "name": "endpwent", 
+    "type": "skProc", 
+    "code": "proc endpwent*() {.importc, header: \"<pwd.h>\".}"
+  }, 
+  {
+    "name": "getpwent", 
+    "type": "skProc", 
+    "code": "proc getpwent*(): ptr TPasswd {.importc, header: \"<pwd.h>\".}"
+  }, 
+  {
+    "name": "setpwent", 
+    "type": "skProc", 
+    "code": "proc setpwent*() {.importc, header: \"<pwd.h>\".}"
+  }, 
+  {
+    "name": "uname", 
+    "type": "skProc", 
+    "code": "proc uname*(a1: var Tutsname): cint {.importc, header: \"<sys/utsname.h>\".}"
+  }, 
+  {
+    "name": "pthread_atfork", 
+    "type": "skProc", 
+    "code": "proc pthread_atfork*(a1, a2, a3: proc () {.noconv.}): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_destroy", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_destroy*(a1: ptr Tpthread_attr): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_getdetachstate", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_getdetachstate*(a1: ptr Tpthread_attr; a2: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_getguardsize", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_getguardsize*(a1: ptr Tpthread_attr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_getinheritsched", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_getinheritsched*(a1: ptr Tpthread_attr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_getschedparam", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_getschedparam*(a1: ptr Tpthread_attr; a2: ptr Tsched_param): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_getschedpolicy", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_getschedpolicy*(a1: ptr Tpthread_attr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_getscope", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_getscope*(a1: ptr Tpthread_attr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_getstack", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_getstack*(a1: ptr Tpthread_attr; a2: var pointer; a3: var int): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_getstackaddr", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_getstackaddr*(a1: ptr Tpthread_attr; a2: var pointer): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_getstacksize", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_getstacksize*(a1: ptr Tpthread_attr; a2: var int): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_init", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_init*(a1: ptr Tpthread_attr): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_setdetachstate", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_setdetachstate*(a1: ptr Tpthread_attr; a2: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_setguardsize", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_setguardsize*(a1: ptr Tpthread_attr; a2: int): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_setinheritsched", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_setinheritsched*(a1: ptr Tpthread_attr; a2: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_setschedparam", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_setschedparam*(a1: ptr Tpthread_attr; a2: ptr Tsched_param): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_setschedpolicy", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_setschedpolicy*(a1: ptr Tpthread_attr; a2: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_setscope", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_setscope*(a1: ptr Tpthread_attr; a2: cint): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_setstack", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_setstack*(a1: ptr Tpthread_attr; a2: pointer; a3: int): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_setstackaddr", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_setstackaddr*(a1: ptr TPthread_attr; a2: pointer): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_attr_setstacksize", 
+    "type": "skProc", 
+    "code": "proc pthread_attr_setstacksize*(a1: ptr TPthread_attr; a2: int): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_barrier_destroy", 
+    "type": "skProc", 
+    "code": "proc pthread_barrier_destroy*(a1: ptr Tpthread_barrier): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_barrier_init", 
+    "type": "skProc", 
+    "code": "proc pthread_barrier_init*(a1: ptr Tpthread_barrier; \u000D\u000A                           a2: ptr Tpthread_barrierattr; a3: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_barrier_wait", 
+    "type": "skProc", 
+    "code": "proc pthread_barrier_wait*(a1: ptr Tpthread_barrier): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_barrierattr_destroy", 
+    "type": "skProc", 
+    "code": "proc pthread_barrierattr_destroy*(a1: ptr Tpthread_barrierattr): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_barrierattr_getpshared", 
+    "type": "skProc", 
+    "code": "proc pthread_barrierattr_getpshared*(a1: ptr Tpthread_barrierattr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_barrierattr_init", 
+    "type": "skProc", 
+    "code": "proc pthread_barrierattr_init*(a1: ptr TPthread_barrierattr): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_barrierattr_setpshared", 
+    "type": "skProc", 
+    "code": "proc pthread_barrierattr_setpshared*(a1: ptr TPthread_barrierattr; a2: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_cancel", 
+    "type": "skProc", 
+    "code": "proc pthread_cancel*(a1: Tpthread): cint {.importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_cleanup_push", 
+    "type": "skProc", 
+    "code": "proc pthread_cleanup_push*(a1: proc (x: pointer) {.noconv.}; a2: pointer) {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_cleanup_pop", 
+    "type": "skProc", 
+    "code": "proc pthread_cleanup_pop*(a1: cint) {.importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_cond_broadcast", 
+    "type": "skProc", 
+    "code": "proc pthread_cond_broadcast*(a1: ptr Tpthread_cond): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_cond_destroy", 
+    "type": "skProc", 
+    "code": "proc pthread_cond_destroy*(a1: ptr Tpthread_cond): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_cond_init", 
+    "type": "skProc", 
+    "code": "proc pthread_cond_init*(a1: ptr Tpthread_cond; a2: ptr Tpthread_condattr): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_cond_signal", 
+    "type": "skProc", 
+    "code": "proc pthread_cond_signal*(a1: ptr Tpthread_cond): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_cond_timedwait", 
+    "type": "skProc", 
+    "code": "proc pthread_cond_timedwait*(a1: ptr Tpthread_cond; a2: ptr Tpthread_mutex; \u000D\u000A                             a3: ptr Ttimespec): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_cond_wait", 
+    "type": "skProc", 
+    "code": "proc pthread_cond_wait*(a1: ptr Tpthread_cond; a2: ptr Tpthread_mutex): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_condattr_destroy", 
+    "type": "skProc", 
+    "code": "proc pthread_condattr_destroy*(a1: ptr Tpthread_condattr): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_condattr_getclock", 
+    "type": "skProc", 
+    "code": "proc pthread_condattr_getclock*(a1: ptr Tpthread_condattr; a2: var Tclockid): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_condattr_getpshared", 
+    "type": "skProc", 
+    "code": "proc pthread_condattr_getpshared*(a1: ptr Tpthread_condattr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_condattr_init", 
+    "type": "skProc", 
+    "code": "proc pthread_condattr_init*(a1: ptr TPthread_condattr): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_condattr_setclock", 
+    "type": "skProc", 
+    "code": "proc pthread_condattr_setclock*(a1: ptr TPthread_condattr; a2: Tclockid): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_condattr_setpshared", 
+    "type": "skProc", 
+    "code": "proc pthread_condattr_setpshared*(a1: ptr TPthread_condattr; a2: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_create", 
+    "type": "skProc", 
+    "code": "proc pthread_create*(a1: ptr Tpthread; a2: ptr Tpthread_attr; \u000D\u000A                     a3: proc (x: pointer): pointer {.noconv.}; a4: pointer): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_detach", 
+    "type": "skProc", 
+    "code": "proc pthread_detach*(a1: Tpthread): cint {.importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_equal", 
+    "type": "skProc", 
+    "code": "proc pthread_equal*(a1, a2: Tpthread): cint {.importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_exit", 
+    "type": "skProc", 
+    "code": "proc pthread_exit*(a1: pointer) {.importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_getconcurrency", 
+    "type": "skProc", 
+    "code": "proc pthread_getconcurrency*(): cint {.importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_getcpuclockid", 
+    "type": "skProc", 
+    "code": "proc pthread_getcpuclockid*(a1: Tpthread; a2: var Tclockid): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_getschedparam", 
+    "type": "skProc", 
+    "code": "proc pthread_getschedparam*(a1: Tpthread; a2: var cint; a3: ptr Tsched_param): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_getspecific", 
+    "type": "skProc", 
+    "code": "proc pthread_getspecific*(a1: Tpthread_key): pointer {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_join", 
+    "type": "skProc", 
+    "code": "proc pthread_join*(a1: Tpthread; a2: ptr pointer): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_key_create", 
+    "type": "skProc", 
+    "code": "proc pthread_key_create*(a1: ptr Tpthread_key; a2: proc (x: pointer) {.noconv.}): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_key_delete", 
+    "type": "skProc", 
+    "code": "proc pthread_key_delete*(a1: Tpthread_key): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutex_destroy", 
+    "type": "skProc", 
+    "code": "proc pthread_mutex_destroy*(a1: ptr Tpthread_mutex): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutex_getprioceiling", 
+    "type": "skProc", 
+    "code": "proc pthread_mutex_getprioceiling*(a1: ptr Tpthread_mutex; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutex_init", 
+    "type": "skProc", 
+    "code": "proc pthread_mutex_init*(a1: ptr Tpthread_mutex; a2: ptr Tpthread_mutexattr): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutex_lock", 
+    "type": "skProc", 
+    "code": "proc pthread_mutex_lock*(a1: ptr Tpthread_mutex): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutex_setprioceiling", 
+    "type": "skProc", 
+    "code": "proc pthread_mutex_setprioceiling*(a1: ptr Tpthread_mutex; a2: cint; \u000D\u000A                                   a3: var cint): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutex_timedlock", 
+    "type": "skProc", 
+    "code": "proc pthread_mutex_timedlock*(a1: ptr Tpthread_mutex; a2: ptr Ttimespec): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutex_trylock", 
+    "type": "skProc", 
+    "code": "proc pthread_mutex_trylock*(a1: ptr Tpthread_mutex): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutex_unlock", 
+    "type": "skProc", 
+    "code": "proc pthread_mutex_unlock*(a1: ptr Tpthread_mutex): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutexattr_destroy", 
+    "type": "skProc", 
+    "code": "proc pthread_mutexattr_destroy*(a1: ptr Tpthread_mutexattr): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutexattr_getprioceiling", 
+    "type": "skProc", 
+    "code": "proc pthread_mutexattr_getprioceiling*(a1: ptr Tpthread_mutexattr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutexattr_getprotocol", 
+    "type": "skProc", 
+    "code": "proc pthread_mutexattr_getprotocol*(a1: ptr Tpthread_mutexattr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutexattr_getpshared", 
+    "type": "skProc", 
+    "code": "proc pthread_mutexattr_getpshared*(a1: ptr Tpthread_mutexattr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutexattr_gettype", 
+    "type": "skProc", 
+    "code": "proc pthread_mutexattr_gettype*(a1: ptr Tpthread_mutexattr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutexattr_init", 
+    "type": "skProc", 
+    "code": "proc pthread_mutexattr_init*(a1: ptr Tpthread_mutexattr): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutexattr_setprioceiling", 
+    "type": "skProc", 
+    "code": "proc pthread_mutexattr_setprioceiling*(a1: ptr tpthread_mutexattr; a2: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutexattr_setprotocol", 
+    "type": "skProc", 
+    "code": "proc pthread_mutexattr_setprotocol*(a1: ptr Tpthread_mutexattr; a2: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutexattr_setpshared", 
+    "type": "skProc", 
+    "code": "proc pthread_mutexattr_setpshared*(a1: ptr Tpthread_mutexattr; a2: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_mutexattr_settype", 
+    "type": "skProc", 
+    "code": "proc pthread_mutexattr_settype*(a1: ptr Tpthread_mutexattr; a2: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_once", 
+    "type": "skProc", 
+    "code": "proc pthread_once*(a1: ptr Tpthread_once; a2: proc () {.noconv.}): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlock_destroy", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlock_destroy*(a1: ptr Tpthread_rwlock): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlock_init", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlock_init*(a1: ptr Tpthread_rwlock; a2: ptr Tpthread_rwlockattr): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlock_rdlock", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlock_rdlock*(a1: ptr Tpthread_rwlock): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlock_timedrdlock", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlock_timedrdlock*(a1: ptr Tpthread_rwlock; a2: ptr Ttimespec): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlock_timedwrlock", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlock_timedwrlock*(a1: ptr Tpthread_rwlock; a2: ptr Ttimespec): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlock_tryrdlock", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlock_tryrdlock*(a1: ptr Tpthread_rwlock): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlock_trywrlock", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlock_trywrlock*(a1: ptr Tpthread_rwlock): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlock_unlock", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlock_unlock*(a1: ptr Tpthread_rwlock): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlock_wrlock", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlock_wrlock*(a1: ptr Tpthread_rwlock): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlockattr_destroy", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlockattr_destroy*(a1: ptr Tpthread_rwlockattr): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlockattr_getpshared", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlockattr_getpshared*(a1: ptr Tpthread_rwlockattr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlockattr_init", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlockattr_init*(a1: ptr Tpthread_rwlockattr): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_rwlockattr_setpshared", 
+    "type": "skProc", 
+    "code": "proc pthread_rwlockattr_setpshared*(a1: ptr Tpthread_rwlockattr; a2: cint): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_self", 
+    "type": "skProc", 
+    "code": "proc pthread_self*(): Tpthread {.importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_setcancelstate", 
+    "type": "skProc", 
+    "code": "proc pthread_setcancelstate*(a1: cint; a2: var cint): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_setcanceltype", 
+    "type": "skProc", 
+    "code": "proc pthread_setcanceltype*(a1: cint; a2: var cint): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_setconcurrency", 
+    "type": "skProc", 
+    "code": "proc pthread_setconcurrency*(a1: cint): cint {.importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_setschedparam", 
+    "type": "skProc", 
+    "code": "proc pthread_setschedparam*(a1: Tpthread; a2: cint; a3: ptr Tsched_param): cint {.\u000D\u000A    importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_setschedprio", 
+    "type": "skProc", 
+    "code": "proc pthread_setschedprio*(a1: Tpthread; a2: cint): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_setspecific", 
+    "type": "skProc", 
+    "code": "proc pthread_setspecific*(a1: Tpthread_key; a2: pointer): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_spin_destroy", 
+    "type": "skProc", 
+    "code": "proc pthread_spin_destroy*(a1: ptr Tpthread_spinlock): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_spin_init", 
+    "type": "skProc", 
+    "code": "proc pthread_spin_init*(a1: ptr Tpthread_spinlock; a2: cint): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_spin_lock", 
+    "type": "skProc", 
+    "code": "proc pthread_spin_lock*(a1: ptr Tpthread_spinlock): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_spin_trylock", 
+    "type": "skProc", 
+    "code": "proc pthread_spin_trylock*(a1: ptr Tpthread_spinlock): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_spin_unlock", 
+    "type": "skProc", 
+    "code": "proc pthread_spin_unlock*(a1: ptr Tpthread_spinlock): cint {.importc, \u000D\u000A    header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "pthread_testcancel", 
+    "type": "skProc", 
+    "code": "proc pthread_testcancel*() {.importc, header: \"<pthread.h>\".}"
+  }, 
+  {
+    "name": "access", 
+    "type": "skProc", 
+    "code": "proc access*(a1: cstring; a2: cint): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "alarm", 
+    "type": "skProc", 
+    "code": "proc alarm*(a1: cint): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "chdir", 
+    "type": "skProc", 
+    "code": "proc chdir*(a1: cstring): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "chown", 
+    "type": "skProc", 
+    "code": "proc chown*(a1: cstring; a2: Tuid; a3: Tgid): cint {.importc, \u000D\u000A    header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "code": "proc close*(a1: cint | TSocketHandle): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "confstr", 
+    "type": "skProc", 
+    "code": "proc confstr*(a1: cint; a2: cstring; a3: int): int {.importc, \u000D\u000A    header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "crypt", 
+    "type": "skProc", 
+    "code": "proc crypt*(a1, a2: cstring): cstring {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "ctermid", 
+    "type": "skProc", 
+    "code": "proc ctermid*(a1: cstring): cstring {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "dup", 
+    "type": "skProc", 
+    "code": "proc dup*(a1: cint): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "dup2", 
+    "type": "skProc", 
+    "code": "proc dup2*(a1, a2: cint): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "encrypt", 
+    "type": "skProc", 
+    "code": "proc encrypt*(a1: array[0 .. 63, char]; a2: cint) {.importc, \u000D\u000A    header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "execl", 
+    "type": "skProc", 
+    "code": "proc execl*(a1, a2: cstring): cint {.varargs, importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "execle", 
+    "type": "skProc", 
+    "code": "proc execle*(a1, a2: cstring): cint {.varargs, importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "execlp", 
+    "type": "skProc", 
+    "code": "proc execlp*(a1, a2: cstring): cint {.varargs, importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "execv", 
+    "type": "skProc", 
+    "code": "proc execv*(a1: cstring; a2: cstringArray): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "execve", 
+    "type": "skProc", 
+    "code": "proc execve*(a1: cstring; a2, a3: cstringArray): cint {.importc, \u000D\u000A    header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "execvp", 
+    "type": "skProc", 
+    "code": "proc execvp*(a1: cstring; a2: cstringArray): cint {.importc, \u000D\u000A    header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "fchown", 
+    "type": "skProc", 
+    "code": "proc fchown*(a1: cint; a2: Tuid; a3: Tgid): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "fchdir", 
+    "type": "skProc", 
+    "code": "proc fchdir*(a1: cint): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "fdatasync", 
+    "type": "skProc", 
+    "code": "proc fdatasync*(a1: cint): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "fork", 
+    "type": "skProc", 
+    "code": "proc fork*(): Tpid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "fpathconf", 
+    "type": "skProc", 
+    "code": "proc fpathconf*(a1, a2: cint): int {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "fsync", 
+    "type": "skProc", 
+    "code": "proc fsync*(a1: cint): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "ftruncate", 
+    "type": "skProc", 
+    "code": "proc ftruncate*(a1: cint; a2: Toff): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getcwd", 
+    "type": "skProc", 
+    "code": "proc getcwd*(a1: cstring; a2: int): cstring {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getegid", 
+    "type": "skProc", 
+    "code": "proc getegid*(): TGid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "geteuid", 
+    "type": "skProc", 
+    "code": "proc geteuid*(): TUid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getgid", 
+    "type": "skProc", 
+    "code": "proc getgid*(): TGid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getgroups", 
+    "type": "skProc", 
+    "code": "proc getgroups*(a1: cint; a2: ptr array[0 .. 255, Tgid]): cint {.importc, \u000D\u000A    header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "gethostid", 
+    "type": "skProc", 
+    "code": "proc gethostid*(): int {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "gethostname", 
+    "type": "skProc", 
+    "code": "proc gethostname*(a1: cstring; a2: int): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getlogin", 
+    "type": "skProc", 
+    "code": "proc getlogin*(): cstring {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getlogin_r", 
+    "type": "skProc", 
+    "code": "proc getlogin_r*(a1: cstring; a2: int): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getopt", 
+    "type": "skProc", 
+    "code": "proc getopt*(a1: cint; a2: cstringArray; a3: cstring): cint {.importc, \u000D\u000A    header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getpgid", 
+    "type": "skProc", 
+    "code": "proc getpgid*(a1: Tpid): Tpid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getpgrp", 
+    "type": "skProc", 
+    "code": "proc getpgrp*(): Tpid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getpid", 
+    "type": "skProc", 
+    "code": "proc getpid*(): Tpid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getppid", 
+    "type": "skProc", 
+    "code": "proc getppid*(): Tpid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getsid", 
+    "type": "skProc", 
+    "code": "proc getsid*(a1: Tpid): Tpid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getuid", 
+    "type": "skProc", 
+    "code": "proc getuid*(): Tuid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "getwd", 
+    "type": "skProc", 
+    "code": "proc getwd*(a1: cstring): cstring {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "isatty", 
+    "type": "skProc", 
+    "code": "proc isatty*(a1: cint): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "lchown", 
+    "type": "skProc", 
+    "code": "proc lchown*(a1: cstring; a2: Tuid; a3: Tgid): cint {.importc, \u000D\u000A    header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "link", 
+    "type": "skProc", 
+    "code": "proc link*(a1, a2: cstring): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "lockf", 
+    "type": "skProc", 
+    "code": "proc lockf*(a1, a2: cint; a3: Toff): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "lseek", 
+    "type": "skProc", 
+    "code": "proc lseek*(a1: cint; a2: Toff; a3: cint): Toff {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "nice", 
+    "type": "skProc", 
+    "code": "proc nice*(a1: cint): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "pathconf", 
+    "type": "skProc", 
+    "code": "proc pathconf*(a1: cstring; a2: cint): int {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "pause", 
+    "type": "skProc", 
+    "code": "proc pause*(): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "pipe", 
+    "type": "skProc", 
+    "code": "proc pipe*(a: array[0 .. 1, cint]): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "pread", 
+    "type": "skProc", 
+    "code": "proc pread*(a1: cint; a2: pointer; a3: int; a4: Toff): int {.importc, \u000D\u000A    header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "pwrite", 
+    "type": "skProc", 
+    "code": "proc pwrite*(a1: cint; a2: pointer; a3: int; a4: Toff): int {.importc, \u000D\u000A    header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "read", 
+    "type": "skProc", 
+    "code": "proc read*(a1: cint; a2: pointer; a3: int): int {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "readlink", 
+    "type": "skProc", 
+    "code": "proc readlink*(a1, a2: cstring; a3: int): int {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "rmdir", 
+    "type": "skProc", 
+    "code": "proc rmdir*(a1: cstring): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "setegid", 
+    "type": "skProc", 
+    "code": "proc setegid*(a1: Tgid): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "seteuid", 
+    "type": "skProc", 
+    "code": "proc seteuid*(a1: Tuid): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "setgid", 
+    "type": "skProc", 
+    "code": "proc setgid*(a1: Tgid): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "setpgid", 
+    "type": "skProc", 
+    "code": "proc setpgid*(a1, a2: Tpid): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "setpgrp", 
+    "type": "skProc", 
+    "code": "proc setpgrp*(): Tpid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "setregid", 
+    "type": "skProc", 
+    "code": "proc setregid*(a1, a2: Tgid): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "setreuid", 
+    "type": "skProc", 
+    "code": "proc setreuid*(a1, a2: Tuid): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "setsid", 
+    "type": "skProc", 
+    "code": "proc setsid*(): Tpid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "setuid", 
+    "type": "skProc", 
+    "code": "proc setuid*(a1: Tuid): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "sleep", 
+    "type": "skProc", 
+    "code": "proc sleep*(a1: cint): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "swab", 
+    "type": "skProc", 
+    "code": "proc swab*(a1, a2: pointer; a3: int) {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "symlink", 
+    "type": "skProc", 
+    "code": "proc symlink*(a1, a2: cstring): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "sync", 
+    "type": "skProc", 
+    "code": "proc sync*() {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "sysconf", 
+    "type": "skProc", 
+    "code": "proc sysconf*(a1: cint): int {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "tcgetpgrp", 
+    "type": "skProc", 
+    "code": "proc tcgetpgrp*(a1: cint): tpid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "tcsetpgrp", 
+    "type": "skProc", 
+    "code": "proc tcsetpgrp*(a1: cint; a2: Tpid): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "truncate", 
+    "type": "skProc", 
+    "code": "proc truncate*(a1: cstring; a2: Toff): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "ttyname", 
+    "type": "skProc", 
+    "code": "proc ttyname*(a1: cint): cstring {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "ttyname_r", 
+    "type": "skProc", 
+    "code": "proc ttyname_r*(a1: cint; a2: cstring; a3: int): cint {.importc, \u000D\u000A    header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "ualarm", 
+    "type": "skProc", 
+    "code": "proc ualarm*(a1, a2: Tuseconds): Tuseconds {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "unlink", 
+    "type": "skProc", 
+    "code": "proc unlink*(a1: cstring): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "usleep", 
+    "type": "skProc", 
+    "code": "proc usleep*(a1: Tuseconds): cint {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "vfork", 
+    "type": "skProc", 
+    "code": "proc vfork*(): tpid {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "write", 
+    "type": "skProc", 
+    "code": "proc write*(a1: cint; a2: pointer; a3: int): int {.importc, header: \"<unistd.h>\".}"
+  }, 
+  {
+    "name": "sem_close", 
+    "type": "skProc", 
+    "code": "proc sem_close*(a1: ptr Tsem): cint {.importc, header: \"<semaphore.h>\".}"
+  }, 
+  {
+    "name": "sem_destroy", 
+    "type": "skProc", 
+    "code": "proc sem_destroy*(a1: ptr Tsem): cint {.importc, header: \"<semaphore.h>\".}"
+  }, 
+  {
+    "name": "sem_getvalue", 
+    "type": "skProc", 
+    "code": "proc sem_getvalue*(a1: ptr Tsem; a2: var cint): cint {.importc, \u000D\u000A    header: \"<semaphore.h>\".}"
+  }, 
+  {
+    "name": "sem_init", 
+    "type": "skProc", 
+    "code": "proc sem_init*(a1: ptr Tsem; a2: cint; a3: cint): cint {.importc, \u000D\u000A    header: \"<semaphore.h>\".}"
+  }, 
+  {
+    "name": "sem_open", 
+    "type": "skProc", 
+    "code": "proc sem_open*(a1: cstring; a2: cint): ptr TSem {.varargs, importc, \u000D\u000A    header: \"<semaphore.h>\".}"
+  }, 
+  {
+    "name": "sem_post", 
+    "type": "skProc", 
+    "code": "proc sem_post*(a1: ptr Tsem): cint {.importc, header: \"<semaphore.h>\".}"
+  }, 
+  {
+    "name": "sem_timedwait", 
+    "type": "skProc", 
+    "code": "proc sem_timedwait*(a1: ptr Tsem; a2: ptr Ttimespec): cint {.importc, \u000D\u000A    header: \"<semaphore.h>\".}"
+  }, 
+  {
+    "name": "sem_trywait", 
+    "type": "skProc", 
+    "code": "proc sem_trywait*(a1: ptr Tsem): cint {.importc, header: \"<semaphore.h>\".}"
+  }, 
+  {
+    "name": "sem_unlink", 
+    "type": "skProc", 
+    "code": "proc sem_unlink*(a1: cstring): cint {.importc, header: \"<semaphore.h>\".}"
+  }, 
+  {
+    "name": "sem_wait", 
+    "type": "skProc", 
+    "code": "proc sem_wait*(a1: ptr Tsem): cint {.importc, header: \"<semaphore.h>\".}"
+  }, 
+  {
+    "name": "ftok", 
+    "type": "skProc", 
+    "code": "proc ftok*(a1: cstring; a2: cint): Tkey {.importc, header: \"<sys/ipc.h>\".}"
+  }, 
+  {
+    "name": "statvfs", 
+    "type": "skProc", 
+    "code": "proc statvfs*(a1: cstring; a2: var Tstatvfs): cint {.importc, \u000D\u000A    header: \"<sys/statvfs.h>\".}"
+  }, 
+  {
+    "name": "fstatvfs", 
+    "type": "skProc", 
+    "code": "proc fstatvfs*(a1: cint; a2: var Tstatvfs): cint {.importc, \u000D\u000A    header: \"<sys/statvfs.h>\".}"
+  }, 
+  {
+    "name": "chmod", 
+    "type": "skProc", 
+    "code": "proc chmod*(a1: cstring; a2: TMode): cint {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "fchmod", 
+    "type": "skProc", 
+    "code": "proc fchmod*(a1: cint; a2: TMode): cint {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "fstat", 
+    "type": "skProc", 
+    "code": "proc fstat*(a1: cint; a2: var Tstat): cint {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "lstat", 
+    "type": "skProc", 
+    "code": "proc lstat*(a1: cstring; a2: var Tstat): cint {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "mkdir", 
+    "type": "skProc", 
+    "code": "proc mkdir*(a1: cstring; a2: TMode): cint {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "mkfifo", 
+    "type": "skProc", 
+    "code": "proc mkfifo*(a1: cstring; a2: TMode): cint {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "mknod", 
+    "type": "skProc", 
+    "code": "proc mknod*(a1: cstring; a2: TMode; a3: Tdev): cint {.importc, \u000D\u000A    header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "stat", 
+    "type": "skProc", 
+    "code": "proc stat*(a1: cstring; a2: var Tstat): cint {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "umask", 
+    "type": "skProc", 
+    "code": "proc umask*(a1: Tmode): TMode {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "S_ISBLK", 
+    "type": "skProc", 
+    "description": "Test for a block special file.", 
+    "code": "proc S_ISBLK*(m: Tmode): bool {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "S_ISCHR", 
+    "type": "skProc", 
+    "description": "Test for a character special file.", 
+    "code": "proc S_ISCHR*(m: Tmode): bool {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "S_ISDIR", 
+    "type": "skProc", 
+    "description": "Test for a directory.", 
+    "code": "proc S_ISDIR*(m: Tmode): bool {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "S_ISFIFO", 
+    "type": "skProc", 
+    "description": "Test for a pipe or FIFO special file.", 
+    "code": "proc S_ISFIFO*(m: Tmode): bool {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "S_ISREG", 
+    "type": "skProc", 
+    "description": "Test for a regular file.", 
+    "code": "proc S_ISREG*(m: Tmode): bool {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "S_ISLNK", 
+    "type": "skProc", 
+    "description": "Test for a symbolic link.", 
+    "code": "proc S_ISLNK*(m: Tmode): bool {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "S_ISSOCK", 
+    "type": "skProc", 
+    "description": "Test for a socket. ", 
+    "code": "proc S_ISSOCK*(m: Tmode): bool {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "S_TYPEISMQ", 
+    "type": "skProc", 
+    "description": "Test for a message queue.", 
+    "code": "proc S_TYPEISMQ*(buf: var TStat): bool {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "S_TYPEISSEM", 
+    "type": "skProc", 
+    "description": "Test for a semaphore.", 
+    "code": "proc S_TYPEISSEM*(buf: var TStat): bool {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "S_TYPEISSHM", 
+    "type": "skProc", 
+    "description": "Test for a shared memory object. ", 
+    "code": "proc S_TYPEISSHM*(buf: var TStat): bool {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "S_TYPEISTMO", 
+    "type": "skProc", 
+    "description": "Test macro for a typed memory object. ", 
+    "code": "proc S_TYPEISTMO*(buf: var TStat): bool {.importc, header: \"<sys/stat.h>\".}"
+  }, 
+  {
+    "name": "mlock", 
+    "type": "skProc", 
+    "code": "proc mlock*(a1: pointer; a2: int): cint {.importc, header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "mlockall", 
+    "type": "skProc", 
+    "code": "proc mlockall*(a1: cint): cint {.importc, header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "mmap", 
+    "type": "skProc", 
+    "code": "proc mmap*(a1: pointer; a2: int; a3, a4, a5: cint; a6: Toff): pointer {.importc, \u000D\u000A    header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "mprotect", 
+    "type": "skProc", 
+    "code": "proc mprotect*(a1: pointer; a2: int; a3: cint): cint {.importc, \u000D\u000A    header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "msync", 
+    "type": "skProc", 
+    "code": "proc msync*(a1: pointer; a2: int; a3: cint): cint {.importc, \u000D\u000A    header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "munlock", 
+    "type": "skProc", 
+    "code": "proc munlock*(a1: pointer; a2: int): cint {.importc, header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "munlockall", 
+    "type": "skProc", 
+    "code": "proc munlockall*(): cint {.importc, header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "munmap", 
+    "type": "skProc", 
+    "code": "proc munmap*(a1: pointer; a2: int): cint {.importc, header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "posix_madvise", 
+    "type": "skProc", 
+    "code": "proc posix_madvise*(a1: pointer; a2: int; a3: cint): cint {.importc, \u000D\u000A    header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "posix_mem_offset", 
+    "type": "skProc", 
+    "code": "proc posix_mem_offset*(a1: pointer; a2: int; a3: var Toff; a4: var int; \u000D\u000A                       a5: var cint): cint {.importc, header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "posix_typed_mem_get_info", 
+    "type": "skProc", 
+    "code": "proc posix_typed_mem_get_info*(a1: cint; a2: var Tposix_typed_mem_info): cint {.\u000D\u000A    importc, header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "posix_typed_mem_open", 
+    "type": "skProc", 
+    "code": "proc posix_typed_mem_open*(a1: cstring; a2, a3: cint): cint {.importc, \u000D\u000A    header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "shm_open", 
+    "type": "skProc", 
+    "code": "proc shm_open*(a1: cstring; a2: cint; a3: Tmode): cint {.importc, \u000D\u000A    header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "shm_unlink", 
+    "type": "skProc", 
+    "code": "proc shm_unlink*(a1: cstring): cint {.importc, header: \"<sys/mman.h>\".}"
+  }, 
+  {
+    "name": "asctime", 
+    "type": "skProc", 
+    "code": "proc asctime*(a1: var ttm): cstring {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "asctime_r", 
+    "type": "skProc", 
+    "code": "proc asctime_r*(a1: var ttm; a2: cstring): cstring {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "clock", 
+    "type": "skProc", 
+    "code": "proc clock*(): Tclock {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "clock_getcpuclockid", 
+    "type": "skProc", 
+    "code": "proc clock_getcpuclockid*(a1: tpid; a2: var Tclockid): cint {.importc, \u000D\u000A    header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "clock_getres", 
+    "type": "skProc", 
+    "code": "proc clock_getres*(a1: Tclockid; a2: var Ttimespec): cint {.importc, \u000D\u000A    header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "clock_gettime", 
+    "type": "skProc", 
+    "code": "proc clock_gettime*(a1: Tclockid; a2: var Ttimespec): cint {.importc, \u000D\u000A    header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "clock_nanosleep", 
+    "type": "skProc", 
+    "code": "proc clock_nanosleep*(a1: Tclockid; a2: cint; a3: var Ttimespec; \u000D\u000A                      a4: var Ttimespec): cint {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "clock_settime", 
+    "type": "skProc", 
+    "code": "proc clock_settime*(a1: Tclockid; a2: var Ttimespec): cint {.importc, \u000D\u000A    header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "ctime", 
+    "type": "skProc", 
+    "code": "proc ctime*(a1: var Ttime): cstring {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "ctime_r", 
+    "type": "skProc", 
+    "code": "proc ctime_r*(a1: var Ttime; a2: cstring): cstring {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "difftime", 
+    "type": "skProc", 
+    "code": "proc difftime*(a1, a2: Ttime): cdouble {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "getdate", 
+    "type": "skProc", 
+    "code": "proc getdate*(a1: cstring): ptr ttm {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "gmtime", 
+    "type": "skProc", 
+    "code": "proc gmtime*(a1: var ttime): ptr ttm {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "gmtime_r", 
+    "type": "skProc", 
+    "code": "proc gmtime_r*(a1: var ttime; a2: var ttm): ptr ttm {.importc, \u000D\u000A    header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "localtime", 
+    "type": "skProc", 
+    "code": "proc localtime*(a1: var ttime): ptr ttm {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "localtime_r", 
+    "type": "skProc", 
+    "code": "proc localtime_r*(a1: var ttime; a2: var ttm): ptr ttm {.importc, \u000D\u000A    header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "mktime", 
+    "type": "skProc", 
+    "code": "proc mktime*(a1: var ttm): ttime {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "nanosleep", 
+    "type": "skProc", 
+    "code": "proc nanosleep*(a1, a2: var Ttimespec): cint {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "strftime", 
+    "type": "skProc", 
+    "code": "proc strftime*(a1: cstring; a2: int; a3: cstring; a4: var ttm): int {.importc, \u000D\u000A    header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "strptime", 
+    "type": "skProc", 
+    "code": "proc strptime*(a1, a2: cstring; a3: var ttm): cstring {.importc, \u000D\u000A    header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "time", 
+    "type": "skProc", 
+    "code": "proc time*(a1: var Ttime): ttime {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "timer_create", 
+    "type": "skProc", 
+    "code": "proc timer_create*(a1: var Tclockid; a2: var Tsigevent; a3: var Ttimer): cint {.\u000D\u000A    importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "timer_delete", 
+    "type": "skProc", 
+    "code": "proc timer_delete*(a1: var Ttimer): cint {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "timer_gettime", 
+    "type": "skProc", 
+    "code": "proc timer_gettime*(a1: Ttimer; a2: var Titimerspec): cint {.importc, \u000D\u000A    header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "timer_getoverrun", 
+    "type": "skProc", 
+    "code": "proc timer_getoverrun*(a1: Ttimer): cint {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "timer_settime", 
+    "type": "skProc", 
+    "code": "proc timer_settime*(a1: Ttimer; a2: cint; a3: var Titimerspec; \u000D\u000A                    a4: var titimerspec): cint {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "tzset", 
+    "type": "skProc", 
+    "code": "proc tzset*() {.importc, header: \"<time.h>\".}"
+  }, 
+  {
+    "name": "wait", 
+    "type": "skProc", 
+    "code": "proc wait*(a1: var cint): tpid {.importc, header: \"<sys/wait.h>\".}"
+  }, 
+  {
+    "name": "waitid", 
+    "type": "skProc", 
+    "code": "proc waitid*(a1: cint; a2: tid; a3: var Tsiginfo; a4: cint): cint {.importc, \u000D\u000A    header: \"<sys/wait.h>\".}"
+  }, 
+  {
+    "name": "waitpid", 
+    "type": "skProc", 
+    "code": "proc waitpid*(a1: tpid; a2: var cint; a3: cint): tpid {.importc, \u000D\u000A    header: \"<sys/wait.h>\".}"
+  }, 
+  {
+    "name": "bsd_signal", 
+    "type": "skProc", 
+    "code": "proc bsd_signal*(a1: cint; a2: proc (x: pointer) {.noconv.}) {.importc, \u000D\u000A    header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "kill", 
+    "type": "skProc", 
+    "code": "proc kill*(a1: Tpid; a2: cint): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "killpg", 
+    "type": "skProc", 
+    "code": "proc killpg*(a1: Tpid; a2: cint): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "pthread_kill", 
+    "type": "skProc", 
+    "code": "proc pthread_kill*(a1: tpthread; a2: cint): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "pthread_sigmask", 
+    "type": "skProc", 
+    "code": "proc pthread_sigmask*(a1: cint; a2, a3: var Tsigset): cint {.importc, \u000D\u000A    header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "`raise`", 
+    "type": "skProc", 
+    "code": "proc `raise`*(a1: cint): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigaction", 
+    "type": "skProc", 
+    "code": "proc sigaction*(a1: cint; a2, a3: var Tsigaction): cint {.importc, \u000D\u000A    header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigaddset", 
+    "type": "skProc", 
+    "code": "proc sigaddset*(a1: var Tsigset; a2: cint): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigaltstack", 
+    "type": "skProc", 
+    "code": "proc sigaltstack*(a1, a2: var Tstack): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigdelset", 
+    "type": "skProc", 
+    "code": "proc sigdelset*(a1: var Tsigset; a2: cint): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigemptyset", 
+    "type": "skProc", 
+    "code": "proc sigemptyset*(a1: var Tsigset): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigfillset", 
+    "type": "skProc", 
+    "code": "proc sigfillset*(a1: var Tsigset): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sighold", 
+    "type": "skProc", 
+    "code": "proc sighold*(a1: cint): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigignore", 
+    "type": "skProc", 
+    "code": "proc sigignore*(a1: cint): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "siginterrupt", 
+    "type": "skProc", 
+    "code": "proc siginterrupt*(a1, a2: cint): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigismember", 
+    "type": "skProc", 
+    "code": "proc sigismember*(a1: var Tsigset; a2: cint): cint {.importc, \u000D\u000A    header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "signal", 
+    "type": "skProc", 
+    "code": "proc signal*(a1: cint; a2: proc (x: cint) {.noconv.}) {.importc, \u000D\u000A    header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigpause", 
+    "type": "skProc", 
+    "code": "proc sigpause*(a1: cint): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigpending", 
+    "type": "skProc", 
+    "code": "proc sigpending*(a1: var tsigset): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigprocmask", 
+    "type": "skProc", 
+    "code": "proc sigprocmask*(a1: cint; a2, a3: var tsigset): cint {.importc, \u000D\u000A    header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigqueue", 
+    "type": "skProc", 
+    "code": "proc sigqueue*(a1: tpid; a2: cint; a3: Tsigval): cint {.importc, \u000D\u000A    header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigrelse", 
+    "type": "skProc", 
+    "code": "proc sigrelse*(a1: cint): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigset", 
+    "type": "skProc", 
+    "code": "proc sigset*(a1: int; a2: proc (x: cint) {.noconv.}) {.importc, \u000D\u000A    header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigsuspend", 
+    "type": "skProc", 
+    "code": "proc sigsuspend*(a1: var Tsigset): cint {.importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigtimedwait", 
+    "type": "skProc", 
+    "code": "proc sigtimedwait*(a1: var Tsigset; a2: var tsiginfo; a3: var ttimespec): cint {.\u000D\u000A    importc, header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigwait", 
+    "type": "skProc", 
+    "code": "proc sigwait*(a1: var Tsigset; a2: var cint): cint {.importc, \u000D\u000A    header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "sigwaitinfo", 
+    "type": "skProc", 
+    "code": "proc sigwaitinfo*(a1: var Tsigset; a2: var tsiginfo): cint {.importc, \u000D\u000A    header: \"<signal.h>\".}"
+  }, 
+  {
+    "name": "catclose", 
+    "type": "skProc", 
+    "code": "proc catclose*(a1: Tnl_catd): cint {.importc, header: \"<nl_types.h>\".}"
+  }, 
+  {
+    "name": "catgets", 
+    "type": "skProc", 
+    "code": "proc catgets*(a1: Tnl_catd; a2, a3: cint; a4: cstring): cstring {.importc, \u000D\u000A    header: \"<nl_types.h>\".}"
+  }, 
+  {
+    "name": "catopen", 
+    "type": "skProc", 
+    "code": "proc catopen*(a1: cstring; a2: cint): Tnl_catd {.importc, header: \"<nl_types.h>\".}"
+  }, 
+  {
+    "name": "sched_get_priority_max", 
+    "type": "skProc", 
+    "code": "proc sched_get_priority_max*(a1: cint): cint {.importc, header: \"<sched.h>\".}"
+  }, 
+  {
+    "name": "sched_get_priority_min", 
+    "type": "skProc", 
+    "code": "proc sched_get_priority_min*(a1: cint): cint {.importc, header: \"<sched.h>\".}"
+  }, 
+  {
+    "name": "sched_getparam", 
+    "type": "skProc", 
+    "code": "proc sched_getparam*(a1: tpid; a2: var Tsched_param): cint {.importc, \u000D\u000A    header: \"<sched.h>\".}"
+  }, 
+  {
+    "name": "sched_getscheduler", 
+    "type": "skProc", 
+    "code": "proc sched_getscheduler*(a1: tpid): cint {.importc, header: \"<sched.h>\".}"
+  }, 
+  {
+    "name": "sched_rr_get_interval", 
+    "type": "skProc", 
+    "code": "proc sched_rr_get_interval*(a1: tpid; a2: var Ttimespec): cint {.importc, \u000D\u000A    header: \"<sched.h>\".}"
+  }, 
+  {
+    "name": "sched_setparam", 
+    "type": "skProc", 
+    "code": "proc sched_setparam*(a1: tpid; a2: var Tsched_param): cint {.importc, \u000D\u000A    header: \"<sched.h>\".}"
+  }, 
+  {
+    "name": "sched_setscheduler", 
+    "type": "skProc", 
+    "code": "proc sched_setscheduler*(a1: tpid; a2: cint; a3: var tsched_param): cint {.\u000D\u000A    importc, header: \"<sched.h>\".}"
+  }, 
+  {
+    "name": "sched_yield", 
+    "type": "skProc", 
+    "code": "proc sched_yield*(): cint {.importc, header: \"<sched.h>\".}"
+  }, 
+  {
+    "name": "strerror", 
+    "type": "skProc", 
+    "code": "proc strerror*(errnum: cint): cstring {.importc, header: \"<string.h>\".}"
+  }, 
+  {
+    "name": "hstrerror", 
+    "type": "skProc", 
+    "code": "proc hstrerror*(herrnum: cint): cstring {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "FD_CLR", 
+    "type": "skProc", 
+    "code": "proc FD_CLR*(a1: cint; a2: var Tfd_set) {.importc, header: \"<sys/select.h>\".}"
+  }, 
+  {
+    "name": "FD_ISSET", 
+    "type": "skProc", 
+    "code": "proc FD_ISSET*(a1: cint | TSocketHandle; a2: var Tfd_set): cint {.importc, \u000D\u000A    header: \"<sys/select.h>\".}"
+  }, 
+  {
+    "name": "FD_SET", 
+    "type": "skProc", 
+    "code": "proc FD_SET*(a1: cint | TSocketHandle; a2: var Tfd_set) {.importc, \u000D\u000A    header: \"<sys/select.h>\".}"
+  }, 
+  {
+    "name": "FD_ZERO", 
+    "type": "skProc", 
+    "code": "proc FD_ZERO*(a1: var Tfd_set) {.importc, header: \"<sys/select.h>\".}"
+  }, 
+  {
+    "name": "pselect", 
+    "type": "skProc", 
+    "code": "proc pselect*(a1: cint; a2, a3, a4: ptr Tfd_set; a5: ptr ttimespec; \u000D\u000A              a6: var Tsigset): cint {.importc, header: \"<sys/select.h>\".}"
+  }, 
+  {
+    "name": "select", 
+    "type": "skProc", 
+    "code": "proc select*(a1: cint; a2, a3, a4: ptr Tfd_set; a5: ptr ttimeval): cint {.\u000D\u000A    importc, header: \"<sys/select.h>\".}"
+  }, 
+  {
+    "name": "posix_spawn", 
+    "type": "skProc", 
+    "code": "proc posix_spawn*(a1: var tpid; a2: cstring; a3: var Tposix_spawn_file_actions; \u000D\u000A                  a4: var Tposix_spawnattr; a5, a6: cstringArray): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawn_file_actions_addclose", 
+    "type": "skProc", 
+    "code": "proc posix_spawn_file_actions_addclose*(a1: var tposix_spawn_file_actions; \u000D\u000A                                        a2: cint): cint {.importc, \u000D\u000A    header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawn_file_actions_adddup2", 
+    "type": "skProc", 
+    "code": "proc posix_spawn_file_actions_adddup2*(a1: var tposix_spawn_file_actions; \u000D\u000A                                       a2, a3: cint): cint {.importc, \u000D\u000A    header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawn_file_actions_addopen", 
+    "type": "skProc", 
+    "code": "proc posix_spawn_file_actions_addopen*(a1: var tposix_spawn_file_actions; \u000D\u000A                                       a2: cint; a3: cstring; a4: cint; \u000D\u000A                                       a5: tmode): cint {.importc, \u000D\u000A    header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawn_file_actions_destroy", 
+    "type": "skProc", 
+    "code": "proc posix_spawn_file_actions_destroy*(a1: var tposix_spawn_file_actions): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawn_file_actions_init", 
+    "type": "skProc", 
+    "code": "proc posix_spawn_file_actions_init*(a1: var tposix_spawn_file_actions): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_destroy", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_destroy*(a1: var tposix_spawnattr): cint {.importc, \u000D\u000A    header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_getsigdefault", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_getsigdefault*(a1: var tposix_spawnattr; a2: var Tsigset): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_getflags", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_getflags*(a1: var tposix_spawnattr; a2: var cshort): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_getpgroup", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_getpgroup*(a1: var tposix_spawnattr; a2: var tpid): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_getschedparam", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_getschedparam*(a1: var tposix_spawnattr; \u000D\u000A                                    a2: var tsched_param): cint {.importc, \u000D\u000A    header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_getschedpolicy", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_getschedpolicy*(a1: var tposix_spawnattr; a2: var cint): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_getsigmask", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_getsigmask*(a1: var tposix_spawnattr; a2: var tsigset): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_init", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_init*(a1: var tposix_spawnattr): cint {.importc, \u000D\u000A    header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_setsigdefault", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_setsigdefault*(a1: var tposix_spawnattr; a2: var tsigset): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_setflags", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_setflags*(a1: var tposix_spawnattr; a2: cint): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_setpgroup", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_setpgroup*(a1: var tposix_spawnattr; a2: tpid): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_setschedparam", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_setschedparam*(a1: var tposix_spawnattr; \u000D\u000A                                    a2: var tsched_param): cint {.importc, \u000D\u000A    header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_setschedpolicy", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_setschedpolicy*(a1: var tposix_spawnattr; a2: cint): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnattr_setsigmask", 
+    "type": "skProc", 
+    "code": "proc posix_spawnattr_setsigmask*(a1: var tposix_spawnattr; a2: var tsigset): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "posix_spawnp", 
+    "type": "skProc", 
+    "code": "proc posix_spawnp*(a1: var tpid; a2: cstring; a3: var tposix_spawn_file_actions; \u000D\u000A                   a4: var tposix_spawnattr; a5, a6: cstringArray): cint {.\u000D\u000A    importc, header: \"<spawn.h>\".}"
+  }, 
+  {
+    "name": "getcontext", 
+    "type": "skProc", 
+    "code": "proc getcontext*(a1: var Tucontext): cint {.importc, header: \"<ucontext.h>\".}"
+  }, 
+  {
+    "name": "makecontext", 
+    "type": "skProc", 
+    "code": "proc makecontext*(a1: var Tucontext; a4: proc () {.noconv.}; a3: cint) {.\u000D\u000A    varargs, importc, header: \"<ucontext.h>\".}"
+  }, 
+  {
+    "name": "setcontext", 
+    "type": "skProc", 
+    "code": "proc setcontext*(a1: var Tucontext): cint {.importc, header: \"<ucontext.h>\".}"
+  }, 
+  {
+    "name": "swapcontext", 
+    "type": "skProc", 
+    "code": "proc swapcontext*(a1, a2: var Tucontext): cint {.importc, header: \"<ucontext.h>\".}"
+  }, 
+  {
+    "name": "readv", 
+    "type": "skProc", 
+    "code": "proc readv*(a1: cint; a2: ptr TIOVec; a3: cint): int {.importc, \u000D\u000A    header: \"<sys/uio.h>\".}"
+  }, 
+  {
+    "name": "writev", 
+    "type": "skProc", 
+    "code": "proc writev*(a1: cint; a2: ptr TIOVec; a3: cint): int {.importc, \u000D\u000A    header: \"<sys/uio.h>\".}"
+  }, 
+  {
+    "name": "CMSG_DATA", 
+    "type": "skProc", 
+    "code": "proc CMSG_DATA*(cmsg: ptr Tcmsghdr): cstring {.importc, header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "CMSG_NXTHDR", 
+    "type": "skProc", 
+    "code": "proc CMSG_NXTHDR*(mhdr: ptr TMsgHdr; cmsg: ptr TCMsgHdr): ptr TCmsgHdr {.\u000D\u000A    importc, header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "CMSG_FIRSTHDR", 
+    "type": "skProc", 
+    "code": "proc CMSG_FIRSTHDR*(mhdr: ptr TMsgHdr): ptr TCMsgHdr {.importc, \u000D\u000A    header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "INVALID_SOCKET", 
+    "type": "skConst", 
+    "code": "INVALID_SOCKET* = TSocketHandle(- 1)"
+  }, 
+  {
+    "name": "`==`", 
+    "type": "skProc", 
+    "code": "proc `==`*(x, y: TSocketHandle): bool {.borrow.}"
+  }, 
+  {
+    "name": "accept", 
+    "type": "skProc", 
+    "code": "proc accept*(a1: TSocketHandle; a2: ptr Tsockaddr; a3: ptr Tsocklen): TSocketHandle {.\u000D\u000A    importc, header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "bindSocket", 
+    "type": "skProc", 
+    "description": "is Posix's <tt class=\"docutils literal\"><span class=\"pre\">bind</span></tt>, because <tt class=\"docutils literal\"><span class=\"pre\">bind</span></tt> is a reserved word", 
+    "code": "proc bindSocket*(a1: TSocketHandle; a2: ptr Tsockaddr; a3: Tsocklen): cint {.\u000D\u000A    importc: \"bind\", header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "code": "proc connect*(a1: TSocketHandle; a2: ptr Tsockaddr; a3: Tsocklen): cint {.\u000D\u000A    importc, header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "getpeername", 
+    "type": "skProc", 
+    "code": "proc getpeername*(a1: TSocketHandle; a2: ptr Tsockaddr; a3: ptr Tsocklen): cint {.\u000D\u000A    importc, header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "getsockname", 
+    "type": "skProc", 
+    "code": "proc getsockname*(a1: TSocketHandle; a2: ptr Tsockaddr; a3: ptr Tsocklen): cint {.\u000D\u000A    importc, header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "getsockopt", 
+    "type": "skProc", 
+    "code": "proc getsockopt*(a1: TSocketHandle; a2, a3: cint; a4: pointer; a5: ptr Tsocklen): cint {.\u000D\u000A    importc, header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "listen", 
+    "type": "skProc", 
+    "code": "proc listen*(a1: TSocketHandle; a2: cint): cint {.importc, \u000D\u000A    header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "recv", 
+    "type": "skProc", 
+    "code": "proc recv*(a1: TSocketHandle; a2: pointer; a3: int; a4: cint): int {.importc, \u000D\u000A    header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "recvfrom", 
+    "type": "skProc", 
+    "code": "proc recvfrom*(a1: TSocketHandle; a2: pointer; a3: int; a4: cint; \u000D\u000A               a5: ptr Tsockaddr; a6: ptr Tsocklen): int {.importc, \u000D\u000A    header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "recvmsg", 
+    "type": "skProc", 
+    "code": "proc recvmsg*(a1: TSocketHandle; a2: ptr Tmsghdr; a3: cint): int {.importc, \u000D\u000A    header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "send", 
+    "type": "skProc", 
+    "code": "proc send*(a1: TSocketHandle; a2: pointer; a3: int; a4: cint): int {.importc, \u000D\u000A    header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "sendmsg", 
+    "type": "skProc", 
+    "code": "proc sendmsg*(a1: TSocketHandle; a2: ptr Tmsghdr; a3: cint): int {.importc, \u000D\u000A    header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "sendto", 
+    "type": "skProc", 
+    "code": "proc sendto*(a1: TSocketHandle; a2: pointer; a3: int; a4: cint; \u000D\u000A             a5: ptr Tsockaddr; a6: Tsocklen): int {.importc, \u000D\u000A    header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "setsockopt", 
+    "type": "skProc", 
+    "code": "proc setsockopt*(a1: TSocketHandle; a2, a3: cint; a4: pointer; a5: Tsocklen): cint {.\u000D\u000A    importc, header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "shutdown", 
+    "type": "skProc", 
+    "code": "proc shutdown*(a1: TSocketHandle; a2: cint): cint {.importc, \u000D\u000A    header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "socket", 
+    "type": "skProc", 
+    "code": "proc socket*(a1, a2, a3: cint): TSocketHandle {.importc, \u000D\u000A    header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "sockatmark", 
+    "type": "skProc", 
+    "code": "proc sockatmark*(a1: cint): cint {.importc, header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "socketpair", 
+    "type": "skProc", 
+    "code": "proc socketpair*(a1, a2, a3: cint; a4: var array[0 .. 1, cint]): cint {.importc, \u000D\u000A    header: \"<sys/socket.h>\".}"
+  }, 
+  {
+    "name": "if_nametoindex", 
+    "type": "skProc", 
+    "code": "proc if_nametoindex*(a1: cstring): cint {.importc, header: \"<net/if.h>\".}"
+  }, 
+  {
+    "name": "if_indextoname", 
+    "type": "skProc", 
+    "code": "proc if_indextoname*(a1: cint; a2: cstring): cstring {.importc, \u000D\u000A    header: \"<net/if.h>\".}"
+  }, 
+  {
+    "name": "if_nameindex", 
+    "type": "skProc", 
+    "code": "proc if_nameindex*(): ptr Tif_nameindex {.importc, header: \"<net/if.h>\".}"
+  }, 
+  {
+    "name": "if_freenameindex", 
+    "type": "skProc", 
+    "code": "proc if_freenameindex*(a1: ptr Tif_nameindex) {.importc, header: \"<net/if.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_UNSPECIFIED", 
+    "type": "skProc", 
+    "description": "Unspecified address.", 
+    "code": "proc IN6_IS_ADDR_UNSPECIFIED*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_LOOPBACK", 
+    "type": "skProc", 
+    "description": "Loopback address.", 
+    "code": "proc IN6_IS_ADDR_LOOPBACK*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_MULTICAST", 
+    "type": "skProc", 
+    "description": "Multicast address.", 
+    "code": "proc IN6_IS_ADDR_MULTICAST*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_LINKLOCAL", 
+    "type": "skProc", 
+    "description": "Unicast link-local address.", 
+    "code": "proc IN6_IS_ADDR_LINKLOCAL*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_SITELOCAL", 
+    "type": "skProc", 
+    "description": "Unicast site-local address.", 
+    "code": "proc IN6_IS_ADDR_SITELOCAL*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_V4MAPPED", 
+    "type": "skProc", 
+    "description": "IPv4 mapped address.", 
+    "code": "proc IN6_IS_ADDR_V4MAPPED*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_V4COMPAT", 
+    "type": "skProc", 
+    "description": "IPv4-compatible address.", 
+    "code": "proc IN6_IS_ADDR_V4COMPAT*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_MC_NODELOCAL", 
+    "type": "skProc", 
+    "description": "Multicast node-local address.", 
+    "code": "proc IN6_IS_ADDR_MC_NODELOCAL*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_MC_LINKLOCAL", 
+    "type": "skProc", 
+    "description": "Multicast link-local address.", 
+    "code": "proc IN6_IS_ADDR_MC_LINKLOCAL*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_MC_SITELOCAL", 
+    "type": "skProc", 
+    "description": "Multicast site-local address.", 
+    "code": "proc IN6_IS_ADDR_MC_SITELOCAL*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_MC_ORGLOCAL", 
+    "type": "skProc", 
+    "description": "Multicast organization-local address.", 
+    "code": "proc IN6_IS_ADDR_MC_ORGLOCAL*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "IN6_IS_ADDR_MC_GLOBAL", 
+    "type": "skProc", 
+    "description": "Multicast global address.", 
+    "code": "proc IN6_IS_ADDR_MC_GLOBAL*(a1: ptr TIn6Addr): cint {.importc, \u000D\u000A    header: \"<netinet/in.h>\".}"
+  }, 
+  {
+    "name": "endhostent", 
+    "type": "skProc", 
+    "code": "proc endhostent*() {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "endnetent", 
+    "type": "skProc", 
+    "code": "proc endnetent*() {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "endprotoent", 
+    "type": "skProc", 
+    "code": "proc endprotoent*() {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "endservent", 
+    "type": "skProc", 
+    "code": "proc endservent*() {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "freeaddrinfo", 
+    "type": "skProc", 
+    "code": "proc freeaddrinfo*(a1: ptr Taddrinfo) {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "gai_strerror", 
+    "type": "skProc", 
+    "code": "proc gai_strerror*(a1: cint): cstring {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "getaddrinfo", 
+    "type": "skProc", 
+    "code": "proc getaddrinfo*(a1, a2: cstring; a3: ptr TAddrInfo; a4: var ptr TAddrInfo): cint {.\u000D\u000A    importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "gethostbyaddr", 
+    "type": "skProc", 
+    "code": "proc gethostbyaddr*(a1: pointer; a2: Tsocklen; a3: cint): ptr THostent {.\u000D\u000A    importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "gethostbyname", 
+    "type": "skProc", 
+    "code": "proc gethostbyname*(a1: cstring): ptr THostent {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "gethostent", 
+    "type": "skProc", 
+    "code": "proc gethostent*(): ptr THostent {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "getnameinfo", 
+    "type": "skProc", 
+    "code": "proc getnameinfo*(a1: ptr Tsockaddr; a2: Tsocklen; a3: cstring; a4: Tsocklen; \u000D\u000A                  a5: cstring; a6: Tsocklen; a7: cint): cint {.importc, \u000D\u000A    header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "getnetbyaddr", 
+    "type": "skProc", 
+    "code": "proc getnetbyaddr*(a1: int32; a2: cint): ptr TNetent {.importc, \u000D\u000A    header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "getnetbyname", 
+    "type": "skProc", 
+    "code": "proc getnetbyname*(a1: cstring): ptr TNetent {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "getnetent", 
+    "type": "skProc", 
+    "code": "proc getnetent*(): ptr TNetent {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "getprotobyname", 
+    "type": "skProc", 
+    "code": "proc getprotobyname*(a1: cstring): ptr TProtoent {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "getprotobynumber", 
+    "type": "skProc", 
+    "code": "proc getprotobynumber*(a1: cint): ptr TProtoent {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "getprotoent", 
+    "type": "skProc", 
+    "code": "proc getprotoent*(): ptr TProtoent {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "getservbyname", 
+    "type": "skProc", 
+    "code": "proc getservbyname*(a1, a2: cstring): ptr TServent {.importc, \u000D\u000A    header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "getservbyport", 
+    "type": "skProc", 
+    "code": "proc getservbyport*(a1: cint; a2: cstring): ptr TServent {.importc, \u000D\u000A    header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "getservent", 
+    "type": "skProc", 
+    "code": "proc getservent*(): ptr TServent {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "sethostent", 
+    "type": "skProc", 
+    "code": "proc sethostent*(a1: cint) {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "setnetent", 
+    "type": "skProc", 
+    "code": "proc setnetent*(a1: cint) {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "setprotoent", 
+    "type": "skProc", 
+    "code": "proc setprotoent*(a1: cint) {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "setservent", 
+    "type": "skProc", 
+    "code": "proc setservent*(a1: cint) {.importc, header: \"<netdb.h>\".}"
+  }, 
+  {
+    "name": "poll", 
+    "type": "skProc", 
+    "code": "proc poll*(a1: ptr Tpollfd; a2: Tnfds; a3: int): cint {.importc, \u000D\u000A    header: \"<poll.h>\".}"
+  }, 
+  {
+    "name": "realpath", 
+    "type": "skProc", 
+    "code": "proc realpath*(name, resolved: CString): CString {.importc: \"realpath\", \u000D\u000A    header: \"<stdlib.h>\".}"
+  }
+]

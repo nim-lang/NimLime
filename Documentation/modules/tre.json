@@ -1,0 +1,131 @@
+[
+  {
+    "name": "VERSION_3", 
+    "type": "skConst", 
+    "description": "TRE version level 3. ", 
+    "code": "VERSION_3* = 0"
+  }, 
+  {
+    "name": "TReg_errcode", 
+    "type": "skType", 
+    "description": "POSIX tre_regcomp() return error codes. (In the order listed in the standard.)\u0009 ", 
+    "code": "TReg_errcode* {.size: 4.} = enum \u000D\u000A  REG_OK = 0,                 ## No error. \u000D\u000A  REG_NOMATCH,                ## No match. \u000D\u000A  REG_BADPAT,                 ## Invalid regexp. \u000D\u000A  REG_ECOLLATE,               ## Unknown collating element. \u000D\u000A  REG_ECTYPE,                 ## Unknown character class name. \u000D\u000A  REG_EESCAPE,                ## Trailing backslash. \u000D\u000A  REG_ESUBREG,                ## Invalid back reference. \u000D\u000A  REG_EBRACK,                 ## \"[]\" imbalance \u000D\u000A  REG_EPAREN,                 ## \"\\(\\)\" or \"()\" imbalance \u000D\u000A  REG_EBRACE,                 ## \"\\{\\}\" or \"{}\" imbalance \u000D\u000A  REG_BADBR,                  ## Invalid content of {} \u000D\u000A  REG_ERANGE,                 ## Invalid use of range operator \u000D\u000A  REG_ESPACE,                 ## Out of memory.  \u000D\u000A  REG_BADRPT                  ## Invalid use of repetition operators. "
+  }, 
+  {
+    "name": "REG_NOSUB", 
+    "type": "skConst", 
+    "code": "REG_NOSUB* = (REG_NEWLINE shl 1)"
+  }, 
+  {
+    "name": "REG_UNGREEDY", 
+    "type": "skConst", 
+    "code": "REG_UNGREEDY* = (REG_RIGHT_ASSOC shl 1)"
+  }, 
+  {
+    "name": "REG_NOTEOL", 
+    "type": "skConst", 
+    "code": "REG_NOTEOL* = (REG_NOTBOL shl 1)"
+  }, 
+  {
+    "name": "REG_BACKTRACKING_MATCHER", 
+    "type": "skConst", 
+    "code": "REG_BACKTRACKING_MATCHER* = (REG_APPROX_MATCHER shl 1)"
+  }, 
+  {
+    "name": "RE_DUP_MAX", 
+    "type": "skConst", 
+    "code": "RE_DUP_MAX* = 255"
+  }, 
+  {
+    "name": "regcomp", 
+    "type": "skProc", 
+    "code": "proc regcomp*(preg: var TRegex; regex: cstring; cflags: cint): cint {.cdecl, \u000D\u000A    importc: \"tre_regcomp\", dynlib: treDll.}"
+  }, 
+  {
+    "name": "regexec", 
+    "type": "skProc", 
+    "code": "proc regexec*(preg: var TRegex; string: cstring; nmatch: int; \u000D\u000A              pmatch: ptr TRegmatch; eflags: cint): cint {.cdecl, \u000D\u000A    importc: \"tre_regexec\", dynlib: treDll.}"
+  }, 
+  {
+    "name": "regerror", 
+    "type": "skProc", 
+    "code": "proc regerror*(errcode: cint; preg: var TRegex; errbuf: cstring; \u000D\u000A               errbuf_size: int): int {.cdecl, importc: \"tre_regerror\", \u000D\u000A                                        dynlib: treDll.}"
+  }, 
+  {
+    "name": "regfree", 
+    "type": "skProc", 
+    "code": "proc regfree*(preg: var TRegex) {.cdecl, importc: \"tre_regfree\", dynlib: treDll.}"
+  }, 
+  {
+    "name": "regncomp", 
+    "type": "skProc", 
+    "code": "proc regncomp*(preg: var TRegex; regex: cstring; len: int; cflags: cint): cint {.\u000D\u000A    cdecl, importc: \"tre_regncomp\", dynlib: treDll.}"
+  }, 
+  {
+    "name": "regnexec", 
+    "type": "skProc", 
+    "code": "proc regnexec*(preg: var TRegex; string: cstring; len: int; nmatch: int; \u000D\u000A               pmatch: ptr TRegmatch; eflags: cint): cint {.cdecl, \u000D\u000A    importc: \"tre_regnexec\", dynlib: treDll.}"
+  }, 
+  {
+    "name": "TRegaparams", 
+    "type": "skType", 
+    "description": "Default cost of an inserted character. ", 
+    "code": "TRegaparams* {.pure, final.} = object \u000D\u000A  cost_ins*: cint\u000D\u000A  cost_del*: cint             ## Default cost of a deleted character. \u000D\u000A  cost_subst*: cint           ## Default cost of a substituted character. \u000D\u000A  max_cost*: cint             ## Maximum allowed cost of a match. \u000D\u000A  max_ins*: cint              ## Maximum allowed number of inserts. \u000D\u000A  max_del*: cint              ## Maximum allowed number of deletes. \u000D\u000A  max_subst*: cint            ## Maximum allowed number of substitutes. \u000D\u000A  max_err*: cint              ## Maximum allowed number of errors total. \u000D\u000A  "
+  }, 
+  {
+    "name": "TRegamatch", 
+    "type": "skType", 
+    "description": "Length of pmatch[] array. ", 
+    "code": "TRegamatch* {.pure, final.} = object \u000D\u000A  nmatch*: int\u000D\u000A  pmatch*: ptr TRegmatch      ## Submatch data. \u000D\u000A  cost*: cint                 ## Cost of the match. \u000D\u000A  num_ins*: cint              ## Number of inserts in the match. \u000D\u000A  num_del*: cint              ## Number of deletes in the match. \u000D\u000A  num_subst*: cint            ## Number of substitutes in the match. \u000D\u000A  "
+  }, 
+  {
+    "name": "regaexec", 
+    "type": "skProc", 
+    "code": "proc regaexec*(preg: var TRegex; string: cstring; match: ptr TRegamatch; \u000D\u000A               params: TRegaparams; eflags: cint): cint {.cdecl, \u000D\u000A    importc: \"tre_regaexec\", dynlib: treDll.}"
+  }, 
+  {
+    "name": "reganexec", 
+    "type": "skProc", 
+    "code": "proc reganexec*(preg: var TRegex; string: cstring; len: int; \u000D\u000A                match: ptr TRegamatch; params: TRegaparams; eflags: cint): cint {.\u000D\u000A    cdecl, importc: \"tre_reganexec\", dynlib: treDll.}"
+  }, 
+  {
+    "name": "regaparams_default", 
+    "type": "skProc", 
+    "code": "proc regaparams_default*(params: ptr TRegaparams) {.cdecl, \u000D\u000A    importc: \"tre_regaparams_default\", dynlib: treDll.}"
+  }, 
+  {
+    "name": "TStrSource", 
+    "type": "skType", 
+    "code": "TStrSource* {.pure, final.} = object \u000D\u000A  get_next_char*: proc (c: cstring; pos_add: ptr cint; context: pointer): cint {.\u000D\u000A      cdecl.}\u000D\u000A  rewind*: proc (pos: int; context: pointer) {.cdecl.}\u000D\u000A  compare*: proc (pos1: int; pos2: int; len: int; context: pointer): cint {.\u000D\u000A      cdecl.}\u000D\u000A  context*: pointer\u000D\u000A"
+  }, 
+  {
+    "name": "reguexec", 
+    "type": "skProc", 
+    "code": "proc reguexec*(preg: var TRegex; string: ptr TStrSource; nmatch: int; \u000D\u000A               pmatch: ptr TRegmatch; eflags: cint): cint {.cdecl, \u000D\u000A    importc: \"tre_reguexec\", dynlib: treDll.}"
+  }, 
+  {
+    "name": "runtimeVersion", 
+    "type": "skProc", 
+    "code": "proc runtimeVersion*(): cstring {.cdecl, importc: \"tre_version\", dynlib: treDll.}"
+  }, 
+  {
+    "name": "config", 
+    "type": "skProc", 
+    "code": "proc config*(query: cint; result: pointer): cint {.cdecl, importc: \"tre_config\", \u000D\u000A    dynlib: treDll.}"
+  }, 
+  {
+    "name": "CONFIG_VERSION", 
+    "type": "skConst", 
+    "code": "CONFIG_VERSION* = 4"
+  }, 
+  {
+    "name": "have_backrefs", 
+    "type": "skProc", 
+    "code": "proc have_backrefs*(preg: var TRegex): cint {.cdecl, \u000D\u000A    importc: \"tre_have_backrefs\", dynlib: treDll.}"
+  }, 
+  {
+    "name": "have_approx", 
+    "type": "skProc", 
+    "code": "proc have_approx*(preg: var TRegex): cint {.cdecl, importc: \"tre_have_approx\", \u000D\u000A    dynlib: treDll.}"
+  }
+]

@@ -67,7 +67,7 @@ patterns:
 
 - comment: Built-in, generic types.
   name: storage.type.generic.nimrod
-  match: \b(range|array|seq|natural|set|ref|ptr)\b
+  match: \b(range|array|seq|tuple|natural|set|ref|ptr)\b
 
 - comment: Function types
   name: storage.type.function.nimrod

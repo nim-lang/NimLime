@@ -1,0 +1,93 @@
+[
+  {
+    "comment": "This module implements efficient computations of hash values for diverse\u000D\u000A## Nimrod types."
+  }, 
+  {
+    "name": "THash", 
+    "type": "skType", 
+    "description": "a hash value; hash tables using these values should always have a size of a power of two and can use the <tt class=\"docutils literal\"><span class=\"pre\">and</span></tt> operator instead of <tt class=\"docutils literal\"><span class=\"pre\">mod</span></tt> for truncation of the hash value.", 
+    "code": "THash* = int"
+  }, 
+  {
+    "name": "`!&amp;`", 
+    "type": "skProc", 
+    "description": "mixes a hash value <cite>h</cite> with <cite>val</cite> to produce a new hash value. This is only needed if you need to implement a hash proc for a new datatype.", 
+    "code": "proc `!&`*(h: THash; val: int): THash {.inline.}"
+  }, 
+  {
+    "name": "`!$`", 
+    "type": "skProc", 
+    "description": "finishes the computation of the hash value. This is only needed if you need to implement a hash proc for a new datatype.", 
+    "code": "proc `!$`*(h: THash): THash {.inline.}"
+  }, 
+  {
+    "name": "hashData", 
+    "type": "skProc", 
+    "description": "hashes an array of bytes of size <cite>size</cite>", 
+    "code": "proc hashData*(Data: Pointer; Size: int): THash"
+  }, 
+  {
+    "name": "hash", 
+    "type": "skProc", 
+    "description": "efficient hashing of pointers", 
+    "code": "proc hash*(x: Pointer): THash {.inline.}"
+  }, 
+  {
+    "name": "hash", 
+    "type": "skProc", 
+    "description": "efficient hashing of proc vars; closures are supported too.", 
+    "code": "proc hash*[T: proc](x: T): THash {.inline.}"
+  }, 
+  {
+    "name": "hash", 
+    "type": "skProc", 
+    "description": "efficient hashing of integers", 
+    "code": "proc hash*(x: int): THash {.inline.}"
+  }, 
+  {
+    "name": "hash", 
+    "type": "skProc", 
+    "description": "efficient hashing of integers", 
+    "code": "proc hash*(x: int64): THash {.inline.}"
+  }, 
+  {
+    "name": "hash", 
+    "type": "skProc", 
+    "description": "efficient hashing of characters", 
+    "code": "proc hash*(x: char): THash {.inline.}"
+  }, 
+  {
+    "name": "hash", 
+    "type": "skProc", 
+    "description": "efficient hashing of strings", 
+    "code": "proc hash*(x: string): THash"
+  }, 
+  {
+    "name": "hashIgnoreStyle", 
+    "type": "skProc", 
+    "description": "efficient hashing of strings; style is ignored", 
+    "code": "proc hashIgnoreStyle*(x: string): THash"
+  }, 
+  {
+    "name": "hashIgnoreCase", 
+    "type": "skProc", 
+    "description": "efficient hashing of strings; case is ignored", 
+    "code": "proc hashIgnoreCase*(x: string): THash"
+  }, 
+  {
+    "name": "hash", 
+    "type": "skProc", 
+    "description": "efficient hashing of tuples.", 
+    "code": "proc hash*[T: tuple](x: T): THash"
+  }, 
+  {
+    "name": "hash", 
+    "type": "skProc", 
+    "code": "proc hash*(x: float): THash {.inline.}"
+  }, 
+  {
+    "name": "hash", 
+    "type": "skProc", 
+    "code": "proc hash*[A](x: openarray[A]): THash"
+  }
+]

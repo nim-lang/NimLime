@@ -1,0 +1,42 @@
+[
+  {
+    "name": "NULL", 
+    "type": "skConst", 
+    "code": "NULL* = 0"
+  }, 
+  {
+    "name": "newHeap", 
+    "type": "skProc", 
+    "code": "proc newHeap*[T](): ptr T"
+  }, 
+  {
+    "name": "copyNew", 
+    "type": "skProc", 
+    "code": "proc copyNew*[T](x: var T): ptr T"
+  }, 
+  {
+    "name": "copyTo", 
+    "type": "skProc", 
+    "code": "proc copyTo*[T](val: var T; dest: int)"
+  }, 
+  {
+    "name": "allocType", 
+    "type": "skProc", 
+    "code": "proc allocType*[T](): pointer"
+  }, 
+  {
+    "name": "newShared", 
+    "type": "skProc", 
+    "code": "proc newShared*[T](): ptr T"
+  }, 
+  {
+    "name": "copyShared", 
+    "type": "skProc", 
+    "code": "proc copyShared*[T](x: var T): ptr T"
+  }, 
+  {
+    "name": "`+`", 
+    "type": "skProc", 
+    "code": "proc `+`*(p: pointer; i: int): pointer {.inline.}"
+  }
+]

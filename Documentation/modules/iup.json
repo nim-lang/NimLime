@@ -1,0 +1,1007 @@
+[
+  {
+    "name": "constIUP_VERSION_DATE", 
+    "type": "skConst", 
+    "code": "constIUP_VERSION_DATE* = \"2009/07/18\""
+  }, 
+  {
+    "name": "Icallback", 
+    "type": "skType", 
+    "code": "Icallback* = proc (arg: PIhandle): cint {.cdecl.}"
+  }, 
+  {
+    "name": "FileDlg", 
+    "type": "skProc", 
+    "code": "proc FileDlg*(): PIhandle {.importc: \"IupFileDlg\", dynlib: dllname, cdecl.}"
+  }, 
+  {
+    "name": "MessageDlg", 
+    "type": "skProc", 
+    "code": "proc MessageDlg*(): PIhandle {.importc: \"IupMessageDlg\", dynlib: dllname, cdecl.}"
+  }, 
+  {
+    "name": "ColorDlg", 
+    "type": "skProc", 
+    "code": "proc ColorDlg*(): PIhandle {.importc: \"IupColorDlg\", dynlib: dllname, cdecl.}"
+  }, 
+  {
+    "name": "FontDlg", 
+    "type": "skProc", 
+    "code": "proc FontDlg*(): PIhandle {.importc: \"IupFontDlg\", dynlib: dllname, cdecl.}"
+  }, 
+  {
+    "name": "GetFile", 
+    "type": "skProc", 
+    "code": "proc GetFile*(arq: cstring): cint {.importc: \"IupGetFile\", dynlib: dllname, \u000D\u000A                                    cdecl.}"
+  }, 
+  {
+    "name": "Message", 
+    "type": "skProc", 
+    "code": "proc Message*(title, msg: cstring) {.importc: \"IupMessage\", dynlib: dllname, \u000D\u000A                                     cdecl.}"
+  }, 
+  {
+    "name": "Messagef", 
+    "type": "skProc", 
+    "code": "proc Messagef*(title, format: cstring) {.importc: \"IupMessagef\", \u000D\u000A    dynlib: dllname, cdecl, varargs.}"
+  }, 
+  {
+    "name": "Alarm", 
+    "type": "skProc", 
+    "code": "proc Alarm*(title, msg, b1, b2, b3: cstring): cint {.importc: \"IupAlarm\", \u000D\u000A    dynlib: dllname, cdecl.}"
+  }, 
+  {
+    "name": "Scanf", 
+    "type": "skProc", 
+    "code": "proc Scanf*(format: cstring): cint {.importc: \"IupScanf\", dynlib: dllname, \u000D\u000A                                     cdecl, varargs.}"
+  }, 
+  {
+    "name": "ListDialog", 
+    "type": "skProc", 
+    "code": "proc ListDialog*(theType: cint; title: cstring; size: cint; list: cstringArray; \u000D\u000A                 op, max_col, max_lin: cint; marks: ptr cint): cint {.\u000D\u000A    importc: \"IupListDialog\", dynlib: dllname, cdecl.}"
+  }, 
+  {
+    "name": "GetText", 
+    "type": "skProc", 
+    "code": "proc GetText*(title, text: cstring): cint {.importc: \"IupGetText\", \u000D\u000A    dynlib: dllname, cdecl.}"
+  }, 
+  {
+    "name": "GetColor", 
+    "type": "skProc", 
+    "code": "proc GetColor*(x, y: cint; r, g, b: var byte): cint {.importc: \"IupGetColor\", \u000D\u000A    dynlib: dllname, cdecl.}"
+  }, 
+  {
+    "name": "Iparamcb", 
+    "type": "skType", 
+    "code": "Iparamcb* = proc (dialog: PIhandle; param_index: cint; user_data: pointer): cint {.\u000D\u000A    cdecl.}"
+  }, 
+  {
+    "name": "GetParam", 
+    "type": "skProc", 
+    "code": "proc GetParam*(title: cstring; action: Iparamcb; user_data: pointer; \u000D\u000A               format: cstring): cint {.importc: \"IupGetParam\", cdecl, varargs, \u000D\u000A                                        dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetParamv", 
+    "type": "skProc", 
+    "code": "proc GetParamv*(title: cstring; action: Iparamcb; user_data: pointer; \u000D\u000A                format: cstring; param_count, param_extra: cint; \u000D\u000A                param_data: pointer): cint {.importc: \"IupGetParamv\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Open", 
+    "type": "skProc", 
+    "code": "proc Open*(argc: ptr cint; argv: ptr cstringArray): cint {.importc: \"IupOpen\", \u000D\u000A    cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Close", 
+    "type": "skProc", 
+    "code": "proc Close*() {.importc: \"IupClose\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "ImageLibOpen", 
+    "type": "skProc", 
+    "code": "proc ImageLibOpen*() {.importc: \"IupImageLibOpen\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "MainLoop", 
+    "type": "skProc", 
+    "code": "proc MainLoop*(): cint {.importc: \"IupMainLoop\", cdecl, dynlib: dllname, \u000D\u000A                         discardable.}"
+  }, 
+  {
+    "name": "LoopStep", 
+    "type": "skProc", 
+    "code": "proc LoopStep*(): cint {.importc: \"IupLoopStep\", cdecl, dynlib: dllname, \u000D\u000A                         discardable.}"
+  }, 
+  {
+    "name": "MainLoopLevel", 
+    "type": "skProc", 
+    "code": "proc MainLoopLevel*(): cint {.importc: \"IupMainLoopLevel\", cdecl, \u000D\u000A                              dynlib: dllname, discardable.}"
+  }, 
+  {
+    "name": "Flush", 
+    "type": "skProc", 
+    "code": "proc Flush*() {.importc: \"IupFlush\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "ExitLoop", 
+    "type": "skProc", 
+    "code": "proc ExitLoop*() {.importc: \"IupExitLoop\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Update", 
+    "type": "skProc", 
+    "code": "proc Update*(ih: PIhandle) {.importc: \"IupUpdate\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "UpdateChildren", 
+    "type": "skProc", 
+    "code": "proc UpdateChildren*(ih: PIhandle) {.importc: \"IupUpdateChildren\", cdecl, \u000D\u000A                                     dynlib: dllname.}"
+  }, 
+  {
+    "name": "Redraw", 
+    "type": "skProc", 
+    "code": "proc Redraw*(ih: PIhandle; children: cint) {.importc: \"IupRedraw\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Refresh", 
+    "type": "skProc", 
+    "code": "proc Refresh*(ih: PIhandle) {.importc: \"IupRefresh\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "MapFont", 
+    "type": "skProc", 
+    "code": "proc MapFont*(iupfont: cstring): cstring {.importc: \"IupMapFont\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "UnMapFont", 
+    "type": "skProc", 
+    "code": "proc UnMapFont*(driverfont: cstring): cstring {.importc: \"IupUnMapFont\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Help", 
+    "type": "skProc", 
+    "code": "proc Help*(url: cstring): cint {.importc: \"IupHelp\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Load", 
+    "type": "skProc", 
+    "code": "proc Load*(filename: cstring): cstring {.importc: \"IupLoad\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "IupVersion", 
+    "type": "skProc", 
+    "code": "proc IupVersion*(): cstring {.importc: \"IupVersion\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "IupVersionDate", 
+    "type": "skProc", 
+    "code": "proc IupVersionDate*(): cstring {.importc: \"IupVersionDate\", cdecl, \u000D\u000A                                  dynlib: dllname.}"
+  }, 
+  {
+    "name": "IupVersionNumber", 
+    "type": "skProc", 
+    "code": "proc IupVersionNumber*(): cint {.importc: \"IupVersionNumber\", cdecl, \u000D\u000A                                 dynlib: dllname.}"
+  }, 
+  {
+    "name": "SetLanguage", 
+    "type": "skProc", 
+    "code": "proc SetLanguage*(lng: cstring) {.importc: \"IupSetLanguage\", cdecl, \u000D\u000A                                  dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetLanguage", 
+    "type": "skProc", 
+    "code": "proc GetLanguage*(): cstring {.importc: \"IupGetLanguage\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Destroy", 
+    "type": "skProc", 
+    "code": "proc Destroy*(ih: PIhandle) {.importc: \"IupDestroy\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Detach", 
+    "type": "skProc", 
+    "code": "proc Detach*(child: PIhandle) {.importc: \"IupDetach\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Append", 
+    "type": "skProc", 
+    "code": "proc Append*(ih, child: PIhandle): PIhandle {.importc: \"IupAppend\", cdecl, \u000D\u000A    dynlib: dllname, discardable.}"
+  }, 
+  {
+    "name": "Insert", 
+    "type": "skProc", 
+    "code": "proc Insert*(ih, ref_child, child: PIhandle): PIhandle {.importc: \"IupInsert\", \u000D\u000A    cdecl, dynlib: dllname, discardable.}"
+  }, 
+  {
+    "name": "GetChild", 
+    "type": "skProc", 
+    "code": "proc GetChild*(ih: PIhandle; pos: cint): PIhandle {.importc: \"IupGetChild\", \u000D\u000A    cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetChildPos", 
+    "type": "skProc", 
+    "code": "proc GetChildPos*(ih, child: PIhandle): cint {.importc: \"IupGetChildPos\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetChildCount", 
+    "type": "skProc", 
+    "code": "proc GetChildCount*(ih: PIhandle): cint {.importc: \"IupGetChildCount\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetNextChild", 
+    "type": "skProc", 
+    "code": "proc GetNextChild*(ih, child: PIhandle): PIhandle {.importc: \"IupGetNextChild\", \u000D\u000A    cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetBrother", 
+    "type": "skProc", 
+    "code": "proc GetBrother*(ih: PIhandle): PIhandle {.importc: \"IupGetBrother\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetParent", 
+    "type": "skProc", 
+    "code": "proc GetParent*(ih: PIhandle): PIhandle {.importc: \"IupGetParent\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetDialog", 
+    "type": "skProc", 
+    "code": "proc GetDialog*(ih: PIhandle): PIhandle {.importc: \"IupGetDialog\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetDialogChild", 
+    "type": "skProc", 
+    "code": "proc GetDialogChild*(ih: PIhandle; name: cstring): PIhandle {.\u000D\u000A    importc: \"IupGetDialogChild\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Reparent", 
+    "type": "skProc", 
+    "code": "proc Reparent*(ih, new_parent: PIhandle): cint {.importc: \"IupReparent\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Popup", 
+    "type": "skProc", 
+    "code": "proc Popup*(ih: PIhandle; x, y: cint): cint {.importc: \"IupPopup\", cdecl, \u000D\u000A    dynlib: dllname, discardable.}"
+  }, 
+  {
+    "name": "Show", 
+    "type": "skProc", 
+    "code": "proc Show*(ih: PIhandle): cint {.importc: \"IupShow\", cdecl, dynlib: dllname, \u000D\u000A                                 discardable.}"
+  }, 
+  {
+    "name": "ShowXY", 
+    "type": "skProc", 
+    "code": "proc ShowXY*(ih: PIhandle; x, y: cint): cint {.importc: \"IupShowXY\", cdecl, \u000D\u000A    dynlib: dllname, discardable.}"
+  }, 
+  {
+    "name": "Hide", 
+    "type": "skProc", 
+    "code": "proc Hide*(ih: PIhandle): cint {.importc: \"IupHide\", cdecl, dynlib: dllname, \u000D\u000A                                 discardable.}"
+  }, 
+  {
+    "name": "Map", 
+    "type": "skProc", 
+    "code": "proc Map*(ih: PIhandle): cint {.importc: \"IupMap\", cdecl, dynlib: dllname, \u000D\u000A                                discardable.}"
+  }, 
+  {
+    "name": "Unmap", 
+    "type": "skProc", 
+    "code": "proc Unmap*(ih: PIhandle) {.importc: \"IupUnmap\", cdecl, dynlib: dllname, \u000D\u000A                            discardable.}"
+  }, 
+  {
+    "name": "SetAttribute", 
+    "type": "skProc", 
+    "code": "proc SetAttribute*(ih: PIhandle; name, value: cstring) {.\u000D\u000A    importc: \"IupSetAttribute\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "StoreAttribute", 
+    "type": "skProc", 
+    "code": "proc StoreAttribute*(ih: PIhandle; name, value: cstring) {.\u000D\u000A    importc: \"IupStoreAttribute\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "SetAttributes", 
+    "type": "skProc", 
+    "code": "proc SetAttributes*(ih: PIhandle; str: cstring): PIhandle {.\u000D\u000A    importc: \"IupSetAttributes\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetAttribute", 
+    "type": "skProc", 
+    "code": "proc GetAttribute*(ih: PIhandle; name: cstring): cstring {.\u000D\u000A    importc: \"IupGetAttribute\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetAttributes", 
+    "type": "skProc", 
+    "code": "proc GetAttributes*(ih: PIhandle): cstring {.importc: \"IupGetAttributes\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetInt", 
+    "type": "skProc", 
+    "code": "proc GetInt*(ih: PIhandle; name: cstring): cint {.importc: \"IupGetInt\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetInt2", 
+    "type": "skProc", 
+    "code": "proc GetInt2*(ih: PIhandle; name: cstring): cint {.importc: \"IupGetInt2\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetIntInt", 
+    "type": "skProc", 
+    "code": "proc GetIntInt*(ih: PIhandle; name: cstring; i1, i2: var cint): cint {.\u000D\u000A    importc: \"IupGetIntInt\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetFloat", 
+    "type": "skProc", 
+    "code": "proc GetFloat*(ih: PIhandle; name: cstring): cfloat {.importc: \"IupGetFloat\", \u000D\u000A    cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "SetfAttribute", 
+    "type": "skProc", 
+    "code": "proc SetfAttribute*(ih: PIhandle; name, format: cstring) {.\u000D\u000A    importc: \"IupSetfAttribute\", cdecl, dynlib: dllname, varargs.}"
+  }, 
+  {
+    "name": "GetAllAttributes", 
+    "type": "skProc", 
+    "code": "proc GetAllAttributes*(ih: PIhandle; names: cstringArray; n: cint): cint {.\u000D\u000A    importc: \"IupGetAllAttributes\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "SetAtt", 
+    "type": "skProc", 
+    "code": "proc SetAtt*(handle_name: cstring; ih: PIhandle; name: cstring): PIhandle {.\u000D\u000A    importc: \"IupSetAtt\", cdecl, dynlib: dllname, varargs, discardable.}"
+  }, 
+  {
+    "name": "SetGlobal", 
+    "type": "skProc", 
+    "code": "proc SetGlobal*(name, value: cstring) {.importc: \"IupSetGlobal\", cdecl, \u000D\u000A                                        dynlib: dllname.}"
+  }, 
+  {
+    "name": "StoreGlobal", 
+    "type": "skProc", 
+    "code": "proc StoreGlobal*(name, value: cstring) {.importc: \"IupStoreGlobal\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetGlobal", 
+    "type": "skProc", 
+    "code": "proc GetGlobal*(name: cstring): cstring {.importc: \"IupGetGlobal\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "SetFocus", 
+    "type": "skProc", 
+    "code": "proc SetFocus*(ih: PIhandle): PIhandle {.importc: \"IupSetFocus\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetFocus", 
+    "type": "skProc", 
+    "code": "proc GetFocus*(): PIhandle {.importc: \"IupGetFocus\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "PreviousField", 
+    "type": "skProc", 
+    "code": "proc PreviousField*(ih: PIhandle): PIhandle {.importc: \"IupPreviousField\", \u000D\u000A    cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "NextField", 
+    "type": "skProc", 
+    "code": "proc NextField*(ih: PIhandle): PIhandle {.importc: \"IupNextField\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetCallback", 
+    "type": "skProc", 
+    "code": "proc GetCallback*(ih: PIhandle; name: cstring): Icallback {.\u000D\u000A    importc: \"IupGetCallback\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "SetCallback", 
+    "type": "skProc", 
+    "code": "proc SetCallback*(ih: PIhandle; name: cstring; func: Icallback): Icallback {.\u000D\u000A    importc: \"IupSetCallback\", cdecl, dynlib: dllname, discardable.}"
+  }, 
+  {
+    "name": "SetCallbacks", 
+    "type": "skProc", 
+    "code": "proc SetCallbacks*(ih: PIhandle; name: cstring; func: Icallback): PIhandle {.\u000D\u000A    importc: \"IupSetCallbacks\", cdecl, dynlib: dllname, varargs, discardable.}"
+  }, 
+  {
+    "name": "GetFunction", 
+    "type": "skProc", 
+    "code": "proc GetFunction*(name: cstring): Icallback {.importc: \"IupGetFunction\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "SetFunction", 
+    "type": "skProc", 
+    "code": "proc SetFunction*(name: cstring; func: Icallback): Icallback {.\u000D\u000A    importc: \"IupSetFunction\", cdecl, dynlib: dllname, discardable.}"
+  }, 
+  {
+    "name": "GetActionName", 
+    "type": "skProc", 
+    "code": "proc GetActionName*(): cstring {.importc: \"IupGetActionName\", cdecl, \u000D\u000A                                 dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetHandle", 
+    "type": "skProc", 
+    "code": "proc GetHandle*(name: cstring): PIhandle {.importc: \"IupGetHandle\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "SetHandle", 
+    "type": "skProc", 
+    "code": "proc SetHandle*(name: cstring; ih: PIhandle): PIhandle {.\u000D\u000A    importc: \"IupSetHandle\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetAllNames", 
+    "type": "skProc", 
+    "code": "proc GetAllNames*(names: cstringArray; n: cint): cint {.\u000D\u000A    importc: \"IupGetAllNames\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetAllDialogs", 
+    "type": "skProc", 
+    "code": "proc GetAllDialogs*(names: cstringArray; n: cint): cint {.\u000D\u000A    importc: \"IupGetAllDialogs\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetName", 
+    "type": "skProc", 
+    "code": "proc GetName*(ih: PIhandle): cstring {.importc: \"IupGetName\", cdecl, \u000D\u000A                                       dynlib: dllname.}"
+  }, 
+  {
+    "name": "SetAttributeHandle", 
+    "type": "skProc", 
+    "code": "proc SetAttributeHandle*(ih: PIhandle; name: cstring; ih_named: PIhandle) {.\u000D\u000A    importc: \"IupSetAttributeHandle\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetAttributeHandle", 
+    "type": "skProc", 
+    "code": "proc GetAttributeHandle*(ih: PIhandle; name: cstring): PIhandle {.\u000D\u000A    importc: \"IupGetAttributeHandle\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetClassName", 
+    "type": "skProc", 
+    "code": "proc GetClassName*(ih: PIhandle): cstring {.importc: \"IupGetClassName\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetClassType", 
+    "type": "skProc", 
+    "code": "proc GetClassType*(ih: PIhandle): cstring {.importc: \"IupGetClassType\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "GetClassAttributes", 
+    "type": "skProc", 
+    "code": "proc GetClassAttributes*(classname: cstring; names: cstringArray; n: cint): cint {.\u000D\u000A    importc: \"IupGetClassAttributes\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "SaveClassAttributes", 
+    "type": "skProc", 
+    "code": "proc SaveClassAttributes*(ih: PIhandle) {.importc: \"IupSaveClassAttributes\", \u000D\u000A    cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "SetClassDefaultAttribute", 
+    "type": "skProc", 
+    "code": "proc SetClassDefaultAttribute*(classname, name, value: cstring) {.\u000D\u000A    importc: \"IupSetClassDefaultAttribute\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Create", 
+    "type": "skProc", 
+    "code": "proc Create*(classname: cstring): PIhandle {.importc: \"IupCreate\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Createv", 
+    "type": "skProc", 
+    "code": "proc Createv*(classname: cstring; params: pointer): PIhandle {.\u000D\u000A    importc: \"IupCreatev\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Createp", 
+    "type": "skProc", 
+    "code": "proc Createp*(classname: cstring; first: pointer): PIhandle {.\u000D\u000A    importc: \"IupCreatep\", cdecl, dynlib: dllname, varargs.}"
+  }, 
+  {
+    "name": "Fill", 
+    "type": "skProc", 
+    "code": "proc Fill*(): PIhandle {.importc: \"IupFill\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Radio", 
+    "type": "skProc", 
+    "code": "proc Radio*(child: PIhandle): PIhandle {.importc: \"IupRadio\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Vbox", 
+    "type": "skProc", 
+    "code": "proc Vbox*(child: PIhandle): PIhandle {.importc: \"IupVbox\", cdecl, \u000D\u000A                                        dynlib: dllname, varargs.}"
+  }, 
+  {
+    "name": "Vboxv", 
+    "type": "skProc", 
+    "code": "proc Vboxv*(children: ptr PIhandle): PIhandle {.importc: \"IupVboxv\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Zbox", 
+    "type": "skProc", 
+    "code": "proc Zbox*(child: PIhandle): PIhandle {.importc: \"IupZbox\", cdecl, \u000D\u000A                                        dynlib: dllname, varargs.}"
+  }, 
+  {
+    "name": "Zboxv", 
+    "type": "skProc", 
+    "code": "proc Zboxv*(children: ptr PIhandle): PIhandle {.importc: \"IupZboxv\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Hbox", 
+    "type": "skProc", 
+    "code": "proc Hbox*(child: PIhandle): PIhandle {.importc: \"IupHbox\", cdecl, \u000D\u000A                                        dynlib: dllname, varargs.}"
+  }, 
+  {
+    "name": "Hboxv", 
+    "type": "skProc", 
+    "code": "proc Hboxv*(children: ptr PIhandle): PIhandle {.importc: \"IupHboxv\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Normalizer", 
+    "type": "skProc", 
+    "code": "proc Normalizer*(ih_first: PIhandle): PIhandle {.importc: \"IupNormalizer\", \u000D\u000A    cdecl, dynlib: dllname, varargs.}"
+  }, 
+  {
+    "name": "Normalizerv", 
+    "type": "skProc", 
+    "code": "proc Normalizerv*(ih_list: ptr PIhandle): PIhandle {.importc: \"IupNormalizerv\", \u000D\u000A    cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Cbox", 
+    "type": "skProc", 
+    "code": "proc Cbox*(child: PIhandle): PIhandle {.importc: \"IupCbox\", cdecl, \u000D\u000A                                        dynlib: dllname, varargs.}"
+  }, 
+  {
+    "name": "Cboxv", 
+    "type": "skProc", 
+    "code": "proc Cboxv*(children: ptr PIhandle): PIhandle {.importc: \"IupCboxv\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Sbox", 
+    "type": "skProc", 
+    "code": "proc Sbox*(child: PIhandle): PIhandle {.importc: \"IupSbox\", cdecl, \u000D\u000A                                        dynlib: dllname.}"
+  }, 
+  {
+    "name": "Frame", 
+    "type": "skProc", 
+    "code": "proc Frame*(child: PIhandle): PIhandle {.importc: \"IupFrame\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Image", 
+    "type": "skProc", 
+    "code": "proc Image*(width, height: cint; pixmap: pointer): PIhandle {.\u000D\u000A    importc: \"IupImage\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "ImageRGB", 
+    "type": "skProc", 
+    "code": "proc ImageRGB*(width, height: cint; pixmap: pointer): PIhandle {.\u000D\u000A    importc: \"IupImageRGB\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "ImageRGBA", 
+    "type": "skProc", 
+    "code": "proc ImageRGBA*(width, height: cint; pixmap: pointer): PIhandle {.\u000D\u000A    importc: \"IupImageRGBA\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Item", 
+    "type": "skProc", 
+    "code": "proc Item*(title, action: cstring): PIhandle {.importc: \"IupItem\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Submenu", 
+    "type": "skProc", 
+    "code": "proc Submenu*(title: cstring; child: PIhandle): PIhandle {.\u000D\u000A    importc: \"IupSubmenu\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Separator", 
+    "type": "skProc", 
+    "code": "proc Separator*(): PIhandle {.importc: \"IupSeparator\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Menu", 
+    "type": "skProc", 
+    "code": "proc Menu*(child: PIhandle): PIhandle {.importc: \"IupMenu\", cdecl, \u000D\u000A                                        dynlib: dllname, varargs.}"
+  }, 
+  {
+    "name": "Menuv", 
+    "type": "skProc", 
+    "code": "proc Menuv*(children: ptr PIhandle): PIhandle {.importc: \"IupMenuv\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Button", 
+    "type": "skProc", 
+    "code": "proc Button*(title, action: cstring): PIhandle {.importc: \"IupButton\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Canvas", 
+    "type": "skProc", 
+    "code": "proc Canvas*(action: cstring): PIhandle {.importc: \"IupCanvas\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Dialog", 
+    "type": "skProc", 
+    "code": "proc Dialog*(child: PIhandle): PIhandle {.importc: \"IupDialog\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "User", 
+    "type": "skProc", 
+    "code": "proc User*(): PIhandle {.importc: \"IupUser\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Label", 
+    "type": "skProc", 
+    "code": "proc Label*(title: cstring): PIhandle {.importc: \"IupLabel\", cdecl, \u000D\u000A                                        dynlib: dllname.}"
+  }, 
+  {
+    "name": "List", 
+    "type": "skProc", 
+    "code": "proc List*(action: cstring): PIhandle {.importc: \"IupList\", cdecl, \u000D\u000A                                        dynlib: dllname.}"
+  }, 
+  {
+    "name": "Text", 
+    "type": "skProc", 
+    "code": "proc Text*(action: cstring): PIhandle {.importc: \"IupText\", cdecl, \u000D\u000A                                        dynlib: dllname.}"
+  }, 
+  {
+    "name": "MultiLine", 
+    "type": "skProc", 
+    "code": "proc MultiLine*(action: cstring): PIhandle {.importc: \"IupMultiLine\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Toggle", 
+    "type": "skProc", 
+    "code": "proc Toggle*(title, action: cstring): PIhandle {.importc: \"IupToggle\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Timer", 
+    "type": "skProc", 
+    "code": "proc Timer*(): PIhandle {.importc: \"IupTimer\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "ProgressBar", 
+    "type": "skProc", 
+    "code": "proc ProgressBar*(): PIhandle {.importc: \"IupProgressBar\", cdecl, \u000D\u000A                                dynlib: dllname.}"
+  }, 
+  {
+    "name": "Val", 
+    "type": "skProc", 
+    "code": "proc Val*(theType: cstring): PIhandle {.importc: \"IupVal\", cdecl, \u000D\u000A                                        dynlib: dllname.}"
+  }, 
+  {
+    "name": "Tabs", 
+    "type": "skProc", 
+    "code": "proc Tabs*(child: PIhandle): PIhandle {.importc: \"IupTabs\", cdecl, \u000D\u000A                                        dynlib: dllname, varargs.}"
+  }, 
+  {
+    "name": "Tabsv", 
+    "type": "skProc", 
+    "code": "proc Tabsv*(children: ptr PIhandle): PIhandle {.importc: \"IupTabsv\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Tree", 
+    "type": "skProc", 
+    "code": "proc Tree*(): PIhandle {.importc: \"IupTree\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Spin", 
+    "type": "skProc", 
+    "code": "proc Spin*(): PIhandle {.importc: \"IupSpin\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "Spinbox", 
+    "type": "skProc", 
+    "code": "proc Spinbox*(child: PIhandle): PIhandle {.importc: \"IupSpinbox\", cdecl, \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "TextConvertLinColToPos", 
+    "type": "skProc", 
+    "code": "proc TextConvertLinColToPos*(ih: PIhandle; lin, col: cint; pos: var cint) {.\u000D\u000A    importc: \"IupTextConvertLinColToPos\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "TextConvertPosToLinCol", 
+    "type": "skProc", 
+    "code": "proc TextConvertPosToLinCol*(ih: PIhandle; pos: cint; lin, col: var cint) {.\u000D\u000A    importc: \"IupTextConvertPosToLinCol\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "ConvertXYToPos", 
+    "type": "skProc", 
+    "code": "proc ConvertXYToPos*(ih: PIhandle; x, y: cint): cint {.\u000D\u000A    importc: \"IupConvertXYToPos\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "TreeSetUserId", 
+    "type": "skProc", 
+    "code": "proc TreeSetUserId*(ih: PIhandle; id: cint; userid: pointer): cint {.\u000D\u000A    importc: \"IupTreeSetUserId\", cdecl, dynlib: dllname, discardable.}"
+  }, 
+  {
+    "name": "TreeGetUserId", 
+    "type": "skProc", 
+    "code": "proc TreeGetUserId*(ih: PIhandle; id: cint): pointer {.\u000D\u000A    importc: \"IupTreeGetUserId\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "TreeGetId", 
+    "type": "skProc", 
+    "code": "proc TreeGetId*(ih: PIhandle; userid: pointer): cint {.importc: \"IupTreeGetId\", \u000D\u000A    cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "TreeSetAttribute", 
+    "type": "skProc", 
+    "code": "proc TreeSetAttribute*(ih: PIhandle; name: cstring; id: cint; value: cstring) {.\u000D\u000A    importc: \"IupTreeSetAttribute\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "TreeStoreAttribute", 
+    "type": "skProc", 
+    "code": "proc TreeStoreAttribute*(ih: PIhandle; name: cstring; id: cint; value: cstring) {.\u000D\u000A    importc: \"IupTreeStoreAttribute\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "TreeGetAttribute", 
+    "type": "skProc", 
+    "code": "proc TreeGetAttribute*(ih: PIhandle; name: cstring; id: cint): cstring {.\u000D\u000A    importc: \"IupTreeGetAttribute\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "TreeGetInt", 
+    "type": "skProc", 
+    "code": "proc TreeGetInt*(ih: PIhandle; name: cstring; id: cint): cint {.\u000D\u000A    importc: \"IupTreeGetInt\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "TreeGetFloat", 
+    "type": "skProc", 
+    "code": "proc TreeGetFloat*(ih: PIhandle; name: cstring; id: cint): cfloat {.\u000D\u000A    importc: \"IupTreeGetFloat\", cdecl, dynlib: dllname.}"
+  }, 
+  {
+    "name": "TreeSetfAttribute", 
+    "type": "skProc", 
+    "code": "proc TreeSetfAttribute*(ih: PIhandle; name: cstring; id: cint; format: cstring) {.\u000D\u000A    importc: \"IupTreeSetfAttribute\", cdecl, dynlib: dllname, varargs.}"
+  }, 
+  {
+    "name": "IUP_BUTTON5", 
+    "type": "skConst", 
+    "code": "IUP_BUTTON5* = cint(ord('5'))"
+  }, 
+  {
+    "name": "isShift", 
+    "type": "skProc", 
+    "code": "proc isShift*(s: cstring): bool"
+  }, 
+  {
+    "name": "isControl", 
+    "type": "skProc", 
+    "code": "proc isControl*(s: cstring): bool"
+  }, 
+  {
+    "name": "isButton1", 
+    "type": "skProc", 
+    "code": "proc isButton1*(s: cstring): bool"
+  }, 
+  {
+    "name": "isButton2", 
+    "type": "skProc", 
+    "code": "proc isButton2*(s: cstring): bool"
+  }, 
+  {
+    "name": "isbutton3", 
+    "type": "skProc", 
+    "code": "proc isbutton3*(s: cstring): bool"
+  }, 
+  {
+    "name": "isDouble", 
+    "type": "skProc", 
+    "code": "proc isDouble*(s: cstring): bool"
+  }, 
+  {
+    "name": "isAlt", 
+    "type": "skProc", 
+    "code": "proc isAlt*(s: cstring): bool"
+  }, 
+  {
+    "name": "isSys", 
+    "type": "skProc", 
+    "code": "proc isSys*(s: cstring): bool"
+  }, 
+  {
+    "name": "isButton4", 
+    "type": "skProc", 
+    "code": "proc isButton4*(s: cstring): bool"
+  }, 
+  {
+    "name": "isButton5", 
+    "type": "skProc", 
+    "code": "proc isButton5*(s: cstring): bool"
+  }, 
+  {
+    "name": "IUP_MASK_UINT", 
+    "type": "skConst", 
+    "code": "IUP_MASK_UINT* = \"/d+\""
+  }, 
+  {
+    "name": "K_tilde", 
+    "type": "skConst", 
+    "code": "K_tilde* = cint(ord('~'))"
+  }, 
+  {
+    "name": "isPrint", 
+    "type": "skProc", 
+    "code": "proc isPrint*(c: cint): bool"
+  }, 
+  {
+    "name": "K_CR", 
+    "type": "skConst", 
+    "code": "K_CR* = cint(13)"
+  }, 
+  {
+    "name": "isXkey", 
+    "type": "skProc", 
+    "code": "proc isXkey*(c: cint): bool"
+  }, 
+  {
+    "name": "isShiftXkey", 
+    "type": "skProc", 
+    "code": "proc isShiftXkey*(c: cint): bool"
+  }, 
+  {
+    "name": "isCtrlXkey", 
+    "type": "skProc", 
+    "code": "proc isCtrlXkey*(c: cint): bool"
+  }, 
+  {
+    "name": "isAltXkey", 
+    "type": "skProc", 
+    "code": "proc isAltXkey*(c: cint): bool"
+  }, 
+  {
+    "name": "isSysXkey", 
+    "type": "skProc", 
+    "code": "proc isSysXkey*(c: cint): bool"
+  }, 
+  {
+    "name": "IUPxCODE", 
+    "type": "skProc", 
+    "code": "proc IUPxCODE*(c: cint): cint"
+  }, 
+  {
+    "name": "IUPsxCODE", 
+    "type": "skProc", 
+    "code": "proc IUPsxCODE*(c: cint): cint"
+  }, 
+  {
+    "name": "IUPcxCODE", 
+    "type": "skProc", 
+    "code": "proc IUPcxCODE*(c: cint): cint"
+  }, 
+  {
+    "name": "IUPmxCODE", 
+    "type": "skProc", 
+    "code": "proc IUPmxCODE*(c: cint): cint"
+  }, 
+  {
+    "name": "IUPyxCODE", 
+    "type": "skProc", 
+    "code": "proc IUPyxCODE*(c: cint): cint"
+  }, 
+  {
+    "name": "K_yAsterisk", 
+    "type": "skConst", 
+    "code": "K_yAsterisk* = IUPyxCODE(K_asterisk)"
+  }, 
+  {
+    "name": "ControlsOpen", 
+    "type": "skProc", 
+    "code": "proc ControlsOpen*(): cint {.cdecl, importc: \"IupControlsOpen\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "ControlsClose", 
+    "type": "skProc", 
+    "code": "proc ControlsClose*() {.cdecl, importc: \"IupControlsClose\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "OldValOpen", 
+    "type": "skProc", 
+    "code": "proc OldValOpen*() {.cdecl, importc: \"IupOldValOpen\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "OldTabsOpen", 
+    "type": "skProc", 
+    "code": "proc OldTabsOpen*() {.cdecl, importc: \"IupOldTabsOpen\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "Colorbar", 
+    "type": "skProc", 
+    "code": "proc Colorbar*(): PIhandle {.cdecl, importc: \"IupColorbar\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "Cells", 
+    "type": "skProc", 
+    "code": "proc Cells*(): PIhandle {.cdecl, importc: \"IupCells\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "ColorBrowser", 
+    "type": "skProc", 
+    "code": "proc ColorBrowser*(): PIhandle {.cdecl, importc: \"IupColorBrowser\", \u000D\u000A                                 dynlib: dllname.}"
+  }, 
+  {
+    "name": "Gauge", 
+    "type": "skProc", 
+    "code": "proc Gauge*(): PIhandle {.cdecl, importc: \"IupGauge\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "Dial", 
+    "type": "skProc", 
+    "code": "proc Dial*(theType: cstring): PIhandle {.cdecl, importc: \"IupDial\", \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "Matrix", 
+    "type": "skProc", 
+    "code": "proc Matrix*(action: cstring): PIhandle {.cdecl, importc: \"IupMatrix\", \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "MatSetAttribute", 
+    "type": "skProc", 
+    "code": "proc MatSetAttribute*(ih: PIhandle; name: cstring; lin, col: cint; \u000D\u000A                      value: cstring) {.cdecl, importc: \"IupMatSetAttribute\", \u000D\u000A                                        dynlib: dllname.}"
+  }, 
+  {
+    "name": "MatStoreAttribute", 
+    "type": "skProc", 
+    "code": "proc MatStoreAttribute*(ih: PIhandle; name: cstring; lin, col: cint; \u000D\u000A                        value: cstring) {.cdecl, \u000D\u000A    importc: \"IupMatStoreAttribute\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "MatGetAttribute", 
+    "type": "skProc", 
+    "code": "proc MatGetAttribute*(ih: PIhandle; name: cstring; lin, col: cint): cstring {.\u000D\u000A    cdecl, importc: \"IupMatGetAttribute\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "MatGetInt", 
+    "type": "skProc", 
+    "code": "proc MatGetInt*(ih: PIhandle; name: cstring; lin, col: cint): cint {.cdecl, \u000D\u000A    importc: \"IupMatGetInt\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "MatGetFloat", 
+    "type": "skProc", 
+    "code": "proc MatGetFloat*(ih: PIhandle; name: cstring; lin, col: cint): cfloat {.cdecl, \u000D\u000A    importc: \"IupMatGetFloat\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "MatSetfAttribute", 
+    "type": "skProc", 
+    "code": "proc MatSetfAttribute*(ih: PIhandle; name: cstring; lin, col: cint; \u000D\u000A                       format: cstring) {.cdecl, importc: \"IupMatSetfAttribute\", \u000D\u000A    dynlib: dllname, varargs.}"
+  }, 
+  {
+    "name": "IUP_SECONDARY", 
+    "type": "skConst", 
+    "code": "IUP_SECONDARY* = - 2"
+  }, 
+  {
+    "name": "PPlotOpen", 
+    "type": "skProc", 
+    "code": "proc PPlotOpen*() {.cdecl, importc: \"IupPPlotOpen\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "PPlot", 
+    "type": "skProc", 
+    "code": "proc PPlot*(): PIhandle {.cdecl, importc: \"IupPPlot\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "PPlotBegin", 
+    "type": "skProc", 
+    "code": "proc PPlotBegin*(ih: PIhandle; strXdata: cint) {.cdecl, \u000D\u000A    importc: \"IupPPlotBegin\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "PPlotAdd", 
+    "type": "skProc", 
+    "code": "proc PPlotAdd*(ih: PIhandle; x, y: cfloat) {.cdecl, importc: \"IupPPlotAdd\", \u000D\u000A    dynlib: dllname.}"
+  }, 
+  {
+    "name": "PPlotAddStr", 
+    "type": "skProc", 
+    "code": "proc PPlotAddStr*(ih: PIhandle; x: cstring; y: cfloat) {.cdecl, \u000D\u000A    importc: \"IupPPlotAddStr\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "PPlotEnd", 
+    "type": "skProc", 
+    "code": "proc PPlotEnd*(ih: PIhandle): cint {.cdecl, importc: \"IupPPlotEnd\", \u000D\u000A                                     dynlib: dllname.}"
+  }, 
+  {
+    "name": "PPlotInsertStr", 
+    "type": "skProc", 
+    "code": "proc PPlotInsertStr*(ih: PIhandle; index, sample_index: cint; x: cstring; \u000D\u000A                     y: cfloat) {.cdecl, importc: \"IupPPlotInsertStr\", \u000D\u000A                                  dynlib: dllname.}"
+  }, 
+  {
+    "name": "PPlotInsert", 
+    "type": "skProc", 
+    "code": "proc PPlotInsert*(ih: PIhandle; index, sample_index: cint; x, y: cfloat) {.\u000D\u000A    cdecl, importc: \"IupPPlotInsert\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "PPlotTransform", 
+    "type": "skProc", 
+    "code": "proc PPlotTransform*(ih: PIhandle; x, y: cfloat; ix, iy: var cint) {.cdecl, \u000D\u000A    importc: \"IupPPlotTransform\", dynlib: dllname.}"
+  }, 
+  {
+    "name": "PPlotPaintTo", 
+    "type": "skProc", 
+    "code": "proc PPlotPaintTo*(ih: PIhandle; cnv: pointer) {.cdecl, \u000D\u000A    importc: \"IupPPlotPaintTo\", dynlib: dllname.}"
+  }
+]

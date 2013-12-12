@@ -1,0 +1,131 @@
+[
+  {
+    "comment": "The ``sets`` module implements an efficient hash set and ordered hash set.\u000D\u000A##\u000D\u000A## **Note**: The data types declared here have *value semantics*: This means\u000D\u000A## that ``=`` performs a copy of the set."
+  }, 
+  {
+    "name": "TSet", 
+    "type": "skType", 
+    "description": "a generic hash set", 
+    "code": "TSet* {.final, myShallow.}[A] = object \u000D\u000A  data: TKeyValuePairSeq[A]\u000D\u000A  counter: int\u000D\u000A"
+  }, 
+  {
+    "name": "len", 
+    "type": "skProc", 
+    "description": "returns the number of keys in <cite>s</cite>.", 
+    "code": "proc len*[A](s: TSet[A]): int"
+  }, 
+  {
+    "name": "card", 
+    "type": "skProc", 
+    "description": "alias for <cite>len</cite>.", 
+    "code": "proc card*[A](s: TSet[A]): int"
+  }, 
+  {
+    "name": "items", 
+    "type": "skIterator", 
+    "description": "iterates over any key in the table <cite>t</cite>.", 
+    "code": "iterator items*[A](s: TSet[A]): A"
+  }, 
+  {
+    "name": "contains", 
+    "type": "skProc", 
+    "description": "returns true iff <cite>key</cite> is in <cite>s</cite>.", 
+    "code": "proc contains*[A](s: TSet[A]; key: A): bool"
+  }, 
+  {
+    "name": "incl", 
+    "type": "skProc", 
+    "description": "includes an element <cite>key</cite> in <cite>s</cite>.", 
+    "code": "proc incl*[A](s: var TSet[A]; key: A)"
+  }, 
+  {
+    "name": "excl", 
+    "type": "skProc", 
+    "description": "excludes <cite>key</cite> from the set <cite>s</cite>.", 
+    "code": "proc excl*[A](s: var TSet[A]; key: A)"
+  }, 
+  {
+    "name": "containsOrIncl", 
+    "type": "skProc", 
+    "description": "returns true if <cite>s</cite> contains <cite>key</cite>, otherwise <cite>key</cite> is included in <cite>s</cite> and false is returned.", 
+    "code": "proc containsOrIncl*[A](s: var TSet[A]; key: A): bool"
+  }, 
+  {
+    "name": "initSet", 
+    "type": "skProc", 
+    "description": "creates a new hash set that is empty. <cite>initialSize</cite> needs to be a power of two.", 
+    "code": "proc initSet*[A](initialSize = 64): TSet[A]"
+  }, 
+  {
+    "name": "toSet", 
+    "type": "skProc", 
+    "description": "creates a new hash set that contains the given <cite>keys</cite>.", 
+    "code": "proc toSet*[A](keys: openarray[A]): TSet[A]"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "The <cite>$</cite> operator for hash sets.", 
+    "code": "proc `$`*[A](s: TSet[A]): string"
+  }, 
+  {
+    "name": "TOrderedSet", 
+    "type": "skType", 
+    "description": "set that remembers insertion order", 
+    "code": "TOrderedSet* {.final, myShallow.}[A] = object \u000D\u000A  data: TOrderedKeyValuePairSeq[A]\u000D\u000A  counter, first, last: int\u000D\u000A"
+  }, 
+  {
+    "name": "len", 
+    "type": "skProc", 
+    "description": "returns the number of keys in <cite>s</cite>.", 
+    "code": "proc len*[A](s: TOrderedSet[A]): int {.inline.}"
+  }, 
+  {
+    "name": "card", 
+    "type": "skProc", 
+    "description": "alias for <cite>len</cite>.", 
+    "code": "proc card*[A](s: TOrderedSet[A]): int {.inline.}"
+  }, 
+  {
+    "name": "items", 
+    "type": "skIterator", 
+    "description": "iterates over any key in the set <cite>s</cite> in insertion order.", 
+    "code": "iterator items*[A](s: TOrderedSet[A]): A"
+  }, 
+  {
+    "name": "contains", 
+    "type": "skProc", 
+    "description": "returns true iff <cite>key</cite> is in <cite>s</cite>.", 
+    "code": "proc contains*[A](s: TOrderedSet[A]; key: A): bool"
+  }, 
+  {
+    "name": "incl", 
+    "type": "skProc", 
+    "description": "includes an element <cite>key</cite> in <cite>s</cite>.", 
+    "code": "proc incl*[A](s: var TOrderedSet[A]; key: A)"
+  }, 
+  {
+    "name": "containsOrIncl", 
+    "type": "skProc", 
+    "description": "returns true if <cite>s</cite> contains <cite>key</cite>, otherwise <cite>key</cite> is included in <cite>s</cite> and false is returned.", 
+    "code": "proc containsOrIncl*[A](s: var TOrderedSet[A]; key: A): bool"
+  }, 
+  {
+    "name": "initOrderedSet", 
+    "type": "skProc", 
+    "description": "creates a new ordered hash set that is empty. <cite>initialSize</cite> needs to be a power of two.", 
+    "code": "proc initOrderedSet*[A](initialSize = 64): TOrderedSet[A]"
+  }, 
+  {
+    "name": "toOrderedSet", 
+    "type": "skProc", 
+    "description": "creates a new ordered hash set that contains the given <cite>keys</cite>.", 
+    "code": "proc toOrderedSet*[A](keys: openarray[A]): TOrderedSet[A]"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "The <cite>$</cite> operator for ordered hash sets.", 
+    "code": "proc `$`*[A](s: TOrderedSet[A]): string"
+  }
+]

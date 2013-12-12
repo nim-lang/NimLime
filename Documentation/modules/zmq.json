@@ -1,0 +1,171 @@
+[
+  {
+    "comment": "Nimrod 0mq wrapper. This file contains the low level C wrappers as well as\u000D\u000A## some higher level constructs. The higher level constructs are easily\u000D\u000A## recognizable because they are the only ones that have documentation.\u000D\u000A##\u000D\u000A## Example of a client:\u000D\u000A## \u000D\u000A## .. code-block:: nimrod\u000D\u000A##   import zmq\u000D\u000A##   \u000D\u000A##   var connection = zmq.open(\"tcp://localhost:5555\", server=false)\u000D\u000A##   echo(\"Connecting...\")\u000D\u000A##   for i in 0..10:\u000D\u000A##     echo(\"Sending hello...\", i)\u000D\u000A##     send(connection, \"Hello\")\u000D\u000A##     var reply = receive(connection)\u000D\u000A##     echo(\"Received ...\", reply)\u000D\u000A##   close(connection)\u000D\u000A##\u000D\u000A## Example of a server:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##   \u000D\u000A##   import zmq\u000D\u000A##   var connection = zmq.open(\"tcp://*:5555\", server=true)\u000D\u000A##   while True:\u000D\u000A##     var request = receive(connection)\u000D\u000A##     echo(\"Received: \", request)\u000D\u000A##     send(connection, \"World\")\u000D\u000A##   close(connection)"
+  }, 
+  {
+    "name": "zmqdll", 
+    "type": "skConst", 
+    "code": "zmqdll* = \"zmq.dll\""
+  }, 
+  {
+    "name": "DOWNSTREAM", 
+    "type": "skConst", 
+    "code": "DOWNSTREAM* = PUSH"
+  }, 
+  {
+    "name": "TPollItem", 
+    "type": "skType", 
+    "code": "TPollItem* {.pure, final.} = object \u000D\u000A  socket*: PSocket\u000D\u000A  fd*: cint\u000D\u000A  events*: cshort\u000D\u000A  revents*: cshort\u000D\u000A"
+  }, 
+  {
+    "name": "version", 
+    "type": "skProc", 
+    "code": "proc version*(major: var cint; minor: var cint; patch: var cint) {.cdecl, \u000D\u000A    importc: \"zmq_version\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "errno", 
+    "type": "skProc", 
+    "code": "proc errno*(): cint {.cdecl, importc: \"zmq_errno\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "strerror", 
+    "type": "skProc", 
+    "code": "proc strerror*(errnum: cint): cstring {.cdecl, importc: \"zmq_strerror\", \u000D\u000A                                        dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "msg_init", 
+    "type": "skProc", 
+    "code": "proc msg_init*(msg: var TMsg): cint {.cdecl, importc: \"zmq_msg_init\", \u000D\u000A                                      dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "msg_init", 
+    "type": "skProc", 
+    "code": "proc msg_init*(msg: var TMsg; size: int): cint {.cdecl, \u000D\u000A    importc: \"zmq_msg_init_size\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "msg_init", 
+    "type": "skProc", 
+    "code": "proc msg_init*(msg: var TMsg; data: cstring; size: int; ffn: TFreeFn; \u000D\u000A               hint: pointer): cint {.cdecl, importc: \"zmq_msg_init_data\", \u000D\u000A                                      dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "msg_close", 
+    "type": "skProc", 
+    "code": "proc msg_close*(msg: var TMsg): cint {.cdecl, importc: \"zmq_msg_close\", \u000D\u000A                                       dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "msg_move", 
+    "type": "skProc", 
+    "code": "proc msg_move*(dest, src: var TMsg): cint {.cdecl, importc: \"zmq_msg_move\", \u000D\u000A    dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "msg_copy", 
+    "type": "skProc", 
+    "code": "proc msg_copy*(dest, src: var TMsg): cint {.cdecl, importc: \"zmq_msg_copy\", \u000D\u000A    dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "msg_data", 
+    "type": "skProc", 
+    "code": "proc msg_data*(msg: var TMsg): cstring {.cdecl, importc: \"zmq_msg_data\", \u000D\u000A    dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "msg_size", 
+    "type": "skProc", 
+    "code": "proc msg_size*(msg: var TMsg): int {.cdecl, importc: \"zmq_msg_size\", \u000D\u000A                                     dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "init", 
+    "type": "skProc", 
+    "code": "proc init*(io_threads: cint): PContext {.cdecl, importc: \"zmq_init\", \u000D\u000A    dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "term", 
+    "type": "skProc", 
+    "code": "proc term*(context: PContext): cint {.cdecl, importc: \"zmq_term\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "socket", 
+    "type": "skProc", 
+    "code": "proc socket*(context: PContext; theType: cint): PSocket {.cdecl, \u000D\u000A    importc: \"zmq_socket\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "code": "proc close*(s: PSocket): cint {.cdecl, importc: \"zmq_close\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "setsockopt", 
+    "type": "skProc", 
+    "code": "proc setsockopt*(s: PSocket; option: cint; optval: pointer; optvallen: int): cint {.\u000D\u000A    cdecl, importc: \"zmq_setsockopt\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "getsockopt", 
+    "type": "skProc", 
+    "code": "proc getsockopt*(s: PSocket; option: cint; optval: pointer; optvallen: ptr int): cint {.\u000D\u000A    cdecl, importc: \"zmq_getsockopt\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "bindAddr", 
+    "type": "skProc", 
+    "code": "proc bindAddr*(s: PSocket; address: cstring): cint {.cdecl, importc: \"zmq_bind\", \u000D\u000A    dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "code": "proc connect*(s: PSocket; address: cstring): cint {.cdecl, \u000D\u000A    importc: \"zmq_connect\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "send", 
+    "type": "skProc", 
+    "code": "proc send*(s: PSocket; msg: var TMsg; flags: cint): cint {.cdecl, \u000D\u000A    importc: \"zmq_send\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "recv", 
+    "type": "skProc", 
+    "code": "proc recv*(s: PSocket; msg: var TMsg; flags: cint): cint {.cdecl, \u000D\u000A    importc: \"zmq_recv\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "poll", 
+    "type": "skProc", 
+    "code": "proc poll*(items: ptr TPollItem; nitems: cint; timeout: int): cint {.cdecl, \u000D\u000A    importc: \"zmq_poll\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "device", 
+    "type": "skProc", 
+    "code": "proc device*(device: cint; insocket, outsocket: PSocket): cint {.cdecl, \u000D\u000A    importc: \"zmq_device\", dynlib: zmqdll.}"
+  }, 
+  {
+    "name": "TConnectionMode", 
+    "type": "skType", 
+    "description": "connection mode", 
+    "code": "TConnectionMode* = enum \u000D\u000A  conPAIR = 0, conPUB = 1, conSUB = 2, conREQ = 3, conREP = 4, conDEALER = 5, \u000D\u000A  conROUTER = 6, conPULL = 7, conPUSH = 8, conXPUB = 9, conXSUB = 10"
+  }, 
+  {
+    "name": "zmqError", 
+    "type": "skProc", 
+    "description": "raises EZmq with error message from <cite>zmq.strerror</cite>.", 
+    "code": "proc zmqError*() {.noinline, noreturn.}"
+  }, 
+  {
+    "name": "open", 
+    "type": "skProc", 
+    "description": "opens a new connection. If <cite>server</cite> is true, it uses <cite>bindAddr</cite> for the underlying socket, otherwise it opens the socket with <cite>connect</cite>.", 
+    "code": "proc open*(address: string; server: bool; mode: TConnectionMode = conDEALER; \u000D\u000A           numthreads = 4): TConnection"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "closes the connection.", 
+    "code": "proc close*(c: var TConnection)"
+  }, 
+  {
+    "name": "send", 
+    "type": "skProc", 
+    "description": "sends a message over the connection.", 
+    "code": "proc send*(c: var TConnection; msg: string)"
+  }, 
+  {
+    "name": "receive", 
+    "type": "skProc", 
+    "description": "receives a message from a connection.", 
+    "code": "proc receive*(c: var TConnection): string"
+  }
+]

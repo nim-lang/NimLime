@@ -1,0 +1,118 @@
+[
+  {
+    "comment": "This module **partially** implements an FTP client as specified\u000D\u000A## by `RFC 959 <http://tools.ietf.org/html/rfc959>`_. \u000D\u000A## \u000D\u000A## This module provides both a synchronous and asynchronous implementation.\u000D\u000A## The asynchronous implementation requires you to use the ``AsyncFTPClient``\u000D\u000A## function. You are then required to register the ``PAsyncFTPClient`` with a\u000D\u000A## asyncio dispatcher using the ``register`` function. Take a look at the\u000D\u000A## asyncio module documentation for more information.\u000D\u000A##\u000D\u000A## **Note**: The asynchronous implementation is only asynchronous for long\u000D\u000A## file transfers, calls to functions which use the command socket will block.\u000D\u000A##\u000D\u000A## Here is some example usage of this module:\u000D\u000A## \u000D\u000A## .. code-block:: Nimrod\u000D\u000A##    var ftp = FTPClient(\"example.org\", user = \"user\", pass = \"pass\")\u000D\u000A##    ftp.connect()\u000D\u000A##    ftp.retrFile(\"file.ext\", \"file.ext\")\u000D\u000A##\u000D\u000A## **Warning:** The API of this module is unstable, and therefore is subject\u000D\u000A## to change."
+  }, 
+  {
+    "name": "EFTP", 
+    "type": "skType", 
+    "code": "EFTP* = object of ESynch"
+  }, 
+  {
+    "name": "FTPClient", 
+    "type": "skProc", 
+    "description": "Create a <tt class=\"docutils literal\"><span class=\"pre\">PFTPClient</span></tt> object.", 
+    "code": "proc FTPClient*(address: string; port = TPort(21); user, pass = \"\"): PFTPClient"
+  }, 
+  {
+    "name": "send", 
+    "type": "skProc", 
+    "description": "Send a message to the server, and wait for a primary reply. <tt class=\"docutils literal\"><span class=\"pre\">\\c\\L</span></tt> is added for you.", 
+    "code": "proc send*(ftp: PFTPClient; m: string): TaintedString"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "description": "Connect to the FTP server specified by <tt class=\"docutils literal\"><span class=\"pre\">ftp</span></tt>.", 
+    "code": "proc connect*(ftp: PFTPClient)"
+  }, 
+  {
+    "name": "pwd", 
+    "type": "skProc", 
+    "description": "Returns the current working directory.", 
+    "code": "proc pwd*(ftp: PFTPClient): string"
+  }, 
+  {
+    "name": "cd", 
+    "type": "skProc", 
+    "description": "Changes the current directory on the remote FTP server to <tt class=\"docutils literal\"><span class=\"pre\">dir</span></tt>.", 
+    "code": "proc cd*(ftp: PFTPClient; dir: string)"
+  }, 
+  {
+    "name": "cdup", 
+    "type": "skProc", 
+    "description": "Changes the current directory to the parent of the current directory.", 
+    "code": "proc cdup*(ftp: PFTPClient)"
+  }, 
+  {
+    "name": "listDirs", 
+    "type": "skProc", 
+    "description": "Returns a list of filenames in the given directory. If <tt class=\"docutils literal\"><span class=\"pre\">dir</span></tt> is &quot;&quot;, the current directory is used. If <tt class=\"docutils literal\"><span class=\"pre\">async</span></tt> is true, this function will return immediately and it will be your job to use asyncio's <tt class=\"docutils literal\"><span class=\"pre\">poll</span></tt> to progress this operation.", 
+    "code": "proc listDirs*(ftp: PFTPClient; dir: string = \"\"; async = false): seq[string]"
+  }, 
+  {
+    "name": "fileExists", 
+    "type": "skProc", 
+    "description": "<p><strong>Deprecated since version 0.9.0:</strong> Please use <tt class=\"docutils literal\"><span class=\"pre\">existsFile</span></tt>.</p>\u000D\u000A<p>Determines whether <tt class=\"docutils literal\"><span class=\"pre\">file</span></tt> exists.</p>\u000D\u000A<p>Warning: This function may block. Especially on directories with many files, because a full list of file names must be retrieved.</p>\u000D\u000A", 
+    "code": "proc fileExists*(ftp: PFTPClient; file: string): bool {.deprecated.}"
+  }, 
+  {
+    "name": "existsFile", 
+    "type": "skProc", 
+    "description": "<p>Determines whether <tt class=\"docutils literal\"><span class=\"pre\">file</span></tt> exists.</p>\u000D\u000A<p>Warning: This function may block. Especially on directories with many files, because a full list of file names must be retrieved.</p>\u000D\u000A", 
+    "code": "proc existsFile*(ftp: PFTPClient; file: string): bool"
+  }, 
+  {
+    "name": "createDir", 
+    "type": "skProc", 
+    "description": "Creates a directory <tt class=\"docutils literal\"><span class=\"pre\">dir</span></tt>. If <tt class=\"docutils literal\"><span class=\"pre\">recursive</span></tt> is true, the topmost subdirectory of <tt class=\"docutils literal\"><span class=\"pre\">dir</span></tt> will be created first, following the secondmost... etc. this allows you to give a full path as the <tt class=\"docutils literal\"><span class=\"pre\">dir</span></tt> without worrying about subdirectories not existing.", 
+    "code": "proc createDir*(ftp: PFTPClient; dir: string; recursive: bool = false)"
+  }, 
+  {
+    "name": "chmod", 
+    "type": "skProc", 
+    "description": "Changes permission of <tt class=\"docutils literal\"><span class=\"pre\">path</span></tt> to <tt class=\"docutils literal\"><span class=\"pre\">permissions</span></tt>.", 
+    "code": "proc chmod*(ftp: PFTPClient; path: string; permissions: set[TFilePermission])"
+  }, 
+  {
+    "name": "list", 
+    "type": "skProc", 
+    "description": "Lists all files in <tt class=\"docutils literal\"><span class=\"pre\">dir</span></tt>. If <tt class=\"docutils literal\"><span class=\"pre\">dir</span></tt> is <tt class=\"docutils literal\"><span class=\"pre\">&quot;&quot;</span></tt>, uses the current working directory. If <tt class=\"docutils literal\"><span class=\"pre\">async</span></tt> is true, this function will return immediately and it will be your job to call asyncio's <tt class=\"docutils literal\"><span class=\"pre\">poll</span></tt> to progress this operation.", 
+    "code": "proc list*(ftp: PFTPClient; dir: string = \"\"; async = false): string"
+  }, 
+  {
+    "name": "retrText", 
+    "type": "skProc", 
+    "description": "Retrieves <tt class=\"docutils literal\"><span class=\"pre\">file</span></tt>. File must be ASCII text. If <tt class=\"docutils literal\"><span class=\"pre\">async</span></tt> is true, this function will return immediately and it will be your job to call asyncio's <tt class=\"docutils literal\"><span class=\"pre\">poll</span></tt> to progress this operation.", 
+    "code": "proc retrText*(ftp: PFTPClient; file: string; async = false): string"
+  }, 
+  {
+    "name": "retrFile", 
+    "type": "skProc", 
+    "description": "Downloads <tt class=\"docutils literal\"><span class=\"pre\">file</span></tt> and saves it to <tt class=\"docutils literal\"><span class=\"pre\">dest</span></tt>. Usage of this function asynchronously is recommended to view the progress of the download. The <tt class=\"docutils literal\"><span class=\"pre\">EvRetr</span></tt> event is passed to the specified <tt class=\"docutils literal\"><span class=\"pre\">handleEvent</span></tt> function when the download is finished, and the <tt class=\"docutils literal\"><span class=\"pre\">filename</span></tt> field will be equal to <tt class=\"docutils literal\"><span class=\"pre\">file</span></tt>.", 
+    "code": "proc retrFile*(ftp: PFTPClient; file, dest: string; async = false)"
+  }, 
+  {
+    "name": "store", 
+    "type": "skProc", 
+    "description": "Uploads <tt class=\"docutils literal\"><span class=\"pre\">file</span></tt> to <tt class=\"docutils literal\"><span class=\"pre\">dest</span></tt> on the remote FTP server. Usage of this function asynchronously is recommended to view the progress of the download. The <tt class=\"docutils literal\"><span class=\"pre\">EvStore</span></tt> event is passed to the specified <tt class=\"docutils literal\"><span class=\"pre\">handleEvent</span></tt> function when the upload is finished, and the <tt class=\"docutils literal\"><span class=\"pre\">filename</span></tt> field will be equal to <tt class=\"docutils literal\"><span class=\"pre\">file</span></tt>.", 
+    "code": "proc store*(ftp: PFTPClient; file, dest: string; async = false)"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "Terminates the connection to the server.", 
+    "code": "proc close*(ftp: PFTPClient)"
+  }, 
+  {
+    "name": "AsyncFTPClient", 
+    "type": "skProc", 
+    "description": "<p>Create a <tt class=\"docutils literal\"><span class=\"pre\">PAsyncFTPClient</span></tt> object.</p>\u000D\u000A<p>Use this if you want to use asyncio's dispatcher.</p>\u000D\u000A", 
+    "code": "proc AsyncFTPClient*(address: string; port = TPort(21); user, pass = \"\"; \u000D\u000A    handleEvent: proc (ftp: PAsyncFTPClient; ev: TFTPEvent) {.closure.} = (proc (\u000D\u000A    ftp: PAsyncFTPClient; ev: TFTPEvent) = \u000D\u000A  nil)): PAsyncFTPClient"
+  }, 
+  {
+    "name": "register", 
+    "type": "skProc", 
+    "description": "Registers <tt class=\"docutils literal\"><span class=\"pre\">ftp</span></tt> with dispatcher <tt class=\"docutils literal\"><span class=\"pre\">d</span></tt>.", 
+    "code": "proc register*(d: PDispatcher; ftp: PAsyncFTPClient): PDelegate {.discardable.}"
+  }
+]

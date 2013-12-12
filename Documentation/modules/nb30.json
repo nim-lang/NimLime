@@ -1,0 +1,47 @@
+[
+  {
+    "name": "MAX_LANA", 
+    "type": "skConst", 
+    "code": "MAX_LANA* = 254"
+  }, 
+  {
+    "name": "TNameBuffer", 
+    "type": "skType", 
+    "code": "TNameBuffer* {.final.} = object \u000D\u000A  name*: array[0 .. NCBNAMSZ - 1, Char]\u000D\u000A  name_num*: Char\u000D\u000A  name_flags*: Char\u000D\u000A"
+  }, 
+  {
+    "name": "DUPLICATE_DEREG", 
+    "type": "skConst", 
+    "code": "DUPLICATE_DEREG* = 0x00000007"
+  }, 
+  {
+    "name": "TSessionBuffer", 
+    "type": "skType", 
+    "code": "TSessionBuffer* {.final.} = object \u000D\u000A  lsn*: Char\u000D\u000A  state*: Char\u000D\u000A  local_name*: array[0 .. NCBNAMSZ - 1, Char]\u000D\u000A  remote_name*: array[0 .. NCBNAMSZ - 1, Char]\u000D\u000A  rcvs_outstanding*: Char\u000D\u000A  sends_outstanding*: Char\u000D\u000A"
+  }, 
+  {
+    "name": "SESSION_ABORTED", 
+    "type": "skConst", 
+    "code": "SESSION_ABORTED* = 0x00000006"
+  }, 
+  {
+    "name": "TActionHeader", 
+    "type": "skType", 
+    "code": "TActionHeader* {.final.} = object \u000D\u000A  transport_id*: int32\u000D\u000A  action_code*: int16\u000D\u000A  reserved*: int16\u000D\u000A"
+  }, 
+  {
+    "name": "MS_NBF", 
+    "type": "skConst", 
+    "code": "MS_NBF* = \"MNBF\""
+  }, 
+  {
+    "name": "NRC_PENDING", 
+    "type": "skConst", 
+    "code": "NRC_PENDING* = 0x000000FF"
+  }, 
+  {
+    "name": "Netbios", 
+    "type": "skProc", 
+    "code": "proc Netbios*(P: PNCB): Char {.stdcall, dynlib: \"netapi32.dll\", \u000D\u000A                               importc: \"Netbios\".}"
+  }
+]

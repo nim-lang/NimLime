@@ -1,0 +1,23 @@
+[
+  {
+    "comment": "Module for converting an integer to a Roman numeral.\u000D\u000A## See http://en.wikipedia.org/wiki/Roman_numerals for reference."
+  }, 
+  {
+    "name": "RomanNumeralDigits", 
+    "type": "skConst", 
+    "description": "set of all characters a Roman numeral may consist of", 
+    "code": "RomanNumeralDigits* = {'I', 'i', 'V', 'v', 'X', 'x', 'L', 'l', 'C', 'c', 'D', \u000D\u000A                       'd', 'M', 'm'}"
+  }, 
+  {
+    "name": "romanToDecimal", 
+    "type": "skProc", 
+    "description": "Converts a Roman numeral to its int representation.", 
+    "code": "proc romanToDecimal*(romanVal: string): int"
+  }, 
+  {
+    "name": "decimalToRoman", 
+    "type": "skProc", 
+    "description": "Converts a number to a Roman numeral.", 
+    "code": "proc decimalToRoman*(number: range[1 .. 3999]): string"
+  }
+]

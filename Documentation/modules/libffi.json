@@ -1,0 +1,92 @@
+[
+  {
+    "name": "libffidll", 
+    "type": "skConst", 
+    "code": "libffidll* = \"libffi.dll\""
+  }, 
+  {
+    "name": "TSArg", 
+    "type": "skType", 
+    "code": "TSArg* = int"
+  }, 
+  {
+    "name": "TABI", 
+    "type": "skType", 
+    "code": "TABI* {.size: sizeof(cint).} = enum \u000D\u000A  FIRST_ABI, SYSV, STDCALL"
+  }, 
+  {
+    "name": "DEFAULT_ABI", 
+    "type": "skConst", 
+    "code": "DEFAULT_ABI* = SYSV"
+  }, 
+  {
+    "name": "tkSMALL_STRUCT_4B", 
+    "type": "skConst", 
+    "code": "tkSMALL_STRUCT_4B* = (tkLAST + 3)"
+  }, 
+  {
+    "name": "TType", 
+    "type": "skType", 
+    "code": "TType* = object \u000D\u000A  size*: int\u000D\u000A  alignment*: uint16\u000D\u000A  typ*: uint16\u000D\u000A  elements*: ptr ptr TType\u000D\u000A"
+  }, 
+  {
+    "name": "type_longdouble", 
+    "type": "skVar", 
+    "code": "type_longdouble* {.importc: \"ffi_type_longdouble\", dynlib: libffidll.}: TType"
+  }, 
+  {
+    "name": "TCif", 
+    "type": "skType", 
+    "code": "TCif* {.pure, final.} = object \u000D\u000A  abi*: TABI\u000D\u000A  nargs*: cuint\u000D\u000A  arg_types*: ptr ptr TType\u000D\u000A  rtype*: ptr TType\u000D\u000A  bytes*: cuint\u000D\u000A  flags*: cuint\u000D\u000A"
+  }, 
+  {
+    "name": "TRaw", 
+    "type": "skType", 
+    "code": "TRaw* = object \u000D\u000A  sint*: TSArg\u000D\u000A"
+  }, 
+  {
+    "name": "raw_call", 
+    "type": "skProc", 
+    "code": "proc raw_call*(cif: var Tcif; fn: proc () {.cdecl.}; rvalue: pointer; \u000D\u000A               avalue: ptr TRaw) {.cdecl, importc: \"ffi_raw_call\", \u000D\u000A                                   dynlib: libffidll.}"
+  }, 
+  {
+    "name": "ptrarray_to_raw", 
+    "type": "skProc", 
+    "code": "proc ptrarray_to_raw*(cif: var Tcif; args: ptr pointer; raw: ptr TRaw) {.cdecl, \u000D\u000A    importc: \"ffi_ptrarray_to_raw\", dynlib: libffidll.}"
+  }, 
+  {
+    "name": "raw_to_ptrarray", 
+    "type": "skProc", 
+    "code": "proc raw_to_ptrarray*(cif: var Tcif; raw: ptr TRaw; args: ptr pointer) {.cdecl, \u000D\u000A    importc: \"ffi_raw_to_ptrarray\", dynlib: libffidll.}"
+  }, 
+  {
+    "name": "raw_size", 
+    "type": "skProc", 
+    "code": "proc raw_size*(cif: var Tcif): int {.cdecl, importc: \"ffi_raw_size\", \u000D\u000A                                     dynlib: libffidll.}"
+  }, 
+  {
+    "name": "prep_cif", 
+    "type": "skProc", 
+    "code": "proc prep_cif*(cif: var Tcif; abi: TABI; nargs: cuint; rtype: ptr TType; \u000D\u000A               atypes: ptr ptr TType): TStatus {.cdecl, importc: \"ffi_prep_cif\", \u000D\u000A    dynlib: libffidll.}"
+  }, 
+  {
+    "name": "call", 
+    "type": "skProc", 
+    "code": "proc call*(cif: var Tcif; fn: proc () {.cdecl.}; rvalue: pointer; \u000D\u000A           avalue: ptr pointer) {.cdecl, importc: \"ffi_call\", dynlib: libffidll.}"
+  }, 
+  {
+    "name": "TArgList", 
+    "type": "skType", 
+    "code": "TArgList* = array[0 .. 100, pointer]"
+  }, 
+  {
+    "name": "prep_cif", 
+    "type": "skProc", 
+    "code": "proc prep_cif*(cif: var Tcif; abi: TABI; nargs: cuint; rtype: ptr TType; \u000D\u000A               atypes: TParamList): TStatus {.cdecl, importc: \"ffi_prep_cif\", \u000D\u000A    dynlib: libffidll.}"
+  }, 
+  {
+    "name": "call", 
+    "type": "skProc", 
+    "code": "proc call*(cif: var Tcif; fn, rvalue: pointer; avalue: TArgList) {.cdecl, \u000D\u000A    importc: \"ffi_call\", dynlib: libffidll.}"
+  }
+]

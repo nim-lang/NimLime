@@ -1,0 +1,95 @@
+[
+  {
+    "comment": "A higher level `PostgreSQL`:idx: database wrapper. This interface \u000D\u000A## is implemented for other databases too."
+  }, 
+  {
+    "name": "FWriteDb", 
+    "type": "skType", 
+    "description": "effect that denotes a write operation", 
+    "code": "FWriteDb* = object of FDB"
+  }, 
+  {
+    "name": "sql", 
+    "type": "skProc", 
+    "description": "<p>constructs a TSqlQuery from the string <cite>query</cite>. This is supposed to be used as a raw-string-literal modifier: <tt class=\"docutils literal\"><span class=\"pre\">sql&quot;update user set counter = counter + 1&quot;</span></tt></p>\u000D\u000A<p>If assertions are turned off, it does nothing. If assertions are turned on, later versions will check the string for valid syntax.</p>\u000D\u000A", 
+    "code": "proc sql*(query: string): TSqlQuery {.noSideEffect, inline.}"
+  }, 
+  {
+    "name": "dbError", 
+    "type": "skProc", 
+    "description": "raises an EDb exception with message <cite>msg</cite>.", 
+    "code": "proc dbError*(msg: string) {.noreturn.}"
+  }, 
+  {
+    "name": "TryExec", 
+    "type": "skProc", 
+    "description": "tries to execute the query and returns true if successful, false otherwise.", 
+    "code": "proc TryExec*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): bool {.\u000D\u000A    tags: [FReadDB, FWriteDb].}"
+  }, 
+  {
+    "name": "Exec", 
+    "type": "skProc", 
+    "description": "executes the query and raises EDB if not successful.", 
+    "code": "proc Exec*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]) {.\u000D\u000A    tags: [FReadDB, FWriteDb].}"
+  }, 
+  {
+    "name": "FastRows", 
+    "type": "skIterator", 
+    "description": "executes the query and iterates over the result dataset. This is very fast, but potenially dangerous: If the for-loop-body executes another query, the results can be undefined. For Postgres it is safe though.", 
+    "code": "iterator FastRows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): TRow {.\u000D\u000A    tags: [FReadDB].}"
+  }, 
+  {
+    "name": "getRow", 
+    "type": "skProc", 
+    "description": "retrieves a single row. If the query doesn't return any rows, this proc will return a TRow with empty strings for each column.", 
+    "code": "proc getRow*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): TRow {.\u000D\u000A    tags: [FReadDB].}"
+  }, 
+  {
+    "name": "GetAllRows", 
+    "type": "skProc", 
+    "description": "executes the query and returns the whole result dataset.", 
+    "code": "proc GetAllRows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): seq[\u000D\u000A    TRow] {.tags: [FReadDB].}"
+  }, 
+  {
+    "name": "Rows", 
+    "type": "skIterator", 
+    "description": "same as <cite>FastRows</cite>, but slower and safe.", 
+    "code": "iterator Rows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): TRow {.\u000D\u000A    tags: [FReadDB].}"
+  }, 
+  {
+    "name": "GetValue", 
+    "type": "skProc", 
+    "description": "executes the query and returns the first column of the first row of the result dataset. Returns &quot;&quot; if the dataset contains no rows or the database value is NULL.", 
+    "code": "proc GetValue*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): string {.\u000D\u000A    tags: [FReadDB].}"
+  }, 
+  {
+    "name": "TryInsertID", 
+    "type": "skProc", 
+    "description": "executes the query (typically &quot;INSERT&quot;) and returns the generated ID for the row or -1 in case of an error. For Postgre this adds <tt class=\"docutils literal\"><span class=\"pre\">RETURNING id</span></tt> to the query, so it only works if your primary key is named <tt class=\"docutils literal\"><span class=\"pre\">id</span></tt>. ", 
+    "code": "proc TryInsertID*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): int64 {.\u000D\u000A    tags: [FWriteDb].}"
+  }, 
+  {
+    "name": "InsertID", 
+    "type": "skProc", 
+    "description": "executes the query (typically &quot;INSERT&quot;) and returns the generated ID for the row. For Postgre this adds <tt class=\"docutils literal\"><span class=\"pre\">RETURNING id</span></tt> to the query, so it only works if your primary key is named <tt class=\"docutils literal\"><span class=\"pre\">id</span></tt>. ", 
+    "code": "proc InsertID*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): int64 {.\u000D\u000A    tags: [FWriteDb].}"
+  }, 
+  {
+    "name": "ExecAffectedRows", 
+    "type": "skProc", 
+    "description": "executes the query (typically &quot;UPDATE&quot;) and returns the number of affected rows.", 
+    "code": "proc ExecAffectedRows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): int64 {.\u000D\u000A    tags: [FReadDB, FWriteDb].}"
+  }, 
+  {
+    "name": "Close", 
+    "type": "skProc", 
+    "description": "closes the database connection.", 
+    "code": "proc Close*(db: TDbConn) {.tags: [FDb].}"
+  }, 
+  {
+    "name": "Open", 
+    "type": "skProc", 
+    "description": "<p>opens a database connection. Raises <cite>EDb</cite> if the connection could not be established.</p>\u000D\u000A<p>Clients can also use Postgres keyword/value connection strings to connect.</p>\u000D\u000A<p>Example:</p>\u000D\u000A<pre><span class=\"Identifier\">con</span> <span class=\"Operator\">=</span> <span class=\"Identifier\">Open</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;host=localhost port=5432 dbname=mydb&quot;</span><span class=\"Punctation\">)</span></pre><p>See <a class=\"reference external\" href=\"http://www.postgresql.org/docs/current/static/libpq-connect.html#LIBPQ-CONNSTRING\">http://www.postgresql.org/docs/current/static/libpq-connect.html#LIBPQ-CONNSTRING</a> for more information.</p>\u000D\u000A<p>Note that the connection parameter is not used but exists to maintain the nimrod db api.</p>\u000D\u000A", 
+    "code": "proc Open*(connection, user, password, database: string): TDbConn {.tags: [FDb].}"
+  }
+]

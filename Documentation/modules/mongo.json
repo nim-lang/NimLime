@@ -1,0 +1,1090 @@
+[
+  {
+    "comment": "This module is a wrapper for the `mongodb`:idx: client C library.\u000D\u000A## It allows you to connect to a mongo-server instance, send commands and\u000D\u000A## receive replies."
+  }, 
+  {
+    "name": "bsondll", 
+    "type": "skConst", 
+    "code": "bsondll* = \"bson.dll\""
+  }, 
+  {
+    "name": "Tmd5_state", 
+    "type": "skType", 
+    "code": "Tmd5_state* {.pure, final.} = object \u000D\u000A  count*: array[0 .. 2 - 1, int32]\u000D\u000A  abcd*: array[0 .. 4 - 1, int32]\u000D\u000A  buf*: array[0 .. 64 - 1, byte]\u000D\u000A"
+  }, 
+  {
+    "name": "sock_init", 
+    "type": "skProc", 
+    "code": "proc sock_init*(): cint {.stdcall, importc: \"mongo_sock_init\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "defaultPort", 
+    "type": "skConst", 
+    "code": "defaultPort* = 27017"
+  }, 
+  {
+    "name": "TDate", 
+    "type": "skType", 
+    "code": "TDate* = int64"
+  }, 
+  {
+    "name": "TTimestamp", 
+    "type": "skType", 
+    "description": "a timestamp", 
+    "code": "TTimestamp* {.pure, final.} = object \u000D\u000A  i*: cint\u000D\u000A  t*: cint\u000D\u000A"
+  }, 
+  {
+    "name": "create", 
+    "type": "skProc", 
+    "code": "proc create*(): ptr TBson {.stdcall, importc: \"bson_create\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "dispose", 
+    "type": "skProc", 
+    "code": "proc dispose*(b: ptr TBson) {.stdcall, importc: \"bson_dispose\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "size", 
+    "type": "skProc", 
+    "description": "Size of a BSON object.", 
+    "code": "proc size*(b: var TBson): cint {.stdcall, importc: \"bson_size\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "bufferSize", 
+    "type": "skProc", 
+    "description": "Buffer size of a BSON object.", 
+    "code": "proc bufferSize*(b: var TBson): cint {.stdcall, importc: \"bson_buffer_size\", \u000D\u000A                                       dynlib: bsondll.}"
+  }, 
+  {
+    "name": "print", 
+    "type": "skProc", 
+    "description": "Print a string representation of a BSON object.", 
+    "code": "proc print*(b: var TBson) {.stdcall, importc: \"bson_print\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "print", 
+    "type": "skProc", 
+    "description": "Print a string representation of a BSON object up to <cite>depth</cite>.", 
+    "code": "proc print*(TBson: cstring; depth: cint) {.stdcall, importc: \"bson_print_raw\", \u000D\u000A    dynlib: bsondll.}"
+  }, 
+  {
+    "name": "data", 
+    "type": "skProc", 
+    "description": "Return a pointer to the raw buffer stored by this bson object.", 
+    "code": "proc data*(b: var TBson): cstring {.stdcall, importc: \"bson_data\", \u000D\u000A                                    dynlib: bsondll.}"
+  }, 
+  {
+    "name": "find", 
+    "type": "skProc", 
+    "description": "Advance <cite>it</cite> to the named field. <cite>obj</cite> is the BSON object to use. <cite>name</cite> is the name of the field to find. Returns the type of the found object or <tt class=\"docutils literal\"><span class=\"pre\">bkEOO</span></tt> if it is not found.", 
+    "code": "proc find*(it: var TIter; obj: var TBson; name: cstring): TBsonKind {.stdcall, \u000D\u000A    importc: \"bson_find\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "createIter", 
+    "type": "skProc", 
+    "code": "proc createIter*(): ptr TIter {.stdcall, importc: \"bson_iterator_create\", \u000D\u000A                                dynlib: bsondll.}"
+  }, 
+  {
+    "name": "dispose", 
+    "type": "skProc", 
+    "code": "proc dispose*(a2: ptr TIter) {.stdcall, importc: \"bson_iterator_dispose\", \u000D\u000A                               dynlib: bsondll.}"
+  }, 
+  {
+    "name": "initIter", 
+    "type": "skProc", 
+    "description": "Initialize a bson iterator from the value <cite>b</cite>.", 
+    "code": "proc initIter*(b: var TBson): TIter"
+  }, 
+  {
+    "name": "fromBuffer", 
+    "type": "skProc", 
+    "description": "Initialize a bson iterator from a cstring buffer. Note that this is mostly used internally.", 
+    "code": "proc fromBuffer*(i: var TIter; buffer: cstring) {.stdcall, \u000D\u000A    importc: \"bson_iterator_from_buffer\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "more", 
+    "type": "skProc", 
+    "description": "Check to see if the bson_iterator has more data.", 
+    "code": "proc more*(i: var TIter): bool"
+  }, 
+  {
+    "name": "next", 
+    "type": "skProc", 
+    "description": "Point the iterator at the next BSON object.", 
+    "code": "proc next*(i: var TIter): TBsonKind {.stdcall, importc: \"bson_iterator_next\", \u000D\u000A                                      dynlib: bsondll.}"
+  }, 
+  {
+    "name": "kind", 
+    "type": "skProc", 
+    "description": "Get the type of the BSON object currently pointed to by the iterator.", 
+    "code": "proc kind*(i: var TIter): TBsonKind {.stdcall, importc: \"bson_iterator_type\", \u000D\u000A                                      dynlib: bsondll.}"
+  }, 
+  {
+    "name": "key", 
+    "type": "skProc", 
+    "description": "Get the key of the BSON object currently pointed to by the iterator.", 
+    "code": "proc key*(i: var TIter): cstring {.stdcall, importc: \"bson_iterator_key\", \u000D\u000A                                   dynlib: bsondll.}"
+  }, 
+  {
+    "name": "value", 
+    "type": "skProc", 
+    "description": "Get the value of the BSON object currently pointed to by the iterator.", 
+    "code": "proc value*(i: var TIter): cstring {.stdcall, importc: \"bson_iterator_value\", \u000D\u000A                                     dynlib: bsondll.}"
+  }, 
+  {
+    "name": "floatVal", 
+    "type": "skProc", 
+    "description": "Get the double value of the BSON object currently pointed to by the iterator.", 
+    "code": "proc floatVal*(i: var TIter): float {.stdcall, importc: \"bson_iterator_double\", \u000D\u000A                                      dynlib: bsondll.}"
+  }, 
+  {
+    "name": "intVal", 
+    "type": "skProc", 
+    "description": "Get the int value of the BSON object currently pointed to by the iterator.", 
+    "code": "proc intVal*(i: var TIter): cint {.stdcall, importc: \"bson_iterator_int\", \u000D\u000A                                   dynlib: bsondll.}"
+  }, 
+  {
+    "name": "int64Val", 
+    "type": "skProc", 
+    "description": "Get the long value of the BSON object currently pointed to by the iterator.", 
+    "code": "proc int64Val*(i: var TIter): int64 {.stdcall, importc: \"bson_iterator_long\", \u000D\u000A                                      dynlib: bsondll.}"
+  }, 
+  {
+    "name": "timestamp", 
+    "type": "skProc", 
+    "code": "proc timestamp*(i: var TIter): Ttimestamp {.stdcall, \u000D\u000A    importc: \"bson_iterator_timestamp\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "timestampTime", 
+    "type": "skProc", 
+    "code": "proc timestampTime*(i: var TIter): cint {.stdcall, \u000D\u000A    importc: \"bson_iterator_timestamp_time\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "timestampIncrement", 
+    "type": "skProc", 
+    "code": "proc timestampIncrement*(i: var TIter): cint {.stdcall, \u000D\u000A    importc: \"bson_iterator_timestamp_increment\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "boolVal", 
+    "type": "skProc", 
+    "description": "Get the boolean value of the BSON object currently pointed to by the iterator.<p>false: boolean false, 0 in any type, or null<br />true: anything else (even empty strings and objects) <br /></p>", 
+    "code": "proc boolVal*(i: var TIter): TBsonBool {.stdcall, importc: \"bson_iterator_bool\", \u000D\u000A    dynlib: bsondll.}"
+  }, 
+  {
+    "name": "floatRaw", 
+    "type": "skProc", 
+    "description": "Get the double value of the BSON object currently pointed to by the iterator. Assumes the correct type is used.", 
+    "code": "proc floatRaw*(i: var TIter): cdouble {.stdcall, \u000D\u000A                                        importc: \"bson_iterator_double_raw\", \u000D\u000A                                        dynlib: bsondll.}"
+  }, 
+  {
+    "name": "intRaw", 
+    "type": "skProc", 
+    "description": "Get the int value of the BSON object currently pointed to by the iterator. Assumes the correct type is used.", 
+    "code": "proc intRaw*(i: var TIter): cint {.stdcall, importc: \"bson_iterator_int_raw\", \u000D\u000A                                   dynlib: bsondll.}"
+  }, 
+  {
+    "name": "int64Raw", 
+    "type": "skProc", 
+    "description": "Get the long value of the BSON object currently pointed to by the iterator. Assumes the correct type is used.", 
+    "code": "proc int64Raw*(i: var TIter): int64 {.stdcall, \u000D\u000A                                      importc: \"bson_iterator_long_raw\", \u000D\u000A                                      dynlib: bsondll.}"
+  }, 
+  {
+    "name": "boolRaw", 
+    "type": "skProc", 
+    "description": "Get the bson_bool_t value of the BSON object currently pointed to by the iterator. Assumes the correct type is used.", 
+    "code": "proc boolRaw*(i: var TIter): TBsonBool {.stdcall, \u000D\u000A    importc: \"bson_iterator_bool_raw\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "oidVal", 
+    "type": "skProc", 
+    "description": "Get the bson_oid_t value of the BSON object currently pointed to by the iterator.", 
+    "code": "proc oidVal*(i: var TIter): ptr TOid {.stdcall, importc: \"bson_iterator_oid\", \u000D\u000A                                       dynlib: bsondll.}"
+  }, 
+  {
+    "name": "strVal", 
+    "type": "skProc", 
+    "description": "Get the string value of the BSON object currently pointed to by the iterator.", 
+    "code": "proc strVal*(i: var TIter): cstring {.stdcall, importc: \"bson_iterator_string\", \u000D\u000A                                      dynlib: bsondll.}"
+  }, 
+  {
+    "name": "strLen", 
+    "type": "skProc", 
+    "description": "Get the string length of the BSON object currently pointed to by the iterator.", 
+    "code": "proc strLen*(i: var TIter): cint {.stdcall, importc: \"bson_iterator_string_len\", \u000D\u000A                                   dynlib: bsondll.}"
+  }, 
+  {
+    "name": "code", 
+    "type": "skProc", 
+    "description": "Get the code value of the BSON object currently pointed to by the iterator. Works with bson_code, bson_codewscope, and BSON_STRING returns <tt class=\"docutils literal\"><span class=\"pre\">nil</span></tt> for everything else.", 
+    "code": "proc code*(i: var TIter): cstring {.stdcall, importc: \"bson_iterator_code\", \u000D\u000A                                    dynlib: bsondll.}"
+  }, 
+  {
+    "name": "codeScope", 
+    "type": "skProc", 
+    "description": "Calls bson_empty on scope if not a bson_codewscope", 
+    "code": "proc codeScope*(i: var TIter; scope: var TBson) {.stdcall, \u000D\u000A    importc: \"bson_iterator_code_scope\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "date", 
+    "type": "skProc", 
+    "description": "Get the date value of the BSON object currently pointed to by the iterator.", 
+    "code": "proc date*(i: var TIter): Tdate {.stdcall, importc: \"bson_iterator_date\", \u000D\u000A                                  dynlib: bsondll.}"
+  }, 
+  {
+    "name": "time", 
+    "type": "skProc", 
+    "description": "Get the time value of the BSON object currently pointed to by the iterator.", 
+    "code": "proc time*(i: var TIter): TTime {.stdcall, importc: \"bson_iterator_time_t\", \u000D\u000A                                  dynlib: bsondll.}"
+  }, 
+  {
+    "name": "binLen", 
+    "type": "skProc", 
+    "description": "Get the length of the BSON binary object currently pointed to by the iterator.", 
+    "code": "proc binLen*(i: var TIter): cint {.stdcall, importc: \"bson_iterator_bin_len\", \u000D\u000A                                   dynlib: bsondll.}"
+  }, 
+  {
+    "name": "binType", 
+    "type": "skProc", 
+    "description": "Get the type of the BSON binary object currently pointed to by the iterator.", 
+    "code": "proc binType*(i: var TIter): char {.stdcall, importc: \"bson_iterator_bin_type\", \u000D\u000A                                    dynlib: bsondll.}"
+  }, 
+  {
+    "name": "binData", 
+    "type": "skProc", 
+    "description": "Get the value of the BSON binary object currently pointed to by the iterator.", 
+    "code": "proc binData*(i: var TIter): cstring {.stdcall, \u000D\u000A                                       importc: \"bson_iterator_bin_data\", \u000D\u000A                                       dynlib: bsondll.}"
+  }, 
+  {
+    "name": "regex", 
+    "type": "skProc", 
+    "description": "Get the value of the BSON regex object currently pointed to by the iterator.", 
+    "code": "proc regex*(i: var TIter): cstring {.stdcall, importc: \"bson_iterator_regex\", \u000D\u000A                                     dynlib: bsondll.}"
+  }, 
+  {
+    "name": "regexOpts", 
+    "type": "skProc", 
+    "description": "Get the options of the BSON regex object currently pointed to by the iterator.", 
+    "code": "proc regexOpts*(i: var TIter): cstring {.stdcall, \u000D\u000A    importc: \"bson_iterator_regex_opts\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "subobject", 
+    "type": "skProc", 
+    "description": "Get the BSON subobject currently pointed to by the iterator.", 
+    "code": "proc subobject*(i: var TIter; sub: var TBson) {.stdcall, \u000D\u000A    importc: \"bson_iterator_subobject\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "subiterator", 
+    "type": "skProc", 
+    "description": "Get a bson_iterator that on the BSON subobject.", 
+    "code": "proc subiterator*(i: var TIter; sub: var TIter) {.stdcall, \u000D\u000A    importc: \"bson_iterator_subiterator\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "init", 
+    "type": "skProc", 
+    "description": "<p>Initialize a new bson object. If not created with bson_new, you must initialize each new bson object using this function.</p>\u000D\u000A<p>When finished, you must pass the bson object to bson_destroy().</p>\u000D\u000A", 
+    "code": "proc init*(b: var TBson) {.stdcall, importc: \"bson_init\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "init", 
+    "type": "skProc", 
+    "description": "Initialize a BSON object, and point its data pointer to the provided <cite>data</cite>. Returns OK or ERROR.", 
+    "code": "proc init*(b: var TBson; data: cstring): cint {.stdcall, \u000D\u000A    importc: \"bson_init_data\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "initFinished", 
+    "type": "skProc", 
+    "code": "proc initFinished*(b: var TBson; data: cstring): cint {.stdcall, \u000D\u000A    importc: \"bson_init_finished_data\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "initSize", 
+    "type": "skProc", 
+    "description": "Initialize a BSON object, and set its buffer to the given size. Returns OK or ERROR.", 
+    "code": "proc initSize*(b: var TBson; size: cint) {.stdcall, importc: \"bson_init_size\", \u000D\u000A    dynlib: bsondll.}"
+  }, 
+  {
+    "name": "ensureSpace", 
+    "type": "skProc", 
+    "description": "Grow a bson object. <cite>bytesNeeded</cite> is the additional number of bytes needed.", 
+    "code": "proc ensureSpace*(b: var TBson; bytesNeeded: cint): cint {.stdcall, \u000D\u000A    importc: \"bson_ensure_space\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "finish", 
+    "type": "skProc", 
+    "description": "Finalize a bson object. Returns the standard error code. To deallocate memory, call destroy on the bson object.", 
+    "code": "proc finish*(b: var TBson): cint {.stdcall, importc: \"bson_finish\", \u000D\u000A                                   dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "destroy", 
+    "type": "skProc", 
+    "description": "Destroy a bson object.", 
+    "code": "proc destroy*(b: var TBson) {.stdcall, importc: \"bson_destroy\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "empty", 
+    "type": "skProc", 
+    "description": "Sets a pointer to a static empty BSON object. <cite>obj</cite> is the BSON object to initialize. ", 
+    "code": "proc empty*(obj: var TBson) {.stdcall, importc: \"bson_empty\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "copy", 
+    "type": "skProc", 
+    "description": "Make a complete copy of the a BSON object. The source bson object must be in a finished state; otherwise, the copy will fail.", 
+    "code": "proc copy*(outp, inp: var TBson): cint {.stdcall, importc: \"bson_copy\", \u000D\u000A    dynlib: bsondll.}"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "adds an OID to <cite>b</cite>.", 
+    "code": "proc add*(b: var TBson; name: cstring; oid: TOid)"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "Append an int to a bson.", 
+    "code": "proc add*(b: var TBson; name: cstring; i: cint): cint {.stdcall, \u000D\u000A    importc: \"bson_append_int\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "Append an long to a bson.", 
+    "code": "proc add*(b: var TBson; name: cstring; i: int64): cint {.stdcall, \u000D\u000A    importc: \"bson_append_long\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "Append an double to a bson.", 
+    "code": "proc add*(b: var TBson; name: cstring; d: float): cint {.stdcall, \u000D\u000A    importc: \"bson_append_double\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "Append a string to a bson.", 
+    "code": "proc add*(b: var TBson; name: cstring; str: cstring): cint {.stdcall, \u000D\u000A    importc: \"bson_append_string\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "Append len bytes of a string to a bson.", 
+    "code": "proc add*(b: var TBson; name: cstring; str: cstring; len: cint): cint {.stdcall, \u000D\u000A    importc: \"bson_append_string_n\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "Append a Nimrod string <cite>str</cite> to a bson.", 
+    "code": "proc add*(b: var TBson; name: cstring; str: string)"
+  }, 
+  {
+    "name": "addSymbol", 
+    "type": "skProc", 
+    "description": "Append a symbol to a bson.", 
+    "code": "proc addSymbol*(b: var TBson; name: cstring; str: cstring): cint {.stdcall, \u000D\u000A    importc: \"bson_append_symbol\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addSymbol", 
+    "type": "skProc", 
+    "description": "Append len bytes of a symbol to a bson.", 
+    "code": "proc addSymbol*(b: var TBson; name: cstring; str: cstring; len: cint): cint {.\u000D\u000A    stdcall, importc: \"bson_append_symbol_n\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addCode", 
+    "type": "skProc", 
+    "description": "Append code to a bson.", 
+    "code": "proc addCode*(b: var TBson; name: cstring; str: cstring): cint {.stdcall, \u000D\u000A    importc: \"bson_append_code\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addCode", 
+    "type": "skProc", 
+    "description": "Append len bytes of code to a bson.", 
+    "code": "proc addCode*(b: var TBson; name: cstring; str: cstring; len: cint): cint {.\u000D\u000A    stdcall, importc: \"bson_append_code_n\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addCode", 
+    "type": "skProc", 
+    "description": "Append code to a bson with scope.", 
+    "code": "proc addCode*(b: var TBson; name: cstring; code: cstring; scope: var TBson): cint {.\u000D\u000A    stdcall, importc: \"bson_append_code_w_scope\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addCode", 
+    "type": "skProc", 
+    "description": "Append len bytes of code to a bson with scope.", 
+    "code": "proc addCode*(b: var TBson; name: cstring; code: cstring; size: cint; \u000D\u000A              scope: var TBson): cint {.stdcall, \u000D\u000A                                        importc: \"bson_append_code_w_scope_n\", \u000D\u000A                                        dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addBinary", 
+    "type": "skProc", 
+    "description": "Append binary data to a bson.", 
+    "code": "proc addBinary*(b: var TBson; name: cstring; typ: char; str: cstring; len: cint): cint {.\u000D\u000A    stdcall, importc: \"bson_append_binary\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addBinary", 
+    "type": "skProc", 
+    "description": "Append binary data to a bson.", 
+    "code": "proc addBinary*(b: var TBson; name: cstring; data: string)"
+  }, 
+  {
+    "name": "addBool", 
+    "type": "skProc", 
+    "description": "Append a bson_bool_t to a bson.", 
+    "code": "proc addBool*(b: var TBson; name: cstring; v: TBsonBool): cint {.stdcall, \u000D\u000A    importc: \"bson_append_bool\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addNull", 
+    "type": "skProc", 
+    "description": "Append a null value to a bson.", 
+    "code": "proc addNull*(b: var TBson; name: cstring): cint {.stdcall, \u000D\u000A    importc: \"bson_append_null\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addUndefined", 
+    "type": "skProc", 
+    "description": "Append an undefined value to a bson.", 
+    "code": "proc addUndefined*(b: var TBson; name: cstring): cint {.stdcall, \u000D\u000A    importc: \"bson_append_undefined\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addRegex", 
+    "type": "skProc", 
+    "description": "Append a regex value to a bson.", 
+    "code": "proc addRegex*(b: var TBson; name: cstring; pattern: cstring; opts: cstring): cint {.\u000D\u000A    stdcall, importc: \"bson_append_regex\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "Append bson data to a bson.", 
+    "code": "proc add*(b: var TBson; name: cstring; TBson: var TBson): cint {.stdcall, \u000D\u000A    importc: \"bson_append_bson\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addElement", 
+    "type": "skProc", 
+    "description": "Append a BSON element to a bson from the current point of an iterator.", 
+    "code": "proc addElement*(b: var TBson; name_or_null: cstring; elem: var TIter): cint {.\u000D\u000A    stdcall, importc: \"bson_append_element\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addTimestamp", 
+    "type": "skProc", 
+    "description": "Append a bson_timestamp_t value to a bson.", 
+    "code": "proc addTimestamp*(b: var TBson; name: cstring; ts: var TTimestamp): cint {.\u000D\u000A    stdcall, importc: \"bson_append_timestamp\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addTimestamp2", 
+    "type": "skProc", 
+    "code": "proc addTimestamp2*(b: var TBson; name: cstring; time: cint; increment: cint): cint {.\u000D\u000A    stdcall, importc: \"bson_append_timestamp2\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addDate", 
+    "type": "skProc", 
+    "description": "Append a bson_date_t value to a bson.", 
+    "code": "proc addDate*(b: var TBson; name: cstring; millis: TDate): cint {.stdcall, \u000D\u000A    importc: \"bson_append_date\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addTime", 
+    "type": "skProc", 
+    "description": "Append a time_t value to a bson.", 
+    "code": "proc addTime*(b: var TBson; name: cstring; secs: TTime): cint {.stdcall, \u000D\u000A    importc: \"bson_append_time_t\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addStartObject", 
+    "type": "skProc", 
+    "description": "Start appending a new object to a bson.", 
+    "code": "proc addStartObject*(b: var TBson; name: cstring): cint {.stdcall, \u000D\u000A    importc: \"bson_append_start_object\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addStartArray", 
+    "type": "skProc", 
+    "description": "Start appending a new array to a bson.", 
+    "code": "proc addStartArray*(b: var TBson; name: cstring): cint {.stdcall, \u000D\u000A    importc: \"bson_append_start_array\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addFinishObject", 
+    "type": "skProc", 
+    "description": "Finish appending a new object or array to a bson.", 
+    "code": "proc addFinishObject*(b: var TBson): cint {.stdcall, \u000D\u000A    importc: \"bson_append_finish_object\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "addFinishArray", 
+    "type": "skProc", 
+    "description": "Finish appending a new object or array to a bson. This is simply an alias for bson_append_finish_object.", 
+    "code": "proc addFinishArray*(b: var TBson): cint {.stdcall, \u000D\u000A    importc: \"bson_append_finish_array\", dynlib: bsondll, discardable.}"
+  }, 
+  {
+    "name": "numstr", 
+    "type": "skProc", 
+    "code": "proc numstr*(str: cstring; i: cint) {.stdcall, importc: \"bson_numstr\", \u000D\u000A                                      dynlib: bsondll.}"
+  }, 
+  {
+    "name": "incnumstr", 
+    "type": "skProc", 
+    "code": "proc incnumstr*(str: cstring) {.stdcall, importc: \"bson_incnumstr\", \u000D\u000A                                dynlib: bsondll.}"
+  }, 
+  {
+    "name": "TErrHandler", 
+    "type": "skType", 
+    "description": "an error handler. Error handlers shouldn't return!", 
+    "code": "TErrHandler* = proc (errmsg: cstring) {.stdcall.}"
+  }, 
+  {
+    "name": "setBsonErrHandler", 
+    "type": "skProc", 
+    "description": "Set a function for error handling. Returns the old error handling function, or nil.", 
+    "code": "proc setBsonErrHandler*(func: TErrHandler): TErrHandler {.stdcall, \u000D\u000A    importc: \"set_bson_err_handler\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "fatal", 
+    "type": "skProc", 
+    "description": "does nothing if ok != 0. Exit fatally.", 
+    "code": "proc fatal*(ok: cint) {.stdcall, importc: \"bson_fatal\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "fatal", 
+    "type": "skProc", 
+    "description": "Exit fatally with an error message.", 
+    "code": "proc fatal*(ok: cint; msg: cstring) {.stdcall, importc: \"bson_fatal_msg\", \u000D\u000A                                      dynlib: bsondll.}"
+  }, 
+  {
+    "name": "builderError", 
+    "type": "skProc", 
+    "description": "Invoke the error handler, but do not exit.", 
+    "code": "proc builderError*(b: var TBson) {.stdcall, importc: \"bson_builder_error\", \u000D\u000A                                   dynlib: bsondll.}"
+  }, 
+  {
+    "name": "int64ToDouble", 
+    "type": "skProc", 
+    "description": "Cast an int64_t to double. This is necessary for embedding in certain environments.", 
+    "code": "proc int64ToDouble*(i64: int64): cdouble {.stdcall, \u000D\u000A    importc: \"bson_int64_to_double\", dynlib: bsondll.}"
+  }, 
+  {
+    "name": "PATCH", 
+    "type": "skConst", 
+    "code": "PATCH* = 0"
+  }, 
+  {
+    "name": "TCursor", 
+    "type": "skType", 
+    "description": "cursor", 
+    "code": "TCursor* {.pure, final.} = object \u000D\u000A  reply*: ptr TReply          ## reply is owned by cursor \u000D\u000A  conn*: ptr TMongo           ## connection is *not* owned by cursor \u000D\u000A  ns*: cstring                ## owned by cursor \u000D\u000A  flags*: cint                ## Flags used internally by this drivers. \u000D\u000A  seen*: cint                 ## Number returned so far. \u000D\u000A  current*: TBson             ## This cursor's current bson object. \u000D\u000A  err*: TCursorError          ## Errors on this cursor. \u000D\u000A  query*: ptr TBson           ## Bitfield containing cursor options. \u000D\u000A  fields*: ptr TBson          ## Bitfield containing cursor options. \u000D\u000A  options*: cint              ## Bitfield containing cursor options. \u000D\u000A  limit*: cint                ## Bitfield containing cursor options. \u000D\u000A  skip*: cint                 ## Bitfield containing cursor options. \u000D\u000A  "
+  }, 
+  {
+    "name": "createMongo", 
+    "type": "skProc", 
+    "code": "proc createMongo*(): ptr TMongo {.stdcall, importc: \"mongo_create\", \u000D\u000A                                  dynlib: mongodll.}"
+  }, 
+  {
+    "name": "dispose", 
+    "type": "skProc", 
+    "code": "proc dispose*(conn: ptr TMongo) {.stdcall, importc: \"mongo_dispose\", \u000D\u000A                                  dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getErr", 
+    "type": "skProc", 
+    "code": "proc getErr*(conn: var TMongo): cint {.stdcall, importc: \"mongo_get_err\", \u000D\u000A                                       dynlib: mongodll.}"
+  }, 
+  {
+    "name": "isConnected", 
+    "type": "skProc", 
+    "code": "proc isConnected*(conn: var TMongo): cint {.stdcall, \u000D\u000A    importc: \"mongo_is_connected\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getOpTimeout", 
+    "type": "skProc", 
+    "code": "proc getOpTimeout*(conn: var TMongo): cint {.stdcall, \u000D\u000A    importc: \"mongo_get_op_timeout\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getPrimary", 
+    "type": "skProc", 
+    "code": "proc getPrimary*(conn: var TMongo): cstring {.stdcall, \u000D\u000A    importc: \"mongo_get_primary\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getSocket", 
+    "type": "skProc", 
+    "code": "proc getSocket*(conn: var TMongo): cint {.stdcall, importc: \"mongo_get_socket\", \u000D\u000A    dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getHostCount", 
+    "type": "skProc", 
+    "code": "proc getHostCount*(conn: var TMongo): cint {.stdcall, \u000D\u000A    importc: \"mongo_get_host_count\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getHost", 
+    "type": "skProc", 
+    "code": "proc getHost*(conn: var TMongo; i: cint): cstring {.stdcall, \u000D\u000A    importc: \"mongo_get_host\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "createCursor", 
+    "type": "skProc", 
+    "code": "proc createCursor*(): ptr TCursor {.stdcall, importc: \"mongo_cursor_create\", \u000D\u000A                                    dynlib: mongodll.}"
+  }, 
+  {
+    "name": "dispose", 
+    "type": "skProc", 
+    "code": "proc dispose*(cursor: ptr TCursor) {.stdcall, importc: \"mongo_cursor_dispose\", \u000D\u000A                                     dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getServerErr", 
+    "type": "skProc", 
+    "code": "proc getServerErr*(conn: var TMongo): cint {.stdcall, \u000D\u000A    importc: \"mongo_get_server_err\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getServerErrString", 
+    "type": "skProc", 
+    "code": "proc getServerErrString*(conn: var TMongo): cstring {.stdcall, \u000D\u000A    importc: \"mongo_get_server_err_string\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "init", 
+    "type": "skProc", 
+    "description": "Initialize a new mongo connection object. You must initialize each mongo object using this function. When finished, you must pass this object to <tt class=\"docutils literal\"><span class=\"pre\">destroy</span></tt>.", 
+    "code": "proc init*(conn: var TMongo) {.stdcall, importc: \"mongo_init\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "description": "Connect to a single MongoDB server.", 
+    "code": "proc connect*(conn: var TMongo; host: cstring = defaultHost; \u000D\u000A              port: cint = defaultPort): cint {.stdcall, \u000D\u000A    importc: \"mongo_connect\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "replsetInit", 
+    "type": "skProc", 
+    "description": "Set up this connection object for connecting to a replica set. To connect, pass the object to replsetConnect. <cite>name</cite> is the name of the replica set to connect to.", 
+    "code": "proc replsetInit*(conn: var TMongo; name: cstring) {.stdcall, \u000D\u000A    importc: \"mongo_replset_init\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "replsetAddSeed", 
+    "type": "skProc", 
+    "description": "Add a seed node to the replica set connection object. You must specify at least one seed node before connecting to a replica set.", 
+    "code": "proc replsetAddSeed*(conn: var TMongo; host: cstring = defaultHost; \u000D\u000A                     port: cint = defaultPort) {.stdcall, \u000D\u000A    importc: \"mongo_replset_add_seed\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "parseHost", 
+    "type": "skProc", 
+    "description": "Utility function for converting a host-port string to a mongo_host_port. <cite>hostString</cite> is a string containing either a host or a host and port separated by a colon. <cite>hostPort</cite> is the mongo_host_port object to write the result to.", 
+    "code": "proc parseHost*(hostString: cstring; hostPort: var ThostPort) {.stdcall, \u000D\u000A    importc: \"mongo_parse_host\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "replsetConnect", 
+    "type": "skProc", 
+    "description": "Connect to a replica set. Before passing a connection object to this function, you must already have called setReplset and replsetAddSeed.", 
+    "code": "proc replsetConnect*(conn: var TMongo): cint {.stdcall, \u000D\u000A    importc: \"mongo_replset_connect\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "setOpTimeout", 
+    "type": "skProc", 
+    "description": "Set a timeout for operations on this connection. This is a platform-specific feature, and only work on Unix-like systems. You must also compile for linux to support this.", 
+    "code": "proc setOpTimeout*(conn: var TMongo; millis: cint): cint {.stdcall, \u000D\u000A    importc: \"mongo_set_op_timeout\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "checkConnection", 
+    "type": "skProc", 
+    "description": "Ensure that this connection is healthy by performing a round-trip to the server. Returns OK if connected; otherwise ERROR.", 
+    "code": "proc checkConnection*(conn: var TMongo): cint {.stdcall, \u000D\u000A    importc: \"mongo_check_connection\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "reconnect", 
+    "type": "skProc", 
+    "description": "Try reconnecting to the server using the existing connection settings. This function will disconnect the current socket. If you've authenticated, you'll need to re-authenticate after calling this function.", 
+    "code": "proc reconnect*(conn: var TMongo): cint {.stdcall, importc: \"mongo_reconnect\", \u000D\u000A    dynlib: mongodll.}"
+  }, 
+  {
+    "name": "disconnect", 
+    "type": "skProc", 
+    "description": "Close the current connection to the server. After calling this function, you may call reconnect with the same connection object.", 
+    "code": "proc disconnect*(conn: var TMongo) {.stdcall, importc: \"mongo_disconnect\", \u000D\u000A                                     dynlib: mongodll.}"
+  }, 
+  {
+    "name": "destroy", 
+    "type": "skProc", 
+    "description": "Close any existing connection to the server and free all allocated memory associated with the conn object. You must always call this function when finished with the connection object.", 
+    "code": "proc destroy*(conn: var TMongo) {.stdcall, importc: \"mongo_destroy\", \u000D\u000A                                  dynlib: mongodll.}"
+  }, 
+  {
+    "name": "insert", 
+    "type": "skProc", 
+    "description": "Insert a BSON document into a MongoDB server. This function will fail if the supplied BSON struct is not UTF-8 or if the keys are invalid for insert (contain '.' or start with '$').", 
+    "code": "proc insert*(conn: var TMongo; ns: cstring; data: var TBson): cint {.stdcall, \u000D\u000A    importc: \"mongo_insert\", dynlib: mongodll, discardable.}"
+  }, 
+  {
+    "name": "insertBatch", 
+    "type": "skProc", 
+    "description": "Insert a batch of BSON documents into a MongoDB server. This function will fail if any of the documents to be inserted is invalid. <cite>num</cite> is the number of documents in data.", 
+    "code": "proc insertBatch*(conn: var TMongo; ns: cstring; data: ptr ptr TBson; num: cint): cint {.\u000D\u000A    stdcall, importc: \"mongo_insert_batch\", dynlib: mongodll, discardable.}"
+  }, 
+  {
+    "name": "update", 
+    "type": "skProc", 
+    "description": "Update a document in a MongoDB server.<p>conn a mongo object.<br />ns the namespace.<br />cond the bson update query.<br />op the bson update data.<br />flags flags for the update.<br />returns OK or ERROR with error stored in conn object.<br /></p>", 
+    "code": "proc update*(conn: var TMongo; ns: cstring; cond, op: var TBson; flags: cint): cint {.\u000D\u000A    stdcall, importc: \"mongo_update\", dynlib: mongodll, discardable.}"
+  }, 
+  {
+    "name": "remove", 
+    "type": "skProc", 
+    "description": "Remove a document from a MongoDB server.<p>conn a mongo object.<br />ns the namespace.<br />cond the bson query.<br />returns OK or ERROR with error stored in conn object.<br /></p>", 
+    "code": "proc remove*(conn: var TMongo; namespace: cstring; cond: var TBson): cint {.\u000D\u000A    stdcall, importc: \"mongo_remove\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "find", 
+    "type": "skProc", 
+    "description": "Find documents in a MongoDB server.<p>conn a mongo object.<br />ns the namespace.<br />query the bson query.<br />fields a bson document of fields to be returned.<br />limit the maximum number of documents to return.<br />skip the number of documents to skip.<br />options A bitfield containing cursor options.<br />returns A cursor object allocated on the heap or nil if an error has occurred. For finer-grained error checking, use the cursor builder API instead.<br /></p>", 
+    "code": "proc find*(conn: var TMongo; namespace: cstring; query, fields: var TBson; \u000D\u000A           limit, skip: cint; options: cint): ptr TCursor {.stdcall, \u000D\u000A    importc: \"mongo_find\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "init", 
+    "type": "skProc", 
+    "description": "<p>Initalize a new cursor object.</p>\u000D\u000A<p>The namespace is represented as the database name and collection name separated by a dot. e.g., &quot;test.users&quot;.</p>\u000D\u000A", 
+    "code": "proc init*(cursor: var TCursor; conn: var TMongo; namespace: cstring) {.stdcall, \u000D\u000A    importc: \"mongo_cursor_init\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "setQuery", 
+    "type": "skProc", 
+    "description": "<p>Set the bson object specifying this cursor's query spec. If your query is the empty bson object &quot;{}&quot;, then you need not set this value.</p>\u000D\u000A<p><cite>query</cite> is a bson object representing the query spec. This may be either a simple query spec or a complex spec storing values for $query, $orderby, $hint, and/or $explain. See <a class=\"reference external\" href=\"http://www.mongodb.org/display/DOCS/Mongo+Wire+Protocol\">http://www.mongodb.org/display/DOCS/Mongo+Wire+Protocol</a> for details.</p>\u000D\u000A", 
+    "code": "proc setQuery*(cursor: var TCursor; query: var TBson) {.stdcall, \u000D\u000A    importc: \"mongo_cursor_set_query\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "setFields", 
+    "type": "skProc", 
+    "description": "Set the fields to return for this cursor. If you want to return all fields, you need not set this value. <cite>fields</cite> is a bson object representing the fields to return. See <a class=\"reference external\" href=\"http://www.mongodb.org/display/DOCS/Retrieving+a+Subset+of+Fields\">http://www.mongodb.org/display/DOCS/Retrieving+a+Subset+of+Fields</a>.", 
+    "code": "proc setFields*(cursor: var TCursor; fields: var TBson) {.stdcall, \u000D\u000A    importc: \"mongo_cursor_set_fields\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "setSkip", 
+    "type": "skProc", 
+    "description": "Set the number of documents to skip.", 
+    "code": "proc setSkip*(cursor: var TCursor; skip: cint) {.stdcall, \u000D\u000A    importc: \"mongo_cursor_set_skip\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "setLimit", 
+    "type": "skProc", 
+    "description": "Set the number of documents to return.", 
+    "code": "proc setLimit*(cursor: var TCursor; limit: cint) {.stdcall, \u000D\u000A    importc: \"mongo_cursor_set_limit\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "setOptions", 
+    "type": "skProc", 
+    "description": "Set any of the available query options (e.g., TAILABLE). See <cite>TCursorOpts</cite> for available constants.", 
+    "code": "proc setOptions*(cursor: var TCursor; options: cint) {.stdcall, \u000D\u000A    importc: \"mongo_cursor_set_options\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "data", 
+    "type": "skProc", 
+    "description": "Return the current BSON object data as a <tt class=\"docutils literal\"><span class=\"pre\">cstring</span></tt>. This is useful for creating bson iterators.", 
+    "code": "proc data*(cursor: var TCursor): cstring {.stdcall, \u000D\u000A    importc: \"mongo_cursor_data\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "bson", 
+    "type": "skProc", 
+    "description": "Return the current BSON object.", 
+    "code": "proc bson*(cursor: var TCursor): ptr TBson {.stdcall, \u000D\u000A    importc: \"mongo_cursor_bson\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "next", 
+    "type": "skProc", 
+    "description": "Iterate the cursor, returning the next item. When successful, the returned object will be stored in cursor.current;", 
+    "code": "proc next*(cursor: var TCursor): cint {.stdcall, importc: \"mongo_cursor_next\", \u000D\u000A                                        dynlib: mongodll.}"
+  }, 
+  {
+    "name": "destroy", 
+    "type": "skProc", 
+    "description": "Destroy a cursor object. When finished with a cursor, you must pass it to this function.", 
+    "code": "proc destroy*(cursor: var TCursor): cint {.stdcall, \u000D\u000A    importc: \"mongo_cursor_destroy\", dynlib: mongodll, discardable.}"
+  }, 
+  {
+    "name": "findOne", 
+    "type": "skProc", 
+    "description": "Find a single document in a MongoDB server.<p>conn a mongo object.<br />ns the namespace.<br />query the bson query.<br />fields a bson document of the fields to be returned.<br />outp a bson document in which to put the query result. outp can be nil if you don't care about results. Useful for commands.<br /></p>", 
+    "code": "proc findOne*(conn: var TMongo; namespace: cstring; query: var TBson; \u000D\u000A              fields: var TBson; outp: var TBson): cint {.stdcall, \u000D\u000A    importc: \"mongo_find_one\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "count", 
+    "type": "skProc", 
+    "description": "Count the number of documents in a collection matching a query.<p>conn a mongo object.<br />db the db name.<br />coll the collection name.<br />query the BSON query.<br />returns the number of matching documents. If the command fails, ERROR is returned.<br /></p>", 
+    "code": "proc count*(conn: var TMongo; db: cstring; coll: cstring; query: var TBson): cdouble {.\u000D\u000A    stdcall, importc: \"mongo_count\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "createIndex", 
+    "type": "skProc", 
+    "description": "Create a compouned index.<p>conn a mongo object.<br />ns the namespace.<br />data the bson index data.<br />options a bitfield for setting index options. Possibilities include INDEX_UNIQUE, INDEX_DROP_DUPS, INDEX_BACKGROUND, and INDEX_SPARSE.<br />out a bson document containing errors, if any.<br />returns MONGO_OK if index is created successfully; otherwise, MONGO_ERROR.<br /></p>", 
+    "code": "proc createIndex*(conn: var TMongo; namespace: cstring; key: var TBson; \u000D\u000A                  options: cint; outp: var TBson): cint {.stdcall, \u000D\u000A    importc: \"mongo_create_index\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "createSimpleIndex", 
+    "type": "skProc", 
+    "description": "Create an index with a single key.<p>conn a mongo object.<br />ns the namespace.<br />field the index key.<br />options index options.<br />out a BSON document containing errors, if any.<br />returns true if the index was created.<br /></p>", 
+    "code": "proc createSimpleIndex*(conn: var TMongo; namespace, field: cstring; \u000D\u000A                        options: cint; outp: var TBson): TBsonBool {.stdcall, \u000D\u000A    importc: \"mongo_create_simple_index\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "runCommand", 
+    "type": "skProc", 
+    "description": "Run a command on a MongoDB server.<p>conn a mongo object.<br />db the name of the database.<br />command the BSON command to run.<br />out the BSON result of the command.<br />returns OK if the command ran without error.<br /></p>", 
+    "code": "proc runCommand*(conn: var TMongo; db: cstring; command: var TBson; \u000D\u000A                 outp: var TBson): cint {.stdcall, importc: \"mongo_run_command\", \u000D\u000A    dynlib: mongodll.}"
+  }, 
+  {
+    "name": "simpleIntCommand", 
+    "type": "skProc", 
+    "description": "Run a command that accepts a simple string key and integer value.<p>conn a mongo object.<br />db the name of the database.<br />cmd the command to run.<br />arg the integer argument to the command.<br />out the BSON result of the command.<br />returns OK or an error code.<br /></p>", 
+    "code": "proc simpleIntCommand*(conn: var TMongo; db: cstring; cmd: cstring; arg: cint; \u000D\u000A                       outp: var TBson): cint {.stdcall, \u000D\u000A    importc: \"mongo_simple_int_command\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "simpleStrCommand", 
+    "type": "skProc", 
+    "description": "Run a command that accepts a simple string key and value.<p>conn a mongo object.<br />db the name of the database.<br />cmd the command to run.<br />arg the string argument to the command.<br />out the BSON result of the command.<br />returns true if the command ran without error.<br /></p>", 
+    "code": "proc simpleStrCommand*(conn: var TMongo; db: cstring; cmd: cstring; \u000D\u000A                       arg: cstring; outp: var TBson): cint {.stdcall, \u000D\u000A    importc: \"mongo_simple_str_command\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "cmdDropDb", 
+    "type": "skProc", 
+    "description": "Drop a database.<p>conn a mongo object.<br />db the name of the database to drop.<br />returns OK or an error code.<br /></p>", 
+    "code": "proc cmdDropDb*(conn: var TMongo; db: cstring): cint {.stdcall, \u000D\u000A    importc: \"mongo_cmd_drop_db\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "cmdDropCollection", 
+    "type": "skProc", 
+    "description": "Drop a collection.<p>conn a mongo object.<br />db the name of the database.<br />collection the name of the collection to drop.<br />out a BSON document containing the result of the command.<br />returns true if the collection drop was successful.<br /></p>", 
+    "code": "proc cmdDropCollection*(conn: var TMongo; db: cstring; collection: cstring; \u000D\u000A                        outp: var TBson): cint {.stdcall, \u000D\u000A    importc: \"mongo_cmd_drop_collection\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "cmdAddUser", 
+    "type": "skProc", 
+    "description": "Add a database user.<p>conn a mongo object.<br />db the database in which to add the user.<br />user the user name<br />pass the user password<br />returns OK or ERROR.<br /></p>", 
+    "code": "proc cmdAddUser*(conn: var TMongo; db: cstring; user: cstring; pass: cstring): cint {.\u000D\u000A    stdcall, importc: \"mongo_cmd_add_user\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "cmdAuthenticate", 
+    "type": "skProc", 
+    "description": "Authenticate a user.<p>conn a mongo object.<br />db the database to authenticate against.<br />user the user name to authenticate.<br />pass the user's password.<br />returns OK on sucess and ERROR on failure.<br /></p>", 
+    "code": "proc cmdAuthenticate*(conn: var TMongo; db: cstring; user: cstring; \u000D\u000A                      pass: cstring): cint {.stdcall, \u000D\u000A    importc: \"mongo_cmd_authenticate\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "cmdIsMaster", 
+    "type": "skProc", 
+    "description": "Check if the current server is a master.<p>conn a mongo object.<br />outp a BSON result of the command.<br />returns true if the server is a master.<br /></p>", 
+    "code": "proc cmdIsMaster*(conn: var TMongo; outp: var TBson): TBsonBool {.stdcall, \u000D\u000A    importc: \"mongo_cmd_ismaster\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "cmdGetLastError", 
+    "type": "skProc", 
+    "description": "Get the error for the last command with the current connection.<p>conn a mongo object.<br />db the name of the database.<br />outp a BSON object containing the error details.<br />returns OK or ERROR<br /></p>", 
+    "code": "proc cmdGetLastError*(conn: var TMongo; db: cstring; outp: var TBson): cint {.\u000D\u000A    stdcall, importc: \"mongo_cmd_get_last_error\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "cmdGetPrevError", 
+    "type": "skProc", 
+    "description": "Get the most recent error with the current connection.<p>conn a mongo object.<br />db the name of the database.<br />outp a BSON object containing the error details.<br />returns OK or ERROR.<br /></p>", 
+    "code": "proc cmdGetPrevError*(conn: var TMongo; db: cstring; outp: var TBson): cint {.\u000D\u000A    stdcall, importc: \"mongo_cmd_get_prev_error\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "cmdResetError", 
+    "type": "skProc", 
+    "description": "Reset the error state for the connection. <cite>db</cite> is the name of the database.", 
+    "code": "proc cmdResetError*(conn: var TMongo; db: cstring) {.stdcall, \u000D\u000A    importc: \"mongo_cmd_reset_error\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "DEFAULT_CHUNK_SIZE", 
+    "type": "skConst", 
+    "code": "DEFAULT_CHUNK_SIZE* = 262144"
+  }, 
+  {
+    "name": "TOffset", 
+    "type": "skType", 
+    "code": "TOffset* = int64"
+  }, 
+  {
+    "name": "TGridfs", 
+    "type": "skType", 
+    "description": "The client to db-connection. ", 
+    "code": "TGridfs* {.pure, final.} = object \u000D\u000A  client*: ptr TMongo\u000D\u000A  dbname*: cstring            ## The root database name \u000D\u000A  prefix*: cstring            ## The prefix of the GridFS's collections,\u000D\u000A                              ## default is nil \u000D\u000A  files_ns*: cstring          ## The namespace where the file's metadata\u000D\u000A                              ## is stored\u000D\u000A  chunks_ns*: cstring         ## The namespace where the files's data is\u000D\u000A                              ## stored in chunks\u000D\u000A  "
+  }, 
+  {
+    "name": "TGridFile", 
+    "type": "skType", 
+    "description": "GridFS where the GridFile is located ", 
+    "code": "TGridFile* {.pure, final.} = object \u000D\u000A  gfs*: ptr TGridfs\u000D\u000A  meta*: ptr TBson            ## GridFile's bson object where all\u000D\u000A                              ## its metadata is located \u000D\u000A  pos*: TOffset               ## position is the offset in the file \u000D\u000A  id*: TOid                   ## files_id of the gridfile \u000D\u000A  remote_name*: cstring       ## name of the gridfile as a string \u000D\u000A  content_type*: cstring      ## gridfile's content type \u000D\u000A  length*: TOffset            ## length of this gridfile \u000D\u000A  chunk_num*: cint            ## number of the current chunk being written to \u000D\u000A  pending_data*: cstring      ## buffer storing data still to be\u000D\u000A                              ## written to chunks \u000D\u000A  pending_len*: cint          ## length of pending_data buffer \u000D\u000A  "
+  }, 
+  {
+    "name": "createGridfs", 
+    "type": "skProc", 
+    "code": "proc createGridfs*(): ptr TGridfs {.stdcall, importc: \"gridfs_create\", \u000D\u000A                                    dynlib: mongodll.}"
+  }, 
+  {
+    "name": "dispose", 
+    "type": "skProc", 
+    "code": "proc dispose*(gfs: ptr TGridfs) {.stdcall, importc: \"gridfs_dispose\", \u000D\u000A                                  dynlib: mongodll.}"
+  }, 
+  {
+    "name": "createGridfile", 
+    "type": "skProc", 
+    "code": "proc createGridfile*(): ptr TGridFile {.stdcall, importc: \"gridfile_create\", \u000D\u000A                                        dynlib: mongodll.}"
+  }, 
+  {
+    "name": "dispose", 
+    "type": "skProc", 
+    "code": "proc dispose*(gf: ptr TGridFile) {.stdcall, importc: \"gridfile_dispose\", \u000D\u000A                                   dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getDescriptor", 
+    "type": "skProc", 
+    "code": "proc getDescriptor*(gf: var TGridFile; outp: var TBson) {.stdcall, \u000D\u000A    importc: \"gridfile_get_descriptor\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "init", 
+    "type": "skProc", 
+    "description": "Initializes a GridFS object<p>client - db connection<br />dbname - database name<br />prefix - collection prefix, default is fs if NULL or empty<br />gfs - the GridFS object to initialize<br />returns - OK or ERROR.<br /></p>", 
+    "code": "proc init*(client: var TMongo; dbname: cstring; prefix: cstring; \u000D\u000A           gfs: var TGridfs): cint {.stdcall, importc: \"gridfs_init\", \u000D\u000A                                     dynlib: mongodll.}"
+  }, 
+  {
+    "name": "destroy", 
+    "type": "skProc", 
+    "description": "Destroys a GridFS object. Call this when finished with the object.", 
+    "code": "proc destroy*(gfs: var TGridfs) {.stdcall, importc: \"gridfs_destroy\", \u000D\u000A                                  dynlib: mongodll.}"
+  }, 
+  {
+    "name": "writerInit", 
+    "type": "skProc", 
+    "description": "Initializes a gridfile for writing incrementally with <tt class=\"docutils literal\"><span class=\"pre\">writeBuffer</span></tt>. Once initialized, you can write any number of buffers with <tt class=\"docutils literal\"><span class=\"pre\">writeBuffer</span></tt>. When done, you must call <tt class=\"docutils literal\"><span class=\"pre\">writerDone</span></tt> to save the file metadata.", 
+    "code": "proc writerInit*(gfile: var TGridFile; gfs: var TGridfs; remote_name: cstring; \u000D\u000A                 content_type: cstring) {.stdcall, \u000D\u000A    importc: \"gridfile_writer_init\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "writeBuffer", 
+    "type": "skProc", 
+    "description": "Write to a GridFS file incrementally. You can call this function any number of times with a new buffer each time. This allows you to effectively stream to a GridFS file. When finished, be sure to call <tt class=\"docutils literal\"><span class=\"pre\">writerDone</span></tt>.", 
+    "code": "proc writeBuffer*(gfile: var TGridFile; data: cstring; length: TOffset) {.\u000D\u000A    stdcall, importc: \"gridfile_write_buffer\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "writerDone", 
+    "type": "skProc", 
+    "description": "Signal that writing of this gridfile is complete by writing any buffered chunks along with the entry in the files collection. Returns OK or ERROR.", 
+    "code": "proc writerDone*(gfile: var TGridFile): cint {.stdcall, \u000D\u000A    importc: \"gridfile_writer_done\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "storeBuffer", 
+    "type": "skProc", 
+    "description": "Store a buffer as a GridFS file.<p>gfs - the working GridFS<br />data - pointer to buffer to store in GridFS<br />length - length of the buffer<br />remotename - filename for use in the database<br />contenttype - optional MIME type for this object<br />returns - MONGO_OK or MONGO_ERROR.<br /></p>", 
+    "code": "proc storeBuffer*(gfs: var TGridfs; data: cstring; length: TOffset; \u000D\u000A                  remotename: cstring; contenttype: cstring): cint {.stdcall, \u000D\u000A    importc: \"gridfs_store_buffer\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "storeFile", 
+    "type": "skProc", 
+    "description": "Open the file referenced by filename and store it as a GridFS file.<p>gfs - the working GridFS<br />filename - local filename relative to the process<br />remotename - optional filename for use in the database<br />contenttype - optional MIME type for this object<br />returns - OK or ERROR.<br /></p>", 
+    "code": "proc storeFile*(gfs: var TGridfs; filename: cstring; remotename: cstring; \u000D\u000A                contenttype: cstring): cint {.stdcall, \u000D\u000A    importc: \"gridfs_store_file\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "removeFilename", 
+    "type": "skProc", 
+    "description": "Removes the files referenced by filename from the db.", 
+    "code": "proc removeFilename*(gfs: var TGridfs; filename: cstring) {.stdcall, \u000D\u000A    importc: \"gridfs_remove_filename\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "findQuery", 
+    "type": "skProc", 
+    "description": "Find the first file matching the provided query within the GridFS files collection, and return the file as a GridFile. Returns OK if successful, ERROR otherwise.", 
+    "code": "proc findQuery*(gfs: var TGridfs; query: var TBson; gfile: var TGridFile): cint {.\u000D\u000A    stdcall, importc: \"gridfs_find_query\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "findFilename", 
+    "type": "skProc", 
+    "description": "Find the first file referenced by filename within the GridFS and return it as a GridFile. Returns OK or ERROR.", 
+    "code": "proc findFilename*(gfs: var TGridfs; filename: cstring; gfile: var TGridFile): cint {.\u000D\u000A    stdcall, importc: \"gridfs_find_filename\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "init", 
+    "type": "skProc", 
+    "description": "Initializes a GridFile containing the GridFS and file bson.", 
+    "code": "proc init*(gfs: var TGridfs; meta: var TBson; gfile: var TGridFile): cint {.\u000D\u000A    stdcall, importc: \"gridfile_init\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "destroy", 
+    "type": "skProc", 
+    "description": "Destroys the GridFile.", 
+    "code": "proc destroy*(gfile: var TGridFile) {.stdcall, importc: \"gridfile_destroy\", \u000D\u000A                                      dynlib: mongodll.}"
+  }, 
+  {
+    "name": "exists", 
+    "type": "skProc", 
+    "description": "Returns whether or not the GridFile exists.", 
+    "code": "proc exists*(gfile: var TGridFile): TBsonBool {.stdcall, \u000D\u000A    importc: \"gridfile_exists\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getFilename", 
+    "type": "skProc", 
+    "description": "Returns the filename of GridFile.", 
+    "code": "proc getFilename*(gfile: var TGridFile): cstring {.stdcall, \u000D\u000A    importc: \"gridfile_get_filename\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getChunksize", 
+    "type": "skProc", 
+    "description": "Returns the size of the chunks of the GridFile.", 
+    "code": "proc getChunksize*(gfile: var TGridFile): cint {.stdcall, \u000D\u000A    importc: \"gridfile_get_chunksize\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getContentlength", 
+    "type": "skProc", 
+    "description": "Returns the length of GridFile's data.", 
+    "code": "proc getContentlength*(gfile: var TGridFile): TOffset {.stdcall, \u000D\u000A    importc: \"gridfile_get_contentlength\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getContenttype", 
+    "type": "skProc", 
+    "description": "Returns the MIME type of the GridFile (nil if no type specified).", 
+    "code": "proc getContenttype*(gfile: var TGridFile): cstring {.stdcall, \u000D\u000A    importc: \"gridfile_get_contenttype\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getUploaddate", 
+    "type": "skProc", 
+    "description": "Returns the upload date of GridFile.", 
+    "code": "proc getUploaddate*(gfile: var TGridFile): Tdate {.stdcall, \u000D\u000A    importc: \"gridfile_get_uploaddate\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getMd5", 
+    "type": "skProc", 
+    "description": "Returns the MD5 of GridFile.", 
+    "code": "proc getMd5*(gfile: var TGridFile): cstring {.stdcall, \u000D\u000A    importc: \"gridfile_get_md5\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getField", 
+    "type": "skProc", 
+    "description": "Returns the field in GridFile specified by name. Returns the data of the field specified (nil if none exists).", 
+    "code": "proc getField*(gfile: var TGridFile; name: cstring): cstring {.stdcall, \u000D\u000A    importc: \"gridfile_get_field\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getBoolean", 
+    "type": "skProc", 
+    "description": "Returns a boolean field in GridFile specified by name.", 
+    "code": "proc getBoolean*(gfile: var TGridFile; name: cstring): TBsonBool {.stdcall, \u000D\u000A    importc: \"gridfile_get_boolean\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getMetadata", 
+    "type": "skProc", 
+    "description": "Returns the metadata of GridFile (an empty bson is returned if none exists).", 
+    "code": "proc getMetadata*(gfile: var TGridFile; outp: var TBson) {.stdcall, \u000D\u000A    importc: \"gridfile_get_metadata\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getNumchunks", 
+    "type": "skProc", 
+    "description": "Returns the number of chunks in the GridFile.", 
+    "code": "proc getNumchunks*(gfile: var TGridFile): cint {.stdcall, \u000D\u000A    importc: \"gridfile_get_numchunks\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getChunk", 
+    "type": "skProc", 
+    "description": "Returns chunk <cite>n</cite> of GridFile.", 
+    "code": "proc getChunk*(gfile: var TGridFile; n: cint; outp: var TBson) {.stdcall, \u000D\u000A    importc: \"gridfile_get_chunk\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "getChunks", 
+    "type": "skProc", 
+    "description": "Returns a mongo_cursor of <cite>size</cite> chunks starting with chunk <cite>start</cite>. The cursor must be destroyed after use.", 
+    "code": "proc getChunks*(gfile: var TGridFile; start: cint; size: cint): ptr TCursor {.\u000D\u000A    stdcall, importc: \"gridfile_get_chunks\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "writeFile", 
+    "type": "skProc", 
+    "description": "Writes the GridFile to a stream.", 
+    "code": "proc writeFile*(gfile: ptr TGridFile; stream: TFile): TOffset {.stdcall, \u000D\u000A    importc: \"gridfile_write_file\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "read", 
+    "type": "skProc", 
+    "description": "Reads length bytes from the GridFile to a buffer and updates the position in the file. (assumes the buffer is large enough) (if size is greater than EOF gridfile_read reads until EOF). Returns the number of bytes read.", 
+    "code": "proc read*(gfile: var TGridFile; size: TOffset; buf: cstring): TOffset {.\u000D\u000A    stdcall, importc: \"gridfile_read\", dynlib: mongodll.}"
+  }, 
+  {
+    "name": "seek", 
+    "type": "skProc", 
+    "description": "Updates the position in the file (If the offset goes beyond the contentlength, the position is updated to the end of the file.) Returns the offset location", 
+    "code": "proc seek*(gfile: var TGridFile; offset: TOffset): TOffset {.stdcall, \u000D\u000A    importc: \"gridfile_seek\", dynlib: mongodll.}"
+  }
+]

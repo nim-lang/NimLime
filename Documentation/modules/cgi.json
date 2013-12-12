@@ -1,0 +1,287 @@
+[
+  {
+    "comment": "This module implements helper procs for CGI applications. Example:\u000D\u000A##\u000D\u000A## .. code-block:: Nimrod\u000D\u000A##\u000D\u000A##    import strtabs, cgi\u000D\u000A##\u000D\u000A##    # Fill the values when debugging:\u000D\u000A##    when debug:\u000D\u000A##      setTestData(\"name\", \"Klaus\", \"password\", \"123456\")\u000D\u000A##    # read the data into `myData`\u000D\u000A##    var myData = readData()\u000D\u000A##    # check that the data's variable names are \"name\" or \"password\"\u000D\u000A##    validateData(myData, \"name\", \"password\")\u000D\u000A##    # start generating content:\u000D\u000A##    writeContentType()\u000D\u000A##    # generate content:\u000D\u000A##    write(stdout, \"<!DOCTYPE HTML PUBLIC \\\"-//W3C//DTD HTML 4.01//EN\\\">\\n\")\u000D\u000A##    write(stdout, \"<html><head><title>Test</title></head><body>\\n\")\u000D\u000A##    writeln(stdout, \"your name: \" & myData[\"name\"])\u000D\u000A##    writeln(stdout, \"your password: \" & myData[\"password\"])\u000D\u000A##    writeln(stdout, \"</body></html>\")"
+  }, 
+  {
+    "name": "URLencode", 
+    "type": "skProc", 
+    "description": "Encodes a value to be HTTP safe: This means that characters in the set <tt class=\"docutils literal\"><span class=\"pre\">{'A'..'Z', 'a'..'z', '0'..'9', '_'}</span></tt> are carried over to the result, a space is converted to <tt class=\"docutils literal\"><span class=\"pre\">'+'</span></tt> and every other character is encoded as <tt class=\"docutils literal\"><span class=\"pre\">'%xx'</span></tt> where <tt class=\"docutils literal\"><span class=\"pre\">xx</span></tt> denotes its hexadecimal value.", 
+    "code": "proc URLencode*(s: string): string"
+  }, 
+  {
+    "name": "URLdecode", 
+    "type": "skProc", 
+    "description": "Decodes a value from its HTTP representation: This means that a <tt class=\"docutils literal\"><span class=\"pre\">'+'</span></tt> is converted to a space, <tt class=\"docutils literal\"><span class=\"pre\">'%xx'</span></tt> (where <tt class=\"docutils literal\"><span class=\"pre\">xx</span></tt> denotes a hexadecimal value) is converted to the character with ordinal number <tt class=\"docutils literal\"><span class=\"pre\">xx</span></tt>, and and every other character is carried over.", 
+    "code": "proc URLdecode*(s: string): string"
+  }, 
+  {
+    "name": "XMLencode", 
+    "type": "skProc", 
+    "description": "Encodes a value to be XML safe:<ul class=\"simple\"><li><tt class=\"docutils literal\"><span class=\"pre\">&quot;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;quot;</span></tt></li>\u000D\u000A<li><tt class=\"docutils literal\"><span class=\"pre\">&lt;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;lt;</span></tt></li>\u000D\u000A<li><tt class=\"docutils literal\"><span class=\"pre\">&gt;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;gt;</span></tt></li>\u000D\u000A<li><tt class=\"docutils literal\"><span class=\"pre\">&amp;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;amp;</span></tt></li>\u000D\u000A<li>every other character is carried over.</li>\u000D\u000A</ul>\u000D\u000A", 
+    "code": "proc XMLencode*(s: string): string"
+  }, 
+  {
+    "name": "TRequestMethod", 
+    "type": "skType", 
+    "description": "the used request method", 
+    "code": "TRequestMethod* = enum \u000D\u000A  methodNone,                 ## no REQUEST_METHOD environment variable\u000D\u000A  methodPost,                 ## query uses the POST method\u000D\u000A  methodGet                   ## query uses the GET method"
+  }, 
+  {
+    "name": "cgiError", 
+    "type": "skProc", 
+    "description": "raises an ECgi exception with message <cite>msg</cite>.", 
+    "code": "proc cgiError*(msg: string) {.noreturn.}"
+  }, 
+  {
+    "name": "decodeData", 
+    "type": "skIterator", 
+    "description": "Reads and decodes CGI data and yields the (name, value) pairs the data consists of.", 
+    "code": "iterator decodeData*(data: string): tuple[key, value: TaintedString]"
+  }, 
+  {
+    "name": "decodeData", 
+    "type": "skIterator", 
+    "description": "Reads and decodes CGI data and yields the (name, value) pairs the data consists of. If the client does not use a method listed in the <cite>allowedMethods</cite> set, an <cite>ECgi</cite> exception is raised.", 
+    "code": "iterator decodeData*(allowedMethods: set[TRequestMethod] = {methodNone, \u000D\u000A    methodPost, methodGet}): tuple[key, value: TaintedString]"
+  }, 
+  {
+    "name": "readData", 
+    "type": "skProc", 
+    "description": "Read CGI data. If the client does not use a method listed in the <cite>allowedMethods</cite> set, an <cite>ECgi</cite> exception is raised.", 
+    "code": "proc readData*(allowedMethods: set[TRequestMethod] = {methodNone, methodPost, \u000D\u000A    methodGet}): PStringTable"
+  }, 
+  {
+    "name": "validateData", 
+    "type": "skProc", 
+    "description": "validates data; raises <cite>ECgi</cite> if this fails. This checks that each variable name of the CGI <cite>data</cite> occurs in the <cite>validKeys</cite> array.", 
+    "code": "proc validateData*(data: PStringTable; validKeys: varargs[string])"
+  }, 
+  {
+    "name": "getContentLength", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">CONTENT_LENGTH</span></tt> environment variable", 
+    "code": "proc getContentLength*(): string"
+  }, 
+  {
+    "name": "getContentType", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">CONTENT_TYPE</span></tt> environment variable", 
+    "code": "proc getContentType*(): string"
+  }, 
+  {
+    "name": "getDocumentRoot", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">DOCUMENT_ROOT</span></tt> environment variable", 
+    "code": "proc getDocumentRoot*(): string"
+  }, 
+  {
+    "name": "getGatewayInterface", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">GATEWAY_INTERFACE</span></tt> environment variable", 
+    "code": "proc getGatewayInterface*(): string"
+  }, 
+  {
+    "name": "getHttpAccept", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">HTTP_ACCEPT</span></tt> environment variable", 
+    "code": "proc getHttpAccept*(): string"
+  }, 
+  {
+    "name": "getHttpAcceptCharset", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">HTTP_ACCEPT_CHARSET</span></tt> environment variable", 
+    "code": "proc getHttpAcceptCharset*(): string"
+  }, 
+  {
+    "name": "getHttpAcceptEncoding", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">HTTP_ACCEPT_ENCODING</span></tt> environment variable", 
+    "code": "proc getHttpAcceptEncoding*(): string"
+  }, 
+  {
+    "name": "getHttpAcceptLanguage", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">HTTP_ACCEPT_LANGUAGE</span></tt> environment variable", 
+    "code": "proc getHttpAcceptLanguage*(): string"
+  }, 
+  {
+    "name": "getHttpConnection", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">HTTP_CONNECTION</span></tt> environment variable", 
+    "code": "proc getHttpConnection*(): string"
+  }, 
+  {
+    "name": "getHttpCookie", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">HTTP_COOKIE</span></tt> environment variable", 
+    "code": "proc getHttpCookie*(): string"
+  }, 
+  {
+    "name": "getHttpHost", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">HTTP_HOST</span></tt> environment variable", 
+    "code": "proc getHttpHost*(): string"
+  }, 
+  {
+    "name": "getHttpReferer", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">HTTP_REFERER</span></tt> environment variable", 
+    "code": "proc getHttpReferer*(): string"
+  }, 
+  {
+    "name": "getHttpUserAgent", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">HTTP_USER_AGENT</span></tt> environment variable", 
+    "code": "proc getHttpUserAgent*(): string"
+  }, 
+  {
+    "name": "getPathInfo", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">PATH_INFO</span></tt> environment variable", 
+    "code": "proc getPathInfo*(): string"
+  }, 
+  {
+    "name": "getPathTranslated", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">PATH_TRANSLATED</span></tt> environment variable", 
+    "code": "proc getPathTranslated*(): string"
+  }, 
+  {
+    "name": "getQueryString", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">QUERY_STRING</span></tt> environment variable", 
+    "code": "proc getQueryString*(): string"
+  }, 
+  {
+    "name": "getRemoteAddr", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">REMOTE_ADDR</span></tt> environment variable", 
+    "code": "proc getRemoteAddr*(): string"
+  }, 
+  {
+    "name": "getRemoteHost", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">REMOTE_HOST</span></tt> environment variable", 
+    "code": "proc getRemoteHost*(): string"
+  }, 
+  {
+    "name": "getRemoteIdent", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">REMOTE_IDENT</span></tt> environment variable", 
+    "code": "proc getRemoteIdent*(): string"
+  }, 
+  {
+    "name": "getRemotePort", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">REMOTE_PORT</span></tt> environment variable", 
+    "code": "proc getRemotePort*(): string"
+  }, 
+  {
+    "name": "getRemoteUser", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">REMOTE_USER</span></tt> environment variable", 
+    "code": "proc getRemoteUser*(): string"
+  }, 
+  {
+    "name": "getRequestMethod", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">REQUEST_METHOD</span></tt> environment variable", 
+    "code": "proc getRequestMethod*(): string"
+  }, 
+  {
+    "name": "getRequestURI", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">REQUEST_URI</span></tt> environment variable", 
+    "code": "proc getRequestURI*(): string"
+  }, 
+  {
+    "name": "getScriptFilename", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">SCRIPT_FILENAME</span></tt> environment variable", 
+    "code": "proc getScriptFilename*(): string"
+  }, 
+  {
+    "name": "getScriptName", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">SCRIPT_NAME</span></tt> environment variable", 
+    "code": "proc getScriptName*(): string"
+  }, 
+  {
+    "name": "getServerAddr", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">SERVER_ADDR</span></tt> environment variable", 
+    "code": "proc getServerAddr*(): string"
+  }, 
+  {
+    "name": "getServerAdmin", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">SERVER_ADMIN</span></tt> environment variable", 
+    "code": "proc getServerAdmin*(): string"
+  }, 
+  {
+    "name": "getServerName", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">SERVER_NAME</span></tt> environment variable", 
+    "code": "proc getServerName*(): string"
+  }, 
+  {
+    "name": "getServerPort", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">SERVER_PORT</span></tt> environment variable", 
+    "code": "proc getServerPort*(): string"
+  }, 
+  {
+    "name": "getServerProtocol", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">SERVER_PROTOCOL</span></tt> environment variable", 
+    "code": "proc getServerProtocol*(): string"
+  }, 
+  {
+    "name": "getServerSignature", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">SERVER_SIGNATURE</span></tt> environment variable", 
+    "code": "proc getServerSignature*(): string"
+  }, 
+  {
+    "name": "getServerSoftware", 
+    "type": "skProc", 
+    "description": "returns contents of the <tt class=\"docutils literal\"><span class=\"pre\">SERVER_SOFTWARE</span></tt> environment variable", 
+    "code": "proc getServerSoftware*(): string"
+  }, 
+  {
+    "name": "setTestData", 
+    "type": "skProc", 
+    "description": "fills the appropriate environment variables to test your CGI application. This can only simulate the 'GET' request method. <cite>keysvalues</cite> should provide embedded (name, value)-pairs. Example:<pre><span class=\"Identifier\">setTestData</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;name&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;Hanz&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;password&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;12345&quot;</span><span class=\"Punctation\">)</span></pre>", 
+    "code": "proc setTestData*(keysvalues: varargs[string])"
+  }, 
+  {
+    "name": "writeContentType", 
+    "type": "skProc", 
+    "description": "call this before starting to send your HTML data to <cite>stdout</cite>. This implements this part of the CGI protocol:<pre><span class=\"Identifier\">write</span><span class=\"Punctation\">(</span><span class=\"Identifier\">stdout</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;Content-type: text/html</span><span class=\"EscapeSequence\">\\n</span><span class=\"EscapeSequence\">\\n</span><span class=\"StringLit\">&quot;</span><span class=\"Punctation\">)</span></pre><p>It also modifies the debug stack traces so that they contain <tt class=\"docutils literal\"><span class=\"pre\">&lt;br /&gt;</span></tt> and are easily readable in a browser.</p>\u000D\u000A", 
+    "code": "proc writeContentType*()"
+  }, 
+  {
+    "name": "setStackTraceNewLine", 
+    "type": "skProc", 
+    "description": "Modifies the debug stack traces so that they contain <tt class=\"docutils literal\"><span class=\"pre\">&lt;br /&gt;</span></tt> and are easily readable in a browser.", 
+    "code": "proc setStackTraceNewLine*()"
+  }, 
+  {
+    "name": "setCookie", 
+    "type": "skProc", 
+    "description": "Sets a cookie.", 
+    "code": "proc setCookie*(name, value: string)"
+  }, 
+  {
+    "name": "getCookie", 
+    "type": "skProc", 
+    "description": "Gets a cookie. If no cookie of <cite>name</cite> exists, &quot;&quot; is returned.", 
+    "code": "proc getCookie*(name: string): TaintedString"
+  }, 
+  {
+    "name": "existsCookie", 
+    "type": "skProc", 
+    "description": "Checks if a cookie of <cite>name</cite> exists.", 
+    "code": "proc existsCookie*(name: string): bool"
+  }
+]

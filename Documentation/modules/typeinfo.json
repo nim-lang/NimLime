@@ -1,0 +1,281 @@
+[
+  {
+    "comment": "This module implements an interface to Nimrod's runtime type information.\u000D\u000A## Note that even though ``TAny`` and its operations hide the nasty low level\u000D\u000A## details from its clients, it remains inherently unsafe!"
+  }, 
+  {
+    "name": "toAny", 
+    "type": "skProc", 
+    "description": "constructs a <tt class=\"docutils literal\"><span class=\"pre\">TAny</span></tt> object from a variable slot <tt class=\"docutils literal\"><span class=\"pre\">x</span></tt>. This captures <cite>x</cite>'s address, so <cite>x</cite> can be modified with its <tt class=\"docutils literal\"><span class=\"pre\">TAny</span></tt> wrapper! The client needs to ensure that the wrapper <strong>does not</strong> live longer than <cite>x</cite>! This is provided for easier reflection capabilities of a debugger.", 
+    "code": "proc toAny*(x: TVarSlot): TAny {.inline.}"
+  }, 
+  {
+    "name": "toAny", 
+    "type": "skProc", 
+    "description": "constructs a <tt class=\"docutils literal\"><span class=\"pre\">TAny</span></tt> object from <cite>x</cite>. This captures <cite>x</cite>'s address, so <cite>x</cite> can be modified with its <tt class=\"docutils literal\"><span class=\"pre\">TAny</span></tt> wrapper! The client needs to ensure that the wrapper <strong>does not</strong> live longer than <cite>x</cite>!", 
+    "code": "proc toAny*[T](x: var T): TAny {.inline.}"
+  }, 
+  {
+    "name": "kind", 
+    "type": "skProc", 
+    "description": "get the type kind", 
+    "code": "proc kind*(x: TAny): TAnyKind {.inline.}"
+  }, 
+  {
+    "name": "size", 
+    "type": "skProc", 
+    "description": "returns the size of <cite>x</cite>'s type.", 
+    "code": "proc size*(x: TAny): int {.inline.}"
+  }, 
+  {
+    "name": "baseTypeKind", 
+    "type": "skProc", 
+    "description": "get the base type's kind; <tt class=\"docutils literal\"><span class=\"pre\">akNone</span></tt> is returned if <cite>x</cite> has no base type.", 
+    "code": "proc baseTypeKind*(x: TAny): TAnyKind {.inline.}"
+  }, 
+  {
+    "name": "baseTypeSize", 
+    "type": "skProc", 
+    "description": "returns the size of <cite>x</cite>'s basetype.", 
+    "code": "proc baseTypeSize*(x: TAny): int {.inline.}"
+  }, 
+  {
+    "name": "invokeNew", 
+    "type": "skProc", 
+    "description": "performs <tt class=\"docutils literal\"><span class=\"pre\">new(x)</span></tt>. <cite>x</cite> needs to represent a <tt class=\"docutils literal\"><span class=\"pre\">ref</span></tt>.", 
+    "code": "proc invokeNew*(x: TAny)"
+  }, 
+  {
+    "name": "invokeNewSeq", 
+    "type": "skProc", 
+    "description": "performs <tt class=\"docutils literal\"><span class=\"pre\">newSeq(x, len)</span></tt>. <cite>x</cite> needs to represent a <tt class=\"docutils literal\"><span class=\"pre\">seq</span></tt>.", 
+    "code": "proc invokeNewSeq*(x: TAny; len: int)"
+  }, 
+  {
+    "name": "extendSeq", 
+    "type": "skProc", 
+    "description": "performs <tt class=\"docutils literal\"><span class=\"pre\">setLen(x, x.len+1)</span></tt>. <cite>x</cite> needs to represent a <tt class=\"docutils literal\"><span class=\"pre\">seq</span></tt>.", 
+    "code": "proc extendSeq*(x: TAny)"
+  }, 
+  {
+    "name": "setObjectRuntimeType", 
+    "type": "skProc", 
+    "description": "this needs to be called to set <cite>x</cite>'s runtime object type field.", 
+    "code": "proc setObjectRuntimeType*(x: TAny)"
+  }, 
+  {
+    "name": "`[]`", 
+    "type": "skProc", 
+    "description": "accessor for an any <cite>x</cite> that represents an array or a sequence.", 
+    "code": "proc `[]`*(x: TAny; i: int): TAny"
+  }, 
+  {
+    "name": "`[]=`", 
+    "type": "skProc", 
+    "description": "accessor for an any <cite>x</cite> that represents an array or a sequence.", 
+    "code": "proc `[] =`*(x: TAny; i: int; y: TAny)"
+  }, 
+  {
+    "name": "len", 
+    "type": "skProc", 
+    "description": "len for an any <cite>x</cite> that represents an array or a sequence.", 
+    "code": "proc len*(x: TAny): int"
+  }, 
+  {
+    "name": "base", 
+    "type": "skProc", 
+    "description": "returns base TAny (useful for inherited object types).", 
+    "code": "proc base*(x: TAny): TAny"
+  }, 
+  {
+    "name": "isNil", 
+    "type": "skProc", 
+    "description": "<cite>isNil</cite> for an any <cite>x</cite> that represents a sequence, string, cstring, proc or some pointer type.", 
+    "code": "proc isNil*(x: TAny): bool"
+  }, 
+  {
+    "name": "getPointer", 
+    "type": "skProc", 
+    "description": "retrieve the pointer value out of <cite>x</cite>. <tt class=\"docutils literal\"><span class=\"pre\">x</span></tt> needs to be of kind <tt class=\"docutils literal\"><span class=\"pre\">akString</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akCString</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akProc</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akRef</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akPtr</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akPointer</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akSequence</span></tt>.", 
+    "code": "proc getPointer*(x: TAny): pointer"
+  }, 
+  {
+    "name": "setPointer", 
+    "type": "skProc", 
+    "description": "sets the pointer value of <cite>x</cite>. <tt class=\"docutils literal\"><span class=\"pre\">x</span></tt> needs to be of kind <tt class=\"docutils literal\"><span class=\"pre\">akString</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akCString</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akProc</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akRef</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akPtr</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akPointer</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">akSequence</span></tt>.", 
+    "code": "proc setPointer*(x: TAny; y: pointer)"
+  }, 
+  {
+    "name": "fields", 
+    "type": "skIterator", 
+    "description": "iterates over every active field of the any <cite>x</cite> that represents an object or a tuple.", 
+    "code": "iterator fields*(x: TAny): tuple[name: string, any: TAny]"
+  }, 
+  {
+    "name": "`[]=`", 
+    "type": "skProc", 
+    "description": "sets a field of <cite>x</cite>; <cite>x</cite> represents an object or a tuple.", 
+    "code": "proc `[] =`*(x: TAny; fieldName: string; value: TAny)"
+  }, 
+  {
+    "name": "`[]`", 
+    "type": "skProc", 
+    "description": "gets a field of <cite>x</cite>; <cite>x</cite> represents an object or a tuple.", 
+    "code": "proc `[]`*(x: TAny; fieldName: string): TAny"
+  }, 
+  {
+    "name": "`[]`", 
+    "type": "skProc", 
+    "description": "dereference operation for the any <cite>x</cite> that represents a ptr or a ref.", 
+    "code": "proc `[]`*(x: TAny): TAny"
+  }, 
+  {
+    "name": "`[]=`", 
+    "type": "skProc", 
+    "description": "dereference operation for the any <cite>x</cite> that represents a ptr or a ref.", 
+    "code": "proc `[] =`*(x, y: TAny)"
+  }, 
+  {
+    "name": "getInt", 
+    "type": "skProc", 
+    "description": "retrieve the int value out of <cite>x</cite>. <cite>x</cite> needs to represent an int.", 
+    "code": "proc getInt*(x: TAny): int"
+  }, 
+  {
+    "name": "getInt8", 
+    "type": "skProc", 
+    "description": "retrieve the int8 value out of <cite>x</cite>. <cite>x</cite> needs to represent an int8.", 
+    "code": "proc getInt8*(x: TAny): int8"
+  }, 
+  {
+    "name": "getInt16", 
+    "type": "skProc", 
+    "description": "retrieve the int16 value out of <cite>x</cite>. <cite>x</cite> needs to represent an int16.", 
+    "code": "proc getInt16*(x: TAny): int16"
+  }, 
+  {
+    "name": "getInt32", 
+    "type": "skProc", 
+    "description": "retrieve the int32 value out of <cite>x</cite>. <cite>x</cite> needs to represent an int32.", 
+    "code": "proc getInt32*(x: TAny): int32"
+  }, 
+  {
+    "name": "getInt64", 
+    "type": "skProc", 
+    "description": "retrieve the int64 value out of <cite>x</cite>. <cite>x</cite> needs to represent an int64.", 
+    "code": "proc getInt64*(x: TAny): int64"
+  }, 
+  {
+    "name": "getBiggestInt", 
+    "type": "skProc", 
+    "description": "retrieve the integer value out of <cite>x</cite>. <cite>x</cite> needs to represent some integer, a bool, a char, an enum or a small enough bit set. The value might be sign-extended to <tt class=\"docutils literal\"><span class=\"pre\">biggestInt</span></tt>.", 
+    "code": "proc getBiggestInt*(x: TAny): biggestInt"
+  }, 
+  {
+    "name": "setBiggestInt", 
+    "type": "skProc", 
+    "description": "sets the integer value of <cite>x</cite>. <cite>x</cite> needs to represent some integer, a bool, a char, an enum or a small enough bit set.", 
+    "code": "proc setBiggestInt*(x: TAny; y: biggestInt)"
+  }, 
+  {
+    "name": "getChar", 
+    "type": "skProc", 
+    "description": "retrieve the char value out of <cite>x</cite>. <cite>x</cite> needs to represent a char.", 
+    "code": "proc getChar*(x: TAny): char"
+  }, 
+  {
+    "name": "getBool", 
+    "type": "skProc", 
+    "description": "retrieve the bool value out of <cite>x</cite>. <cite>x</cite> needs to represent a bool.", 
+    "code": "proc getBool*(x: TAny): bool"
+  }, 
+  {
+    "name": "skipRange", 
+    "type": "skProc", 
+    "description": "skips the range information of <cite>x</cite>.", 
+    "code": "proc skipRange*(x: TAny): TAny"
+  }, 
+  {
+    "name": "getEnumOrdinal", 
+    "type": "skProc", 
+    "description": "gets the enum field ordinal from <cite>name</cite>. <cite>x</cite> needs to represent an enum but is only used to access the type information. In case of an error <tt class=\"docutils literal\"><span class=\"pre\">low(int)</span></tt> is returned.", 
+    "code": "proc getEnumOrdinal*(x: TAny; name: string): int"
+  }, 
+  {
+    "name": "getEnumField", 
+    "type": "skProc", 
+    "description": "gets the enum field name as a string. <cite>x</cite> needs to represent an enum but is only used to access the type information. The field name of <cite>ordinalValue</cite> is returned. ", 
+    "code": "proc getEnumField*(x: TAny; ordinalValue: int): string"
+  }, 
+  {
+    "name": "getEnumField", 
+    "type": "skProc", 
+    "description": "gets the enum field name as a string. <cite>x</cite> needs to represent an enum.", 
+    "code": "proc getEnumField*(x: TAny): string"
+  }, 
+  {
+    "name": "getFloat", 
+    "type": "skProc", 
+    "description": "retrieve the float value out of <cite>x</cite>. <cite>x</cite> needs to represent an float.  ", 
+    "code": "proc getFloat*(x: TAny): float"
+  }, 
+  {
+    "name": "getFloat32", 
+    "type": "skProc", 
+    "description": "retrieve the float32 value out of <cite>x</cite>. <cite>x</cite> needs to represent an float32.", 
+    "code": "proc getFloat32*(x: TAny): float32"
+  }, 
+  {
+    "name": "getFloat64", 
+    "type": "skProc", 
+    "description": "retrieve the float64 value out of <cite>x</cite>. <cite>x</cite> needs to represent an float64.", 
+    "code": "proc getFloat64*(x: TAny): float64"
+  }, 
+  {
+    "name": "getBiggestFloat", 
+    "type": "skProc", 
+    "description": "retrieve the float value out of <cite>x</cite>. <cite>x</cite> needs to represent some float. The value is extended to <tt class=\"docutils literal\"><span class=\"pre\">biggestFloat</span></tt>.", 
+    "code": "proc getBiggestFloat*(x: TAny): biggestFloat"
+  }, 
+  {
+    "name": "setBiggestFloat", 
+    "type": "skProc", 
+    "description": "sets the float value of <cite>x</cite>. <cite>x</cite> needs to represent some float.", 
+    "code": "proc setBiggestFloat*(x: TAny; y: biggestFloat)"
+  }, 
+  {
+    "name": "getString", 
+    "type": "skProc", 
+    "description": "retrieve the string value out of <cite>x</cite>. <cite>x</cite> needs to represent a string.", 
+    "code": "proc getString*(x: TAny): string"
+  }, 
+  {
+    "name": "setString", 
+    "type": "skProc", 
+    "description": "sets the string value of <cite>x</cite>. <cite>x</cite> needs to represent a string.", 
+    "code": "proc setString*(x: TAny; y: string)"
+  }, 
+  {
+    "name": "getCString", 
+    "type": "skProc", 
+    "description": "retrieve the cstring value out of <cite>x</cite>. <cite>x</cite> needs to represent a cstring.", 
+    "code": "proc getCString*(x: TAny): cstring"
+  }, 
+  {
+    "name": "assign", 
+    "type": "skProc", 
+    "description": "copies the value of <cite>y</cite> to <cite>x</cite>. The assignment operator for <tt class=\"docutils literal\"><span class=\"pre\">TAny</span></tt> does NOT do this; it performs a shallow copy instead!", 
+    "code": "proc assign*(x, y: TAny)"
+  }, 
+  {
+    "name": "elements", 
+    "type": "skIterator", 
+    "description": "iterates over every element of <cite>x</cite> that represents a Nimrod bitset.", 
+    "code": "iterator elements*(x: TAny): int"
+  }, 
+  {
+    "name": "inclSetElement", 
+    "type": "skProc", 
+    "description": "includes an element <cite>elem</cite> in <cite>x</cite>. <cite>x</cite> needs to represent a Nimrod bitset.", 
+    "code": "proc inclSetElement*(x: TAny; elem: int)"
+  }
+]

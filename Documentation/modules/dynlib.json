@@ -1,0 +1,47 @@
+[
+  {
+    "comment": "This module implements the ability to access symbols from shared\u000D\u000A## libraries. On POSIX this uses the ``dlsym`` mechanism, on \u000D\u000A## Windows ``LoadLibrary``."
+  }, 
+  {
+    "name": "TLibHandle", 
+    "type": "skType", 
+    "description": "a handle to a dynamically loaded library", 
+    "code": "TLibHandle* = pointer"
+  }, 
+  {
+    "name": "LoadLib", 
+    "type": "skProc", 
+    "description": "loads a library from <cite>path</cite>. Returns nil if the library could not be loaded.", 
+    "code": "proc LoadLib*(path: string): TLibHandle"
+  }, 
+  {
+    "name": "LoadLib", 
+    "type": "skProc", 
+    "description": "gets the handle from the current executable. Returns nil if the library could not be loaded.", 
+    "code": "proc LoadLib*(): TLibHandle"
+  }, 
+  {
+    "name": "UnloadLib", 
+    "type": "skProc", 
+    "description": "unloads the library <cite>lib</cite>", 
+    "code": "proc UnloadLib*(lib: TLibHandle)"
+  }, 
+  {
+    "name": "raiseInvalidLibrary", 
+    "type": "skProc", 
+    "description": "raises an <cite>EInvalidLibrary</cite> exception.", 
+    "code": "proc raiseInvalidLibrary*(name: cstring) {.noinline, noreturn.}"
+  }, 
+  {
+    "name": "symAddr", 
+    "type": "skProc", 
+    "description": "retrieves the address of a procedure/variable from <cite>lib</cite>. Returns nil if the symbol could not be found.", 
+    "code": "proc symAddr*(lib: TLibHandle; name: cstring): pointer"
+  }, 
+  {
+    "name": "checkedSymAddr", 
+    "type": "skProc", 
+    "description": "retrieves the address of a procedure/variable from <cite>lib</cite>. Raises <cite>EInvalidLibrary</cite> if the symbol could not be found.", 
+    "code": "proc checkedSymAddr*(lib: TLibHandle; name: cstring): pointer"
+  }
+]

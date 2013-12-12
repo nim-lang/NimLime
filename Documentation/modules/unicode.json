@@ -1,0 +1,120 @@
+[
+  {
+    "comment": "This module provides support to handle the Unicode UTF-8 encoding."
+  }, 
+  {
+    "name": "TRune16", 
+    "type": "skType", 
+    "description": "16 bit Unicode character", 
+    "code": "TRune16* = distinct int16"
+  }, 
+  {
+    "name": "`&lt;=%`", 
+    "type": "skProc", 
+    "code": "proc `<=%`*(a, b: TRune): bool"
+  }, 
+  {
+    "name": "`&lt;%`", 
+    "type": "skProc", 
+    "code": "proc `<%`*(a, b: TRune): bool"
+  }, 
+  {
+    "name": "`==`", 
+    "type": "skProc", 
+    "code": "proc `==`*(a, b: TRune): bool"
+  }, 
+  {
+    "name": "runeLen", 
+    "type": "skProc", 
+    "description": "returns the number of Unicode characters of the string <cite>s</cite>.", 
+    "code": "proc runeLen*(s: string): int {.rtl, extern: \"nuc$1\".}"
+  }, 
+  {
+    "name": "runeLenAt", 
+    "type": "skProc", 
+    "description": "returns the number of bytes the rune starting at <tt class=\"docutils literal\"><span class=\"pre\">s[i]</span></tt> takes.", 
+    "code": "proc runeLenAt*(s: string; i: int): int"
+  }, 
+  {
+    "name": "fastRuneAt", 
+    "type": "skTemplate", 
+    "description": "Returns the unicode character <tt class=\"docutils literal\"><span class=\"pre\">s[i]</span></tt> in <cite>result</cite>. If <tt class=\"docutils literal\"><span class=\"pre\">doInc == true</span></tt> <cite>i</cite> is incremented by the number of bytes that have been processed.", 
+    "code": "template fastRuneAt*(s: string; i: int; result: expr; doInc = true)"
+  }, 
+  {
+    "name": "runeAt", 
+    "type": "skProc", 
+    "description": "returns the unicode character in <cite>s</cite> at byte index <cite>i</cite>", 
+    "code": "proc runeAt*(s: string; i: int): TRune"
+  }, 
+  {
+    "name": "toUTF8", 
+    "type": "skProc", 
+    "description": "converts a rune into its UTF8 representation", 
+    "code": "proc toUTF8*(c: TRune): string {.rtl, extern: \"nuc$1\".}"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "converts a sequence of runes to a string", 
+    "code": "proc `$`*(runes: seq[TRune]): string"
+  }, 
+  {
+    "name": "toLower", 
+    "type": "skProc", 
+    "description": "Converts <cite>c</cite> into lower case. This works for any Unicode character. If possible, prefer <cite>toLower</cite> over <cite>toUpper</cite>. ", 
+    "code": "proc toLower*(c: TRune): TRune {.rtl, extern: \"nuc$1\", procvar.}"
+  }, 
+  {
+    "name": "toUpper", 
+    "type": "skProc", 
+    "description": "Converts <cite>c</cite> into upper case. This works for any Unicode character. If possible, prefer <cite>toLower</cite> over <cite>toUpper</cite>. ", 
+    "code": "proc toUpper*(c: TRune): TRune {.rtl, extern: \"nuc$1\", procvar.}"
+  }, 
+  {
+    "name": "toTitle", 
+    "type": "skProc", 
+    "code": "proc toTitle*(c: TRune): TRune {.rtl, extern: \"nuc$1\", procvar.}"
+  }, 
+  {
+    "name": "isLower", 
+    "type": "skProc", 
+    "description": "returns true iff <cite>c</cite> is a lower case Unicode character If possible, prefer <cite>isLower</cite> over <cite>isUpper</cite>. ", 
+    "code": "proc isLower*(c: TRune): bool {.rtl, extern: \"nuc$1\", procvar.}"
+  }, 
+  {
+    "name": "isUpper", 
+    "type": "skProc", 
+    "description": "returns true iff <cite>c</cite> is a upper case Unicode character If possible, prefer <cite>isLower</cite> over <cite>isUpper</cite>. ", 
+    "code": "proc isUpper*(c: TRune): bool {.rtl, extern: \"nuc$1\", procvar.}"
+  }, 
+  {
+    "name": "isAlpha", 
+    "type": "skProc", 
+    "description": "returns true iff <cite>c</cite> is an <em>alpha</em> Unicode character (i.e. a letter)", 
+    "code": "proc isAlpha*(c: TRune): bool {.rtl, extern: \"nuc$1\", procvar.}"
+  }, 
+  {
+    "name": "isTitle", 
+    "type": "skProc", 
+    "code": "proc isTitle*(c: TRune): bool {.rtl, extern: \"nuc$1\", procvar.}"
+  }, 
+  {
+    "name": "isWhiteSpace", 
+    "type": "skProc", 
+    "description": "returns true iff <cite>c</cite> is a Unicode whitespace character", 
+    "code": "proc isWhiteSpace*(c: TRune): bool {.rtl, extern: \"nuc$1\", procvar.}"
+  }, 
+  {
+    "name": "runes", 
+    "type": "skIterator", 
+    "description": "iterates over any unicode character of the string <cite>s</cite>.", 
+    "code": "iterator runes*(s: string): TRune"
+  }, 
+  {
+    "name": "cmpRunesIgnoreCase", 
+    "type": "skProc", 
+    "description": "compares two UTF8 strings and ignores the case. Returns:<p>0 iff a == b<br />&lt; 0 iff a &lt; b<br />&gt; 0 iff a &gt; b<br /></p>", 
+    "code": "proc cmpRunesIgnoreCase*(a, b: string): int {.rtl, extern: \"nuc$1\", procvar.}"
+  }
+]

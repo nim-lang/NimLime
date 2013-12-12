@@ -1,0 +1,35 @@
+[
+  {
+    "comment": "This module implements a simple high performance `CSV`:idx:\u000D\u000A## (`comma separated value`:idx:) parser. \u000D\u000A##\u000D\u000A## Example: How to use the parser\u000D\u000A## ==============================\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##   import os, parsecsv, streams\u000D\u000A##   var s = newFileStream(ParamStr(1), fmRead)\u000D\u000A##   if s == nil: quit(\"cannot open the file\" & ParamStr(1))\u000D\u000A##   var x: TCsvParser\u000D\u000A##   open(x, s, ParamStr(1))\u000D\u000A##   while readRow(x):\u000D\u000A##     Echo \"new row: \"\u000D\u000A##     for val in items(x.row):\u000D\u000A##       Echo \"##\", val, \"##\"\u000D\u000A##   close(x)\u000D\u000A##"
+  }, 
+  {
+    "name": "EInvalidCsv", 
+    "type": "skType", 
+    "description": "exception that is raised if a parsing error occurs", 
+    "code": "EInvalidCsv* = object of EIO"
+  }, 
+  {
+    "name": "open", 
+    "type": "skProc", 
+    "description": "initializes the parser with an input stream. <cite>Filename</cite> is only used for nice error messages. The parser's behaviour can be controlled by the diverse optional parameters:<ul class=\"simple\"><li><cite>separator</cite>: character used to separate fields</li>\u000D\u000A<li><cite>quote</cite>: Used to quote fields containing special characters like <cite>separator</cite>, <cite>quote</cite> or new-line characters. '0' disables the parsing of quotes.</li>\u000D\u000A<li><cite>escape</cite>: removes any special meaning from the following character; '0' disables escaping; if escaping is disabled and <cite>quote</cite> is not '0', two <cite>quote</cite> characters are parsed one literal <cite>quote</cite> character.</li>\u000D\u000A<li><cite>skipInitialSpace</cite>: If true, whitespace immediately following the <cite>separator</cite> is ignored.</li>\u000D\u000A</ul>\u000D\u000A", 
+    "code": "proc open*(my: var TCsvParser; input: PStream; filename: string; \u000D\u000A           separator = ','; quote = '\\\"'; escape = '\\0'; \u000D\u000A           skipInitialSpace = false)"
+  }, 
+  {
+    "name": "processedRows", 
+    "type": "skProc", 
+    "description": "returns number of the processed rows", 
+    "code": "proc processedRows*(my: var TCsvParser): int"
+  }, 
+  {
+    "name": "readRow", 
+    "type": "skProc", 
+    "description": "reads the next row; if <cite>columns</cite> &gt; 0, it expects the row to have exactly this many columns. Returns false if the end of the file has been encountered else true.", 
+    "code": "proc readRow*(my: var TCsvParser; columns = 0): bool"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "closes the parser <cite>my</cite> and its associated input stream.", 
+    "code": "proc close*(my: var TCsvParser) {.inline.}"
+  }
+]

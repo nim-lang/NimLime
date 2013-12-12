@@ -1,0 +1,113 @@
+[
+  {
+    "comment": "This module contains a few procedures to control the *terminal*\u000D\u000A## (also called *console*). On UNIX, the implementation simply uses ANSI escape\u000D\u000A## sequences and does not depend on any other module, on Windows it uses the\u000D\u000A## Windows API.\u000D\u000A## Changing the style is permanent even after program termination! Use the\u000D\u000A## code ``system.addQuitProc(resetAttributes)`` to restore the defaults."
+  }, 
+  {
+    "name": "setCursorPos", 
+    "type": "skProc", 
+    "description": "sets the terminal's cursor to the (x,y) position. (0,0) is the upper left of the screen.", 
+    "code": "proc setCursorPos*(x, y: int)"
+  }, 
+  {
+    "name": "setCursorXPos", 
+    "type": "skProc", 
+    "description": "sets the terminal's cursor to the x position. The y position is not changed.", 
+    "code": "proc setCursorXPos*(x: int)"
+  }, 
+  {
+    "name": "setCursorYPos", 
+    "type": "skProc", 
+    "description": "sets the terminal's cursor to the y position. The x position is not changed. <strong>Warning</strong>: This is not supported on UNIX!", 
+    "code": "proc setCursorYPos*(y: int)"
+  }, 
+  {
+    "name": "CursorUp", 
+    "type": "skProc", 
+    "description": "Moves the cursor up by <cite>count</cite> rows.", 
+    "code": "proc CursorUp*(count = 1)"
+  }, 
+  {
+    "name": "CursorDown", 
+    "type": "skProc", 
+    "description": "Moves the cursor down by <cite>count</cite> rows.", 
+    "code": "proc CursorDown*(count = 1)"
+  }, 
+  {
+    "name": "CursorForward", 
+    "type": "skProc", 
+    "description": "Moves the cursor forward by <cite>count</cite> columns.", 
+    "code": "proc CursorForward*(count = 1)"
+  }, 
+  {
+    "name": "CursorBackward", 
+    "type": "skProc", 
+    "description": "Moves the cursor backward by <cite>count</cite> columns.", 
+    "code": "proc CursorBackward*(count = 1)"
+  }, 
+  {
+    "name": "EraseLine", 
+    "type": "skProc", 
+    "description": "Erases the entire current line.", 
+    "code": "proc EraseLine*()"
+  }, 
+  {
+    "name": "EraseScreen", 
+    "type": "skProc", 
+    "description": "Erases the screen with the background colour and moves the cursor to home.", 
+    "code": "proc EraseScreen*()"
+  }, 
+  {
+    "name": "ResetAttributes", 
+    "type": "skProc", 
+    "description": "resets all attributes; it is advisable to register this as a quit proc with <tt class=\"docutils literal\"><span class=\"pre\">system.addQuitProc(resetAttributes)</span></tt>.", 
+    "code": "proc ResetAttributes*() {.noconv.}"
+  }, 
+  {
+    "name": "TStyle", 
+    "type": "skType", 
+    "description": "different styles for text output", 
+    "code": "TStyle* = enum \u000D\u000A  styleBright = 1,            ## bright text\u000D\u000A  styleDim,                   ## dim text\u000D\u000A  styleUnknown,               ## unknown\u000D\u000A  styleUnderscore = 4,        ## underscored text\u000D\u000A  styleBlink,                 ## blinking/bold text\u000D\u000A  styleReverse = 7,           ## unknown\u000D\u000A  styleHidden                 ## hidden text"
+  }, 
+  {
+    "name": "setStyle", 
+    "type": "skProc", 
+    "description": "sets the terminal style", 
+    "code": "proc setStyle*(style: set[TStyle])"
+  }, 
+  {
+    "name": "WriteStyled", 
+    "type": "skProc", 
+    "description": "writes the text <cite>txt</cite> in a given <cite>style</cite>.", 
+    "code": "proc WriteStyled*(txt: string; style: set[TStyle] = {styleBright})"
+  }, 
+  {
+    "name": "TBackgroundColor", 
+    "type": "skType", 
+    "description": "terminal's background colors", 
+    "code": "TBackgroundColor* = enum \u000D\u000A  bgBlack = 40,               ## black\u000D\u000A  bgRed,                      ## red\u000D\u000A  bgGreen,                    ## green\u000D\u000A  bgYellow,                   ## yellow\u000D\u000A  bgBlue,                     ## blue\u000D\u000A  bgMagenta,                  ## magenta\u000D\u000A  bgCyan,                     ## cyan\u000D\u000A  bgWhite                     ## white"
+  }, 
+  {
+    "name": "setForegroundColor", 
+    "type": "skProc", 
+    "description": "sets the terminal's foreground color", 
+    "code": "proc setForegroundColor*(fg: TForegroundColor; bright = false)"
+  }, 
+  {
+    "name": "setBackgroundColor", 
+    "type": "skProc", 
+    "description": "sets the terminal's background color", 
+    "code": "proc setBackgroundColor*(bg: TBackgroundColor; bright = false)"
+  }, 
+  {
+    "name": "isatty", 
+    "type": "skProc", 
+    "description": "returns true if <cite>f</cite> is associated with a terminal device.", 
+    "code": "proc isatty*(f: TFile): bool"
+  }, 
+  {
+    "name": "styledEcho", 
+    "type": "skMacro", 
+    "description": "to be documented.", 
+    "code": "macro styledEcho*(m: varargs[expr]): stmt"
+  }
+]

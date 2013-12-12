@@ -1,0 +1,187 @@
+[
+  {
+    "comment": "This module implements an asynchronous event loop together with asynchronous sockets\u000D\u000A## which use this event loop.\u000D\u000A## It is akin to Python's asyncore module. Many modules that use sockets\u000D\u000A## have an implementation for this module, those modules should all have a \u000D\u000A## ``register`` function which you should use to add the desired objects to a \u000D\u000A## dispatcher which you created so\u000D\u000A## that you can receive the events associated with that module's object.\u000D\u000A##\u000D\u000A## Once everything is registered in a dispatcher, you need to call the ``poll``\u000D\u000A## function in a while loop.\u000D\u000A##\u000D\u000A## **Note:** Most modules have tasks which need to be ran regularly, this is\u000D\u000A## why you should not call ``poll`` with a infinite timeout, or even a \u000D\u000A## very long one. In most cases the default timeout is fine.\u000D\u000A##\u000D\u000A## **Note:** This module currently only supports select(), this is limited by\u000D\u000A## FD_SETSIZE, which is usually 1024. So you may only be able to use 1024\u000D\u000A## sockets at a time.\u000D\u000A## \u000D\u000A## Most (if not all) modules that use asyncio provide a userArg which is passed\u000D\u000A## on with the events. The type that you set userArg to must be inheriting from\u000D\u000A## TObject!\u000D\u000A##\u000D\u000A## **Note:** If you want to provide async ability to your module please do not \u000D\u000A## use the ``TDelegate`` object, instead use ``PAsyncSocket``. It is possible \u000D\u000A## that in the future this type's fields will not be exported therefore breaking\u000D\u000A## your code.\u000D\u000A##\u000D\u000A## **Warning:** The API of this module is unstable, and therefore is subject\u000D\u000A## to change.\u000D\u000A##\u000D\u000A## Asynchronous sockets\u000D\u000A## ====================\u000D\u000A##\u000D\u000A## For most purposes you do not need to worry about the ``TDelegate`` type. The\u000D\u000A## ``PAsyncSocket`` is what you are after. It's a reference to the ``TAsyncSocket``\u000D\u000A## object. This object defines events which you should overwrite by your own\u000D\u000A## procedures.\u000D\u000A##\u000D\u000A## For server sockets the only event you need to worry about is the ``handleAccept``\u000D\u000A## event, in your handleAccept proc you should call ``accept`` on the server\u000D\u000A## socket which will give you the client which is connecting. You should then\u000D\u000A## set any events that you want to use on that client and add it to your dispatcher\u000D\u000A## using the ``register`` procedure.\u000D\u000A## \u000D\u000A## An example ``handleAccept`` follows:\u000D\u000A## \u000D\u000A## .. code-block:: nimrod\u000D\u000A##   \u000D\u000A##    var disp: PDispatcher = newDispatcher()\u000D\u000A##    ...\u000D\u000A##    proc handleAccept(s: PAsyncSocket) =\u000D\u000A##      echo(\"Accepted client.\")\u000D\u000A##      var client: PAsyncSocket\u000D\u000A##      new(client)\u000D\u000A##      s.accept(client)\u000D\u000A##      client.handleRead = ...\u000D\u000A##      disp.register(client)\u000D\u000A##    ...\u000D\u000A## \u000D\u000A## For client sockets you should only be interested in the ``handleRead`` and\u000D\u000A## ``handleConnect`` events. The former gets called whenever the socket has\u000D\u000A## received messages and can be read from and the latter gets called whenever\u000D\u000A## the socket has established a connection to a server socket; from that point\u000D\u000A## it can be safely written to.\u000D\u000A##\u000D\u000A## Getting a blocking client from a PAsyncSocket\u000D\u000A## =============================================\u000D\u000A## \u000D\u000A## If you need a asynchronous server socket but you wish to process the clients\u000D\u000A## synchronously then you can use the ``getSocket`` converter to get a TSocket\u000D\u000A## object from the PAsyncSocket object, this can then be combined with ``accept``\u000D\u000A## like so:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##    \u000D\u000A##    proc handleAccept(s: PAsyncSocket) =\u000D\u000A##      var client: TSocket\u000D\u000A##      getSocket(s).accept(client)"
+  }, 
+  {
+    "name": "TInfo", 
+    "type": "skType", 
+    "code": "TInfo* = enum \u000D\u000A  SockIdle, SockConnecting, SockConnected, SockListening, SockClosed, \u000D\u000A  SockUDPBound"
+  }, 
+  {
+    "name": "newDelegate", 
+    "type": "skProc", 
+    "description": "Creates a new delegate.", 
+    "code": "proc newDelegate*(): PDelegate"
+  }, 
+  {
+    "name": "AsyncSocket", 
+    "type": "skProc", 
+    "description": "Initialises an AsyncSocket object. If a socket cannot be initialised EOS is raised.", 
+    "code": "proc AsyncSocket*(domain: TDomain = AF_INET; typ: TType = SOCK_STREAM; \u000D\u000A                  protocol: TProtocol = IPPROTO_TCP; buffered = true): PAsyncSocket"
+  }, 
+  {
+    "name": "toAsyncSocket", 
+    "type": "skProc", 
+    "description": "<p>Wraps an already initialized <tt class=\"docutils literal\"><span class=\"pre\">TSocket</span></tt> into a PAsyncSocket. This is useful if you want to use an already connected TSocket as an asynchronous PAsyncSocket in asyncio's event loop.</p>\u000D\u000A<p><tt class=\"docutils literal\"><span class=\"pre\">state</span></tt> may be overriden, i.e. if <tt class=\"docutils literal\"><span class=\"pre\">sock</span></tt> is not connected it should be adjusted properly. By default it will be assumed that the socket is connected. Please note this is only applicable to TCP client sockets, if <tt class=\"docutils literal\"><span class=\"pre\">sock</span></tt> is a different type of socket <tt class=\"docutils literal\"><span class=\"pre\">state</span></tt> needs to be adjusted!!!</p>\u000D\u000A<table border=\"1\" class=\"docutils\"><tr><th>Value</th><th>Meaning</th></tr>\u000D\u000A<tr><td>SockIdle</td><td>Socket has only just been initialised, not connected or closed.</td></tr>\u000D\u000A<tr><td>SockConnected</td><td>Socket is connected to a server.</td></tr>\u000D\u000A<tr><td>SockConnecting</td><td>Socket is in the process of connecting to a server.</td></tr>\u000D\u000A<tr><td>SockListening</td><td>Socket is a server socket and is listening for connections.</td></tr>\u000D\u000A<tr><td>SockClosed</td><td>Socket has been closed.</td></tr>\u000D\u000A<tr><td>SockUDPBound</td><td>Socket is a UDP socket which is listening for data.</td></tr>\u000D\u000A</table><p><strong>Warning</strong>: If <tt class=\"docutils literal\"><span class=\"pre\">state</span></tt> is set incorrectly the resulting <tt class=\"docutils literal\"><span class=\"pre\">PAsyncSocket</span></tt> object may not work properly.</p>\u000D\u000A<p><strong>Note</strong>: This will set <tt class=\"docutils literal\"><span class=\"pre\">sock</span></tt> to be non-blocking.</p>\u000D\u000A", 
+    "code": "proc toAsyncSocket*(sock: TSocket; state: TInfo = SockConnected): PAsyncSocket"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "code": "proc close*(sock: PAsyncSocket)"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "description": "Begins connecting <tt class=\"docutils literal\"><span class=\"pre\">sock</span></tt> to <tt class=\"docutils literal\"><span class=\"pre\">name</span></tt>:<tt class=\"docutils literal\"><span class=\"pre\">port</span></tt>.", 
+    "code": "proc connect*(sock: PAsyncSocket; name: string; port = TPort(0); \u000D\u000A              af: TDomain = AF_INET)"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "Closes <tt class=\"docutils literal\"><span class=\"pre\">sock</span></tt>. Terminates any current connections.", 
+    "code": "proc close*(sock: PAsyncSocket)"
+  }, 
+  {
+    "name": "bindAddr", 
+    "type": "skProc", 
+    "description": "Equivalent to <tt class=\"docutils literal\"><span class=\"pre\">sockets.bindAddr</span></tt>.", 
+    "code": "proc bindAddr*(sock: PAsyncSocket; port = TPort(0); address = \"\")"
+  }, 
+  {
+    "name": "listen", 
+    "type": "skProc", 
+    "description": "Equivalent to <tt class=\"docutils literal\"><span class=\"pre\">sockets.listen</span></tt>.", 
+    "code": "proc listen*(sock: PAsyncSocket)"
+  }, 
+  {
+    "name": "acceptAddr", 
+    "type": "skProc", 
+    "description": "<p>Equivalent to <tt class=\"docutils literal\"><span class=\"pre\">sockets.acceptAddr</span></tt>. This procedure should be called in a <tt class=\"docutils literal\"><span class=\"pre\">handleAccept</span></tt> event handler <strong>only</strong> once.</p>\u000D\u000A<p><strong>Note</strong>: <tt class=\"docutils literal\"><span class=\"pre\">client</span></tt> needs to be initialised.</p>\u000D\u000A", 
+    "code": "proc acceptAddr*(server: PAsyncSocket; client: var PAsyncSocket; \u000D\u000A                 address: var string)"
+  }, 
+  {
+    "name": "accept", 
+    "type": "skProc", 
+    "description": "Equivalent to <tt class=\"docutils literal\"><span class=\"pre\">sockets.accept</span></tt>.", 
+    "code": "proc accept*(server: PAsyncSocket; client: var PAsyncSocket)"
+  }, 
+  {
+    "name": "acceptAddr", 
+    "type": "skProc", 
+    "description": "<p>Equivalent to <tt class=\"docutils literal\"><span class=\"pre\">sockets.acceptAddr</span></tt>.</p>\u000D\u000A<p><strong>Deprecated since version 0.9.0:</strong> Please use the function above.</p>\u000D\u000A", 
+    "code": "proc acceptAddr*(server: PAsyncSocket): tuple[sock: PAsyncSocket, \u000D\u000A    address: string] {.deprecated.}"
+  }, 
+  {
+    "name": "accept", 
+    "type": "skProc", 
+    "description": "<p>Equivalent to <tt class=\"docutils literal\"><span class=\"pre\">sockets.accept</span></tt>.</p>\u000D\u000A<p><strong>Deprecated since version 0.9.0:</strong> Please use the function above.</p>\u000D\u000A", 
+    "code": "proc accept*(server: PAsyncSocket): PAsyncSocket {.deprecated.}"
+  }, 
+  {
+    "name": "newDispatcher", 
+    "type": "skProc", 
+    "code": "proc newDispatcher*(): PDispatcher"
+  }, 
+  {
+    "name": "register", 
+    "type": "skProc", 
+    "description": "Registers delegate <tt class=\"docutils literal\"><span class=\"pre\">deleg</span></tt> with dispatcher <tt class=\"docutils literal\"><span class=\"pre\">d</span></tt>.", 
+    "code": "proc register*(d: PDispatcher; deleg: PDelegate)"
+  }, 
+  {
+    "name": "register", 
+    "type": "skProc", 
+    "description": "Registers async socket <tt class=\"docutils literal\"><span class=\"pre\">sock</span></tt> with dispatcher <tt class=\"docutils literal\"><span class=\"pre\">d</span></tt>.", 
+    "code": "proc register*(d: PDispatcher; sock: PAsyncSocket): PDelegate {.discardable.}"
+  }, 
+  {
+    "name": "unregister", 
+    "type": "skProc", 
+    "description": "Unregisters deleg <tt class=\"docutils literal\"><span class=\"pre\">deleg</span></tt> from dispatcher <tt class=\"docutils literal\"><span class=\"pre\">d</span></tt>.", 
+    "code": "proc unregister*(d: PDispatcher; deleg: PDelegate)"
+  }, 
+  {
+    "name": "isWriteable", 
+    "type": "skProc", 
+    "description": "Determines whether socket <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> is ready to be written to.", 
+    "code": "proc isWriteable*(s: PAsyncSocket): bool"
+  }, 
+  {
+    "name": "getSocket", 
+    "type": "skConverter", 
+    "code": "converter getSocket*(s: PAsyncSocket): TSocket"
+  }, 
+  {
+    "name": "isConnected", 
+    "type": "skProc", 
+    "description": "Determines whether <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> is connected.", 
+    "code": "proc isConnected*(s: PAsyncSocket): bool"
+  }, 
+  {
+    "name": "isListening", 
+    "type": "skProc", 
+    "description": "Determines whether <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> is listening for incoming connections.  ", 
+    "code": "proc isListening*(s: PAsyncSocket): bool"
+  }, 
+  {
+    "name": "isConnecting", 
+    "type": "skProc", 
+    "description": "Determines whether <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> is connecting.  ", 
+    "code": "proc isConnecting*(s: PAsyncSocket): bool"
+  }, 
+  {
+    "name": "isClosed", 
+    "type": "skProc", 
+    "description": "Determines whether <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> has been closed.", 
+    "code": "proc isClosed*(s: PAsyncSocket): bool"
+  }, 
+  {
+    "name": "isSendDataBuffered", 
+    "type": "skProc", 
+    "description": "Determines whether <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> has data waiting to be sent, i.e. whether this socket's sendBuffer contains data. ", 
+    "code": "proc isSendDataBuffered*(s: PAsyncSocket): bool"
+  }, 
+  {
+    "name": "setHandleWrite", 
+    "type": "skProc", 
+    "description": "<p>Setter for the <tt class=\"docutils literal\"><span class=\"pre\">handleWrite</span></tt> event.</p>\u000D\u000A<p>To remove this event you should use the <tt class=\"docutils literal\"><span class=\"pre\">delHandleWrite</span></tt> function. It is advised to use that function instead of just setting the event to <tt class=\"docutils literal\"><span class=\"pre\">proc (s: PAsyncSocket) = nil</span></tt> as that would mean that that function would be called constantly.</p>\u000D\u000A", 
+    "code": "proc setHandleWrite*(s: PAsyncSocket; \u000D\u000A                     handleWrite: proc (s: PAsyncSocket) {.closure.})"
+  }, 
+  {
+    "name": "delHandleWrite", 
+    "type": "skProc", 
+    "description": "Removes the <tt class=\"docutils literal\"><span class=\"pre\">handleWrite</span></tt> event handler on <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt>.", 
+    "code": "proc delHandleWrite*(s: PAsyncSocket)"
+  }, 
+  {
+    "name": "recvLine", 
+    "type": "skProc", 
+    "description": "<p>Behaves similar to <tt class=\"docutils literal\"><span class=\"pre\">sockets.recvLine</span></tt>, however it handles non-blocking sockets properly. This function guarantees that <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt> is a full line, if this function can only retrieve some data; it will save this data and add it to the result when a full line is retrieved.</p>\u000D\u000A<p>Unlike <tt class=\"docutils literal\"><span class=\"pre\">sockets.recvLine</span></tt> this function will raise an EOS or ESSL exception if an error occurs.</p>\u000D\u000A<p><strong>Deprecated since version 0.9.2</strong>: This function has been deprecated in favour of readLine.</p>\u000D\u000A", 
+    "code": "proc recvLine*(s: PAsyncSocket; line: var TaintedString): bool {.deprecated.}"
+  }, 
+  {
+    "name": "readLine", 
+    "type": "skProc", 
+    "description": "<p>Behaves similar to <tt class=\"docutils literal\"><span class=\"pre\">sockets.readLine</span></tt>, however it handles non-blocking sockets properly. This function guarantees that <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt> is a full line, if this function can only retrieve some data; it will save this data and add it to the result when a full line is retrieved, when this happens False will be returned. True will only be returned if a full line has been retrieved or the socket has been disconnected in which case <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt> will be set to &quot;&quot;.</p>\u000D\u000A<p>This function will raise an EOS exception when a socket error occurs.</p>\u000D\u000A", 
+    "code": "proc readLine*(s: PAsyncSocket; line: var TaintedString): bool"
+  }, 
+  {
+    "name": "send", 
+    "type": "skProc", 
+    "description": "<p>Sends <tt class=\"docutils literal\"><span class=\"pre\">data</span></tt> to socket <tt class=\"docutils literal\"><span class=\"pre\">sock</span></tt>. This is basically a nicer implementation of <tt class=\"docutils literal\"><span class=\"pre\">sockets.sendAsync</span></tt>.</p>\u000D\u000A<p>If <tt class=\"docutils literal\"><span class=\"pre\">data</span></tt> cannot be sent immediately it will be buffered and sent when <tt class=\"docutils literal\"><span class=\"pre\">sock</span></tt> becomes writeable (during the <tt class=\"docutils literal\"><span class=\"pre\">handleWrite</span></tt> event). It's possible that only a part of <tt class=\"docutils literal\"><span class=\"pre\">data</span></tt> will be sent immediately, while the rest of it will be buffered and sent later.</p>\u000D\u000A", 
+    "code": "proc send*(sock: PAsyncSocket; data: string)"
+  }, 
+  {
+    "name": "poll", 
+    "type": "skProc", 
+    "description": "<p>This function checks for events on all the delegates in the <cite>PDispatcher</cite>. It then proceeds to call the correct event handler.</p>\u000D\u000A<p>This function returns <tt class=\"docutils literal\"><span class=\"pre\">True</span></tt> if there are file descriptors that are still open, otherwise <tt class=\"docutils literal\"><span class=\"pre\">False</span></tt>. File descriptors that have been closed are immediately removed from the dispatcher automatically.</p>\u000D\u000A<p><strong>Note:</strong> Each delegate has a task associated with it. This gets called after each select() call, if you set timeout to <tt class=\"docutils literal\"><span class=\"pre\">-1</span></tt> the tasks will only be executed after one or more file descriptors becomes readable or writeable.</p>\u000D\u000A", 
+    "code": "proc poll*(d: PDispatcher; timeout: int = 500): bool"
+  }, 
+  {
+    "name": "len", 
+    "type": "skProc", 
+    "description": "Retrieves the amount of delegates in <tt class=\"docutils literal\"><span class=\"pre\">disp</span></tt>.", 
+    "code": "proc len*(disp: PDispatcher): int"
+  }
+]

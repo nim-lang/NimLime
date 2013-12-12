@@ -1,0 +1,113 @@
+[
+  {
+    "comment": "This module implements an asynchronous IRC client.\u000D\u000A## \u000D\u000A## Currently this module requires at least some knowledge of the IRC protocol.\u000D\u000A## It provides a function for sending raw messages to the IRC server, together\u000D\u000A## with some basic functions like sending a message to a channel. \u000D\u000A## It automizes the process of keeping the connection alive, so you don't\u000D\u000A## need to reply to PING messages. In fact, the server is also PING'ed to check \u000D\u000A## the amount of lag.\u000D\u000A##\u000D\u000A## .. code-block:: Nimrod\u000D\u000A##\u000D\u000A##   var client = irc(\"picheta.me\", joinChans = @[\"#bots\"])\u000D\u000A##   client.connect()\u000D\u000A##   while True:\u000D\u000A##     var event: TIRCEvent\u000D\u000A##     if client.poll(event):\u000D\u000A##       case event.typ\u000D\u000A##       of EvConnected: nil\u000D\u000A##       of EvDisconnected:\u000D\u000A##         client.reconnect()\u000D\u000A##       of EvMsg:\u000D\u000A##         # Write your message reading code here.\u000D\u000A## \u000D\u000A## **Warning:** The API of this module is unstable, and therefore is subject\u000D\u000A## to change."
+  }, 
+  {
+    "name": "TIRCEvent", 
+    "type": "skType", 
+    "description": "IRC Event", 
+    "code": "TIRCEvent* = object \u000D\u000A  case typ*: TIRCEventType\u000D\u000A  of EvConnected: \u000D\u000A      nil                     ## Connected to server.\u000D\u000A                              ## Only occurs with AsyncIRC.\u000D\u000A    \u000D\u000A  of EvDisconnected: \u000D\u000A      nil                     ## Disconnected from the server\u000D\u000A    \u000D\u000A  of EvMsg:                   ## Message from the server\u000D\u000A      cmd*: TIRCMType         ## Command (e.g. PRIVMSG)\u000D\u000A      nick*, user*, host*, servername*: string\u000D\u000A      numeric*: string        ## Only applies to ``MNumeric``\u000D\u000A      params*: seq[string]    ## Parameters of the IRC message\u000D\u000A      origin*: string         ## The channel/user that this msg originated from\u000D\u000A      raw*: string            ## Raw IRC message\u000D\u000A      timestamp*: TTime       ## UNIX epoch time the message was received\u000D\u000A    \u000D\u000A  "
+  }, 
+  {
+    "name": "send", 
+    "type": "skProc", 
+    "description": "Sends <tt class=\"docutils literal\"><span class=\"pre\">message</span></tt> as a raw command. It adds <tt class=\"docutils literal\"><span class=\"pre\">\\c\\L</span></tt> for you.", 
+    "code": "proc send*(irc: PIRC; message: string; sendImmediately = false)"
+  }, 
+  {
+    "name": "privmsg", 
+    "type": "skProc", 
+    "description": "Sends <tt class=\"docutils literal\"><span class=\"pre\">message</span></tt> to <tt class=\"docutils literal\"><span class=\"pre\">target</span></tt>. <tt class=\"docutils literal\"><span class=\"pre\">Target</span></tt> can be a channel, or a user.", 
+    "code": "proc privmsg*(irc: PIRC; target, message: string)"
+  }, 
+  {
+    "name": "notice", 
+    "type": "skProc", 
+    "description": "Sends <tt class=\"docutils literal\"><span class=\"pre\">notice</span></tt> to <tt class=\"docutils literal\"><span class=\"pre\">target</span></tt>. <tt class=\"docutils literal\"><span class=\"pre\">Target</span></tt> can be a channel, or a user. ", 
+    "code": "proc notice*(irc: PIRC; target, message: string)"
+  }, 
+  {
+    "name": "join", 
+    "type": "skProc", 
+    "description": "<p>Joins <tt class=\"docutils literal\"><span class=\"pre\">channel</span></tt>.</p>\u000D\u000A<p>If key is not <tt class=\"docutils literal\"><span class=\"pre\">&quot;&quot;</span></tt>, then channel is assumed to be key protected and this function will join the channel using <tt class=\"docutils literal\"><span class=\"pre\">key</span></tt>.</p>\u000D\u000A", 
+    "code": "proc join*(irc: PIRC; channel: string; key = \"\")"
+  }, 
+  {
+    "name": "part", 
+    "type": "skProc", 
+    "description": "Leaves <tt class=\"docutils literal\"><span class=\"pre\">channel</span></tt> with <tt class=\"docutils literal\"><span class=\"pre\">message</span></tt>.", 
+    "code": "proc part*(irc: PIRC; channel, message: string)"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "<p>Closes connection to an IRC server.</p>\u000D\u000A<p><strong>Warning:</strong> This procedure does not send a <tt class=\"docutils literal\"><span class=\"pre\">QUIT</span></tt> message to the server.</p>\u000D\u000A", 
+    "code": "proc close*(irc: PIRC)"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "description": "Connects to an IRC server as specified by <tt class=\"docutils literal\"><span class=\"pre\">irc</span></tt>.", 
+    "code": "proc connect*(irc: PIRC)"
+  }, 
+  {
+    "name": "reconnect", 
+    "type": "skProc", 
+    "description": "<p>Reconnects to an IRC server.</p>\u000D\u000A<p><tt class=\"docutils literal\"><span class=\"pre\">Timeout</span></tt> specifies the time to wait in miliseconds between multiple consecutive reconnections.</p>\u000D\u000A<p>This should be used when an <tt class=\"docutils literal\"><span class=\"pre\">EvDisconnected</span></tt> event occurs.</p>\u000D\u000A", 
+    "code": "proc reconnect*(irc: PIRC; timeout = 5000)"
+  }, 
+  {
+    "name": "irc", 
+    "type": "skProc", 
+    "description": "Creates a <tt class=\"docutils literal\"><span class=\"pre\">TIRC</span></tt> object.", 
+    "code": "proc irc*(address: string; port: TPort = 6667.TPort; nick = \"NimrodBot\"; \u000D\u000A          user = \"NimrodBot\"; realname = \"NimrodBot\"; serverPass = \"\"; \u000D\u000A          joinChans: seq[string] = @ []; msgLimit: bool = true): PIRC"
+  }, 
+  {
+    "name": "poll", 
+    "type": "skProc", 
+    "description": "<p>This function parses a single message from the IRC server and returns a TIRCEvent.</p>\u000D\u000A<p>This function should be called often as it also handles pinging the server.</p>\u000D\u000A<p>This function provides a somewhat asynchronous IRC implementation, although it should only be used for simple things for example an IRC bot which does not need to be running many time critical tasks in the background. If you require this, use the asyncio implementation.</p>\u000D\u000A", 
+    "code": "proc poll*(irc: PIRC; ev: var TIRCEvent; timeout: int = 500): bool"
+  }, 
+  {
+    "name": "getLag", 
+    "type": "skProc", 
+    "description": "<p>Returns the latency between this client and the IRC server in seconds.</p>\u000D\u000A<p>If latency is unknown, returns -1.0.</p>\u000D\u000A", 
+    "code": "proc getLag*(irc: PIRC): float"
+  }, 
+  {
+    "name": "isConnected", 
+    "type": "skProc", 
+    "description": "Returns whether this IRC client is connected to an IRC server.", 
+    "code": "proc isConnected*(irc: PIRC): bool"
+  }, 
+  {
+    "name": "getNick", 
+    "type": "skProc", 
+    "description": "Returns the current nickname of the client.", 
+    "code": "proc getNick*(irc: PIRC): string"
+  }, 
+  {
+    "name": "register", 
+    "type": "skProc", 
+    "description": "Registers <tt class=\"docutils literal\"><span class=\"pre\">irc</span></tt> with dispatcher <tt class=\"docutils literal\"><span class=\"pre\">d</span></tt>.", 
+    "code": "proc register*(d: PDispatcher; irc: PAsyncIRC)"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "description": "Equivalent of connect for <tt class=\"docutils literal\"><span class=\"pre\">TIRC</span></tt> but specifically created for asyncio.", 
+    "code": "proc connect*(irc: PAsyncIRC)"
+  }, 
+  {
+    "name": "reconnect", 
+    "type": "skProc", 
+    "description": "<p>Reconnects to an IRC server.</p>\u000D\u000A<p><tt class=\"docutils literal\"><span class=\"pre\">Timeout</span></tt> specifies the time to wait in miliseconds between multiple consecutive reconnections.</p>\u000D\u000A<p>This should be used when an <tt class=\"docutils literal\"><span class=\"pre\">EvDisconnected</span></tt> event occurs.</p>\u000D\u000A<p>When successfully reconnected an <tt class=\"docutils literal\"><span class=\"pre\">EvConnected</span></tt> event will occur.</p>\u000D\u000A", 
+    "code": "proc reconnect*(irc: PAsyncIRC; timeout = 5000)"
+  }, 
+  {
+    "name": "asyncIRC", 
+    "type": "skProc", 
+    "description": "<p>Use this function if you want to use asyncio's dispatcher.</p>\u000D\u000A<p><strong>Note:</strong> Do <strong>NOT</strong> use this if you're writing a simple IRC bot which only requires one task to be run, i.e. this should not be used if you want a synchronous IRC client implementation, use <tt class=\"docutils literal\"><span class=\"pre\">irc</span></tt> for that.</p>\u000D\u000A", 
+    "code": "proc asyncIRC*(address: string; port: TPort = 6667.TPort; nick = \"NimrodBot\"; \u000D\u000A               user = \"NimrodBot\"; realname = \"NimrodBot\"; serverPass = \"\"; \u000D\u000A               joinChans: seq[string] = @ []; msgLimit: bool = true; \u000D\u000A               ircEvent: proc (irc: PAsyncIRC; ev: TIRCEvent) {.closure.}): PAsyncIRC"
+  }
+]

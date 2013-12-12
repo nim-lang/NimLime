@@ -1,0 +1,24 @@
+[
+  {
+    "name": "TUrl", 
+    "type": "skType", 
+    "code": "TUrl* = distinct string"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "code": "proc `$`*(url: TUrl): string"
+  }, 
+  {
+    "name": "`/`", 
+    "type": "skProc", 
+    "description": "Joins two URLs together, separating them with / if needed.", 
+    "code": "proc `/`*(a, b: TUrl): TUrl"
+  }, 
+  {
+    "name": "add", 
+    "type": "skProc", 
+    "description": "Appends url to url.", 
+    "code": "proc add*(url: var TUrl; a: TUrl)"
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "comment": "This module is based on Python's Unidecode module by Tomaz Solc, \u000D\u000A## which in turn is based on the ``Text::Unidecode`` Perl module by \u000D\u000A## Sean M. Burke \u000D\u000A## (http://search.cpan.org/~sburke/Text-Unidecode-0.04/lib/Text/Unidecode.pm ).\u000D\u000A##\u000D\u000A## It provides a single proc that does Unicode to ASCII transliterations:\u000D\u000A## It finds the sequence of ASCII characters that is the closest approximation\u000D\u000A## to the Unicode string.\u000D\u000A##\u000D\u000A## For example, the closest to string \"\u00C4u\u00DFerst\" in ASCII is \"Ausserst\". Some \u000D\u000A## information is lost in this transformation, of course, since several Unicode \u000D\u000A## strings can be transformed in the same ASCII representation. So this is a\u000D\u000A## strictly one-way transformation. However a human reader will probably \u000D\u000A## still be able to guess what original string was meant from the context.\u000D\u000A##\u000D\u000A## This module needs the data file \"unidecode.dat\" to work: You can either\u000D\u000A## ship this file with your application and initialize this module with the\u000D\u000A## `loadUnidecodeTable` proc or you can define the ``embedUnidecodeTable``\u000D\u000A## symbol to embed the file as a resource into your application."
+  }, 
+  {
+    "name": "loadUnidecodeTable", 
+    "type": "skProc", 
+    "description": "loads the datafile that <cite>unidecode</cite> to work. Unless this module is compiled with the <tt class=\"docutils literal\"><span class=\"pre\">embedUnidecodeTable</span></tt> symbol defined, this needs to be called by the main thread before any thread can make a call to <cite>unidecode</cite>.", 
+    "code": "proc loadUnidecodeTable*(datafile = \"unidecode.dat\")"
+  }, 
+  {
+    "name": "unidecode", 
+    "type": "skProc", 
+    "description": "<p>Finds the sequence of ASCII characters that is the closest approximation to the UTF-8 string <cite>s</cite>.</p>\u000D\u000A<p>Example:</p>\u000D\u000A<blockquote><p>unidecode(&quot;x53x17x4ExB0&quot;)</p></blockquote>\u000D\u000A<p>Results in: &quot;Bei Jing&quot; </p>\u000D\u000A", 
+    "code": "proc unidecode*(s: string): string"
+  }
+]

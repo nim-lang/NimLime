@@ -7,7 +7,7 @@ class ListModulesCommand(sublime_plugin.WindowCommand):
     """
     Display list of all modules and their descriptions
     """
-    path = "Documentation/modules/module_index.json"
+    path = "/Documentation/modules/module_index.json"
 
     def on_item(self, picked):
         #TODO - Open the file at that point
@@ -43,7 +43,7 @@ class ListModulesCommand(sublime_plugin.WindowCommand):
         self.items = []
 
         #Parse items
-        with open(ListModulesCommand.path) as json_data:
+        with open(PACKAGE_DIR + ListModulesCommand.path) as json_data:
             data = json.load(json_data)
 
             for obj in data:

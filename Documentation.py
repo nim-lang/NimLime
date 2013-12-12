@@ -1,6 +1,7 @@
 import sublime, sublime_plugin
-import subprocess, threading
-import json
+import os, json
+
+PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class ListModulesCommand(sublime_plugin.WindowCommand):
     """
@@ -17,7 +18,7 @@ class ListModulesCommand(sublime_plugin.WindowCommand):
 
         item     = self.items[picked]
         module   = item[0]
-        mod_path = "Documentation/modules/" + module + ".json"
+        mod_path = PACKAGE_DIR + "/Documentation/modules/" + module + ".json"
 
         mod_items = []
         with open(mod_path) as json_data:
@@ -59,7 +60,7 @@ class ListAllCommand(sublime_plugin.WindowCommand):
     """
     Display index of all procs/modules/methods/etc in std lib
     """
-    path = "Documentation/modules/proc_index.json"
+    path = PACKAGE_DIR + "/Documentation/modules/proc_index.json"
 
     def on_done(self, picked):
         #TODO - Open file at that point

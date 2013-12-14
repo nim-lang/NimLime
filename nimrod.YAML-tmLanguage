@@ -127,6 +127,18 @@ patterns:
     patterns:
     - {include: source.js}
 
+- name: source.css.embedded.nimrod
+  patterns:
+  - begin: (css)(\"\"\")
+    end: \"\"\"
+    captures:
+      '1': {name: storage.type.function.nimrod}
+      '2': {name: comment.syntax.nimrod}
+    endCaptures:
+      '0': {name: comment.syntax.nimrod}
+    patterns:
+    - {include: source.css}
+
 - name: source.xml.embedded.nimrod
   patterns:
   - begin: (xml)(\"\"\")

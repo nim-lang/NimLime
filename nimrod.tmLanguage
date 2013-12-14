@@ -301,6 +301,47 @@
 		</dict>
 		<dict>
 			<key>name</key>
+			<string>source.css.embedded.nimrod</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(css)(\"\"\")</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>storage.type.function.nimrod</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nimrod</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\"\"\"</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nimrod</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>source.css</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
 			<string>source.xml.embedded.nimrod</string>
 			<key>patterns</key>
 			<array>

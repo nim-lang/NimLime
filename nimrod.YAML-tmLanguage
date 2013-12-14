@@ -59,11 +59,11 @@ patterns:
 
 - comment: Common functions
   name: keyword.common.function.nimrod
-  match: \b(new|echo|defined|newException|countup|countdown|high|low)\b
+  match: \b(new|assert|echo|defined|newException|countup|countdown|high|low)\b
 
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nimrod
-  match: \b(((uint|int|float)(8|16|32|64)?)|bool|string|cstring|char|tobject|typedesc)\b
+  match: \b(((uint|int|float)(8|16|32|64)?)|bool|string|cstring|char|byte|tobject|typedesc|stmt|expr)\b
 
 - comment: Built-in, generic types.
   name: storage.type.generic.nimrod
@@ -79,7 +79,7 @@ patterns:
 
 - comment: (Raw) Triple Quoted String
   name: string.quoted.triple.nimrod
-  begin: (\w[_\w]*)?\"\"\"
+  begin: \"\"\"
   end: \"\"\"
 
 - comment: Raw Double Quoted String
@@ -91,8 +91,10 @@ patterns:
 
 - comment: Double Quoted String
   name: string.quoted.double.nimrod
-  begin: (\w[_\w]*)?\"
+  begin: \"
   end: \"
+  captures:
+    '1': { name: storage.type.function.nimrod }
   patterns:
   - match: (\\([abenrclftv\\]|["']|[0-9])|x\h\h)
 
@@ -100,4 +102,40 @@ patterns:
   name: string.quoted.single.nimrod
   match: \'(\\\d{1,3}|\\?[^\n]?)\'
 
+# Syntax Selections
+- name: source.html.embedded.nimrod
+  patterns:
+  - begin: (html)(\"\"\")
+    end: \"\"\"
+    captures:
+      '1': {name: storage.type.function.nimrod}
+      '2': {name: comment.syntax.nimrod}
+    endCaptures:
+      '0': {name: comment.syntax.nimrod}
+    patterns:
+    - {include: text.xml}
+
+- name: source.js.embedded.nimrod
+  patterns:
+  - begin: (js)(\"\"\")
+    end: \"\"\"
+    captures:
+      '1': {name: storage.type.function.nimrod}
+      '2': {name: comment.syntax.nimrod}
+    endCaptures:
+      '0': {name: comment.syntax.nimrod}
+    patterns:
+    - {include: source.js}
+
+- name: source.xml.embedded.nimrod
+  patterns:
+  - begin: (xml)(\"\"\")
+    end: \"\"\"
+    captures:
+      '1': {name: storage.type.function.nimrod}
+      '2': {name: comment.syntax.nimrod}
+    endCaptures:
+      '0': {name: comment.syntax.nimrod}
+    patterns:
+    - {include: text.xml}
 ...

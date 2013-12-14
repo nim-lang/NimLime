@@ -121,7 +121,7 @@
 			<key>comment</key>
 			<string>Common functions</string>
 			<key>match</key>
-			<string>\b(new|echo|defined|newException|countup|countdown|high|low)\b</string>
+			<string>\b(new|assert|echo|defined|newException|countup|countdown|high|low)\b</string>
 			<key>name</key>
 			<string>keyword.common.function.nimrod</string>
 		</dict>
@@ -129,7 +129,7 @@
 			<key>comment</key>
 			<string>Built-in, concrete types.</string>
 			<key>match</key>
-			<string>\b(((uint|int|float)(8|16|32|64)?)|bool|string|cstring|char|tobject|typedesc)\b</string>
+			<string>\b(((uint|int|float)(8|16|32|64)?)|bool|string|cstring|char|byte|tobject|typedesc|stmt|expr)\b</string>
 			<key>name</key>
 			<string>storage.type.concrete.nimrod</string>
 		</dict>
@@ -159,7 +159,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>(\w[_\w]*)?\"\"\"</string>
+			<string>\"\"\"</string>
 			<key>comment</key>
 			<string>(Raw) Triple Quoted String</string>
 			<key>end</key>
@@ -186,7 +186,15 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>(\w[_\w]*)?\"</string>
+			<string>\"</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>storage.type.function.nimrod</string>
+				</dict>
+			</dict>
 			<key>comment</key>
 			<string>Double Quoted String</string>
 			<key>end</key>
@@ -208,6 +216,129 @@
 			<string>\'(\\\d{1,3}|\\?[^\n]?)\'</string>
 			<key>name</key>
 			<string>string.quoted.single.nimrod</string>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>source.html.embedded.nimrod</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(html)(\"\"\")</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>storage.type.function.nimrod</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nimrod</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\"\"\"</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nimrod</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>text.xml</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>source.js.embedded.nimrod</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(js)(\"\"\")</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>storage.type.function.nimrod</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nimrod</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\"\"\"</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nimrod</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>source.js</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>source.xml.embedded.nimrod</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(xml)(\"\"\")</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>storage.type.function.nimrod</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nimrod</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\"\"\"</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nimrod</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>text.xml</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
 		</dict>
 	</array>
 	<key>scopeName</key>

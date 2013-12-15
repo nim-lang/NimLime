@@ -71,7 +71,7 @@ patterns:
 
 - comment: Function types
   name: storage.type.function.nimrod
-  match: \b(proc|iterator|method|template|macro)\b
+  match: \b(proc|iterator|method|template|macro|tmpl)\b
 
 - comment: Special types.
   name: storage.type.generic.nimrod
@@ -102,7 +102,8 @@ patterns:
   name: string.quoted.single.nimrod
   match: \'(\\\d{1,3}|\\?[^\n]?)\'
 
-# Syntax Selections
+
+# Sub-Syntax selectors
 - name: source.html.embedded.nimrod
   patterns:
   - begin: (html)(\"\"\")
@@ -113,6 +114,18 @@ patterns:
     endCaptures:
       '0': {name: comment.syntax.nimrod}
     patterns:
+    - begin: (?<!\$)(\$)\(
+      end: \)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)\{\{
+      end: \n
+      patterns:
+      - {include: source.nimrod}
+    - match: (?<!\$)(\$[a-zA-Z0-9]+)
+      name: keyword.operator.nimrod
     - {include: text.xml}
 
 - name: source.js.embedded.nimrod
@@ -125,6 +138,18 @@ patterns:
     endCaptures:
       '0': {name: comment.syntax.nimrod}
     patterns:
+    - begin: (?<!\$)(\$)\(
+      end: \)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)\{\{
+      end: \n
+      patterns:
+      - {include: source.nimrod}
+    - match: (?<!\$)(\$[a-zA-Z0-9]+)
+      name: keyword.operator.nimrod
     - {include: source.js}
 
 - name: source.css.embedded.nimrod
@@ -137,6 +162,18 @@ patterns:
     endCaptures:
       '0': {name: comment.syntax.nimrod}
     patterns:
+    - begin: (?<!\$)(\$)\(
+      end: \)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)\{\{
+      end: \n
+      patterns:
+      - {include: source.nimrod}
+    - match: (?<!\$)(\$[a-zA-Z0-9]+)
+      name: keyword.operator.nimrod
     - {include: source.css}
 
 - name: source.xml.embedded.nimrod
@@ -149,5 +186,41 @@ patterns:
     endCaptures:
       '0': {name: comment.syntax.nimrod}
     patterns:
+    - begin: (?<!\$)(\$)\(
+      end: \)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)\{\{
+      end: \n
+      patterns:
+      - {include: source.nimrod}
+    - match: (?<!\$)(\$[a-zA-Z0-9]+)
+      name: keyword.operator.nimrod
     - {include: text.xml}
+
+- name: source.glsl.embedded.nimrod
+  patterns:
+  - begin: (glsl)(\"\"\")
+    end: \"\"\"
+    captures:
+      '1': {name: storage.type.function.nimrod}
+      '2': {name: comment.syntax.nimrod}
+    endCaptures:
+      '0': {name: comment.syntax.nimrod}
+    patterns:
+    - begin: (?<!\$)(\$)\(
+      end: \)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)\{\{
+      end: \n
+      patterns:
+      - {include: source.nimrod}
+    - match: (?<!\$)(\$[a-zA-Z0-9]+)
+      name: keyword.operator.nimrod
+    - {include: source.glsl}
 ...

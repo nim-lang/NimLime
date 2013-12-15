@@ -122,6 +122,8 @@ patterns:
       - {include: source.nimrod}
     - begin: (?<!\$)(\$)\{\{
       end: \n
+      captures:
+        '1': {name: keyword.operator.nimrod}
       patterns:
       - {include: source.nimrod}
     - match: (?<!\$)(\$[a-zA-Z0-9]+)
@@ -146,6 +148,8 @@ patterns:
       - {include: source.nimrod}
     - begin: (?<!\$)(\$)\{\{
       end: \n
+      captures:
+        '1': {name: keyword.operator.nimrod}
       patterns:
       - {include: source.nimrod}
     - match: (?<!\$)(\$[a-zA-Z0-9]+)
@@ -170,6 +174,8 @@ patterns:
       - {include: source.nimrod}
     - begin: (?<!\$)(\$)\{\{
       end: \n
+      captures:
+        '1': {name: keyword.operator.nimrod}
       patterns:
       - {include: source.nimrod}
     - match: (?<!\$)(\$[a-zA-Z0-9]+)
@@ -194,6 +200,8 @@ patterns:
       - {include: source.nimrod}
     - begin: (?<!\$)(\$)\{\{
       end: \n
+      captures:
+        '1': {name: keyword.operator.nimrod}
       patterns:
       - {include: source.nimrod}
     - match: (?<!\$)(\$[a-zA-Z0-9]+)
@@ -218,6 +226,8 @@ patterns:
       - {include: source.nimrod}
     - begin: (?<!\$)(\$)\{\{
       end: \n
+      captures:
+        '1': {name: keyword.operator.nimrod}
       patterns:
       - {include: source.nimrod}
     - match: (?<!\$)(\$[a-zA-Z0-9]+)

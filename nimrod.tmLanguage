@@ -274,6 +274,14 @@
 						<dict>
 							<key>begin</key>
 							<string>(?&lt;!\$)(\$)\{\{</string>
+							<key>captures</key>
+							<dict>
+								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>keyword.operator.nimrod</string>
+								</dict>
+							</dict>
 							<key>end</key>
 							<string>\n</string>
 							<key>patterns</key>
@@ -355,6 +363,14 @@
 						<dict>
 							<key>begin</key>
 							<string>(?&lt;!\$)(\$)\{\{</string>
+							<key>captures</key>
+							<dict>
+								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>keyword.operator.nimrod</string>
+								</dict>
+							</dict>
 							<key>end</key>
 							<string>\n</string>
 							<key>patterns</key>
@@ -436,6 +452,14 @@
 						<dict>
 							<key>begin</key>
 							<string>(?&lt;!\$)(\$)\{\{</string>
+							<key>captures</key>
+							<dict>
+								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>keyword.operator.nimrod</string>
+								</dict>
+							</dict>
 							<key>end</key>
 							<string>\n</string>
 							<key>patterns</key>
@@ -517,6 +541,14 @@
 						<dict>
 							<key>begin</key>
 							<string>(?&lt;!\$)(\$)\{\{</string>
+							<key>captures</key>
+							<dict>
+								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>keyword.operator.nimrod</string>
+								</dict>
+							</dict>
 							<key>end</key>
 							<string>\n</string>
 							<key>patterns</key>
@@ -598,6 +630,14 @@
 						<dict>
 							<key>begin</key>
 							<string>(?&lt;!\$)(\$)\{\{</string>
+							<key>captures</key>
+							<dict>
+								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>keyword.operator.nimrod</string>
+								</dict>
+							</dict>
 							<key>end</key>
 							<string>\n</string>
 							<key>patterns</key>

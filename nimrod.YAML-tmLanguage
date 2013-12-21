@@ -120,10 +120,56 @@ patterns:
         '1': {name: keyword.operator.nimrod}
       patterns:
       - {include: source.nimrod}
-    - begin: (?<!\$)(\$)\{\{
-      end: \n
+    - begin: (?<!\$)(\$)\{
+      end: \}
       captures:
         '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
+      end: (\{|\n)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      endCaptures:
+        '1': {name: plain}
+      patterns:
+      - {include: source.nimrod}
+    - match: (?<!\$)(\$[a-zA-Z0-9]+)
+      name: keyword.operator.nimrod
+    - {include: text.xml}
+
+- name: source.xml.embedded.nimrod
+  patterns:
+  - begin: (xml)(\"\"\")
+    end: \"\"\"
+    captures:
+      '1': {name: storage.type.function.nimrod}
+      '2': {name: comment.syntax.nimrod}
+    endCaptures:
+      '0': {name: comment.syntax.nimrod}
+    patterns:
+    - begin: (?<!\$)(\$)\(
+      end: \)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)\{
+      end: \}
+      captures:
+        '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
+      end: (\{|\n)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      endCaptures:
+        '1': {name: plain}
       patterns:
       - {include: source.nimrod}
     - match: (?<!\$)(\$[a-zA-Z0-9]+)
@@ -146,10 +192,20 @@ patterns:
         '1': {name: keyword.operator.nimrod}
       patterns:
       - {include: source.nimrod}
-    - begin: (?<!\$)(\$)\{\{
-      end: \n
+    - begin: (?<!\$)(\$)\{
+      end: \}
       captures:
         '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
+      end: (\{|\n)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      endCaptures:
+        '1': {name: plain}
       patterns:
       - {include: source.nimrod}
     - match: (?<!\$)(\$[a-zA-Z0-9]+)
@@ -172,41 +228,25 @@ patterns:
         '1': {name: keyword.operator.nimrod}
       patterns:
       - {include: source.nimrod}
-    - begin: (?<!\$)(\$)\{\{
-      end: \n
+    - begin: (?<!\$)(\$)\{
+      end: \}
       captures:
         '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
+      end: (\{|\n)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      endCaptures:
+        '1': {name: plain}
       patterns:
       - {include: source.nimrod}
     - match: (?<!\$)(\$[a-zA-Z0-9]+)
       name: keyword.operator.nimrod
     - {include: source.css}
-
-- name: source.xml.embedded.nimrod
-  patterns:
-  - begin: (xml)(\"\"\")
-    end: \"\"\"
-    captures:
-      '1': {name: storage.type.function.nimrod}
-      '2': {name: comment.syntax.nimrod}
-    endCaptures:
-      '0': {name: comment.syntax.nimrod}
-    patterns:
-    - begin: (?<!\$)(\$)\(
-      end: \)
-      captures:
-        '1': {name: keyword.operator.nimrod}
-      patterns:
-      - {include: source.nimrod}
-    - begin: (?<!\$)(\$)\{\{
-      end: \n
-      captures:
-        '1': {name: keyword.operator.nimrod}
-      patterns:
-      - {include: source.nimrod}
-    - match: (?<!\$)(\$[a-zA-Z0-9]+)
-      name: keyword.operator.nimrod
-    - {include: text.xml}
 
 - name: source.glsl.embedded.nimrod
   patterns:
@@ -224,13 +264,24 @@ patterns:
         '1': {name: keyword.operator.nimrod}
       patterns:
       - {include: source.nimrod}
-    - begin: (?<!\$)(\$)\{\{
-      end: \n
+    - begin: (?<!\$)(\$)\{
+      end: \}
       captures:
         '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
+      end: (\{|\n)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      endCaptures:
+        '1': {name: plain}
       patterns:
       - {include: source.nimrod}
     - match: (?<!\$)(\$[a-zA-Z0-9]+)
       name: keyword.operator.nimrod
     - {include: source.glsl}
+
 ...

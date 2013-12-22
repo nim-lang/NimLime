@@ -145,7 +145,7 @@
 			<key>comment</key>
 			<string>Function types</string>
 			<key>match</key>
-			<string>\b(proc|iterator|method|template|macro|tmpl)\b</string>
+			<string>\b(proc|iterator|method|template|macro)\b</string>
 			<key>name</key>
 			<string>storage.type.function.nimrod</string>
 		</dict>
@@ -216,6 +216,20 @@
 			<string>\'(\\\d{1,3}|\\?[^\n]?)\'</string>
 			<key>name</key>
 			<string>string.quoted.single.nimrod</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>storage.type.function.nimrod</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>tmpl specifier</string>
+			<key>match</key>
+			<string>(tmpl)(?= (html|xml|js|css|glsl)\"\"\")</string>
 		</dict>
 		<dict>
 			<key>name</key>

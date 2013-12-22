@@ -71,7 +71,7 @@ patterns:
 
 - comment: Function types
   name: storage.type.function.nimrod
-  match: \b(proc|iterator|method|template|macro|tmpl)\b
+  match: \b(proc|iterator|method|template|macro)\b
 
 - comment: Special types.
   name: storage.type.generic.nimrod
@@ -104,6 +104,11 @@ patterns:
 
 
 # Sub-Syntax selectors
+- comment: tmpl specifier
+  match: (tmpl)(?= (html|xml|js|css|glsl)\"\"\")
+  captures:
+    '1': {name: storage.type.function.nimrod}
+
 - name: source.html.embedded.nimrod
   patterns:
   - begin: (html)(\"\"\")

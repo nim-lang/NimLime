@@ -19,5 +19,9 @@
     {
         "caption": "Nimrod: Index",
         "command": "list_all"
+    },
+    {
+        "caption": "Nimrod: Set Project File",
+        "command": "set_project"
     }
 ]

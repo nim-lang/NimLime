@@ -2,6 +2,8 @@ import sublime, sublime_plugin
 import re, subprocess
 import threading
 import socket
+import os
+from Project import Utility
 
 
 class Idetools:
@@ -34,10 +36,15 @@ class Idetools:
         print("Nimrod CaaS now running")
 
     @staticmethod
-    def idetool(cmd, filename, line, col, dirtyFile="", extra=""):
+    def idetool(win, cmd, filename, line, col, dirtyFile="", extra=""):
 
-        trackType = " --track:"
-        filePath  = filename
+        trackType  = " --track:"
+        filePath   = filename
+        projFile   = Utility.get_nimproject(win)
+        workingDir = os.path.dirname(projFile)
+
+        if projFile is None:
+            projFile = filename
 
         if dirtyFile != "":
             trackType = " --trackDirty:"
@@ -50,24 +57,29 @@ class Idetools:
             #Call the service
             args = "idetools" \
                  + trackType \
-                 + filename + "," + str(line) + "," + str(col) + " " \
+                 + "\""+filePath + "," + str(line) + "," + str(col) + "\" " \
                  + cmd + extra
 
+            print(args)
             return Idetools.service.communicate(args + "\r\n")
 
         else:
             args = "nimrod --verbosity:0 idetools " \
                  + cmd + trackType \
-                 + filePath + "," + str(line) + "," + str(col) \
-                 + " " + filename + extra
+                 + "\"" + filePath + "," + str(line) + "," + str(col) \
+                 + "\" \"" + projFile + "\"" + extra
             print(args)
 
             output = subprocess.Popen(args,
                     stdout=subprocess.PIPE,
-                    shell=True)
+                    stderr=subprocess.PIPE,
+                    shell=True,
+                    cwd=workingDir)
 
             result = ""
             for result in output.stdout: pass
+
+            # print(output.stderr.read())
 
             output.wait()
 

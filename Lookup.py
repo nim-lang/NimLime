@@ -1,6 +1,5 @@
 import sublime, sublime_plugin
 import os, tempfile
-
 from Nimrod import Idetools
 
 ##Resources
@@ -23,11 +22,11 @@ class LookupCommand(sublime_plugin.TextCommand):
                 )
                 dirtyFile.file.close()
 
-                result = Idetools.idetool("--def", filename, line, col, dirtyFile.name)
+                result = Idetools.idetool(self.view.window(), "--def", filename, line, col, dirtyFile.name)
                 os.remove(dirtyFile.name)
 
         else:
-            result = Idetools.idetool("--def", filename, line, col)
+            result = Idetools.idetool(self.view.window(), "--def", filename, line, col)
 
         #Parse the result
         value = Idetools.parse(result)

@@ -41,10 +41,11 @@ class Idetools:
         trackType  = " --track:"
         filePath   = filename
         projFile   = Utility.get_nimproject(win)
-        workingDir = os.path.dirname(projFile)
 
         if projFile is None:
             projFile = filename
+
+        workingDir = os.path.dirname(projFile)
 
         if dirtyFile != "":
             trackType = " --trackDirty:"

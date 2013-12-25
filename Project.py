@@ -63,12 +63,14 @@ class Utility:
         if stProject is not None:
             with open(stProject, 'r') as projFile:
                 data = json.JSONDecoder(strict=False).decode(projFile.read())
-                path = data["settings"][Utility.key]
+                try:
+                    path = data["settings"][Utility.key]
 
-                # Get full path
-                directory = os.path.dirname(stProject)
-                path      = path.replace("/", os.sep)
-                return os.path.join(directory, path)
+                    # Get full path
+                    directory = os.path.dirname(stProject)
+                    path      = path.replace("/", os.sep)
+                    return os.path.join(directory, path)
+                except: pass
 
 
 class SetProjectCommand(sublime_plugin.WindowCommand):

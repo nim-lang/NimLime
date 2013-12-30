@@ -105,7 +105,7 @@ patterns:
 
 # Sub-Syntax selectors
 - comment: tmpl specifier
-  match: (tmpl)(?=( (html|xml|js|css|glsl))?\"\"\")
+  match: (tmplu?)(?=( (html|xml|js|css|glsl))?\"\"\")
   captures:
     '1': {name: storage.type.function.nimrod}
 

@@ -229,7 +229,7 @@
 			<key>comment</key>
 			<string>tmpl specifier</string>
 			<key>match</key>
-			<string>(tmplu?)(?=( (html|xml|js|css|glsl))?\"\"\")</string>
+			<string>(tmpli?)(?=( (html|xml|js|css|glsl))?\"\"\")</string>
 		</dict>
 		<dict>
 			<key>name</key>

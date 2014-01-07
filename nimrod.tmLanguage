@@ -25,9 +25,28 @@
 				</dict>
 			</dict>
 			<key>match</key>
+			<string>(##\s*(TODO|todo)?).*$\n?</string>
+			<key>name</key>
+			<string>comment.line.number-sign.doc-comment.nimrod</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.comment.nimrod</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal.TODO.nimrod</string>
+				</dict>
+			</dict>
+			<key>match</key>
 			<string>(#\s*(TODO|todo)?).*$\n?</string>
 			<key>name</key>
-			<string>comment.line.number-sign.nimrod</string>
+			<string>comment.line.number-sign.comment.nimrod</string>
 		</dict>
 		<dict>
 			<key>begin</key>
@@ -105,7 +124,7 @@
 			<key>comment</key>
 			<string>Other keywords.</string>
 			<key>match</key>
-			<string>(\b(addr|as|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|let|mod|object|of|ptr|ref|shl|shr|static|type|var)\b)</string>
+			<string>(\b(addr|as|asm|atomic|bind|cast|const|converter|discard|distinct|div|enum|export|from|import|include|let|mod|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)</string>
 			<key>name</key>
 			<string>keyword.other.nimrod</string>
 		</dict>
@@ -113,7 +132,7 @@
 			<key>comment</key>
 			<string>Invalid and unused keywords.</string>
 			<key>match</key>
-			<string>(\b(converter|generic|interface|lambda|mixin|out|shared|with|without)\b)</string>
+			<string>(\b(generic|interface|lambda|out|shared|with|without)\b)</string>
 			<key>name</key>
 			<string>keyword.invalid.nimrod</string>
 		</dict>

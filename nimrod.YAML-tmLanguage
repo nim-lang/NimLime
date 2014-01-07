@@ -51,7 +51,7 @@ patterns:
 
 - comment: Other keywords.
   name: keyword.other.nimrod
-  match: (\b(addr|as|asm|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|let|mod|object|of|ptr|ref|shl|shr|static|type|var)\b)
+  match: (\b(addr|as|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|let|mod|object|of|ptr|ref|shl|shr|static|type|var)\b)
 
 - comment: Invalid and unused keywords.
   name: keyword.invalid.nimrod
@@ -104,6 +104,39 @@ patterns:
 
 
 # Sub-Syntax selectors
+- comment: C
+  name: source.c.embedded.nimrod
+  patterns:
+  - begin: \{\.(emit:) ?(\"\"\")
+    end: (\"\"\")\.?
+    captures:
+      '1': {name: keyword.other.nimrod}
+      '2': {name: comment.syntax.nimrod}
+    endCaptures:
+      '1': {name: comment.syntax.nimrod}
+    patterns:
+    - name: keyword.operator.nimrod
+      begin: \`
+      end: \`
+    - {include: source.c}
+
+- comment: assembly
+  name: source.asm.embedded.nimrod
+  patterns:
+  - begin: (asm )(\"\"\")
+    end: \"\"\"
+    captures:
+      '1': {name: keyword.other.nimrod}
+      '2': {name: comment.syntax.nimrod}
+    endCaptures:
+      '0': {name: comment.syntax.nimrod}
+    patterns:
+    - name: keyword.operator.nimrod
+      begin: \`
+      end: \`
+    - {include: source.asm}
+
+
 - comment: tmpl specifier
   match: (tmpli?)(?=( (html|xml|js|css|glsl))?\"\"\")
   captures:

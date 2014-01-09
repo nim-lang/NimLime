@@ -57,7 +57,7 @@ patterns:
 
 - comment: Other keywords.
   name: keyword.other.nimrod
-  match: (\b(addr|as|asm|atomic|bind|cast|const|converter|discard|distinct|div|enum|export|from|import|include|let|mod|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)
+  match: (\b(addr|as|atomic|bind|cast|const|converter|discard|distinct|div|enum|export|from|import|include|let|mod|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)
 
 - comment: Invalid and unused keywords.
   name: keyword.invalid.nimrod

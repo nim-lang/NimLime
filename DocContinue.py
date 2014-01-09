@@ -14,7 +14,7 @@ from sublime_plugin import EventListener
 
 COMMENT_SCOPE = "comment.line.number-sign.doc-comment.nimrod"
 RECURSION_LEVEL = 0
-DEBUG = True
+DEBUG = False
 
 
 def debug(string):
@@ -85,9 +85,6 @@ class CommentListener(EventListener):
             if command == "continueComment":
                 debug("Stage 1 failure - 2")
                 return
-
-            # Stage 2 Checks
-            # Checks that the current line has only whitespace characters.
 
             current_line = view.line(view.text_point(row, col))
             if (col == 0) or (view.substr(current_line).isspace()):

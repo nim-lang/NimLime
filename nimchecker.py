@@ -5,8 +5,9 @@ import subprocess
 import sublime
 from sublime_plugin import TextCommand
 
-
 error_regex_template = r"{0}\((\d+),\s*(\d+)\)(.*)"
+message_template = "({0}, {1}) {2}"
+
 DEBUG = True
 
 
@@ -32,6 +33,7 @@ class NimCheck(TextCommand):
         Runs the text in the view through nimrod's `check` tool, and output's a
         list of error points and messages.
         """
+        debug("Running nim_check command")
         view = self.view
 
         # Prepare the regex's
@@ -41,7 +43,7 @@ class NimCheck(TextCommand):
             flags=re.MULTILINE | re.IGNORECASE
         )
         debug("Escaped file name: " + file_name)
-        debug("Error Regex: " + error_regex_template.format(file_name))
+        debug("Error Regex: " + error_regex.pattern)
 
         # Save view text
         debug("Checking if the view is dirty")
@@ -50,8 +52,8 @@ class NimCheck(TextCommand):
             view.run_command('save')
 
         # Run nimrod check
-        debug("Running the 'nimrod check'...")
-        process = subprocess.Popen(
+        debug("Running 'nimrod check'...")
+        nimcheck_process = subprocess.Popen(
             ["C:\\64\\nimrod\\bin\\nimrod.exe", "check", view.file_name()],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -59,39 +61,77 @@ class NimCheck(TextCommand):
             bufsize=0
         )
 
-        # Polling routing does the rest of the work, to avoid blocking
-        def poll_nimcheck(output_buffer):
-            debug("Running polling routine")
-
-            # Gather any process output (to avoid pipe overflow)
-            output_buffer += process.stdout.read()
-
-            # Poll the process's state
-            process.poll()
-            if process.returncode is not None:
-                debug("Process is done.")
-                debug(output_buffer)
-
-                # Go through the matches
-                regs = []
-                for match in error_regex.finditer(output_buffer):
-                    err_lineno = int(match.group(1)) - 1
-                    err_colno = int(match.group(2)) - 1
-                    err_message = match.group(3)
-
-                    # Display the error region
-                    err_point = view.text_point(err_lineno, err_colno)
-                    err_region = view.line(err_point)
-                    err_region = trim_region(view, err_region)
-                    regs.append(err_region)
-                view.add_regions(
-                    "NimCheck", regs, "invalid.depracated", "dot", sublime.DRAW_OUTLINED)
-
-                # Display the errors in the popup box
-
-            else:
-                sublime.set_timeout(lambda: poll_nimcheck(output_buffer), 5)
-        sublime.set_timeout(lambda: poll_nimcheck(""), 5)
+        # Start the polling function
+        poller = lambda: poll_nimcheck(
+            "",
+            nimcheck_process,
+            view,
+            error_regex
+        )
+        sublime.set_timeout(poller, 1)
         # Get output
         # Parse output
         # Display Output
+
+
+def goto_error(view, point_list, choice):
+    if choice != -1:
+        chosen_point = point_list[choice]
+        view.show(chosen_point)
+
+
+def poll_nimcheck(output_buffer, nimcheck_process, view, error_regex):
+    """
+    Polls a 'nimrod check' subprocess, reporting errors to the user.
+    """
+    debug("Polling 'nimrod check'...")
+
+    # Gather any process output (to avoid pipe overflow)
+    output_buffer += nimcheck_process.stdout.read()
+
+    # Poll the process's state
+    nimcheck_process.poll()
+    if nimcheck_process.returncode is not None:
+        debug("'nimrod check' is done.")
+        debug(output_buffer)
+
+        # Go through the matches
+        region_list = []
+        message_list = []
+        point_list = []
+        for match in error_regex.finditer(output_buffer):
+            line = int(match.group(1)) - 1
+            column = int(match.group(2)) - 1
+            message = match.group(3)
+
+            # Prepare the error region for display
+            error_point = view.text_point(line, column)
+            error_region = trim_region(view, view.line(error_point))
+            region_list.append(error_region)
+
+            # Prepare the error message for the quickbox
+            quick_message = [
+                message_template.format(line, column, message),
+                view.substr(error_region)
+            ]
+            message_list.append(quick_message)
+            point_list.append(error_point)
+
+        view.add_regions(
+            "NimCheck",
+            region_list,
+            "invalid.depracated",
+            "dot",
+            sublime.DRAW_OUTLINED
+        )
+        callback = lambda choice: goto_error(view, point_list, choice)
+        sublime.active_window().show_quick_panel(message_list, callback)
+    else:
+        # Start the polling function
+        poller = lambda: poll_nimcheck(
+            output_buffer,
+            nimcheck_process,
+            view,
+            error_regex
+        )
+        sublime.set_timeout(poller, 1)

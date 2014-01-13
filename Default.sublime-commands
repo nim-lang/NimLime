@@ -8,8 +8,8 @@
         "command": "babel_list"
     },
     {
-    	"caption": "Nimrod: Go To Definition",
-    	"command": "lookup"
+    	   "caption": "Nimrod: Go To Definition",
+    	   "command": "lookup"
     },
 
     {
@@ -23,5 +23,10 @@
     {
         "caption": "Nimrod: Set Project File",
         "command": "set_project"
+    },
+    {
+        "caption": "Nimrod: Check Current File",
+        "command": "nimcheck_file"
     }
+
 ]

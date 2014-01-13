@@ -1,14 +1,18 @@
-import os
 import os.path
 import re
 import subprocess
 import sublime
 from sublime_plugin import TextCommand
 
+# Constants
+# TODO - Shift some of these to user settings
 error_regex_template = r"{0}\((\d+),\s*(\d+)\)(.*)"
 message_template = "({0}, {1}) {2}"
-
 DEBUG = True
+POLL_INTERVAL = 0
+ERROR_REGION_TAG = "NimCheck"
+ERROR_REGION_MARK = "dot"
+ERROR_REGION_STYLE = sublime.DRAW_OUTLINED
 
 
 def debug(string):
@@ -26,7 +30,7 @@ def trim_region(view, region):
     return sublime.Region(start, end)
 
 
-class NimCheck(TextCommand):
+class NimCheckFile(TextCommand):
 
     def run(self, edit):
         """
@@ -52,9 +56,9 @@ class NimCheck(TextCommand):
             view.run_command('save')
 
         # Run nimrod check
-        debug("Running 'nimrod check'...")
+        debug("Running 'nimrod check' process")
         nimcheck_process = subprocess.Popen(
-            ["C:\\64\\nimrod\\bin\\nimrod.exe", "check", view.file_name()],
+            ["nimrod", "check", view.file_name()],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             shell=True,
@@ -68,13 +72,13 @@ class NimCheck(TextCommand):
             view,
             error_regex
         )
-        sublime.set_timeout(poller, 1)
-        # Get output
-        # Parse output
-        # Display Output
+        sublime.set_timeout(poller, POLL_INTERVAL)
 
 
 def goto_error(view, point_list, choice):
+    """
+    Used by the show_quick_panel procedure in poll_nimcheck
+    """
     if choice != -1:
         chosen_point = point_list[choice]
         view.show(chosen_point)
@@ -118,20 +122,20 @@ def poll_nimcheck(output_buffer, nimcheck_process, view, error_regex):
             point_list.append(error_point)
 
         view.add_regions(
-            "NimCheck",
+            ERROR_REGION_TAG,
             region_list,
             "invalid.depracated",
-            "dot",
-            sublime.DRAW_OUTLINED
+            ERROR_REGION_MARK,
+            ERROR_REGION_STYLE
         )
         callback = lambda choice: goto_error(view, point_list, choice)
         sublime.active_window().show_quick_panel(message_list, callback)
     else:
-        # Start the polling function
+        # Set poll_nimcheck to be called later
         poller = lambda: poll_nimcheck(
             output_buffer,
             nimcheck_process,
             view,
             error_regex
         )
-        sublime.set_timeout(poller, 1)
+        sublime.set_timeout(poller, POLL_INTERVAL)

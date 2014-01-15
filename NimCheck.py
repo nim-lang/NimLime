@@ -6,6 +6,8 @@ from sublime_plugin import TextCommand, WindowCommand
 
 # Constants
 # TODO - Shift some of these to user settings
+# TODO - Show input errors through status bar
+# TODO - Optionally warn if the file doesn't end in '.nim'
 error_regex_template = r"{0}\((\d+),\s*(\d+)\)(.*)"
 message_template = "({0}, {1}) {2}"
 error_msg_format = '({0},{1}): {2}'.format
@@ -19,13 +21,6 @@ ERROR_REGION_STYLE = sublime.DRAW_OUTLINED
 def debug(string):
     if DEBUG:
         print(string)
-
-
-class TestEditParameter(TextCommand):
-
-    def run(self, edit):
-        print(edit)
-        print(dir(edit))
 
 
 class NimCheckCurrentView(TextCommand):

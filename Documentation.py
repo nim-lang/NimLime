@@ -1,23 +1,28 @@
-import sublime, sublime_plugin
-import os, json
+import sublime
+import sublime_plugin
+import os
+import json
 
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+
 class ListModulesCommand(sublime_plugin.WindowCommand):
+
     """
     Display list of all modules and their descriptions
     """
     path = "/Documentation/modules/module_index.json"
 
     def on_item(self, picked):
-        #TODO - Open the file at that point
+        # TODO - Open the file at that point
         pass
 
     def on_done(self, picked):
-        if picked < 0: return
+        if picked < 0:
+            return
 
-        item     = self.items[picked]
-        module   = item[0]
+        item = self.items[picked]
+        module = item[0]
         mod_path = PACKAGE_DIR + "/Documentation/modules/" + module + ".json"
 
         mod_items = []
@@ -36,13 +41,12 @@ class ListModulesCommand(sublime_plugin.WindowCommand):
                 if obj.get("description"):
                     row.append(obj["description"][0:100])
 
-
         self.window.show_quick_panel(mod_items, self.on_item)
 
     def run(self):
         self.items = []
 
-        #Parse items
+        # Parse items
         with open(PACKAGE_DIR + ListModulesCommand.path) as json_data:
             data = json.load(json_data)
 
@@ -57,13 +61,14 @@ class ListModulesCommand(sublime_plugin.WindowCommand):
 
 
 class ListAllCommand(sublime_plugin.WindowCommand):
+
     """
     Display index of all procs/modules/methods/etc in std lib
     """
     path = PACKAGE_DIR + "/Documentation/modules/proc_index.json"
 
     def on_done(self, picked):
-        #TODO - Open file at that point
+        # TODO - Open file at that point
         pass
 
     def run(self):
@@ -85,6 +90,6 @@ class ListAllCommand(sublime_plugin.WindowCommand):
                 items.append(row)
 
         self.window.show_quick_panel(
-            sorted(items, key=lambda i:i[0]),
+            sorted(items, key=lambda i: i[0]),
             self.on_done
         )

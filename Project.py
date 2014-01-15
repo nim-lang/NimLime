@@ -1,22 +1,34 @@
-import sublime, sublime_plugin
-import os, tempfile
-from os.path import exists, basename, getmtime, join, normpath, splitext
+import sublime
+import sublime_plugin
+import os
+from os.path import exists, join, normpath
 import json
 import re
+
 
 class Utility:
 
     key = "nim-project"
 
-    ## From https://github.com/facelessuser/FavoriteFiles/
+    # From https://github.com/facelessuser/FavoriteFiles/
     @staticmethod
     def get_project(win_id):
-        project     = None
-        reg_session = join(sublime.packages_path(), "..", "Settings", "Session.sublime_session")
-        auto_save   = join(sublime.packages_path(), "..", "Settings", "Auto Save Session.sublime_session")
-        session     = auto_save if exists(auto_save) else reg_session
+        project = None
+        reg_session = join(
+            sublime.packages_path(),
+            "..",
+            "Settings",
+            "Session.sublime_session"
+        )
+        auto_save = join(
+            sublime.packages_path(),
+            "..",
+            "Settings",
+            "Auto Save Session.sublime_session"
+        )
+        session = auto_save if exists(auto_save) else reg_session
 
-        if not exists(session) or win_id == None:
+        if not exists(session) or win_id is None:
             return project
 
         try:
@@ -28,7 +40,8 @@ class Utility:
                         if "workspace_name" in w:
                             if sublime.platform() == "windows":
                                 # Account for windows specific formatting
-                                project = normpath(w["workspace_name"].lstrip("/").replace("/", ":/", 1))
+                                project = normpath(
+                                    w["workspace_name"].lstrip("/").replace("/", ":/", 1))
                             else:
                                 project = w["workspace_name"]
                             break
@@ -36,11 +49,10 @@ class Utility:
             pass
 
         # Throw out empty project names
-        if project == None or re.match(".*\\.sublime-project", project) == None or not exists(project):
+        if project or re.match(".*\\.sublime-project", project) or not exists(project):
             project = None
 
         return project
-
 
     @staticmethod
     def set_nimproject(stProject, nimPath):
@@ -55,7 +67,6 @@ class Utility:
                 )
                 projFile.truncate()
 
-
     @staticmethod
     def get_nimproject(window):
         stProject = Utility.get_project(window.id())
@@ -68,9 +79,10 @@ class Utility:
 
                     # Get full path
                     directory = os.path.dirname(stProject)
-                    path      = path.replace("/", os.sep)
+                    path = path.replace("/", os.sep)
                     return os.path.join(directory, path)
-                except: pass
+                except:
+                    pass
 
 
 class SetProjectCommand(sublime_plugin.WindowCommand):
@@ -81,12 +93,12 @@ class SetProjectCommand(sublime_plugin.WindowCommand):
 
         if stProject is not None:
 
-            activeView   = self.window.active_view()
-            filename     = activeView.file_name()
+            activeView = self.window.active_view()
+            filename = activeView.file_name()
 
             try:
                 directory = os.path.dirname(stProject)
-                relpath   = os.path.relpath(filename, directory)
+                relpath = os.path.relpath(filename, directory)
 
                 # Set input file
                 name, ext = os.path.splitext(relpath)
@@ -95,4 +107,4 @@ class SetProjectCommand(sublime_plugin.WindowCommand):
                     Utility.set_nimproject(stProject, relpath)
 
             except:
-                raise #pass
+                raise  # pass

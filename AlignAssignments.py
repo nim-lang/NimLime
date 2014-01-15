@@ -23,7 +23,9 @@ import sublime
 import sublime_plugin
 import re
 
+
 class AlignAssignmentsCommand(sublime_plugin.TextCommand):
+
     def run(self, edit):
 
         relevant_line_pattern = r"^[^=]+[^-+<>=!%\/|&*^]=(?!=|~)"
@@ -32,10 +34,10 @@ class AlignAssignmentsCommand(sublime_plugin.TextCommand):
         for region in self.view.sel():
             if not region.empty():
 
-                lines          = self.view.lines(region)
-                total_lines    = len(lines)
-                best_column    = 0
-                target_lines   = []
+                lines = self.view.lines(region)
+                total_lines = len(lines)
+                best_column = 0
+                target_lines = []
                 modified_lines = []
 
                 # find the best column for the =
@@ -43,12 +45,13 @@ class AlignAssignmentsCommand(sublime_plugin.TextCommand):
                     string = self.view.substr(line)
                     if re.search(relevant_line_pattern, string):
                         target_lines.append(line)
-                        match       = re.search(column_search_pattern, string)
-                        best_column = match.start(0) if match.start(0) > best_column else best_column
+                        match = re.search(column_search_pattern, string)
+                        best_column = match.start(0) if match.start(
+                            0) > best_column else best_column
 
                 # reformat the selection
                 for line in target_lines:
-                    string        = self.view.substr(line)
+                    string = self.view.substr(line)
                     before, after = re.split(r"[\t ]*=[\t ]*", string, 1)
 
                     # we might be dealing withs something like:
@@ -58,9 +61,10 @@ class AlignAssignmentsCommand(sublime_plugin.TextCommand):
                     #
                     # so pick our join string wisely
                     artifact = " =" if after[0:1] == ">" else " = "
-                    value    = artifact.join([before.ljust(best_column), after])
+                    value = artifact.join(
+                        [before.ljust(best_column), after])
 
-                    modified_lines.append({"region": line, "value":value})
+                    modified_lines.append({"region": line, "value": value})
 
                 # start from the end and work up to the beginning
                 # we do this because, by editing, we mess with the region

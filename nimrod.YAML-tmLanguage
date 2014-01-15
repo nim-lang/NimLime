@@ -6,37 +6,43 @@ fileTypes: ["nim"]
 uuid: fa6f2c1c-dd3f-4bcd-b2be-d05312be4080
 
 patterns:
-- name: comment.line.number-sign.doc-comment.nimrod
+- comment: A documentation comment.
+  name: comment.line.number-sign.doc-comment.nimrod
   match: (##\s*(TODO|todo)?).*$\n?
   captures:
     '1': {name: punctuation.definition.comment.nimrod}
     '2': {name: invalid.illegal.TODO.nimrod}
 
-- name: comment.line.number-sign.comment.nimrod
+- comment: A regular comment
+  name: comment.line.number-sign.comment.nimrod
   match: (#\s*(TODO|todo)?).*$\n?
   captures:
     '1': {name: punctuation.definition.comment.nimrod}
     '2': {name: invalid.illegal.TODO.nimrod}
 
-- name: comment.line.discarded.nimrod
+- comment: A discarded triple string literal comment
+  name: comment.line.discarded.nimrod
   begin: discard \"\"\"
   end: \"\"\"
 
-- name: constant.numeric.float.decimal.nimrod
+- comment: A float literal
+  name: constant.numeric.float.decimal.nimrod
   match: \b((\d[_\d]*\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*))('[fF](32|64))?
 
-- name: constant.numeric.integer.hexadecimal.nimrod
+- comment: A hexadecimal literal
+  name: constant.numeric.integer.hexadecimal.nimrod
   match: \b(0[xX]\h[_\h]*)('[iIuU](8|16|32|64))?
 
-- comment: For simplicity's sake, we don't enforce floats only having 32 and
-           64 prefix types.
+- comment: A base-8 integer literal
   name: constant.numeric.integer.octal.nimrod
   match: \b(0o[0-7][_0-7]*)('[iIuUfF](8|16|32|64))?
 
-- name: constant.numeric.integer.binary.nimrod
+- comment: A base-2 integer literal
+  name: constant.numeric.integer.binary.nimrod
   match: \b(0(b|B)[01][_01]*)('[iIuUfF](8|16|32|64))?
 
-- name: constant.numeric.integer.decimal.nimrod
+- comment: A base-10 integer literal
+  name: constant.numeric.integer.decimal.nimrod
   match: \b(\d[_\d]*)('[iIuUfF](8|16|32|64))?
 
 - comment: Language Constants.

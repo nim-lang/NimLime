@@ -25,8 +25,12 @@
         "command": "set_project"
     },
     {
+        "caption": "Nimrod: Check External File",
+        "command": "nim_check_file"
+    },
+    {
         "caption": "Nimrod: Check Current File",
-        "command": "nimcheck_file"
+        "command": "nim_check_current_view"
     }
 
 ]

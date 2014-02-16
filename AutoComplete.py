@@ -126,7 +126,6 @@ class NimrodCompleter(sublime_plugin.EventListener):
         # Delete the dirty file
         if dirtyFile != None:
             dirtyFile.close()
-            print("Closed file")
 
         # get results from each tab
         return results # sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS

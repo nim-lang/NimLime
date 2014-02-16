@@ -165,7 +165,7 @@ def run_nimcheck(file_path, output_callback):
         debug("Polling 'nimrod check'...")
 
         # Gather any process output (to avoid pipe overflow)
-        output_buffer += nimcheck_process.stdout.read()
+        output_buffer += nimcheck_process.stdout.read().decode("UTF-8")
 
         # Poll the process's state
         nimcheck_process.poll()

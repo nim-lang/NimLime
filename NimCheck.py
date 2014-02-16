@@ -8,12 +8,13 @@ from sublime_plugin import TextCommand, WindowCommand
 # TODO - Shift some of these to user settings
 # TODO - Show input errors through status bar
 # TODO - Optionally warn if the file doesn't end in '.nim'
-error_regex_template = r"{0}\((\d+),\s*(\d+)\)(.*)"
-message_template = "({0}, {1}) {2}"
-error_msg_format = '({0},{1}): {2}'.format
+error_regex_template = r"{0}\((\d+),\s*(\d+)\)\s*(\w*):\s*(.*)"
+message_template = "({0}, {1}) {2}: {3}"
+error_msg_format = '({0},{1}): {2}: {3}'.format
 DEBUG = True
 POLL_INTERVAL = 2
-ERROR_REGION_TAG = "NimCheck"
+ERROR_REGION_TAG = "NimCheckError"
+WARN_REGION_TAG = "NimCheckWarn"
 ERROR_REGION_MARK = "dot"
 ERROR_REGION_STYLE = sublime.DRAW_OUTLINED
 
@@ -41,27 +42,38 @@ class NimCheckCurrentView(TextCommand):
 
     def display_errors(self, error_list):
         view = self.view
-        region_list = []
+        warn_region_list = []
+        error_region_list = []
         message_list = []
         point_list = []
-        for row, column, message in error_list:
+        for row, column, kind, message in error_list:
             # Prepare the error region for display
             error_point = view.text_point(row, column)
             error_region = trim_region(view, view.line(error_point))
-            region_list.append(error_region)
+            if kind == "Error":
+                error_region_list.append(error_region)
+            else:
+                warn_region_list.append(error_region)
 
             # Prepare the error message for the quickbox
             quick_message = [
-                message_template.format(row, column, message),
+                message_template.format(row, column, kind, message),
                 view.substr(error_region)
             ]
             message_list.append(quick_message)
             point_list.append(error_point)
-
+        
         view.add_regions(
             ERROR_REGION_TAG,
-            region_list,
-            "invalid.depracated",
+            error_region_list,
+            "invalid.illegal",
+            ERROR_REGION_MARK,
+            ERROR_REGION_STYLE
+        )
+        view.add_regions(
+            WARN_REGION_TAG,
+            warn_region_list,
+            "invalid.deprecated",
             ERROR_REGION_MARK,
             ERROR_REGION_STYLE
         )
@@ -178,8 +190,9 @@ def run_nimcheck(file_path, output_callback):
             for match in error_regex.finditer(output_buffer):
                 line = int(match.group(1)) - 1
                 column = int(match.group(2)) - 1
-                message = match.group(3)
-                error_list.append((line, column, message))
+                kind = match.group(3)
+                message = match.group(4)
+                error_list.append((line, column, kind, message))
 
             # Run the callback
             output_callback(error_list)

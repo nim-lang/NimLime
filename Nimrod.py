@@ -3,7 +3,11 @@ import sublime_plugin
 import re
 import subprocess
 import os
-from Project import Utility
+
+try:  # Python 3
+    from NimrodSublime.Project import Utility
+except ImportError:  # Python 2:
+    from Project import Utility
 
 
 class Idetools:
@@ -78,24 +82,16 @@ class Idetools:
                                       cwd=workingDir)
 
             result = ""
-            for result in output.stdout:
-                pass
+
+            for temp in output.stdout: pass
+
+            # Convert bytes to string
+            result = temp.decode('utf-8')
 
             # print(output.stderr.read())
-
             output.wait()
 
         return result
-
-    @staticmethod
-    def open_definition(win, filename, line, col):
-        arg = filename + ":" + str(line) + ":" + str(col)
-        flags = sublime.ENCODED_POSITION
-
-        # TODO - If this is NOT in the same project, mark transient
-        # flags |= sublime.TRANSIENT
-
-        win.open_file(arg, flags)
 
     @staticmethod
     def parse(result):

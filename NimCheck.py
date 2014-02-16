@@ -150,7 +150,7 @@ def run_nimcheck(file_path, output_callback):
     # Run nimrod check
     debug("Running 'nimrod check' process")
     nimcheck_process = subprocess.Popen(
-        ["nimrod", "check", file_path],
+        "nimrod check \"{0}\"".format(file_path),
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         shell=True,
@@ -171,6 +171,7 @@ def run_nimcheck(file_path, output_callback):
         nimcheck_process.poll()
         if nimcheck_process.returncode is not None:
             debug("'nimrod check' is done.")
+            debug("Return code: " + str(nimcheck_process.returncode))
 
             # Retrieve and convert the matches
             error_list = []

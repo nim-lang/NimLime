@@ -3,7 +3,7 @@ import os, subprocess, tempfile
 import re
 
 try:  # Python 3
-    from NimrodSublime.Project import Utility
+    from NimLime.Project import Utility
 except ImportError:  # Python 2:
     from Project import Utility
 

@@ -44,7 +44,7 @@ def position_str(filename, line, col):
 class SuggestItem:
 
     def prettify_signature(self, currentModule):
-        if self.symType == "skProc":
+        if self.symType == "skProc" or self.symType == "skMethod":
             fn_name = ""
             if self.modName == currentModule:
                 fn_name = self.name
@@ -137,11 +137,11 @@ class NimrodCompleter(sublime_plugin.EventListener):
         while line:
             line = handle.readline()
 
-            #print(line)
+            print(line)
             parts = line.split("\t")
             partlen = len(parts)
 
-            if partlen != 8 or parts[0] != "sug":
+            if partlen != 8 or (parts[0] != "sug" and parts[0] != "con"):
                 continue
 
             item = SuggestItem()

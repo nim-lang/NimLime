@@ -10,16 +10,36 @@ except ImportError:  # Python 2:
 # Load all settings relevant for autocomplete
 settings = sublime.load_settings("nimrod.sublime-settings")
 do_suggestions = False # Whether to provide suggestions
+provide_immediate_completions = False # Whether to provide completions immediatly
 
 def update_settings():
     global do_suggestions
-    do_suggestions = settings.get("nimrod_completion_suggestions")
+    global had_suggestions
+    global last_suggestion_pos
+    global give_suggestions
+    global provide_immediate_completions
+
+    do_suggestions = settings.get("enable_nimrod_completions")
     if do_suggestions == None:
         do_suggestions = False
+    provide_immediate_completions = settings.get("provide_immediate_nimrod_completions")
+    if provide_immediate_completions == None:
+        provide_immediate_completions = False
+
+    last_suggestion_pos = ""
+    had_suggestions = False
+    give_suggestions = False
 
 update_settings()
-settings.add_on_change("nimrod_completion_suggestions", update_settings)
+settings.add_on_change("enable_nimrod_completions", update_settings)
+settings.add_on_change("provide_immediate_nimrod_completions", update_settings)
 
+last_suggestion_pos = ""
+had_suggestions = False
+give_suggestions = False
+
+def position_str(filename, line, col):
+    return "{0}:{1}:{2}".format(filename, line, col)    
 
 class SuggestItem:
 
@@ -33,15 +53,24 @@ class SuggestItem:
 
             self.signature = self.signature.replace("proc", fn_name)
 
+class NimrodUpdateCompletions(sublime_plugin.TextCommand):
+
+    def run(self, edit):
+        if had_suggestions: # Only run when there were already suggestions for this position
+            return
+
+        global give_suggestions
+        give_suggestions = True
+        self.view.window().run_command("hide_auto_complete")
+        reload = lambda: self.view.window().run_command("auto_complete");
+        sublime.set_timeout(reload, 0)        
 
 class NimrodCompleter(sublime_plugin.EventListener):
 
     def on_query_completions(self, view, prefix, locations):
         filename = view.file_name()
         if filename == None or not filename.endswith(".nim") or not do_suggestions:
-            return []
-
-        dotop = prefix == ""
+            return []        
 
         projFile = Utility.get_nimproject(view.window())
         if projFile is None:
@@ -56,6 +85,29 @@ class NimrodCompleter(sublime_plugin.EventListener):
         pos = view.rowcol(view.sel()[0].begin())
         line = pos[0] + 1
         col  = pos[1]
+
+        suggestion_pos = position_str(filename, line, col)
+        global had_suggestions
+        global give_suggestions
+        global last_suggestion_pos
+
+        #print(suggestion_pos)
+        #print(last_suggestion_pos)
+        #print("had: " + str(had_suggestions))
+        #print("give: " + str(give_suggestions))
+
+        if (not give_suggestions and suggestion_pos != last_suggestion_pos): # Reset logic
+            had_suggestions = False
+            give_suggestions = False
+        
+        provide_suggestions = provide_immediate_completions or give_suggestions
+
+        if not provide_suggestions:
+            return []
+
+        last_suggestion_pos = suggestion_pos
+        had_suggestions = True
+        give_suggestions = False
         
         dirtyFileName = ""
         dirtyFile = None
@@ -85,7 +137,7 @@ class NimrodCompleter(sublime_plugin.EventListener):
         while line:
             line = handle.readline()
 
-            print(line)
+            #print(line)
             parts = line.split("\t")
             partlen = len(parts)
 
@@ -117,7 +169,7 @@ class NimrodCompleter(sublime_plugin.EventListener):
                 completion = item.name
                 hint = item.name + "\t" + item.signature
             else:
-                if dotop:
+                if prefix == "":
                     completion = item.name
                     hint = item.name + "\t" + item.signature
                 else:

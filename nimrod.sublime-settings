@@ -1,4 +1,5 @@
 {
     "translate_tabs_to_spaces": true,
+    "nimrod_completion_suggestions": true,
     "auto_complete_triggers": [ {"selector": "source.nimrod", "characters": "."} ]
 }

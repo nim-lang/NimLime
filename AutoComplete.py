@@ -7,13 +7,19 @@ try:  # Python 3
 except ImportError:  # Python 2:
     from Project import Utility
 
-##Resources
-# http://sublimetext.info/docs/en/extensibility/plugins.html
-# http://www.sublimetext.com/docs/2/api_reference.html#sublime.View
-# http://net.tutsplus.com/tutorials/python-tutorials/how-to-create-a-sublime-text-2-plugin/
-# http://www.sublimetext.com/docs/plugin-examples
+# Load all settings relevant for autocomplete
+settings = sublime.load_settings("nimrod.sublime-settings")
+do_suggestions = False # Whether to provide suggestions
 
-import sublime_plugin, sublime
+def update_settings():
+    global do_suggestions
+    do_suggestions = settings.get("nimrod_completion_suggestions")
+    if do_suggestions == None:
+        do_suggestions = False
+
+update_settings()
+settings.add_on_change("nimrod_completion_suggestions", update_settings)
+
 
 class SuggestItem:
 
@@ -32,7 +38,7 @@ class NimrodCompleter(sublime_plugin.EventListener):
 
     def on_query_completions(self, view, prefix, locations):
         filename = view.file_name()
-        if filename == None or not filename.endswith(".nim"):
+        if filename == None or not filename.endswith(".nim") or not do_suggestions:
             return []
 
         dotop = prefix == ""

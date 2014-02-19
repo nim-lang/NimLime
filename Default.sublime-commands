@@ -31,6 +31,9 @@
     {
         "caption": "Nimrod: Check Current File",
         "command": "nim_check_current_view"
+    },
+    {
+        "caption": "Nimrod: Clear Errors & Warnings",
+        "command": "nim_clear_errors"
     }
-
 ]

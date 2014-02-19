@@ -11,8 +11,8 @@ from sublime_plugin import TextCommand, WindowCommand
 error_regex_template = r"{0}\((\d+),\s*(\d+)\)\s*(\w*):\s*(.*)"
 message_template = "({0}, {1}) {2}: {3}"
 error_msg_format = '({0},{1}): {2}: {3}'.format
-DEBUG = True
-POLL_INTERVAL = 2
+DEBUG = False
+POLL_INTERVAL = 0
 ERROR_REGION_TAG = "NimCheckError"
 WARN_REGION_TAG = "NimCheckWarn"
 ERROR_REGION_MARK = "dot"
@@ -22,6 +22,20 @@ ERROR_REGION_STYLE = sublime.DRAW_OUTLINED
 def debug(string):
     if DEBUG:
         print(string)
+
+
+class NimClearErrors(TextCommand):
+
+    def run(self, edit):
+        self.view.erase_regions(ERROR_REGION_TAG)
+        self.view.erase_regions(WARN_REGION_TAG)
+
+    def is_enabled(self):
+        nim_syntax = self.view.settings().get('syntax', "")
+        return ("nimrod" in nim_syntax.lower())
+
+    def is_visible(self):
+        return self.is_enabled()
 
 
 class NimCheckCurrentView(TextCommand):
@@ -62,7 +76,7 @@ class NimCheckCurrentView(TextCommand):
             ]
             message_list.append(quick_message)
             point_list.append(error_point)
-        
+
         view.add_regions(
             ERROR_REGION_TAG,
             error_region_list,
@@ -79,6 +93,13 @@ class NimCheckCurrentView(TextCommand):
         )
         callback = lambda choice: goto_error(view, point_list, choice)
         sublime.active_window().show_quick_panel(message_list, callback)
+
+    def is_enabled(self):
+        nim_syntax = self.view.settings().get('syntax', "")
+        return ("nimrod" in nim_syntax.lower())
+
+    def is_visible(self):
+        return self.is_enabled()
 
 
 class NimCheckFile(WindowCommand):

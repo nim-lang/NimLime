@@ -9,15 +9,13 @@ import functools
 # https://github.com/wbond/sublime_package_control/blob/6a8b91ca58d66cb495b383d9572bb801316bcec5/package_control/commands/install_package_command.py
 
 
-class Babel:
 
-    @staticmethod
-    def run(cmd):
-        # TODO - in babel does not exist, display error
-        output = subprocess.Popen("babel " + cmd,
-                                  stdout=subprocess.PIPE,
-                                  shell=True)
-        return output.stdout
+def run_babel(cmd):
+    # TODO - in babel does not exist, display error
+    output = subprocess.Popen("babel " + cmd,
+                              stdout=subprocess.PIPE,
+                              shell=True)
+    return output.stdout
 
 
 class Package(object):

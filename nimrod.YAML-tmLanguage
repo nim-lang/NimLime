@@ -23,7 +23,7 @@ patterns:
 - comment: A nimrod procedure or method
   name: meta.proc.nimrod
   patterns:
-  - begin: \b(proc|method)\s+([a-zA-Z0-9_]*)\s*\(
+  - begin: \b(proc|method|template|macro)\s+([a-zA-Z0-9_]*)(\s*?\*)?\s*\(
     end: \)
     captures:
       '1': {name: storage.type.proc.nimrod}

@@ -2,13 +2,12 @@ import sublime, sublime_plugin
 import os, subprocess, tempfile
 import re
 
-try:  # Python 3
+try: # Python 3
     from NimLime.Project import Utility
-except ImportError:  # Python 2:
+except ImportError: # Python 2:
     from Project import Utility
 
-# Load all settings relevant for autocomplete
-settings = sublime.load_settings("nimrod.sublime-settings")
+settings = {}
 do_suggestions = False # Whether to provide suggestions
 provide_immediate_completions = False # Whether to provide completions immediatly
 
@@ -30,13 +29,22 @@ def update_settings():
     had_suggestions = False
     give_suggestions = False
 
-update_settings()
-settings.add_on_change("enable_nimrod_completions", update_settings)
-settings.add_on_change("provide_immediate_nimrod_completions", update_settings)
-
+# settings regarding auto complete
 last_suggestion_pos = ""
 had_suggestions = False
 give_suggestions = False
+
+def plugin_loaded():
+    # Load all settings relevant for autocomplete
+    global settings
+    settings = sublime.load_settings("nimrod.sublime-settings")
+    update_settings()
+    settings.add_on_change("enable_nimrod_completions", update_settings)
+    settings.add_on_change("provide_immediate_nimrod_completions", update_settings)
+
+# Hack to lazily initialize ST2 settings
+if int(sublime.version()) < 3000:
+    sublime.set_timeout(plugin_loaded, 1000)
 
 def position_str(filename, line, col):
     return "{0}:{1}:{2}".format(filename, line, col)    

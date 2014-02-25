@@ -3,6 +3,8 @@ import re
 import subprocess
 import sublime
 from sublime_plugin import TextCommand, WindowCommand
+from threading import Thread
+from time import sleep
 
 # Constants
 # TODO - Shift some of these to user settings
@@ -12,7 +14,7 @@ error_regex_template = r"{0}\((\d+),\s*(\d+)\)\s*(\w*):\s*(.*)"
 message_template = "({0}, {1}) {2}: {3}"
 error_msg_format = '({0},{1}): {2}: {3}'.format
 DEBUG = False
-POLL_INTERVAL = 0
+POLL_INTERVAL = 1
 ERROR_REGION_TAG = "NimCheckError"
 WARN_REGION_TAG = "NimCheckWarn"
 ERROR_REGION_MARK = "dot"
@@ -52,7 +54,11 @@ class NimCheckCurrentView(TextCommand):
         if view.is_dirty():
             debug("View is dirty - Saving")
             view.run_command('save')
-        run_nimcheck(view.file_name(), self.display_errors)
+        run_thread = Thread(
+            target=run_nimcheck,
+            args=(view.file_name(), self.display_errors)
+        )
+        run_thread.start()
 
     def display_errors(self, error_list):
         view = self.view
@@ -169,6 +175,11 @@ def trim_region(view, region):
 
 
 def run_nimcheck(file_path, output_callback):
+    """
+    Runs 'nimrod check' on the file specified by 'file_path', and returns
+    a list of errors found to the output_callback.
+    It's highly advised to run this in a thread!
+    """
     debug("Running nim_check command")
 
     # Prepare the regex's
@@ -191,10 +202,8 @@ def run_nimcheck(file_path, output_callback):
     )
 
     # Setup and start the polling procedure
-    def poll_nimcheck(output_buffer):
-        """
-        Polls a 'nimrod check' subprocess, reporting errors to the user.
-        """
+    output_buffer = ""
+    while True:
         debug("Polling 'nimrod check'...")
 
         # Gather any process output (to avoid pipe overflow)
@@ -216,15 +225,8 @@ def run_nimcheck(file_path, output_callback):
                 error_list.append((line, column, kind, message))
 
             # Run the callback
-            output_callback(error_list)
-
-        else:
-            # Set poll_nimcheck to be called later
-            poller = lambda: poll_nimcheck(
-                output_buffer,
-            )
-            sublime.set_timeout(poller, POLL_INTERVAL)
-    poller = lambda: poll_nimcheck(
-        ""
-    )
-    sublime.set_timeout(poller, POLL_INTERVAL)
+            callback = lambda: output_callback(error_list)
+            sublime.set_timeout(callback, 0)
+            break
+        sleep(POLL_INTERVAL)
+    sleep(POLL_INTERVAL)

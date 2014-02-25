@@ -9,7 +9,6 @@ import functools
 # https://github.com/wbond/sublime_package_control/blob/6a8b91ca58d66cb495b383d9572bb801316bcec5/package_control/commands/install_package_command.py
 
 
-
 def run_babel(cmd):
     # TODO - in babel does not exist, display error
     output = subprocess.Popen("babel " + cmd,
@@ -30,7 +29,7 @@ class BabelListCommand(sublime_plugin.WindowCommand):
     """
 
     def list(self):
-        items = Babel.run("list")
+        items = run_babel("list")
         pkg = None
 
         for row in items:
@@ -83,7 +82,7 @@ class BabelUpdateCommand(sublime_plugin.WindowCommand):
 
     @staticmethod
     def update():
-        Babel.run("update")
+        run_babel("update")
 
         def show_status():
             sublime.status_message("Babel package list updated")
@@ -104,7 +103,7 @@ class BabelInstallThread(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        Babel.run("install -y " + self.pkgName)
+        run_babel("install -y " + self.pkgName)
         msg = self.pkgName + " installed."
 
         def show_status():

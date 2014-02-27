@@ -66,6 +66,7 @@ class NimCheckCurrentView(TextCommand):
         error_region_list = []
         message_list = []
         point_list = []
+        
         for row, column, kind, message in error_list:
             # Prepare the error region for display
             error_point = view.text_point(row, column)
@@ -77,7 +78,7 @@ class NimCheckCurrentView(TextCommand):
 
             # Prepare the error message for the quickbox
             quick_message = [
-                message_template.format(row, column, kind, message),
+                message_template.format(row + 1, column, kind, message),
                 view.substr(error_region)
             ]
             message_list.append(quick_message)
@@ -215,6 +216,8 @@ def run_nimcheck(file_path, output_callback):
         kind = match.group(3)
         message = match.group(4)
         error_list.append((line, column, kind, message))
+    # Sort the error list by line
+    error_list.sort(key=lambda item: item[0])
 
     # Run the callback
     callback = lambda: output_callback(error_list)

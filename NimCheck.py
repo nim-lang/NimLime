@@ -202,31 +202,20 @@ def run_nimcheck(file_path, output_callback):
     )
 
     # Setup and start the polling procedure
-    output_buffer = ""
-    while True:
-        debug("Polling 'nimrod check'...")
+    raw_output, err = nimcheck_process.communicate()
+    output_buffer = raw_output.decode("UTF-8")
+    debug("'nimrod check' is done.")
+    debug("Return code: " + str(nimcheck_process.returncode))
 
-        # Gather any process output (to avoid pipe overflow)
-        output_buffer += nimcheck_process.stdout.read().decode("UTF-8")
+    # Retrieve and convert the matches
+    error_list = []
+    for match in error_regex.finditer(output_buffer):
+        line = int(match.group(1)) - 1
+        column = int(match.group(2)) - 1
+        kind = match.group(3)
+        message = match.group(4)
+        error_list.append((line, column, kind, message))
 
-        # Poll the process's state
-        nimcheck_process.poll()
-        if nimcheck_process.returncode is not None:
-            debug("'nimrod check' is done.")
-            debug("Return code: " + str(nimcheck_process.returncode))
-
-            # Retrieve and convert the matches
-            error_list = []
-            for match in error_regex.finditer(output_buffer):
-                line = int(match.group(1)) - 1
-                column = int(match.group(2)) - 1
-                kind = match.group(3)
-                message = match.group(4)
-                error_list.append((line, column, kind, message))
-
-            # Run the callback
-            callback = lambda: output_callback(error_list)
-            sublime.set_timeout(callback, 0)
-            break
-    #     sleep(POLL_INTERVAL)
-    # sleep(POLL_INTERVAL)
+    # Run the callback
+    callback = lambda: output_callback(error_list)
+    sublime.set_timeout(callback, 0)

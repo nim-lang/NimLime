@@ -4,7 +4,7 @@ import subprocess
 import sublime
 from sublime_plugin import TextCommand, WindowCommand
 from threading import Thread
-from time import sleep
+# from time import sleep
 
 # Constants
 # TODO - Shift some of these to user settings
@@ -228,5 +228,5 @@ def run_nimcheck(file_path, output_callback):
             callback = lambda: output_callback(error_list)
             sublime.set_timeout(callback, 0)
             break
-        sleep(POLL_INTERVAL)
-    sleep(POLL_INTERVAL)
+    #     sleep(POLL_INTERVAL)
+    # sleep(POLL_INTERVAL)

@@ -28,3 +28,5 @@ It can also be set into an immediate mode.
 
 If auto-completions don't work copy the `nimrod_update_completions` block from the NimLime
 default key bindings file to the user key bindings file.
+
+Checking the current file automatically on-save can be enabled through the setting `check_nimrod_on_save`  

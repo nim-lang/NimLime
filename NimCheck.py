@@ -2,7 +2,7 @@ import os.path
 import re
 import subprocess
 import sublime
-from sublime_plugin import TextCommand, WindowCommand
+from sublime_plugin import TextCommand, WindowCommand, EventListener
 from threading import Thread
 # from time import sleep
 
@@ -19,6 +19,27 @@ ERROR_REGION_TAG = "NimCheckError"
 WARN_REGION_TAG = "NimCheckWarn"
 ERROR_REGION_MARK = "dot"
 ERROR_REGION_STYLE = sublime.DRAW_OUTLINED
+
+settings = {}
+check_on_save = False # Whether to check on save
+
+def update_nimcheck_settings():
+    global check_on_save
+    check_on_save = settings.get("check_nimrod_on_save")
+    if check_on_save == None:
+        check_on_save = False
+    print("check_on_save: " + str(check_on_save))
+
+def plugin_loaded():
+    # Load all settings relevant for autocomplete
+    global settings
+    settings = sublime.load_settings("nimrod.sublime-settings")
+    update_nimcheck_settings()
+    settings.add_on_change("check_nimrod_on_save", update_nimcheck_settings)
+
+# Hack to lazily initialize ST2 settings
+if int(sublime.version()) < 3000:
+    sublime.set_timeout(plugin_loaded, 1000)
 
 
 def debug(string):
@@ -42,12 +63,13 @@ class NimClearErrors(TextCommand):
 
 class NimCheckCurrentView(TextCommand):
 
-    def run(self, edit):
+    def run(self, edit, show_error_list=True):        
         """
         Runs the text in the currentview through nimrod's `check` tool,
         highlighting and displaying the errors within the view's text buffer
         and the quick panel.
         """
+        self.show_error_list = show_error_list
         view = self.view
         # Save view text
         debug("Checking if the view is dirty")
@@ -99,14 +121,16 @@ class NimCheckCurrentView(TextCommand):
             ERROR_REGION_STYLE
         )
         callback = lambda choice: goto_error(view, point_list, choice)
-        sublime.active_window().show_quick_panel(message_list, callback)
+        if self.show_error_list:
+            sublime.active_window().show_quick_panel(message_list, callback)
 
     def is_enabled(self):
         nim_syntax = self.view.settings().get('syntax', "")
         return ("nimrod" in nim_syntax.lower())
 
     def is_visible(self):
-        return self.is_enabled()
+        nim_syntax = self.view.settings().get('syntax', "")
+        return ("nimrod" in nim_syntax.lower())
 
 
 class NimCheckFile(WindowCommand):
@@ -222,3 +246,11 @@ def run_nimcheck(file_path, output_callback):
     # Run the callback
     callback = lambda: output_callback(error_list)
     sublime.set_timeout(callback, 0)
+
+# Eventlistener that runs the current file trough NimCheck on saves
+class NimCheckOnSaveListener(EventListener):
+    def on_post_save(self, view):
+        filename = view.file_name()
+        if filename == None or not filename.endswith(".nim") or not check_on_save:
+            return
+        view.window().run_command("nim_check_current_view", {"show_error_list":False})

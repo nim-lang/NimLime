@@ -2,5 +2,6 @@
     "translate_tabs_to_spaces": true,
     "enable_nimrod_completions": true,
     "provide_immediate_nimrod_completions": false,
+    "check_nimrod_on_save": false,
     "auto_complete_triggers": [ {"selector": "source.nimrod", "characters": "."} ]
 }

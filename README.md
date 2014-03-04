@@ -22,11 +22,14 @@ Settings
 
 See Preferences -> PackageSettings -> NimLime
 
-Autocompletion is per default in an on-demand mode.  
+Autocompletion works per default in an on-demand mode.  
 This means `ctrl+space` has to be pressed again to fetch Nimrod compiler completions.
 It can also be set into an immediate mode.
 
 If auto-completions don't work copy the `nimrod_update_completions` block from the NimLime
 default key bindings file to the user key bindings file.
 
-Checking the current file automatically on-save can be enabled through the setting `check_nimrod_on_save`  
+Checking the current file automatically on-save can be enabled through the setting `check_nimrod_on_save`.
+
+The path to the compiler can be configured through the setting `nimrod_compiler_executable`.  
+Per default it is set to `nimrod`, which means that the compiler must be in your `PATH` for the plugin to work.

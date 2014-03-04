@@ -218,8 +218,12 @@ def run_nimcheck(file_path, output_callback):
 
     # Run nimrod check
     debug("Running 'nimrod check' process")
+
+    compiler = settings.get("nimrod_compiler_executable")
+    if compiler == None or compiler == "": return []
+
     nimcheck_process = subprocess.Popen(
-        "nimrod check \"{0}\"".format(file_path),
+        compiler + " check \"{0}\"".format(file_path),
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         shell=True,

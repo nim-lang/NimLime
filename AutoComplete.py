@@ -119,7 +119,9 @@ class NimrodCompleter(sublime_plugin.EventListener):
         
         dirtyFileName = ""
         dirtyFile = None
-        pargs = "nimrod --verbosity:0 idetools --suggest "
+        compiler = settings.get("nimrod_compiler_executable")
+        if compiler == None or compiler == "": return []
+        pargs = compiler + " --verbosity:0 idetools --suggest "
 
         if view.is_dirty():
             #Generate dirty file

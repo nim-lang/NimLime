@@ -29,8 +29,11 @@ class Idetools:
         if Idetools.service is not None and not Idetools.service.poll():
             return
 
+        compiler = sublime.load_settings("nimrod.sublime-settings").get("nimrod_compiler_executable")
+        if compiler == None or compiler == "": return
+
         Idetools.service = subprocess.Popen(
-            "nimrod --verbosity:0 serve " +
+            compiler + " --verbosity:0 serve " +
             "--server.type:stdin " + proj,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
@@ -69,7 +72,10 @@ class Idetools:
             return Idetools.service.communicate(args + "\r\n")
 
         else:
-            args = "nimrod --verbosity:0 idetools " \
+            compiler = sublime.load_settings("nimrod.sublime-settings").get("nimrod_compiler_executable")
+            if compiler == None or compiler == "": return ""
+
+            args = compiler + " --verbosity:0 idetools " \
                 + cmd + trackType \
                 + "\"" + filePath + "," + str(line) + "," + str(col) \
                 + "\" \"" + projFile + "\"" + extra

@@ -158,11 +158,11 @@ patterns:
       end: \`
     - {include: source.asm}
 
-
 - comment: tmpl specifier
-  match: (tmpli?)(?=( (html|xml|js|css|glsl))?\"\"\")
+  match: (tmpl(i)?)(?=( (html|xml|js|css|glsl))?\"\"\")
   captures:
     '1': {name: storage.type.function.nimrod}
+    '2': {name: keyword.operator.nimrod}
 
 - name: source.html.embedded.nimrod
   patterns:

@@ -22,6 +22,7 @@ ERROR_REGION_STYLE = sublime.DRAW_OUTLINED
 
 settings = {}
 check_on_save = False # Whether to check on save
+compiler = "nimrod"
 
 def update_nimcheck_settings():
     global check_on_save
@@ -69,6 +70,8 @@ class NimCheckCurrentView(TextCommand):
         highlighting and displaying the errors within the view's text buffer
         and the quick panel.
         """
+        global compiler
+        compiler = settings.get("nimrod_compiler_executable")
         self.show_error_list = show_error_list
         view = self.view
         # Save view text
@@ -219,7 +222,6 @@ def run_nimcheck(file_path, output_callback):
     # Run nimrod check
     debug("Running 'nimrod check' process")
 
-    compiler = settings.get("nimrod_compiler_executable")
     if compiler == None or compiler == "": return []
 
     nimcheck_process = subprocess.Popen(

@@ -522,7 +522,7 @@
 						</dict>
 						<dict>
 							<key>match</key>
-							<string>(?&lt;!\$)(\$[a-zA-Z0-9]+)</string>
+							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
 							<string>keyword.operator.nimrod</string>
 						</dict>
@@ -650,7 +650,7 @@
 						</dict>
 						<dict>
 							<key>match</key>
-							<string>(?&lt;!\$)(\$[a-zA-Z0-9]+)</string>
+							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
 							<string>keyword.operator.nimrod</string>
 						</dict>
@@ -778,7 +778,7 @@
 						</dict>
 						<dict>
 							<key>match</key>
-							<string>(?&lt;!\$)(\$[a-zA-Z0-9]+)</string>
+							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
 							<string>keyword.operator.nimrod</string>
 						</dict>
@@ -906,7 +906,7 @@
 						</dict>
 						<dict>
 							<key>match</key>
-							<string>(?&lt;!\$)(\$[a-zA-Z0-9]+)</string>
+							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
 							<string>keyword.operator.nimrod</string>
 						</dict>
@@ -1034,7 +1034,7 @@
 						</dict>
 						<dict>
 							<key>match</key>
-							<string>(?&lt;!\$)(\$[a-zA-Z0-9]+)</string>
+							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
 							<string>keyword.operator.nimrod</string>
 						</dict>

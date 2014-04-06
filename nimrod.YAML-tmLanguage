@@ -196,7 +196,7 @@ patterns:
         '1': {name: plain}
       patterns:
       - {include: source.nimrod}
-    - match: (?<!\$)(\$[a-zA-Z0-9]+)
+    - match: (?<!\$)(\$[a-zA-Z0-9_]+)
       name: keyword.operator.nimrod
     - {include: text.xml}
 
@@ -232,7 +232,7 @@ patterns:
         '1': {name: plain}
       patterns:
       - {include: source.nimrod}
-    - match: (?<!\$)(\$[a-zA-Z0-9]+)
+    - match: (?<!\$)(\$[a-zA-Z0-9_]+)
       name: keyword.operator.nimrod
     - {include: text.xml}
 
@@ -268,7 +268,7 @@ patterns:
         '1': {name: plain}
       patterns:
       - {include: source.nimrod}
-    - match: (?<!\$)(\$[a-zA-Z0-9]+)
+    - match: (?<!\$)(\$[a-zA-Z0-9_]+)
       name: keyword.operator.nimrod
     - {include: source.js}
 
@@ -304,7 +304,7 @@ patterns:
         '1': {name: plain}
       patterns:
       - {include: source.nimrod}
-    - match: (?<!\$)(\$[a-zA-Z0-9]+)
+    - match: (?<!\$)(\$[a-zA-Z0-9_]+)
       name: keyword.operator.nimrod
     - {include: source.css}
 
@@ -340,7 +340,7 @@ patterns:
         '1': {name: plain}
       patterns:
       - {include: source.nimrod}
-    - match: (?<!\$)(\$[a-zA-Z0-9]+)
+    - match: (?<!\$)(\$[a-zA-Z0-9_]+)
       name: keyword.operator.nimrod
     - {include: source.glsl}
 

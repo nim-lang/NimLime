@@ -159,7 +159,7 @@ patterns:
     - {include: source.asm}
 
 - comment: tmpl specifier
-  match: (tmpl(i)?)(?=( (html|xml|js|css|glsl))?\"\"\")
+  match: (tmpl(i)?)(?=( (html|xml|js|css|glsl|md))?\"\"\")
   captures:
     '1': {name: storage.type.function.nimrod}
     '2': {name: keyword.operator.nimrod}
@@ -344,4 +344,39 @@ patterns:
       name: keyword.operator.nimrod
     - {include: source.glsl}
 
+- name: source.markdown.embedded.nimrod
+  patterns:
+  - begin: (md)(\"\"\")
+    end: \"\"\"
+    captures:
+      '1': {name: storage.type.function.nimrod}
+      '2': {name: comment.syntax.nimrod}
+    endCaptures:
+      '0': {name: comment.syntax.nimrod}
+    patterns:
+    - begin: (?<!\$)(\$)\(
+      end: \)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)\{
+      end: \}
+      captures:
+        '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      patterns:
+      - {include: source.nimrod}
+    - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
+      end: (\{|\n)
+      captures:
+        '1': {name: keyword.operator.nimrod}
+        '2': {name: keyword.operator.nimrod}
+      endCaptures:
+        '1': {name: plain}
+      patterns:
+      - {include: source.nimrod}
+    - match: (?<!\$)(\$[a-zA-Z0-9_]+)
+      name: keyword.operator.nimrod
+    - {include: text.html.markdown.multimarkdown}
 ...

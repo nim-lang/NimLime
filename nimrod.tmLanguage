@@ -404,7 +404,7 @@
 			<key>comment</key>
 			<string>tmpl specifier</string>
 			<key>match</key>
-			<string>(tmpl(i)?)(?=( (html|xml|js|css|glsl))?\"\"\")</string>
+			<string>(tmpl(i)?)(?=( (html|xml|js|css|glsl|md))?\"\"\")</string>
 		</dict>
 		<dict>
 			<key>name</key>
@@ -1041,6 +1041,134 @@
 						<dict>
 							<key>include</key>
 							<string>source.glsl</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>source.markdown.embedded.nimrod</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(md)(\"\"\")</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>storage.type.function.nimrod</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nimrod</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\"\"\"</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nimrod</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>begin</key>
+							<string>(?&lt;!\$)(\$)\(</string>
+							<key>captures</key>
+							<dict>
+								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>keyword.operator.nimrod</string>
+								</dict>
+							</dict>
+							<key>end</key>
+							<string>\)</string>
+							<key>patterns</key>
+							<array>
+								<dict>
+									<key>include</key>
+									<string>source.nimrod</string>
+								</dict>
+							</array>
+						</dict>
+						<dict>
+							<key>begin</key>
+							<string>(?&lt;!\$)(\$)\{</string>
+							<key>captures</key>
+							<dict>
+								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>keyword.operator.nimrod</string>
+								</dict>
+								<key>2</key>
+								<dict>
+									<key>name</key>
+									<string>keyword.operator.nimrod</string>
+								</dict>
+							</dict>
+							<key>end</key>
+							<string>\}</string>
+							<key>patterns</key>
+							<array>
+								<dict>
+									<key>include</key>
+									<string>source.nimrod</string>
+								</dict>
+							</array>
+						</dict>
+						<dict>
+							<key>begin</key>
+							<string>(?&lt;!\$)(\$)(for|while|case|of|when|if|else|elif)( )</string>
+							<key>captures</key>
+							<dict>
+								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>keyword.operator.nimrod</string>
+								</dict>
+								<key>2</key>
+								<dict>
+									<key>name</key>
+									<string>keyword.operator.nimrod</string>
+								</dict>
+							</dict>
+							<key>end</key>
+							<string>(\{|\n)</string>
+							<key>endCaptures</key>
+							<dict>
+								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>plain</string>
+								</dict>
+							</dict>
+							<key>patterns</key>
+							<array>
+								<dict>
+									<key>include</key>
+									<string>source.nimrod</string>
+								</dict>
+							</array>
+						</dict>
+						<dict>
+							<key>match</key>
+							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
+							<key>name</key>
+							<string>keyword.operator.nimrod</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>text.html.markdown.multimarkdown</string>
 						</dict>
 					</array>
 				</dict>

@@ -86,7 +86,7 @@ patterns:
 
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nimrod
-  match: \b(((uint|int|float)(8|16|32|64)?)|bool|string|cstring|char|byte|tobject|typedesc|stmt|expr)\b
+  match: \b(((uint|int|float)(8|16|32|64)?)|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr)\b
 
 - comment: Built-in, generic types.
   name: storage.type.generic.nimrod

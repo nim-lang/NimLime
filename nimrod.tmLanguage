@@ -197,7 +197,7 @@
 			<key>comment</key>
 			<string>Built-in, concrete types.</string>
 			<key>match</key>
-			<string>\b(((uint|int|float)(8|16|32|64)?)|bool|string|cstring|char|byte|tobject|typedesc|stmt|expr)\b</string>
+			<string>\b(((uint|int|float)(8|16|32|64)?)|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr)\b</string>
 			<key>name</key>
 			<string>storage.type.concrete.nimrod</string>
 		</dict>

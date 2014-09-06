@@ -189,7 +189,7 @@
 			<key>comment</key>
 			<string>Common functions</string>
 			<key>match</key>
-			<string>\b(new|assert|echo|defined|newException|countup|countdown|high|low)\b</string>
+			<string>\b(new|await|assert|echo|defined|newException|countup|countdown|high|low)\b</string>
 			<key>name</key>
 			<string>keyword.common.function.nimrod</string>
 		</dict>

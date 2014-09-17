@@ -121,12 +121,12 @@ class NimrodCompleter(sublime_plugin.EventListener):
         dirtyFile = None
         compiler = settings.get("nimrod_compiler_executable")
         if compiler == None or compiler == "": return []
-        pargs = compiler + " --verbosity:0 idetools --suggest "
+        pargs = compiler + " --verbosity:0 idetools "
 
         if view.is_dirty():
             #Generate dirty file
             size = view.size()
-            dirtyFile = tempfile.NamedTemporaryFile(suffix=".nim", delete=True)
+            dirtyFile = tempfile.NamedTemporaryFile(suffix=".nim", delete=False)
             dirtyFileName = dirtyFile.name
             dirtyFile.file.write(
                 view.substr(sublime.Region(0, size)).encode("UTF-8")
@@ -138,7 +138,7 @@ class NimrodCompleter(sublime_plugin.EventListener):
 
         pargs = pargs + filename \
          + "," + str(line) + "," + str(col) \
-         + " " + projFile
+         + " --suggest " + projFile
 
         print(pargs)
 
@@ -194,6 +194,9 @@ class NimrodCompleter(sublime_plugin.EventListener):
         # Delete the dirty file
         if dirtyFile != None:
             dirtyFile.close()
-
+            try:
+                os.unlink(dirtyFile.name)
+            except OSError:
+                pass
         # get results from each tab
         return results # sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS

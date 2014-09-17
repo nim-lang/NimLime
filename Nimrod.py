@@ -76,9 +76,9 @@ class Idetools:
             if compiler == None or compiler == "": return ""
 
             args = compiler + " --verbosity:0 idetools " \
-                + cmd + trackType \
+                + trackType \
                 + "\"" + filePath + "," + str(line) + "," + str(col) \
-                + "\" \"" + projFile + "\"" + extra
+                + "\" " + cmd + " \"" + projFile + "\"" + extra
             print(args)
 
             output = subprocess.Popen(args,
@@ -89,7 +89,7 @@ class Idetools:
 
             result = ""
 
-            for temp in output.stdout: pass
+            temp = output.stdout.read()
 
             # Convert bytes to string
             result = temp.decode('utf-8')

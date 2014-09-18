@@ -23,7 +23,7 @@ class LookupCommand(sublime_plugin.TextCommand):
             # Generate temp file
             size = self.view.size()
 
-            with tempfile.NamedTemporaryFile(suffix=".nim", delete=True) as dirtyFile:
+            with tempfile.NamedTemporaryFile(suffix=".nim", delete=False) as dirtyFile:
                 dirtyFileName = dirtyFile.name
                 dirtyFile.file.write(
                     self.view.substr(sublime.Region(0, size)).encode("UTF-8")
@@ -33,9 +33,13 @@ class LookupCommand(sublime_plugin.TextCommand):
                 result = Idetools.idetool(self.view.window(), "--def", filename, line, col, dirtyFile.name)
                 dirtyFile.close();
 
+
+            try:
+                os.unlink(dirtyFile.name)
+            except OSError:
+                pass
         else:
-            result = Idetools.idetool(
-                self.view.window(), "--def", filename, line, col)
+            result = Idetools.idetool(self.view.window(), "--def", filename, line, col)
 
         # Parse the result
         value = Idetools.parse(result)

@@ -82,7 +82,7 @@ patterns:
 
 - comment: Common functions
   name: keyword.common.function.nimrod
-  match: \b(new|await|assert|echo|defined|newException|countup|countdown|high|low)\b
+  match: \b(new|await|assert|echo|defined|declared|newException|countup|countdown|high|low)\b
 
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nimrod

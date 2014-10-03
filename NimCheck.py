@@ -14,22 +14,23 @@ error_regex_template = r"{0}\((\d+),\s*(\d+)\)\s*(\w*):\s*(.*)"
 message_template = "({0}, {1}) {2}: {3}"
 error_msg_format = '({0},{1}): {2}: {3}'.format
 DEBUG = False
-POLL_INTERVAL = 1
 ERROR_REGION_TAG = "NimCheckError"
 WARN_REGION_TAG = "NimCheckWarn"
 ERROR_REGION_MARK = "dot"
 ERROR_REGION_STYLE = sublime.DRAW_OUTLINED
 
 settings = {}
-check_on_save = False # Whether to check on save
+check_on_save = False  # Whether to check on save
 compiler = "nimrod"
+
 
 def update_nimcheck_settings():
     global check_on_save
     check_on_save = settings.get("check_nimrod_on_save")
-    if check_on_save == None:
+    if check_on_save is None:
         check_on_save = False
     print("check_on_save: " + str(check_on_save))
+
 
 def plugin_loaded():
     # Load all settings relevant for autocomplete
@@ -64,7 +65,7 @@ class NimClearErrors(TextCommand):
 
 class NimCheckCurrentView(TextCommand):
 
-    def run(self, edit, show_error_list=True):        
+    def run(self, edit, show_error_list=True):
         """
         Runs the text in the currentview through nimrod's `check` tool,
         highlighting and displaying the errors within the view's text buffer
@@ -72,6 +73,7 @@ class NimCheckCurrentView(TextCommand):
         """
         global compiler
         compiler = settings.get("nimrod_compiler_executable")
+        debug("Compiler is " + compiler)
         self.show_error_list = show_error_list
         view = self.view
         # Save view text
@@ -91,7 +93,7 @@ class NimCheckCurrentView(TextCommand):
         error_region_list = []
         message_list = []
         point_list = []
-        
+
         for row, column, kind, message in error_list:
             # Prepare the error region for display
             error_point = view.text_point(row, column)
@@ -222,7 +224,8 @@ def run_nimcheck(file_path, output_callback):
     # Run nimrod check
     debug("Running 'nimrod check' process")
 
-    if compiler == None or compiler == "": return []
+    if compiler is None or compiler == "":
+        return []
 
     nimcheck_process = subprocess.Popen(
         compiler + " check \"{0}\"".format(file_path),
@@ -235,6 +238,7 @@ def run_nimcheck(file_path, output_callback):
     # Setup and start the polling procedure
     raw_output, err = nimcheck_process.communicate()
     output_buffer = raw_output.decode("UTF-8")
+    debug("Output: " + output_buffer)
     debug("'nimrod check' is done.")
     debug("Return code: " + str(nimcheck_process.returncode))
 
@@ -254,9 +258,13 @@ def run_nimcheck(file_path, output_callback):
     sublime.set_timeout(callback, 0)
 
 # Eventlistener that runs the current file trough NimCheck on saves
+
+
 class NimCheckOnSaveListener(EventListener):
+
     def on_post_save(self, view):
         filename = view.file_name()
-        if filename == None or not filename.endswith(".nim") or not check_on_save:
+        if filename is None or not filename.endswith(".nim") or not check_on_save:
             return
-        view.window().run_command("nim_check_current_view", {"show_error_list":False})
+        view.window().run_command(
+            "nim_check_current_view", {"show_error_list": False})

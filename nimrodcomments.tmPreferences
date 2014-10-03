@@ -8,6 +8,12 @@
   <string>source.nimrod, source.nimrodcfg</string>
   <key>settings</key>
   <dict>
+    <key>decreaseIndentPattern</key>
+    <string>^\s*(elif|else|except|finally)\b.*:</string>
+    <key>increaseIndentPattern</key>
+    <string>^\s*(type|proc|elif|else|except|finally|for|if|try|when|while)\b.*:\s*$</string>
+    <key>disableIndentNextLinePattern</key>
+    <string></string>
     <key>shellVariables</key>
     <array>
       <dict>

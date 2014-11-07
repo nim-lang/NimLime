@@ -9,9 +9,9 @@
   <key>settings</key>
   <dict>
     <key>decreaseIndentPattern</key>
-    <string>^\s*(elif|else|except|finally)\b.*:</string>
+    <string>^\s*(elif|else|except|finally|of)\b.*:</string>
     <key>increaseIndentPattern</key>
-    <string>^\s*(type|proc|elif|else|except|finally|for|if|try|when|while)\b.*:\s*$</string>
+    <string>^\s*((type|proc|elif|else|except|finally|for|of|if|try|when|while)\b.*:|((case)\b.*))\s*$</string>
     <key>disableIndentNextLinePattern</key>
     <string></string>
     <key>shellVariables</key>

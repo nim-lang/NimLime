@@ -8,12 +8,6 @@
 	<string>source.nimrod</string>
 	<key>settings</key>
 	<dict>
-		<key>decreaseIndentPattern</key>
-		<string>^\s*(elif|else|except|finally|of)\b.*:</string>
-		<key>increaseIndentPattern</key>
-		<string>^\s*[^#]*[:=]\s*$</string>
-		<key>disableIndentNextLinePattern</key>
-		<string></string>
 	</dict>
 	<key>uuid</key>
 	<string>B139EDD0-08A4-11E4-A326-E3F33219C4E0</string>

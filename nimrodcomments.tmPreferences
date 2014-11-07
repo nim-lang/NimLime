@@ -9,9 +9,25 @@
   <key>settings</key>
   <dict>
     <key>decreaseIndentPattern</key>
-    <string>^\s*(elif|else|except|finally|of)\b.*:</string>
+    <string>(?xm)(
+
+      # Normal de-indent pattern
+      ^\s*(elif|else|except|finally|of)\b.*:\s*$
+
+      )</string>
     <key>increaseIndentPattern</key>
-    <string>^\s*((type|proc|elif|else|except|finally|for|of|if|try|when|while)\b.*:|((case)\b.*))\s*$</string>
+    <string>(?x)^\s*(
+
+        # Handle if/else/etc
+        (elif|else|except|finally|for|of|if|try|when|while)\b.*:
+
+        # Handle case
+        |case\b.*
+
+        # Handle type/proc
+        |(type|proc)\b.*
+
+      )\s*$</string>
     <key>disableIndentNextLinePattern</key>
     <string></string>
     <key>shellVariables</key>

@@ -24,8 +24,8 @@
         # Handle case
         |case\b.*
 
-        # Handle type/proc
-        |(type|proc)\b.*
+        # Handle type/proc/method
+        |(type|proc|method|iterator)\b.*
 
       )\s*$</string>
     <key>disableIndentNextLinePattern</key>

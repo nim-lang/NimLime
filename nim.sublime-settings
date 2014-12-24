@@ -3,6 +3,6 @@
     "enable_nimrod_completions": true,
     "provide_immediate_nimrod_completions": false,
     "check_nimrod_on_save": false,
-    "nimrod_compiler_executable": "nimrod",
+    "nimrod_compiler_executable": "nim",
     "auto_complete_triggers": [ {"selector": "source.nimrod", "characters": "."} ]
 }

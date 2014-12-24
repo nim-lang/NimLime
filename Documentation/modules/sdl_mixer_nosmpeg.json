@@ -12,102 +12,102 @@
   {
     "name": "LIBMIKMOD_VERSION", 
     "type": "skConst", 
-    "code": "LIBMIKMOD_VERSION* = ((LIBMIKMOD_VERSION_MAJOR shl 16) or\u000D\u000A    (LIBMIKMOD_VERSION_MINOR shl 8) or (LIBMIKMOD_REVISION))"
+    "code": "LIBMIKMOD_VERSION* = ((LIBMIKMOD_VERSION_MAJOR shl 16) or\u000A    (LIBMIKMOD_VERSION_MINOR shl 8) or (LIBMIKMOD_REVISION))"
   }, 
   {
     "name": "TMixFunction", 
     "type": "skType", 
-    "code": "TMixFunction* = proc (udata, stream: pointer; length: cint): Pointer {.cdecl.}"
+    "code": "TMixFunction* = proc (udata, stream: pointer; length: cint): pointer {.cdecl.}"
   }, 
   {
-    "name": "VERSION", 
+    "name": "version", 
     "type": "skProc", 
-    "code": "proc VERSION*(X: var sdl.TVersion)"
+    "code": "proc version*(x: var sdl.Tversion)"
   }, 
   {
-    "name": "Linked_Version", 
+    "name": "linkedVersion", 
     "type": "skProc", 
-    "code": "proc Linked_Version*(): sdl.Pversion {.cdecl, importc: \"Mix_Linked_Version\", \u000D\u000A                                       dynlib: MixerLibName.}"
+    "code": "proc linkedVersion*(): sdl.Pversion {.cdecl, importc: \"Mix_Linked_Version\", \u000A                                      dynlib: MixerLibName.}"
   }, 
   {
-    "name": "OpenAudio", 
+    "name": "openAudio", 
     "type": "skProc", 
-    "code": "proc OpenAudio*(frequency: cint; format: Uint16; channels: cint; chunksize: cint): cint {.\u000D\u000A    cdecl, importc: \"Mix_OpenAudio\", dynlib: MixerLibName.}"
+    "code": "proc openAudio*(frequency: cint; format: uint16; channels: cint; chunksize: cint): cint {.\u000A    cdecl, importc: \"Mix_OpenAudio\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "AllocateChannels", 
+    "name": "allocateChannels", 
     "type": "skProc", 
-    "code": "proc AllocateChannels*(numchannels: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_AllocateChannels\", dynlib: MixerLibName.}"
+    "code": "proc allocateChannels*(numchannels: cint): cint {.cdecl, \u000A    importc: \"Mix_AllocateChannels\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "QuerySpec", 
+    "name": "querySpec", 
     "type": "skProc", 
-    "code": "proc QuerySpec*(frequency: var cint; format: var Uint16; channels: var cint): cint {.\u000D\u000A    cdecl, importc: \"Mix_QuerySpec\", dynlib: MixerLibName.}"
+    "code": "proc querySpec*(frequency: var cint; format: var uint16; channels: var cint): cint {.\u000A    cdecl, importc: \"Mix_QuerySpec\", dynlib: MixerLibName.}"
   }, 
   {
     "name": "LoadWAV_RW", 
     "type": "skProc", 
-    "code": "proc LoadWAV_RW*(src: PRWops; freesrc: cint): PChunk {.cdecl, \u000D\u000A    importc: \"Mix_LoadWAV_RW\", dynlib: MixerLibName.}"
+    "code": "proc LoadWAV_RW*(src: PRWops; freesrc: cint): PChunk {.cdecl, \u000A    importc: \"Mix_LoadWAV_RW\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "LoadWAV", 
+    "name": "loadWAV", 
     "type": "skProc", 
-    "code": "proc LoadWAV*(filename: cstring): PChunk"
+    "code": "proc loadWAV*(filename: cstring): PChunk"
   }, 
   {
-    "name": "LoadMUS", 
+    "name": "loadMUS", 
     "type": "skProc", 
-    "code": "proc LoadMUS*(filename: cstring): PMusic {.cdecl, importc: \"Mix_LoadMUS\", \u000D\u000A    dynlib: MixerLibName.}"
+    "code": "proc loadMUS*(filename: cstring): PMusic {.cdecl, importc: \"Mix_LoadMUS\", \u000A    dynlib: MixerLibName.}"
   }, 
   {
-    "name": "QuickLoad_WAV", 
+    "name": "quickLoadWAV", 
     "type": "skProc", 
-    "code": "proc QuickLoad_WAV*(mem: pointer): PChunk {.cdecl, importc: \"Mix_QuickLoad_WAV\", \u000D\u000A    dynlib: MixerLibName.}"
+    "code": "proc quickLoadWAV*(mem: pointer): PChunk {.cdecl, importc: \"Mix_QuickLoad_WAV\", \u000A    dynlib: MixerLibName.}"
   }, 
   {
-    "name": "FreeChunk", 
+    "name": "freeChunk", 
     "type": "skProc", 
-    "code": "proc FreeChunk*(chunk: PChunk) {.cdecl, importc: \"Mix_FreeChunk\", \u000D\u000A                                 dynlib: MixerLibName.}"
+    "code": "proc freeChunk*(chunk: PChunk) {.cdecl, importc: \"Mix_FreeChunk\", \u000A                                 dynlib: MixerLibName.}"
   }, 
   {
-    "name": "FreeMusic", 
+    "name": "freeMusic", 
     "type": "skProc", 
-    "code": "proc FreeMusic*(music: PMusic) {.cdecl, importc: \"Mix_FreeMusic\", \u000D\u000A                                 dynlib: MixerLibName.}"
+    "code": "proc freeMusic*(music: PMusic) {.cdecl, importc: \"Mix_FreeMusic\", \u000A                                 dynlib: MixerLibName.}"
   }, 
   {
-    "name": "GetMusicType", 
+    "name": "getMusicType", 
     "type": "skProc", 
-    "code": "proc GetMusicType*(music: PMusic): TMusicType {.cdecl, \u000D\u000A    importc: \"Mix_GetMusicType\", dynlib: MixerLibName.}"
+    "code": "proc getMusicType*(music: PMusic): TMusicType {.cdecl, \u000A    importc: \"Mix_GetMusicType\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "SetPostMix", 
+    "name": "setPostMix", 
     "type": "skProc", 
-    "code": "proc SetPostMix*(mixfunc: TMixFunction; arg: Pointer) {.cdecl, \u000D\u000A    importc: \"Mix_SetPostMix\", dynlib: MixerLibName.}"
+    "code": "proc setPostMix*(mixfunc: TMixFunction; arg: pointer) {.cdecl, \u000A    importc: \"Mix_SetPostMix\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "HookMusic", 
+    "name": "hookMusic", 
     "type": "skProc", 
-    "code": "proc HookMusic*(mix_func: TMixFunction; arg: Pointer) {.cdecl, \u000D\u000A    importc: \"Mix_HookMusic\", dynlib: MixerLibName.}"
+    "code": "proc hookMusic*(mixFunc: TMixFunction; arg: pointer) {.cdecl, \u000A    importc: \"Mix_HookMusic\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "HookMusicFinished", 
+    "name": "hookMusicFinished", 
     "type": "skProc", 
-    "code": "proc HookMusicFinished*(music_finished: Pointer) {.cdecl, \u000D\u000A    importc: \"Mix_HookMusicFinished\", dynlib: MixerLibName.}"
+    "code": "proc hookMusicFinished*(musicFinished: pointer) {.cdecl, \u000A    importc: \"Mix_HookMusicFinished\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "GetMusicHookData", 
+    "name": "getMusicHookData", 
     "type": "skProc", 
-    "code": "proc GetMusicHookData*(): Pointer {.cdecl, importc: \"Mix_GetMusicHookData\", \u000D\u000A                                    dynlib: MixerLibName.}"
+    "code": "proc getMusicHookData*(): pointer {.cdecl, importc: \"Mix_GetMusicHookData\", \u000A                                    dynlib: MixerLibName.}"
   }, 
   {
-    "name": "TChannel_finished", 
+    "name": "TChannelFinished", 
     "type": "skType", 
-    "code": "TChannel_finished* = proc (channel: cint) {.cdecl.}"
+    "code": "TChannelFinished* = proc (channel: cint) {.cdecl.}"
   }, 
   {
-    "name": "ChannelFinished", 
+    "name": "channelFinished", 
     "type": "skProc", 
-    "code": "proc ChannelFinished*(channel_finished: TChannel_finished) {.cdecl, \u000D\u000A    importc: \"Mix_ChannelFinished\", dynlib: MixerLibName.}"
+    "code": "proc channelFinished*(channelFinished: TChannelFinished) {.cdecl, \u000A    importc: \"Mix_ChannelFinished\", dynlib: MixerLibName.}"
   }, 
   {
     "name": "CHANNEL_POST", 
@@ -117,22 +117,22 @@
   {
     "name": "TEffectDone", 
     "type": "skType", 
-    "code": "TEffectDone* = proc (chan: cint; udata: Pointer): Pointer {.cdecl.}"
+    "code": "TEffectDone* = proc (chan: cint; udata: pointer): pointer {.cdecl.}"
   }, 
   {
-    "name": "RegisterEffect", 
+    "name": "registerEffect", 
     "type": "skProc", 
-    "code": "proc RegisterEffect*(chan: cint; f: TEffectFunc; d: TEffectDone; arg: Pointer): cint {.\u000D\u000A    cdecl, importc: \"Mix_RegisterEffect\", dynlib: MixerLibName.}"
+    "code": "proc registerEffect*(chan: cint; f: TEffectFunc; d: TEffectDone; arg: pointer): cint {.\u000A    cdecl, importc: \"Mix_RegisterEffect\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "UnregisterEffect", 
+    "name": "unregisterEffect", 
     "type": "skProc", 
-    "code": "proc UnregisterEffect*(channel: cint; f: TEffectFunc): cint {.cdecl, \u000D\u000A    importc: \"Mix_UnregisterEffect\", dynlib: MixerLibName.}"
+    "code": "proc unregisterEffect*(channel: cint; f: TEffectFunc): cint {.cdecl, \u000A    importc: \"Mix_UnregisterEffect\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "UnregisterAllEffects", 
+    "name": "unregisterAllEffects", 
     "type": "skProc", 
-    "code": "proc UnregisterAllEffects*(channel: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_UnregisterAllEffects\", dynlib: MixerLibName.}"
+    "code": "proc unregisterAllEffects*(channel: cint): cint {.cdecl, \u000A    importc: \"Mix_UnregisterAllEffects\", dynlib: MixerLibName.}"
   }, 
   {
     "name": "EFFECTSMAXSPEED", 
@@ -140,223 +140,223 @@
     "code": "EFFECTSMAXSPEED* = \"MIX_EFFECTSMAXSPEED\""
   }, 
   {
-    "name": "SetPanning", 
+    "name": "setPanning", 
     "type": "skProc", 
-    "code": "proc SetPanning*(channel: cint; left: byte; right: byte): cint {.cdecl, \u000D\u000A    importc: \"Mix_SetPanning\", dynlib: MixerLibName.}"
+    "code": "proc setPanning*(channel: cint; left: byte; right: byte): cint {.cdecl, \u000A    importc: \"Mix_SetPanning\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "SetPosition", 
+    "name": "setPosition", 
     "type": "skProc", 
-    "code": "proc SetPosition*(channel: cint; angle: int16; distance: byte): cint {.cdecl, \u000D\u000A    importc: \"Mix_SetPosition\", dynlib: MixerLibName.}"
+    "code": "proc setPosition*(channel: cint; angle: int16; distance: byte): cint {.cdecl, \u000A    importc: \"Mix_SetPosition\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "SetDistance", 
+    "name": "setDistance", 
     "type": "skProc", 
-    "code": "proc SetDistance*(channel: cint; distance: byte): cint {.cdecl, \u000D\u000A    importc: \"Mix_SetDistance\", dynlib: MixerLibName.}"
+    "code": "proc setDistance*(channel: cint; distance: byte): cint {.cdecl, \u000A    importc: \"Mix_SetDistance\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "SetReverseStereo", 
+    "name": "setReverseStereo", 
     "type": "skProc", 
-    "code": "proc SetReverseStereo*(channel: cint; flip: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_SetReverseStereo\", dynlib: MixerLibName.}"
+    "code": "proc setReverseStereo*(channel: cint; flip: cint): cint {.cdecl, \u000A    importc: \"Mix_SetReverseStereo\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "ReserveChannels", 
+    "name": "reserveChannels", 
     "type": "skProc", 
-    "code": "proc ReserveChannels*(num: cint): cint {.cdecl, importc: \"Mix_ReserveChannels\", \u000D\u000A    dynlib: MixerLibName.}"
+    "code": "proc reserveChannels*(num: cint): cint {.cdecl, importc: \"Mix_ReserveChannels\", \u000A    dynlib: MixerLibName.}"
   }, 
   {
-    "name": "GroupChannel", 
+    "name": "groupChannel", 
     "type": "skProc", 
-    "code": "proc GroupChannel*(which: cint; tag: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_GroupChannel\", dynlib: MixerLibName.}"
+    "code": "proc groupChannel*(which: cint; tag: cint): cint {.cdecl, \u000A    importc: \"Mix_GroupChannel\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "GroupChannels", 
+    "name": "groupChannels", 
     "type": "skProc", 
-    "code": "proc GroupChannels*(`from`: cint; `to`: cint; tag: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_GroupChannels\", dynlib: MixerLibName.}"
+    "code": "proc groupChannels*(`from`: cint; `to`: cint; tag: cint): cint {.cdecl, \u000A    importc: \"Mix_GroupChannels\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "GroupAvailable", 
+    "name": "groupAvailable", 
     "type": "skProc", 
-    "code": "proc GroupAvailable*(tag: cint): cint {.cdecl, importc: \"Mix_GroupAvailable\", \u000D\u000A                                        dynlib: MixerLibName.}"
+    "code": "proc groupAvailable*(tag: cint): cint {.cdecl, importc: \"Mix_GroupAvailable\", \u000A                                        dynlib: MixerLibName.}"
   }, 
   {
-    "name": "GroupCount", 
+    "name": "groupCount", 
     "type": "skProc", 
-    "code": "proc GroupCount*(tag: cint): cint {.cdecl, importc: \"Mix_GroupCount\", \u000D\u000A                                    dynlib: MixerLibName.}"
+    "code": "proc groupCount*(tag: cint): cint {.cdecl, importc: \"Mix_GroupCount\", \u000A                                    dynlib: MixerLibName.}"
   }, 
   {
-    "name": "GroupOldest", 
+    "name": "groupOldest", 
     "type": "skProc", 
-    "code": "proc GroupOldest*(tag: cint): cint {.cdecl, importc: \"Mix_GroupOldest\", \u000D\u000A                                     dynlib: MixerLibName.}"
+    "code": "proc groupOldest*(tag: cint): cint {.cdecl, importc: \"Mix_GroupOldest\", \u000A                                     dynlib: MixerLibName.}"
   }, 
   {
-    "name": "GroupNewer", 
+    "name": "groupNewer", 
     "type": "skProc", 
-    "code": "proc GroupNewer*(tag: cint): cint {.cdecl, importc: \"Mix_GroupNewer\", \u000D\u000A                                    dynlib: MixerLibName.}"
+    "code": "proc groupNewer*(tag: cint): cint {.cdecl, importc: \"Mix_GroupNewer\", \u000A                                    dynlib: MixerLibName.}"
   }, 
   {
-    "name": "PlayChannelTimed", 
+    "name": "playChannelTimed", 
     "type": "skProc", 
-    "code": "proc PlayChannelTimed*(channel: cint; chunk: PChunk; loops: cint; ticks: cint): cint {.\u000D\u000A    cdecl, importc: \"Mix_PlayChannelTimed\", dynlib: MixerLibName.}"
+    "code": "proc playChannelTimed*(channel: cint; chunk: PChunk; loops: cint; ticks: cint): cint {.\u000A    cdecl, importc: \"Mix_PlayChannelTimed\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "PlayChannel", 
+    "name": "playChannel", 
     "type": "skProc", 
-    "code": "proc PlayChannel*(channel: cint; chunk: PChunk; loops: cint): cint"
+    "code": "proc playChannel*(channel: cint; chunk: PChunk; loops: cint): cint"
   }, 
   {
-    "name": "PlayMusic", 
+    "name": "playMusic", 
     "type": "skProc", 
-    "code": "proc PlayMusic*(music: PMusic; loops: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_PlayMusic\", dynlib: MixerLibName.}"
+    "code": "proc playMusic*(music: PMusic; loops: cint): cint {.cdecl, \u000A    importc: \"Mix_PlayMusic\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "FadeInMusic", 
+    "name": "fadeInMusic", 
     "type": "skProc", 
-    "code": "proc FadeInMusic*(music: PMusic; loops: cint; ms: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_FadeInMusic\", dynlib: MixerLibName.}"
+    "code": "proc fadeInMusic*(music: PMusic; loops: cint; ms: cint): cint {.cdecl, \u000A    importc: \"Mix_FadeInMusic\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "FadeInChannelTimed", 
+    "name": "fadeInChannelTimed", 
     "type": "skProc", 
-    "code": "proc FadeInChannelTimed*(channel: cint; chunk: PChunk; loops: cint; ms: cint; \u000D\u000A                         ticks: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_FadeInChannelTimed\", dynlib: MixerLibName.}"
+    "code": "proc fadeInChannelTimed*(channel: cint; chunk: PChunk; loops: cint; ms: cint; \u000A                         ticks: cint): cint {.cdecl, \u000A    importc: \"Mix_FadeInChannelTimed\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "FadeInChannel", 
+    "name": "fadeInChannel", 
     "type": "skProc", 
-    "code": "proc FadeInChannel*(channel: cint; chunk: PChunk; loops: cint; ms: cint): cint"
+    "code": "proc fadeInChannel*(channel: cint; chunk: PChunk; loops: cint; ms: cint): cint"
   }, 
   {
-    "name": "Volume", 
+    "name": "volume", 
     "type": "skProc", 
-    "code": "proc Volume*(channel: cint; volume: cint): cint {.cdecl, importc: \"Mix_Volume\", \u000D\u000A    dynlib: MixerLibName.}"
+    "code": "proc volume*(channel: cint; volume: cint): cint {.cdecl, importc: \"Mix_Volume\", \u000A    dynlib: MixerLibName.}"
   }, 
   {
-    "name": "VolumeChunk", 
+    "name": "volumeChunk", 
     "type": "skProc", 
-    "code": "proc VolumeChunk*(chunk: PChunk; volume: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_VolumeChunk\", dynlib: MixerLibName.}"
+    "code": "proc volumeChunk*(chunk: PChunk; volume: cint): cint {.cdecl, \u000A    importc: \"Mix_VolumeChunk\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "VolumeMusic", 
+    "name": "volumeMusic", 
     "type": "skProc", 
-    "code": "proc VolumeMusic*(volume: cint): cint {.cdecl, importc: \"Mix_VolumeMusic\", \u000D\u000A                                        dynlib: MixerLibName.}"
+    "code": "proc volumeMusic*(volume: cint): cint {.cdecl, importc: \"Mix_VolumeMusic\", \u000A                                        dynlib: MixerLibName.}"
   }, 
   {
-    "name": "HaltChannel", 
+    "name": "haltChannel", 
     "type": "skProc", 
-    "code": "proc HaltChannel*(channel: cint): cint {.cdecl, importc: \"Mix_HaltChannel\", \u000D\u000A    dynlib: MixerLibName.}"
+    "code": "proc haltChannel*(channel: cint): cint {.cdecl, importc: \"Mix_HaltChannel\", \u000A    dynlib: MixerLibName.}"
   }, 
   {
-    "name": "HaltGroup", 
+    "name": "haltGroup", 
     "type": "skProc", 
-    "code": "proc HaltGroup*(tag: cint): cint {.cdecl, importc: \"Mix_HaltGroup\", \u000D\u000A                                   dynlib: MixerLibName.}"
+    "code": "proc haltGroup*(tag: cint): cint {.cdecl, importc: \"Mix_HaltGroup\", \u000A                                   dynlib: MixerLibName.}"
   }, 
   {
-    "name": "HaltMusic", 
+    "name": "haltMusic", 
     "type": "skProc", 
-    "code": "proc HaltMusic*(): cint {.cdecl, importc: \"Mix_HaltMusic\", dynlib: MixerLibName.}"
+    "code": "proc haltMusic*(): cint {.cdecl, importc: \"Mix_HaltMusic\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "ExpireChannel", 
+    "name": "expireChannel", 
     "type": "skProc", 
-    "code": "proc ExpireChannel*(channel: cint; ticks: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_ExpireChannel\", dynlib: MixerLibName.}"
+    "code": "proc expireChannel*(channel: cint; ticks: cint): cint {.cdecl, \u000A    importc: \"Mix_ExpireChannel\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "FadeOutChannel", 
+    "name": "fadeOutChannel", 
     "type": "skProc", 
-    "code": "proc FadeOutChannel*(which: cint; ms: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_FadeOutChannel\", dynlib: MixerLibName.}"
+    "code": "proc fadeOutChannel*(which: cint; ms: cint): cint {.cdecl, \u000A    importc: \"Mix_FadeOutChannel\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "FadeOutGroup", 
+    "name": "fadeOutGroup", 
     "type": "skProc", 
-    "code": "proc FadeOutGroup*(tag: cint; ms: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_FadeOutGroup\", dynlib: MixerLibName.}"
+    "code": "proc fadeOutGroup*(tag: cint; ms: cint): cint {.cdecl, \u000A    importc: \"Mix_FadeOutGroup\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "FadeOutMusic", 
+    "name": "fadeOutMusic", 
     "type": "skProc", 
-    "code": "proc FadeOutMusic*(ms: cint): cint {.cdecl, importc: \"Mix_FadeOutMusic\", \u000D\u000A                                     dynlib: MixerLibName.}"
+    "code": "proc fadeOutMusic*(ms: cint): cint {.cdecl, importc: \"Mix_FadeOutMusic\", \u000A                                     dynlib: MixerLibName.}"
   }, 
   {
-    "name": "FadingMusic", 
+    "name": "fadingMusic", 
     "type": "skProc", 
-    "code": "proc FadingMusic*(): TFading {.cdecl, importc: \"Mix_FadingMusic\", \u000D\u000A                               dynlib: MixerLibName.}"
+    "code": "proc fadingMusic*(): TFading {.cdecl, importc: \"Mix_FadingMusic\", \u000A                               dynlib: MixerLibName.}"
   }, 
   {
-    "name": "FadingChannel", 
+    "name": "fadingChannel", 
     "type": "skProc", 
-    "code": "proc FadingChannel*(which: cint): TFading {.cdecl, importc: \"Mix_FadingChannel\", \u000D\u000A    dynlib: MixerLibName.}"
+    "code": "proc fadingChannel*(which: cint): TFading {.cdecl, importc: \"Mix_FadingChannel\", \u000A    dynlib: MixerLibName.}"
   }, 
   {
-    "name": "Pause", 
+    "name": "pause", 
     "type": "skProc", 
-    "code": "proc Pause*(channel: cint) {.cdecl, importc: \"Mix_Pause\", dynlib: MixerLibName.}"
+    "code": "proc pause*(channel: cint) {.cdecl, importc: \"Mix_Pause\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "Resume", 
+    "name": "resume", 
     "type": "skProc", 
-    "code": "proc Resume*(channel: cint) {.cdecl, importc: \"Mix_Resume\", dynlib: MixerLibName.}"
+    "code": "proc resume*(channel: cint) {.cdecl, importc: \"Mix_Resume\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "Paused", 
+    "name": "paused", 
     "type": "skProc", 
-    "code": "proc Paused*(channel: cint): cint {.cdecl, importc: \"Mix_Paused\", \u000D\u000A                                    dynlib: MixerLibName.}"
+    "code": "proc paused*(channel: cint): cint {.cdecl, importc: \"Mix_Paused\", \u000A                                    dynlib: MixerLibName.}"
   }, 
   {
-    "name": "PauseMusic", 
+    "name": "pauseMusic", 
     "type": "skProc", 
-    "code": "proc PauseMusic*() {.cdecl, importc: \"Mix_PauseMusic\", dynlib: MixerLibName.}"
+    "code": "proc pauseMusic*() {.cdecl, importc: \"Mix_PauseMusic\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "ResumeMusic", 
+    "name": "resumeMusic", 
     "type": "skProc", 
-    "code": "proc ResumeMusic*() {.cdecl, importc: \"Mix_ResumeMusic\", dynlib: MixerLibName.}"
+    "code": "proc resumeMusic*() {.cdecl, importc: \"Mix_ResumeMusic\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "RewindMusic", 
+    "name": "rewindMusic", 
     "type": "skProc", 
-    "code": "proc RewindMusic*() {.cdecl, importc: \"Mix_RewindMusic\", dynlib: MixerLibName.}"
+    "code": "proc rewindMusic*() {.cdecl, importc: \"Mix_RewindMusic\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "PausedMusic", 
+    "name": "pausedMusic", 
     "type": "skProc", 
-    "code": "proc PausedMusic*(): cint {.cdecl, importc: \"Mix_PausedMusic\", \u000D\u000A                            dynlib: MixerLibName.}"
+    "code": "proc pausedMusic*(): cint {.cdecl, importc: \"Mix_PausedMusic\", \u000A                            dynlib: MixerLibName.}"
   }, 
   {
-    "name": "SetMusicPosition", 
+    "name": "setMusicPosition", 
     "type": "skProc", 
-    "code": "proc SetMusicPosition*(position: float64): cint {.cdecl, \u000D\u000A    importc: \"Mix_SetMusicPosition\", dynlib: MixerLibName.}"
+    "code": "proc setMusicPosition*(position: float64): cint {.cdecl, \u000A    importc: \"Mix_SetMusicPosition\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "Playing", 
+    "name": "playing", 
     "type": "skProc", 
-    "code": "proc Playing*(channel: cint): cint {.cdecl, importc: \"Mix_Playing\", \u000D\u000A                                     dynlib: MixerLibName.}"
+    "code": "proc playing*(channel: cint): cint {.cdecl, importc: \"Mix_Playing\", \u000A                                     dynlib: MixerLibName.}"
   }, 
   {
-    "name": "PlayingMusic", 
+    "name": "playingMusic", 
     "type": "skProc", 
-    "code": "proc PlayingMusic*(): cint {.cdecl, importc: \"Mix_PlayingMusic\", \u000D\u000A                             dynlib: MixerLibName.}"
+    "code": "proc playingMusic*(): cint {.cdecl, importc: \"Mix_PlayingMusic\", \u000A                             dynlib: MixerLibName.}"
   }, 
   {
-    "name": "SetMusicCMD", 
+    "name": "setMusicCMD", 
     "type": "skProc", 
-    "code": "proc SetMusicCMD*(command: cstring): cint {.cdecl, importc: \"Mix_SetMusicCMD\", \u000D\u000A    dynlib: MixerLibName.}"
+    "code": "proc setMusicCMD*(command: cstring): cint {.cdecl, importc: \"Mix_SetMusicCMD\", \u000A    dynlib: MixerLibName.}"
   }, 
   {
-    "name": "SetSynchroValue", 
+    "name": "setSynchroValue", 
     "type": "skProc", 
-    "code": "proc SetSynchroValue*(value: cint): cint {.cdecl, \u000D\u000A    importc: \"Mix_SetSynchroValue\", dynlib: MixerLibName.}"
+    "code": "proc setSynchroValue*(value: cint): cint {.cdecl, \u000A    importc: \"Mix_SetSynchroValue\", dynlib: MixerLibName.}"
   }, 
   {
-    "name": "GetSynchroValue", 
+    "name": "getSynchroValue", 
     "type": "skProc", 
-    "code": "proc GetSynchroValue*(): cint {.cdecl, importc: \"Mix_GetSynchroValue\", \u000D\u000A                                dynlib: MixerLibName.}"
+    "code": "proc getSynchroValue*(): cint {.cdecl, importc: \"Mix_GetSynchroValue\", \u000A                                dynlib: MixerLibName.}"
   }, 
   {
-    "name": "GetChunk", 
+    "name": "getChunk", 
     "type": "skProc", 
-    "code": "proc GetChunk*(channel: cint): PChunk {.cdecl, importc: \"Mix_GetChunk\", \u000D\u000A                                        dynlib: MixerLibName.}"
+    "code": "proc getChunk*(channel: cint): PChunk {.cdecl, importc: \"Mix_GetChunk\", \u000A                                        dynlib: MixerLibName.}"
   }, 
   {
-    "name": "CloseAudio", 
+    "name": "closeAudio", 
     "type": "skProc", 
-    "code": "proc CloseAudio*() {.cdecl, importc: \"Mix_CloseAudio\", dynlib: MixerLibName.}"
+    "code": "proc closeAudio*() {.cdecl, importc: \"Mix_CloseAudio\", dynlib: MixerLibName.}"
   }
 ]

@@ -1,0 +1,280 @@
+[
+  {
+    "comment": "This module implements a high-level cross-platform sockets interface."
+  }, 
+  {
+    "name": "SslAcceptResult", 
+    "type": "skType", 
+    "code": "SslAcceptResult* = enum \u000A  AcceptNoClient = 0, AcceptNoHandshake, AcceptSuccess"
+  }, 
+  {
+    "name": "BufferSize", 
+    "type": "skConst", 
+    "description": "size of a buffered socket's buffer", 
+    "code": "BufferSize*: int = 4000"
+  }, 
+  {
+    "name": "SocketFlag", 
+    "type": "skType", 
+    "description": "Ensures disconnection exceptions (ECONNRESET, EPIPE etc) are not thrown.", 
+    "code": "SocketFlag* {.pure.} = enum \u000A  Peek, SafeDisconn"
+  }, 
+  {
+    "name": "isDisconnectionError", 
+    "type": "skProc", 
+    "description": "Determines whether <tt class=\"docutils literal\"><span class=\"pre\">lastError</span></tt> is a disconnection error. Only does this if flags contains <tt class=\"docutils literal\"><span class=\"pre\">SafeDisconn</span></tt>.", 
+    "code": "proc isDisconnectionError*(flags: set[SocketFlag]; lastError: OSErrorCode): bool"
+  }, 
+  {
+    "name": "toOSFlags", 
+    "type": "skProc", 
+    "description": "Converts the flags into the underlying OS representation.", 
+    "code": "proc toOSFlags*(socketFlags: set[SocketFlag]): cint"
+  }, 
+  {
+    "name": "newSocket", 
+    "type": "skProc", 
+    "description": "<p>Creates a new socket.</p>\u000A<p>If an error occurs EOS will be raised.</p>\u000A", 
+    "code": "proc newSocket*(domain, typ, protocol: cint; buffered = true): Socket"
+  }, 
+  {
+    "name": "newSocket", 
+    "type": "skProc", 
+    "description": "<p>Creates a new socket.</p>\u000A<p>If an error occurs EOS will be raised.</p>\u000A", 
+    "code": "proc newSocket*(domain: Domain = AF_INET; typ: SockType = SOCK_STREAM; \u000A                protocol: Protocol = IPPROTO_TCP; buffered = true): Socket"
+  }, 
+  {
+    "name": "raiseSSLError", 
+    "type": "skProc", 
+    "description": "Raises a new SSL error.", 
+    "code": "proc raiseSSLError*(s = \"\")"
+  }, 
+  {
+    "name": "newContext", 
+    "type": "skProc", 
+    "description": "<p>Creates an SSL context.</p>\u000A<p>Protocol version specifies the protocol to use. SSLv2, SSLv3, TLSv1 are available with the addition of <tt class=\"docutils literal\"><span class=\"pre\">protSSLv23</span></tt> which allows for compatibility with all of them.</p>\u000A<p>There are currently only two options for verify mode; one is <tt class=\"docutils literal\"><span class=\"pre\">CVerifyNone</span></tt> and with it certificates will not be verified the other is <tt class=\"docutils literal\"><span class=\"pre\">CVerifyPeer</span></tt> and certificates will be verified for it, <tt class=\"docutils literal\"><span class=\"pre\">CVerifyPeer</span></tt> is the safest choice.</p>\u000A<p>The last two parameters specify the certificate file path and the key file path, a server socket will most likely not work without these. Certificates can be generated using the following command: <tt class=\"docutils literal\"><span class=\"pre\">openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mycert.pem -out mycert.pem</span></tt>.</p>\u000A", 
+    "code": "proc newContext*(protVersion = protSSLv23; verifyMode = CVerifyPeer; \u000A                 certFile = \"\"; keyFile = \"\"): SSLContext"
+  }, 
+  {
+    "name": "wrapSocket", 
+    "type": "skProc", 
+    "description": "<p>Wraps a socket in an SSL context. This function effectively turns <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> into an SSL socket.</p>\u000A<p><strong>Disclaimer</strong>: This code is not well tested, may be very unsafe and prone to security vulnerabilities.</p>\u000A", 
+    "code": "proc wrapSocket*(ctx: SSLContext; socket: Socket)"
+  }, 
+  {
+    "name": "socketError", 
+    "type": "skProc", 
+    "description": "<p>Raises an OSError based on the error code returned by <tt class=\"docutils literal\"><span class=\"pre\">SSLGetError</span></tt> (for SSL sockets) and <tt class=\"docutils literal\"><span class=\"pre\">osLastError</span></tt> otherwise.</p>\u000A<p>If <tt class=\"docutils literal\"><span class=\"pre\">async</span></tt> is <tt class=\"docutils literal\"><span class=\"pre\">true</span></tt> no error will be thrown in the case when the error was caused by no data being available to be read.</p>\u000A<p>If <tt class=\"docutils literal\"><span class=\"pre\">err</span></tt> is not lower than 0 no exception will be raised.</p>\u000A", 
+    "code": "proc socketError*(socket: Socket; err: int = - 1; async = false; \u000A                  lastError = (- 1).OSErrorCode)"
+  }, 
+  {
+    "name": "listen", 
+    "type": "skProc", 
+    "description": "<p>Marks <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> as accepting connections. <tt class=\"docutils literal\"><span class=\"pre\">Backlog</span></tt> specifies the maximum length of the queue of pending connections.</p>\u000A<p>Raises an EOS error upon failure.</p>\u000A", 
+    "code": "proc listen*(socket: Socket; backlog = SOMAXCONN) {.tags: [ReadIOEffect].}"
+  }, 
+  {
+    "name": "bindAddr", 
+    "type": "skProc", 
+    "description": "<p>Binds <tt class=\"docutils literal\"><span class=\"pre\">address</span></tt>:<tt class=\"docutils literal\"><span class=\"pre\">port</span></tt> to the socket.</p>\u000A<p>If <tt class=\"docutils literal\"><span class=\"pre\">address</span></tt> is &quot;&quot; then ADDR_ANY will be bound.</p>\u000A", 
+    "code": "proc bindAddr*(socket: Socket; port = Port(0); address = \"\") {.\u000A    tags: [ReadIOEffect].}"
+  }, 
+  {
+    "name": "acceptAddr", 
+    "type": "skProc", 
+    "description": "<p>Blocks until a connection is being made from a client. When a connection is made sets <tt class=\"docutils literal\"><span class=\"pre\">client</span></tt> to the client socket and <tt class=\"docutils literal\"><span class=\"pre\">address</span></tt> to the address of the connecting client. This function will raise EOS if an error occurs.</p>\u000A<p>The resulting client will inherit any properties of the server socket. For example: whether the socket is buffered or not.</p>\u000A<p><strong>Note</strong>: <tt class=\"docutils literal\"><span class=\"pre\">client</span></tt> must be initialised (with <tt class=\"docutils literal\"><span class=\"pre\">new</span></tt>), this function makes no effort to initialise the <tt class=\"docutils literal\"><span class=\"pre\">client</span></tt> variable.</p>\u000A<p>The <tt class=\"docutils literal\"><span class=\"pre\">accept</span></tt> call may result in an error if the connecting socket disconnects during the duration of the <tt class=\"docutils literal\"><span class=\"pre\">accept</span></tt>. If the <tt class=\"docutils literal\"><span class=\"pre\">SafeDisconn</span></tt> flag is specified then this error will not be raised and instead accept will be called again.</p>\u000A", 
+    "code": "proc acceptAddr*(server: Socket; client: var Socket; address: var string; \u000A                 flags = {SocketFlag.SafeDisconn}) {.tags: [ReadIOEffect].}"
+  }, 
+  {
+    "name": "accept", 
+    "type": "skProc", 
+    "description": "<p>Equivalent to <tt class=\"docutils literal\"><span class=\"pre\">acceptAddr</span></tt> but doesn't return the address, only the socket.</p>\u000A<p><strong>Note</strong>: <tt class=\"docutils literal\"><span class=\"pre\">client</span></tt> must be initialised (with <tt class=\"docutils literal\"><span class=\"pre\">new</span></tt>), this function makes no effort to initialise the <tt class=\"docutils literal\"><span class=\"pre\">client</span></tt> variable.</p>\u000A<p>The <tt class=\"docutils literal\"><span class=\"pre\">accept</span></tt> call may result in an error if the connecting socket disconnects during the duration of the <tt class=\"docutils literal\"><span class=\"pre\">accept</span></tt>. If the <tt class=\"docutils literal\"><span class=\"pre\">SafeDisconn</span></tt> flag is specified then this error will not be raised and instead accept will be called again.</p>\u000A", 
+    "code": "proc accept*(server: Socket; client: var Socket; \u000A             flags = {SocketFlag.SafeDisconn}) {.tags: [ReadIOEffect].}"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "Closes a socket.", 
+    "code": "proc close*(socket: Socket)"
+  }, 
+  {
+    "name": "toCInt", 
+    "type": "skProc", 
+    "description": "Converts a <tt class=\"docutils literal\"><span class=\"pre\">SOBool</span></tt> into its Socket Option cint representation.", 
+    "code": "proc toCInt*(opt: SOBool): cint"
+  }, 
+  {
+    "name": "getSockOpt", 
+    "type": "skProc", 
+    "description": "Retrieves option <tt class=\"docutils literal\"><span class=\"pre\">opt</span></tt> as a boolean value.", 
+    "code": "proc getSockOpt*(socket: Socket; opt: SOBool; level = SOL_SOCKET): bool {.\u000A    tags: [ReadIOEffect].}"
+  }, 
+  {
+    "name": "setSockOpt", 
+    "type": "skProc", 
+    "description": "Sets option <tt class=\"docutils literal\"><span class=\"pre\">opt</span></tt> to a boolean value specified by <tt class=\"docutils literal\"><span class=\"pre\">value</span></tt>.", 
+    "code": "proc setSockOpt*(socket: Socket; opt: SOBool; value: bool; level = SOL_SOCKET) {.\u000A    tags: [WriteIOEffect].}"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "description": "<p>Connects socket to <tt class=\"docutils literal\"><span class=\"pre\">address</span></tt>:<tt class=\"docutils literal\"><span class=\"pre\">port</span></tt>. <tt class=\"docutils literal\"><span class=\"pre\">Address</span></tt> can be an IP address or a host name. If <tt class=\"docutils literal\"><span class=\"pre\">address</span></tt> is a host name, this function will try each IP of that host name. <tt class=\"docutils literal\"><span class=\"pre\">htons</span></tt> is already performed on <tt class=\"docutils literal\"><span class=\"pre\">port</span></tt> so you must not do it.</p>\u000A<p>If <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> is an SSL socket a handshake will be automatically performed.</p>\u000A", 
+    "code": "proc connect*(socket: Socket; address: string; port = Port(0); \u000A              af: Domain = AF_INET) {.tags: [ReadIOEffect].}"
+  }, 
+  {
+    "name": "handshake", 
+    "type": "skProc", 
+    "description": "<p>This proc needs to be called on a socket after it connects. This is only applicable when using <tt class=\"docutils literal\"><span class=\"pre\">connectAsync</span></tt>. This proc performs the SSL handshake.</p>\u000A<p>Returns <tt class=\"docutils literal\"><span class=\"pre\">False</span></tt> whenever the socket is not yet ready for a handshake, <tt class=\"docutils literal\"><span class=\"pre\">True</span></tt> whenever handshake completed successfully.</p>\u000A<p>A ESSL error is raised on any other errors.</p>\u000A", 
+    "code": "proc handshake*(socket: Socket): bool {.tags: [ReadIOEffect, WriteIOEffect].}"
+  }, 
+  {
+    "name": "gotHandshake", 
+    "type": "skProc", 
+    "description": "<p>Determines whether a handshake has occurred between a client (<tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt>) and the server that <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> is connected to.</p>\u000A<p>Throws ESSL if <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> is not an SSL socket.</p>\u000A", 
+    "code": "proc gotHandshake*(socket: Socket): bool"
+  }, 
+  {
+    "name": "hasDataBuffered", 
+    "type": "skProc", 
+    "description": "Determines whether a socket has data buffered.", 
+    "code": "proc hasDataBuffered*(s: Socket): bool"
+  }, 
+  {
+    "name": "recv", 
+    "type": "skProc", 
+    "description": "<p>Receives data from a socket.</p>\u000A<p><strong>Note</strong>: This is a low-level function, you may be interested in the higher level versions of this function which are also named <tt class=\"docutils literal\"><span class=\"pre\">recv</span></tt>.</p>\u000A", 
+    "code": "proc recv*(socket: Socket; data: pointer; size: int): int {.tags: [ReadIOEffect].}"
+  }, 
+  {
+    "name": "recv", 
+    "type": "skProc", 
+    "description": "overload with a <tt class=\"docutils literal\"><span class=\"pre\">timeout</span></tt> parameter in miliseconds.", 
+    "code": "proc recv*(socket: Socket; data: pointer; size: int; timeout: int): int {.\u000A    tags: [ReadIOEffect, TimeEffect].}"
+  }, 
+  {
+    "name": "recv", 
+    "type": "skProc", 
+    "description": "<p>Higher-level version of <tt class=\"docutils literal\"><span class=\"pre\">recv</span></tt>.</p>\u000A<p>When 0 is returned the socket's connection has been closed.</p>\u000A<p>This function will throw an EOS exception when an error occurs. A value lower than 0 is never returned.</p>\u000A<p>A timeout may be specified in miliseconds, if enough data is not received within the time specified an ETimeout exception will be raised.</p>\u000A<p><strong>Note</strong>: <tt class=\"docutils literal\"><span class=\"pre\">data</span></tt> must be initialised.</p>\u000A<p><strong>Warning</strong>: Only the <tt class=\"docutils literal\"><span class=\"pre\">SafeDisconn</span></tt> flag is currently supported.</p>\u000A", 
+    "code": "proc recv*(socket: Socket; data: var string; size: int; timeout = - 1; \u000A           flags = {SocketFlag.SafeDisconn}): int"
+  }, 
+  {
+    "name": "readLine", 
+    "type": "skProc", 
+    "description": "<p>Reads a line of data from <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt>.</p>\u000A<p>If a full line is read <tt class=\"docutils literal\"><span class=\"pre\">\\r\\L</span></tt> is not added to <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt>, however if solely <tt class=\"docutils literal\"><span class=\"pre\">\\r\\L</span></tt> is read then <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt> will be set to it.</p>\u000A<p>If the socket is disconnected, <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt> will be set to <tt class=\"docutils literal\"><span class=\"pre\">&quot;&quot;</span></tt>.</p>\u000A<p>An EOS exception will be raised in the case of a socket error.</p>\u000A<p>A timeout can be specified in miliseconds, if data is not received within the specified time an ETimeout exception will be raised.</p>\u000A<p><strong>Warning</strong>: Only the <tt class=\"docutils literal\"><span class=\"pre\">SafeDisconn</span></tt> flag is currently supported.</p>\u000A", 
+    "code": "proc readLine*(socket: Socket; line: var TaintedString; timeout = - 1; \u000A               flags = {SocketFlag.SafeDisconn}) {.\u000A    tags: [ReadIOEffect, TimeEffect].}"
+  }, 
+  {
+    "name": "recvFrom", 
+    "type": "skProc", 
+    "description": "<p>Receives data from <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt>. This function should normally be used with connection-less sockets (UDP sockets).</p>\u000A<p>If an error occurs an EOS exception will be raised. Otherwise the return value will be the length of data received.</p>\u000A<p><strong>Warning:</strong> This function does not yet have a buffered implementation, so when <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> is buffered the non-buffered implementation will be used. Therefore if <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> contains something in its buffer this function will make no effort to return it.</p>\u000A", 
+    "code": "proc recvFrom*(socket: Socket; data: var string; length: int; \u000A               address: var string; port: var Port; flags = 0'i32): int {.\u000A    tags: [ReadIOEffect].}"
+  }, 
+  {
+    "name": "skip", 
+    "type": "skProc", 
+    "description": "<p>Skips <tt class=\"docutils literal\"><span class=\"pre\">size</span></tt> amount of bytes.</p>\u000A<p>An optional timeout can be specified in miliseconds, if skipping the bytes takes longer than specified an ETimeout exception will be raised.</p>\u000A<p>Returns the number of skipped bytes.</p>\u000A", 
+    "code": "proc skip*(socket: Socket; size: int; timeout = - 1)"
+  }, 
+  {
+    "name": "send", 
+    "type": "skProc", 
+    "description": "<p>Sends data to a socket.</p>\u000A<p><strong>Note</strong>: This is a low-level version of <tt class=\"docutils literal\"><span class=\"pre\">send</span></tt>. You likely should use the version below.</p>\u000A", 
+    "code": "proc send*(socket: Socket; data: pointer; size: int): int {.\u000A    tags: [WriteIOEffect].}"
+  }, 
+  {
+    "name": "send", 
+    "type": "skProc", 
+    "description": "sends data to a socket.", 
+    "code": "proc send*(socket: Socket; data: string; flags = {SocketFlag.SafeDisconn}) {.\u000A    tags: [WriteIOEffect].}"
+  }, 
+  {
+    "name": "trySend", 
+    "type": "skProc", 
+    "description": "Safe alternative to <tt class=\"docutils literal\"><span class=\"pre\">send</span></tt>. Does not raise an EOS when an error occurs, and instead returns <tt class=\"docutils literal\"><span class=\"pre\">false</span></tt> on failure.", 
+    "code": "proc trySend*(socket: Socket; data: string): bool {.tags: [WriteIOEffect].}"
+  }, 
+  {
+    "name": "sendTo", 
+    "type": "skProc", 
+    "description": "<p>This proc sends <tt class=\"docutils literal\"><span class=\"pre\">data</span></tt> to the specified <tt class=\"docutils literal\"><span class=\"pre\">address</span></tt>, which may be an IP address or a hostname, if a hostname is specified this function will try each IP of that hostname.</p>\u000A<p><strong>Note:</strong> You may wish to use the high-level version of this function which is defined below.</p>\u000A<p><strong>Note:</strong> This proc is not available for SSL sockets.</p>\u000A", 
+    "code": "proc sendTo*(socket: Socket; address: string; port: Port; data: pointer; \u000A             size: int; af: Domain = AF_INET; flags = 0'i32): int {.\u000A    tags: [WriteIOEffect].}"
+  }, 
+  {
+    "name": "sendTo", 
+    "type": "skProc", 
+    "description": "<p>This proc sends <tt class=\"docutils literal\"><span class=\"pre\">data</span></tt> to the specified <tt class=\"docutils literal\"><span class=\"pre\">address</span></tt>, which may be an IP address or a hostname, if a hostname is specified this function will try each IP of that hostname.</p>\u000A<p>This is the high-level version of the above <tt class=\"docutils literal\"><span class=\"pre\">sendTo</span></tt> function.</p>\u000A", 
+    "code": "proc sendTo*(socket: Socket; address: string; port: Port; data: string): int {.\u000A    tags: [WriteIOEffect].}"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "description": "<p>Connects to server as specified by <tt class=\"docutils literal\"><span class=\"pre\">address</span></tt> on port specified by <tt class=\"docutils literal\"><span class=\"pre\">port</span></tt>.</p>\u000A<p>The <tt class=\"docutils literal\"><span class=\"pre\">timeout</span></tt> paremeter specifies the time in miliseconds to allow for the connection to the server to be made.</p>\u000A", 
+    "code": "proc connect*(socket: Socket; address: string; port = Port(0); timeout: int; \u000A              af: Domain = AF_INET) {.tags: [ReadIOEffect, WriteIOEffect].}"
+  }, 
+  {
+    "name": "isSSL", 
+    "type": "skProc", 
+    "description": "Determines whether <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> is a SSL socket.", 
+    "code": "proc isSSL*(socket: Socket): bool"
+  }, 
+  {
+    "name": "getFD", 
+    "type": "skProc", 
+    "description": "Returns the socket's file descriptor", 
+    "code": "proc getFD*(socket: Socket): SocketHandle"
+  }, 
+  {
+    "name": "TIpAddress", 
+    "type": "skType", 
+    "description": "stores an arbitrary IP address    ", 
+    "code": "TIpAddress* = object \u000A  case family*: IpAddressFamily ## the type of the IP address (IPv4 or IPv6)\u000A  of IpAddressFamily.IPv6: \u000A      address_v6*: array[0 .. 15, uint8] ## Contains the IP address in bytes in\u000A                                         ## case of IPv6\u000A    \u000A  of IpAddressFamily.IPv4: \u000A      address_v4*: array[0 .. 3, uint8] ## Contains the IP address in bytes in\u000A                                        ## case of IPv4\u000A    \u000A  "
+  }, 
+  {
+    "name": "IPv4_any", 
+    "type": "skProc", 
+    "description": "Returns the IPv4 any address, which can be used to listen on all available network adapters", 
+    "code": "proc IPv4_any*(): TIpAddress"
+  }, 
+  {
+    "name": "IPv4_loopback", 
+    "type": "skProc", 
+    "description": "Returns the IPv4 loopback address (127.0.0.1)", 
+    "code": "proc IPv4_loopback*(): TIpAddress"
+  }, 
+  {
+    "name": "IPv4_broadcast", 
+    "type": "skProc", 
+    "description": "Returns the IPv4 broadcast address (255.255.255.255)", 
+    "code": "proc IPv4_broadcast*(): TIpAddress"
+  }, 
+  {
+    "name": "IPv6_any", 
+    "type": "skProc", 
+    "description": "Returns the IPv6 any address (::0), which can be used to listen on all available network adapters ", 
+    "code": "proc IPv6_any*(): TIpAddress"
+  }, 
+  {
+    "name": "IPv6_loopback", 
+    "type": "skProc", 
+    "description": "Returns the IPv6 loopback address (::1)", 
+    "code": "proc IPv6_loopback*(): TIpAddress"
+  }, 
+  {
+    "name": "`==`", 
+    "type": "skProc", 
+    "description": "Compares two IpAddresses for Equality. Returns two if the addresses are equal", 
+    "code": "proc `==`*(lhs, rhs: TIpAddress): bool"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "Converts an TIpAddress into the textual representation", 
+    "code": "proc `$`*(address: TIpAddress): string"
+  }, 
+  {
+    "name": "parseIpAddress", 
+    "type": "skProc", 
+    "description": "Parses an IP address Raises EInvalidValue on error", 
+    "code": "proc parseIpAddress*(address_str: string): TIpAddress"
+  }
+]

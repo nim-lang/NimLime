@@ -2,36 +2,36 @@
   {
     "name": "THttpParserSettings", 
     "type": "skType", 
-    "code": "THttpParserSettings* {.pure, final, importc: \"http_parser_settings\", \u000D\u000A                       header: \"http_parser.h\".} = object \u000D\u000A  on_message_begin* {.importc: \"on_message_begin\".}: HttpProc\u000D\u000A  on_url* {.importc: \"on_url\".}: HttpDataProc\u000D\u000A  on_header_field* {.importc: \"on_header_field\".}: HttpDataProc\u000D\u000A  on_header_value* {.importc: \"on_header_value\".}: HttpDataProc\u000D\u000A  on_headers_complete* {.importc: \"on_headers_complete\".}: HttpProc\u000D\u000A  on_body* {.importc: \"on_body\".}: HttpDataProc\u000D\u000A  on_message_complete* {.importc: \"on_message_complete\".}: HttpProc\u000D\u000A"
+    "code": "THttpParserSettings* {.pure, final, importc: \"http_parser_settings\", \u000A                       header: \"http_parser.h\".} = object \u000A  on_message_begin* {.importc: \"on_message_begin\".}: HttpProc\u000A  on_url* {.importc: \"on_url\".}: HttpDataProc\u000A  on_header_field* {.importc: \"on_header_field\".}: HttpDataProc\u000A  on_header_value* {.importc: \"on_header_value\".}: HttpDataProc\u000A  on_headers_complete* {.importc: \"on_headers_complete\".}: HttpProc\u000A  on_body* {.importc: \"on_body\".}: HttpDataProc\u000A  on_message_complete* {.importc: \"on_message_complete\".}: HttpProc\u000A"
   }, 
   {
     "name": "http_parser_init", 
     "type": "skProc", 
-    "code": "proc http_parser_init*(parser: var THttpParser; typ: THttpParserType) {.\u000D\u000A    importc: \"http_parser_init\", header: \"http_parser.h\".}"
+    "code": "proc http_parser_init*(parser: var THttpParser; typ: THttpParserType) {.\u000A    importc: \"http_parser_init\", header: \"http_parser.h\".}"
   }, 
   {
     "name": "http_parser_execute", 
     "type": "skProc", 
-    "code": "proc http_parser_execute*(parser: var THttpParser; \u000D\u000A                          settings: var THttpParserSettings; data: cstring; \u000D\u000A                          len: csize): csize {.importc: \"http_parser_execute\", \u000D\u000A    header: \"http_parser.h\".}"
+    "code": "proc http_parser_execute*(parser: var THttpParser; \u000A                          settings: var THttpParserSettings; data: cstring; \u000A                          len: csize): csize {.importc: \"http_parser_execute\", \u000A    header: \"http_parser.h\".}"
   }, 
   {
     "name": "http_should_keep_alive", 
     "type": "skProc", 
-    "code": "proc http_should_keep_alive*(parser: var THttpParser): cint {.\u000D\u000A    importc: \"http_should_keep_alive\", header: \"http_parser.h\".}"
+    "code": "proc http_should_keep_alive*(parser: var THttpParser): cint {.\u000A    importc: \"http_should_keep_alive\", header: \"http_parser.h\".}"
   }, 
   {
     "name": "http_method_str", 
     "type": "skProc", 
-    "code": "proc http_method_str*(m: THttpMethod): cstring {.importc: \"http_method_str\", \u000D\u000A    header: \"http_parser.h\".}"
+    "code": "proc http_method_str*(m: THttpMethod): cstring {.importc: \"http_method_str\", \u000A    header: \"http_parser.h\".}"
   }, 
   {
     "name": "http_errno_name", 
     "type": "skProc", 
-    "code": "proc http_errno_name*(err: THttpErrNo): cstring {.importc: \"http_errno_name\", \u000D\u000A    header: \"http_parser.h\".}"
+    "code": "proc http_errno_name*(err: THttpErrNo): cstring {.importc: \"http_errno_name\", \u000A    header: \"http_parser.h\".}"
   }, 
   {
     "name": "http_errno_description", 
     "type": "skProc", 
-    "code": "proc http_errno_description*(err: THttpErrNo): cstring {.\u000D\u000A    importc: \"http_errno_description\", header: \"http_parser.h\".}"
+    "code": "proc http_errno_description*(err: THttpErrNo): cstring {.\u000A    importc: \"http_errno_description\", header: \"http_parser.h\".}"
   }
 ]

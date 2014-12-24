@@ -7,511 +7,511 @@
   {
     "name": "TColorY", 
     "type": "skType", 
-    "code": "TColorY* {.final.} = object \u000D\u000A  y*: byte\u000D\u000A"
+    "code": "TColorY* {.final.} = object \u000A  y*: byte\u000A"
   }, 
   {
     "name": "initFramerate", 
     "type": "skProc", 
-    "code": "proc initFramerate*(manager: PFPSmanager) {.cdecl, importc: \"SDL_initFramerate\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc initFramerate*(manager: PFPSmanager) {.cdecl, importc: \"SDL_initFramerate\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "setFramerate", 
     "type": "skProc", 
-    "code": "proc setFramerate*(manager: PFPSmanager; rate: cint): cint {.cdecl, \u000D\u000A    importc: \"SDL_setFramerate\", dynlib: gfxLibName.}"
+    "code": "proc setFramerate*(manager: PFPSmanager; rate: cint): cint {.cdecl, \u000A    importc: \"SDL_setFramerate\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "getFramerate", 
     "type": "skProc", 
-    "code": "proc getFramerate*(manager: PFPSmanager): cint {.cdecl, \u000D\u000A    importc: \"SDL_getFramerate\", dynlib: gfxLibName.}"
+    "code": "proc getFramerate*(manager: PFPSmanager): cint {.cdecl, \u000A    importc: \"SDL_getFramerate\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "framerateDelay", 
     "type": "skProc", 
-    "code": "proc framerateDelay*(manager: PFPSmanager) {.cdecl, \u000D\u000A    importc: \"SDL_framerateDelay\", dynlib: gfxLibName.}"
+    "code": "proc framerateDelay*(manager: PFPSmanager) {.cdecl, \u000A    importc: \"SDL_framerateDelay\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "pixelColor", 
     "type": "skProc", 
-    "code": "proc pixelColor*(dst: PSurface; x: int16; y: int16; color: Uint32): cint {.\u000D\u000A    cdecl, importc: \"pixelColor\", dynlib: gfxLibName.}"
+    "code": "proc pixelColor*(dst: PSurface; x: int16; y: int16; color: uint32): cint {.\u000A    cdecl, importc: \"pixelColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "pixelRGBA", 
     "type": "skProc", 
-    "code": "proc pixelRGBA*(dst: PSurface; x: int16; y: int16; r: byte; g: byte; b: byte; \u000D\u000A                a: byte): cint {.cdecl, importc: \"pixelRGBA\", dynlib: gfxLibName.}"
+    "code": "proc pixelRGBA*(dst: PSurface; x: int16; y: int16; r: byte; g: byte; b: byte; \u000A                a: byte): cint {.cdecl, importc: \"pixelRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "hlineColor", 
     "type": "skProc", 
-    "code": "proc hlineColor*(dst: PSurface; x1: int16; x2: int16; y: int16; color: Uint32): cint {.\u000D\u000A    cdecl, importc: \"hlineColor\", dynlib: gfxLibName.}"
+    "code": "proc hlineColor*(dst: PSurface; x1: int16; x2: int16; y: int16; color: uint32): cint {.\u000A    cdecl, importc: \"hlineColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "hlineRGBA", 
     "type": "skProc", 
-    "code": "proc hlineRGBA*(dst: PSurface; x1: int16; x2: int16; y: int16; r: byte; g: byte; \u000D\u000A                b: byte; a: byte): cint {.cdecl, importc: \"hlineRGBA\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc hlineRGBA*(dst: PSurface; x1: int16; x2: int16; y: int16; r: byte; g: byte; \u000A                b: byte; a: byte): cint {.cdecl, importc: \"hlineRGBA\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "vlineColor", 
     "type": "skProc", 
-    "code": "proc vlineColor*(dst: PSurface; x: int16; y1: int16; y2: int16; color: Uint32): cint {.\u000D\u000A    cdecl, importc: \"vlineColor\", dynlib: gfxLibName.}"
+    "code": "proc vlineColor*(dst: PSurface; x: int16; y1: int16; y2: int16; color: uint32): cint {.\u000A    cdecl, importc: \"vlineColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "vlineRGBA", 
     "type": "skProc", 
-    "code": "proc vlineRGBA*(dst: PSurface; x: int16; y1: int16; y2: int16; r: byte; g: byte; \u000D\u000A                b: byte; a: byte): cint {.cdecl, importc: \"vlineRGBA\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc vlineRGBA*(dst: PSurface; x: int16; y1: int16; y2: int16; r: byte; g: byte; \u000A                b: byte; a: byte): cint {.cdecl, importc: \"vlineRGBA\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "rectangleColor", 
     "type": "skProc", 
-    "code": "proc rectangleColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A                     color: Uint32): cint {.cdecl, importc: \"rectangleColor\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc rectangleColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A                     color: uint32): cint {.cdecl, importc: \"rectangleColor\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "rectangleRGBA", 
     "type": "skProc", 
-    "code": "proc rectangleRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A                    r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"rectangleRGBA\", dynlib: gfxLibName.}"
+    "code": "proc rectangleRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A                    r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"rectangleRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "boxColor", 
     "type": "skProc", 
-    "code": "proc boxColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A               color: Uint32): cint {.cdecl, importc: \"boxColor\", \u000D\u000A                                      dynlib: gfxLibName.}"
+    "code": "proc boxColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A               color: uint32): cint {.cdecl, importc: \"boxColor\", \u000A                                      dynlib: gfxLibName.}"
   }, 
   {
     "name": "boxRGBA", 
     "type": "skProc", 
-    "code": "proc boxRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A              r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"boxRGBA\", dynlib: gfxLibName.}"
+    "code": "proc boxRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A              r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"boxRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "lineColor", 
     "type": "skProc", 
-    "code": "proc lineColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A                color: Uint32): cint {.cdecl, importc: \"lineColor\", \u000D\u000A                                       dynlib: gfxLibName.}"
+    "code": "proc lineColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A                color: uint32): cint {.cdecl, importc: \"lineColor\", \u000A                                       dynlib: gfxLibName.}"
   }, 
   {
     "name": "lineRGBA", 
     "type": "skProc", 
-    "code": "proc lineRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A               r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"lineRGBA\", dynlib: gfxLibName.}"
+    "code": "proc lineRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A               r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"lineRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "aalineColor", 
     "type": "skProc", 
-    "code": "proc aalineColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A                  color: Uint32): cint {.cdecl, importc: \"aalineColor\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc aalineColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A                  color: uint32): cint {.cdecl, importc: \"aalineColor\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "aalineRGBA", 
     "type": "skProc", 
-    "code": "proc aalineRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A                 r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"aalineRGBA\", dynlib: gfxLibName.}"
+    "code": "proc aalineRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A                 r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"aalineRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "circleColor", 
     "type": "skProc", 
-    "code": "proc circleColor*(dst: PSurface; x: int16; y: int16; r: int16; color: Uint32): cint {.\u000D\u000A    cdecl, importc: \"circleColor\", dynlib: gfxLibName.}"
+    "code": "proc circleColor*(dst: PSurface; x: int16; y: int16; r: int16; color: uint32): cint {.\u000A    cdecl, importc: \"circleColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "circleRGBA", 
     "type": "skProc", 
-    "code": "proc circleRGBA*(dst: PSurface; x: int16; y: int16; rad: int16; r: byte; \u000D\u000A                 g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"circleRGBA\", dynlib: gfxLibName.}"
+    "code": "proc circleRGBA*(dst: PSurface; x: int16; y: int16; rad: int16; r: byte; \u000A                 g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"circleRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "aacircleColor", 
     "type": "skProc", 
-    "code": "proc aacircleColor*(dst: PSurface; x: int16; y: int16; r: int16; color: Uint32): cint {.\u000D\u000A    cdecl, importc: \"aacircleColor\", dynlib: gfxLibName.}"
+    "code": "proc aacircleColor*(dst: PSurface; x: int16; y: int16; r: int16; color: uint32): cint {.\u000A    cdecl, importc: \"aacircleColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "aacircleRGBA", 
     "type": "skProc", 
-    "code": "proc aacircleRGBA*(dst: PSurface; x: int16; y: int16; rad: int16; r: byte; \u000D\u000A                   g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"aacircleRGBA\", dynlib: gfxLibName.}"
+    "code": "proc aacircleRGBA*(dst: PSurface; x: int16; y: int16; rad: int16; r: byte; \u000A                   g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"aacircleRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "filledCircleColor", 
     "type": "skProc", 
-    "code": "proc filledCircleColor*(dst: PSurface; x: int16; y: int16; r: int16; \u000D\u000A                        color: Uint32): cint {.cdecl, \u000D\u000A    importc: \"filledCircleColor\", dynlib: gfxLibName.}"
+    "code": "proc filledCircleColor*(dst: PSurface; x: int16; y: int16; r: int16; \u000A                        color: uint32): cint {.cdecl, \u000A    importc: \"filledCircleColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "filledCircleRGBA", 
     "type": "skProc", 
-    "code": "proc filledCircleRGBA*(dst: PSurface; x: int16; y: int16; rad: int16; r: byte; \u000D\u000A                       g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"filledCircleRGBA\", dynlib: gfxLibName.}"
+    "code": "proc filledCircleRGBA*(dst: PSurface; x: int16; y: int16; rad: int16; r: byte; \u000A                       g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"filledCircleRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "ellipseColor", 
     "type": "skProc", 
-    "code": "proc ellipseColor*(dst: PSurface; x: int16; y: int16; rx: int16; ry: int16; \u000D\u000A                   color: Uint32): cint {.cdecl, importc: \"ellipseColor\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc ellipseColor*(dst: PSurface; x: int16; y: int16; rx: int16; ry: int16; \u000A                   color: uint32): cint {.cdecl, importc: \"ellipseColor\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "ellipseRGBA", 
     "type": "skProc", 
-    "code": "proc ellipseRGBA*(dst: PSurface; x: int16; y: int16; rx: int16; ry: int16; \u000D\u000A                  r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"ellipseRGBA\", dynlib: gfxLibName.}"
+    "code": "proc ellipseRGBA*(dst: PSurface; x: int16; y: int16; rx: int16; ry: int16; \u000A                  r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"ellipseRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "aaellipseColor", 
     "type": "skProc", 
-    "code": "proc aaellipseColor*(dst: PSurface; xc: int16; yc: int16; rx: int16; ry: int16; \u000D\u000A                     color: Uint32): cint {.cdecl, importc: \"aaellipseColor\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc aaellipseColor*(dst: PSurface; xc: int16; yc: int16; rx: int16; ry: int16; \u000A                     color: uint32): cint {.cdecl, importc: \"aaellipseColor\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "aaellipseRGBA", 
     "type": "skProc", 
-    "code": "proc aaellipseRGBA*(dst: PSurface; x: int16; y: int16; rx: int16; ry: int16; \u000D\u000A                    r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"aaellipseRGBA\", dynlib: gfxLibName.}"
+    "code": "proc aaellipseRGBA*(dst: PSurface; x: int16; y: int16; rx: int16; ry: int16; \u000A                    r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"aaellipseRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "filledEllipseColor", 
     "type": "skProc", 
-    "code": "proc filledEllipseColor*(dst: PSurface; x: int16; y: int16; rx: int16; \u000D\u000A                         ry: int16; color: Uint32): cint {.cdecl, \u000D\u000A    importc: \"filledEllipseColor\", dynlib: gfxLibName.}"
+    "code": "proc filledEllipseColor*(dst: PSurface; x: int16; y: int16; rx: int16; \u000A                         ry: int16; color: uint32): cint {.cdecl, \u000A    importc: \"filledEllipseColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "filledEllipseRGBA", 
     "type": "skProc", 
-    "code": "proc filledEllipseRGBA*(dst: PSurface; x: int16; y: int16; rx: int16; ry: int16; \u000D\u000A                        r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"filledEllipseRGBA\", dynlib: gfxLibName.}"
+    "code": "proc filledEllipseRGBA*(dst: PSurface; x: int16; y: int16; rx: int16; ry: int16; \u000A                        r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"filledEllipseRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "pieColor", 
     "type": "skProc", 
-    "code": "proc pieColor*(dst: PSurface; x: int16; y: int16; rad: int16; start: int16; \u000D\u000A               finish: int16; color: Uint32): cint {.cdecl, importc: \"pieColor\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc pieColor*(dst: PSurface; x: int16; y: int16; rad: int16; start: int16; \u000A               finish: int16; color: uint32): cint {.cdecl, importc: \"pieColor\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "pieRGBA", 
     "type": "skProc", 
-    "code": "proc pieRGBA*(dst: PSurface; x: int16; y: int16; rad: int16; start: int16; \u000D\u000A              finish: int16; r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"pieRGBA\", dynlib: gfxLibName.}"
+    "code": "proc pieRGBA*(dst: PSurface; x: int16; y: int16; rad: int16; start: int16; \u000A              finish: int16; r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"pieRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "filledPieColor", 
     "type": "skProc", 
-    "code": "proc filledPieColor*(dst: PSurface; x: int16; y: int16; rad: int16; \u000D\u000A                     start: int16; finish: int16; color: Uint32): cint {.cdecl, \u000D\u000A    importc: \"filledPieColor\", dynlib: gfxLibName.}"
+    "code": "proc filledPieColor*(dst: PSurface; x: int16; y: int16; rad: int16; \u000A                     start: int16; finish: int16; color: uint32): cint {.cdecl, \u000A    importc: \"filledPieColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "filledPieRGBA", 
     "type": "skProc", 
-    "code": "proc filledPieRGBA*(dst: PSurface; x: int16; y: int16; rad: int16; start: int16; \u000D\u000A                    finish: int16; r: byte; g: byte; b: byte; a: byte): cint {.\u000D\u000A    cdecl, importc: \"filledPieRGBA\", dynlib: gfxLibName.}"
+    "code": "proc filledPieRGBA*(dst: PSurface; x: int16; y: int16; rad: int16; start: int16; \u000A                    finish: int16; r: byte; g: byte; b: byte; a: byte): cint {.\u000A    cdecl, importc: \"filledPieRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "trigonColor", 
     "type": "skProc", 
-    "code": "proc trigonColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A                  x3: int16; y3: int16; color: Uint32): cint {.cdecl, \u000D\u000A    importc: \"trigonColor\", dynlib: gfxLibName.}"
+    "code": "proc trigonColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A                  x3: int16; y3: int16; color: uint32): cint {.cdecl, \u000A    importc: \"trigonColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "trigonRGBA", 
     "type": "skProc", 
-    "code": "proc trigonRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A                 x3: int16; y3: int16; r: byte; g: byte; b: byte; a: byte): cint {.\u000D\u000A    cdecl, importc: \"trigonRGBA\", dynlib: gfxLibName.}"
+    "code": "proc trigonRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A                 x3: int16; y3: int16; r: byte; g: byte; b: byte; a: byte): cint {.\u000A    cdecl, importc: \"trigonRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "aatrigonColor", 
     "type": "skProc", 
-    "code": "proc aatrigonColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A                    x3: int16; y3: int16; color: Uint32): cint {.cdecl, \u000D\u000A    importc: \"aatrigonColor\", dynlib: gfxLibName.}"
+    "code": "proc aatrigonColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A                    x3: int16; y3: int16; color: uint32): cint {.cdecl, \u000A    importc: \"aatrigonColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "aatrigonRGBA", 
     "type": "skProc", 
-    "code": "proc aatrigonRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000D\u000A                   x3: int16; y3: int16; r: byte; g: byte; b: byte; a: byte): cint {.\u000D\u000A    cdecl, importc: \"aatrigonRGBA\", dynlib: gfxLibName.}"
+    "code": "proc aatrigonRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; y2: int16; \u000A                   x3: int16; y3: int16; r: byte; g: byte; b: byte; a: byte): cint {.\u000A    cdecl, importc: \"aatrigonRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "filledTrigonColor", 
     "type": "skProc", 
-    "code": "proc filledTrigonColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; \u000D\u000A                        y2: int16; x3: int16; y3: int16; color: Uint32): cint {.\u000D\u000A    cdecl, importc: \"filledTrigonColor\", dynlib: gfxLibName.}"
+    "code": "proc filledTrigonColor*(dst: PSurface; x1: int16; y1: int16; x2: int16; \u000A                        y2: int16; x3: int16; y3: int16; color: uint32): cint {.\u000A    cdecl, importc: \"filledTrigonColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "filledTrigonRGBA", 
     "type": "skProc", 
-    "code": "proc filledTrigonRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; \u000D\u000A                       y2: int16; x3: int16; y3: int16; r: byte; g: byte; \u000D\u000A                       b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"filledTrigonRGBA\", dynlib: gfxLibName.}"
+    "code": "proc filledTrigonRGBA*(dst: PSurface; x1: int16; y1: int16; x2: int16; \u000A                       y2: int16; x3: int16; y3: int16; r: byte; g: byte; \u000A                       b: byte; a: byte): cint {.cdecl, \u000A    importc: \"filledTrigonRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "polygonColor", 
     "type": "skProc", 
-    "code": "proc polygonColor*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; \u000D\u000A                   color: Uint32): cint {.cdecl, importc: \"polygonColor\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc polygonColor*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; \u000A                   color: uint32): cint {.cdecl, importc: \"polygonColor\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "polygonRGBA", 
     "type": "skProc", 
-    "code": "proc polygonRGBA*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; r: byte; \u000D\u000A                  g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"polygonRGBA\", dynlib: gfxLibName.}"
+    "code": "proc polygonRGBA*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; r: byte; \u000A                  g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"polygonRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "aapolygonColor", 
     "type": "skProc", 
-    "code": "proc aapolygonColor*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; \u000D\u000A                     color: Uint32): cint {.cdecl, importc: \"aapolygonColor\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc aapolygonColor*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; \u000A                     color: uint32): cint {.cdecl, importc: \"aapolygonColor\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "aapolygonRGBA", 
     "type": "skProc", 
-    "code": "proc aapolygonRGBA*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; \u000D\u000A                    r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"aapolygonRGBA\", dynlib: gfxLibName.}"
+    "code": "proc aapolygonRGBA*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; \u000A                    r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"aapolygonRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "filledPolygonColor", 
     "type": "skProc", 
-    "code": "proc filledPolygonColor*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; \u000D\u000A                         color: Uint32): cint {.cdecl, \u000D\u000A    importc: \"filledPolygonColor\", dynlib: gfxLibName.}"
+    "code": "proc filledPolygonColor*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; \u000A                         color: uint32): cint {.cdecl, \u000A    importc: \"filledPolygonColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "filledPolygonRGBA", 
     "type": "skProc", 
-    "code": "proc filledPolygonRGBA*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; \u000D\u000A                        r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"filledPolygonRGBA\", dynlib: gfxLibName.}"
+    "code": "proc filledPolygonRGBA*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; \u000A                        r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"filledPolygonRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "bezierColor", 
     "type": "skProc", 
-    "code": "proc bezierColor*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; s: cint; \u000D\u000A                  color: Uint32): cint {.cdecl, importc: \"bezierColor\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc bezierColor*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; s: cint; \u000A                  color: uint32): cint {.cdecl, importc: \"bezierColor\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "bezierRGBA", 
     "type": "skProc", 
-    "code": "proc bezierRGBA*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; s: cint; \u000D\u000A                 r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"bezierRGBA\", dynlib: gfxLibName.}"
+    "code": "proc bezierRGBA*(dst: PSurface; vx: ptr int16; vy: ptr int16; n: cint; s: cint; \u000A                 r: byte; g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"bezierRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "characterColor", 
     "type": "skProc", 
-    "code": "proc characterColor*(dst: PSurface; x: int16; y: int16; c: char; color: Uint32): cint {.\u000D\u000A    cdecl, importc: \"characterColor\", dynlib: gfxLibName.}"
+    "code": "proc characterColor*(dst: PSurface; x: int16; y: int16; c: char; color: uint32): cint {.\u000A    cdecl, importc: \"characterColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "characterRGBA", 
     "type": "skProc", 
-    "code": "proc characterRGBA*(dst: PSurface; x: int16; y: int16; c: char; r: byte; \u000D\u000A                    g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"characterRGBA\", dynlib: gfxLibName.}"
+    "code": "proc characterRGBA*(dst: PSurface; x: int16; y: int16; c: char; r: byte; \u000A                    g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"characterRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "stringColor", 
     "type": "skProc", 
-    "code": "proc stringColor*(dst: PSurface; x: int16; y: int16; c: cstring; color: Uint32): cint {.\u000D\u000A    cdecl, importc: \"stringColor\", dynlib: gfxLibName.}"
+    "code": "proc stringColor*(dst: PSurface; x: int16; y: int16; c: cstring; color: uint32): cint {.\u000A    cdecl, importc: \"stringColor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "stringRGBA", 
     "type": "skProc", 
-    "code": "proc stringRGBA*(dst: PSurface; x: int16; y: int16; c: cstring; r: byte; \u000D\u000A                 g: byte; b: byte; a: byte): cint {.cdecl, \u000D\u000A    importc: \"stringRGBA\", dynlib: gfxLibName.}"
+    "code": "proc stringRGBA*(dst: PSurface; x: int16; y: int16; c: cstring; r: byte; \u000A                 g: byte; b: byte; a: byte): cint {.cdecl, \u000A    importc: \"stringRGBA\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "gfxPrimitivesSetFont", 
     "type": "skProc", 
-    "code": "proc gfxPrimitivesSetFont*(fontdata: Pointer; cw: cint; ch: cint) {.cdecl, \u000D\u000A    importc: \"gfxPrimitivesSetFont\", dynlib: gfxLibName.}"
+    "code": "proc gfxPrimitivesSetFont*(fontdata: pointer; cw: cint; ch: cint) {.cdecl, \u000A    importc: \"gfxPrimitivesSetFont\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterMMXdetect", 
     "type": "skProc", 
-    "code": "proc imageFilterMMXdetect*(): cint {.cdecl, importc: \"SDL_imageFilterMMXdetect\", \u000D\u000A                                     dynlib: gfxLibName.}"
+    "code": "proc imageFilterMMXdetect*(): cint {.cdecl, importc: \"SDL_imageFilterMMXdetect\", \u000A                                     dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterMMXoff", 
     "type": "skProc", 
-    "code": "proc imageFilterMMXoff*() {.cdecl, importc: \"SDL_imageFilterMMXoff\", \u000D\u000A                            dynlib: gfxLibName.}"
+    "code": "proc imageFilterMMXoff*() {.cdecl, importc: \"SDL_imageFilterMMXoff\", \u000A                            dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterMMXon", 
     "type": "skProc", 
-    "code": "proc imageFilterMMXon*() {.cdecl, importc: \"SDL_imageFilterMMXon\", \u000D\u000A                           dynlib: gfxLibName.}"
+    "code": "proc imageFilterMMXon*() {.cdecl, importc: \"SDL_imageFilterMMXon\", \u000A                           dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterAdd", 
     "type": "skProc", 
-    "code": "proc imageFilterAdd*(Src1: cstring; Src2: cstring; Dest: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterAdd\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterAdd*(src1: cstring; src2: cstring; dest: cstring; len: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterAdd\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterMean", 
     "type": "skProc", 
-    "code": "proc imageFilterMean*(Src1: cstring; Src2: cstring; Dest: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterMean\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterMean*(src1: cstring; src2: cstring; dest: cstring; len: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterMean\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterSub", 
     "type": "skProc", 
-    "code": "proc imageFilterSub*(Src1: cstring; Src2: cstring; Dest: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterSub\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterSub*(src1: cstring; src2: cstring; dest: cstring; len: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterSub\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterAbsDiff", 
     "type": "skProc", 
-    "code": "proc imageFilterAbsDiff*(Src1: cstring; Src2: cstring; Dest: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterAbsDiff\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterAbsDiff*(src1: cstring; src2: cstring; dest: cstring; len: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterAbsDiff\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterMult", 
     "type": "skProc", 
-    "code": "proc imageFilterMult*(Src1: cstring; Src2: cstring; Dest: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterMult\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterMult*(src1: cstring; src2: cstring; dest: cstring; len: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterMult\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterMultNor", 
     "type": "skProc", 
-    "code": "proc imageFilterMultNor*(Src1: cstring; Src2: cstring; Dest: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterMultNor\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterMultNor*(src1: cstring; src2: cstring; dest: cstring; len: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterMultNor\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterMultDivby2", 
     "type": "skProc", 
-    "code": "proc imageFilterMultDivby2*(Src1: cstring; Src2: cstring; Dest: cstring; \u000D\u000A                            len: cint): cint {.cdecl, \u000D\u000A    importc: \"SDL_imageFilterMultDivby2\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterMultDivby2*(src1: cstring; src2: cstring; dest: cstring; \u000A                            len: cint): cint {.cdecl, \u000A    importc: \"SDL_imageFilterMultDivby2\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterMultDivby4", 
     "type": "skProc", 
-    "code": "proc imageFilterMultDivby4*(Src1: cstring; Src2: cstring; Dest: cstring; \u000D\u000A                            len: cint): cint {.cdecl, \u000D\u000A    importc: \"SDL_imageFilterMultDivby4\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterMultDivby4*(src1: cstring; src2: cstring; dest: cstring; \u000A                            len: cint): cint {.cdecl, \u000A    importc: \"SDL_imageFilterMultDivby4\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterBitAnd", 
     "type": "skProc", 
-    "code": "proc imageFilterBitAnd*(Src1: cstring; Src2: cstring; Dest: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterBitAnd\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterBitAnd*(src1: cstring; src2: cstring; dest: cstring; len: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterBitAnd\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterBitOr", 
     "type": "skProc", 
-    "code": "proc imageFilterBitOr*(Src1: cstring; Src2: cstring; Dest: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterBitOr\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterBitOr*(src1: cstring; src2: cstring; dest: cstring; len: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterBitOr\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterDiv", 
     "type": "skProc", 
-    "code": "proc imageFilterDiv*(Src1: cstring; Src2: cstring; Dest: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterDiv\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterDiv*(src1: cstring; src2: cstring; dest: cstring; len: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterDiv\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterBitNegation", 
     "type": "skProc", 
-    "code": "proc imageFilterBitNegation*(Src1: cstring; Dest: cstring; len: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterBitNegation\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterBitNegation*(src1: cstring; dest: cstring; len: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterBitNegation\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterAddByte", 
     "type": "skProc", 
-    "code": "proc imageFilterAddByte*(Src1: cstring; Dest: cstring; len: cint; C: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterAddByte\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterAddByte*(src1: cstring; dest: cstring; len: cint; c: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterAddByte\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterAddUint", 
     "type": "skProc", 
-    "code": "proc imageFilterAddUint*(Src1: cstring; Dest: cstring; len: cint; C: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterAddUint\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterAddUint*(src1: cstring; dest: cstring; len: cint; c: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterAddUint\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterAddByteToHalf", 
     "type": "skProc", 
-    "code": "proc imageFilterAddByteToHalf*(Src1: cstring; Dest: cstring; len: cint; C: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterAddByteToHalf\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterAddByteToHalf*(src1: cstring; dest: cstring; len: cint; c: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterAddByteToHalf\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterSubByte", 
     "type": "skProc", 
-    "code": "proc imageFilterSubByte*(Src1: cstring; Dest: cstring; len: cint; C: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterSubByte\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterSubByte*(src1: cstring; dest: cstring; len: cint; c: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterSubByte\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterSubUint", 
     "type": "skProc", 
-    "code": "proc imageFilterSubUint*(Src1: cstring; Dest: cstring; len: cint; C: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterSubUint\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterSubUint*(src1: cstring; dest: cstring; len: cint; c: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterSubUint\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterShiftRight", 
     "type": "skProc", 
-    "code": "proc imageFilterShiftRight*(Src1: cstring; Dest: cstring; len: cint; N: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterShiftRight\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterShiftRight*(src1: cstring; dest: cstring; len: cint; n: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterShiftRight\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterShiftRightUint", 
     "type": "skProc", 
-    "code": "proc imageFilterShiftRightUint*(Src1: cstring; Dest: cstring; len: cint; N: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterShiftRightUint\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterShiftRightUint*(src1: cstring; dest: cstring; len: cint; n: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterShiftRightUint\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterMultByByte", 
     "type": "skProc", 
-    "code": "proc imageFilterMultByByte*(Src1: cstring; Dest: cstring; len: cint; C: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterMultByByte\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterMultByByte*(src1: cstring; dest: cstring; len: cint; c: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterMultByByte\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterShiftRightAndMultByByte", 
     "type": "skProc", 
-    "code": "proc imageFilterShiftRightAndMultByByte*(Src1: cstring; Dest: cstring; \u000D\u000A    len: cint; N: char; C: char): cint {.cdecl, \u000D\u000A    importc: \"SDL_imageFilterShiftRightAndMultByByte\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterShiftRightAndMultByByte*(src1: cstring; dest: cstring; \u000A    len: cint; n: char; c: char): cint {.cdecl, \u000A    importc: \"SDL_imageFilterShiftRightAndMultByByte\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterShiftLeftByte", 
     "type": "skProc", 
-    "code": "proc imageFilterShiftLeftByte*(Src1: cstring; Dest: cstring; len: cint; N: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterShiftLeftByte\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterShiftLeftByte*(src1: cstring; dest: cstring; len: cint; n: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterShiftLeftByte\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterShiftLeftUint", 
     "type": "skProc", 
-    "code": "proc imageFilterShiftLeftUint*(Src1: cstring; Dest: cstring; len: cint; N: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterShiftLeftUint\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterShiftLeftUint*(src1: cstring; dest: cstring; len: cint; n: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterShiftLeftUint\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterShiftLeft", 
     "type": "skProc", 
-    "code": "proc imageFilterShiftLeft*(Src1: cstring; Dest: cstring; len: cint; N: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterShiftLeft\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterShiftLeft*(src1: cstring; dest: cstring; len: cint; n: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterShiftLeft\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterBinarizeUsingThreshold", 
     "type": "skProc", 
-    "code": "proc imageFilterBinarizeUsingThreshold*(Src1: cstring; Dest: cstring; len: cint; \u000D\u000A                                        T: char): cint {.cdecl, \u000D\u000A    importc: \"SDL_imageFilterBinarizeUsingThreshold\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterBinarizeUsingThreshold*(src1: cstring; dest: cstring; len: cint; \u000A                                        t: char): cint {.cdecl, \u000A    importc: \"SDL_imageFilterBinarizeUsingThreshold\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterClipToRange", 
     "type": "skProc", 
-    "code": "proc imageFilterClipToRange*(Src1: cstring; Dest: cstring; len: cint; \u000D\u000A                             Tmin: int8; Tmax: int8): cint {.cdecl, \u000D\u000A    importc: \"SDL_imageFilterClipToRange\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterClipToRange*(src1: cstring; dest: cstring; len: cint; \u000A                             tmin: int8; tmax: int8): cint {.cdecl, \u000A    importc: \"SDL_imageFilterClipToRange\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterNormalizeLinear", 
     "type": "skProc", 
-    "code": "proc imageFilterNormalizeLinear*(Src1: cstring; Dest: cstring; len: cint; \u000D\u000A                                 Cmin: cint; Cmax: cint; Nmin: cint; Nmax: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterNormalizeLinear\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterNormalizeLinear*(src1: cstring; dest: cstring; len: cint; \u000A                                 cmin: cint; cmax: cint; nmin: cint; nmax: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterNormalizeLinear\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterConvolveKernel3x3Divide", 
     "type": "skProc", 
-    "code": "proc imageFilterConvolveKernel3x3Divide*(Src: cstring; Dest: cstring; \u000D\u000A    rows: cint; columns: cint; Kernel: pointer; Divisor: int8): cint {.cdecl, \u000D\u000A    importc: \"SDL_imageFilterConvolveKernel3x3Divide\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterConvolveKernel3x3Divide*(src: cstring; dest: cstring; \u000A    rows: cint; columns: cint; kernel: pointer; divisor: int8): cint {.cdecl, \u000A    importc: \"SDL_imageFilterConvolveKernel3x3Divide\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterConvolveKernel5x5Divide", 
     "type": "skProc", 
-    "code": "proc imageFilterConvolveKernel5x5Divide*(Src: cstring; Dest: cstring; \u000D\u000A    rows: cint; columns: cint; Kernel: pointer; Divisor: int8): cint {.cdecl, \u000D\u000A    importc: \"SDL_imageFilterConvolveKernel5x5Divide\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterConvolveKernel5x5Divide*(src: cstring; dest: cstring; \u000A    rows: cint; columns: cint; kernel: pointer; divisor: int8): cint {.cdecl, \u000A    importc: \"SDL_imageFilterConvolveKernel5x5Divide\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterConvolveKernel7x7Divide", 
     "type": "skProc", 
-    "code": "proc imageFilterConvolveKernel7x7Divide*(Src: cstring; Dest: cstring; \u000D\u000A    rows: cint; columns: cint; Kernel: pointer; Divisor: int8): cint {.cdecl, \u000D\u000A    importc: \"SDL_imageFilterConvolveKernel7x7Divide\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterConvolveKernel7x7Divide*(src: cstring; dest: cstring; \u000A    rows: cint; columns: cint; kernel: pointer; divisor: int8): cint {.cdecl, \u000A    importc: \"SDL_imageFilterConvolveKernel7x7Divide\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterConvolveKernel9x9Divide", 
     "type": "skProc", 
-    "code": "proc imageFilterConvolveKernel9x9Divide*(Src: cstring; Dest: cstring; \u000D\u000A    rows: cint; columns: cint; Kernel: pointer; Divisor: int8): cint {.cdecl, \u000D\u000A    importc: \"SDL_imageFilterConvolveKernel9x9Divide\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterConvolveKernel9x9Divide*(src: cstring; dest: cstring; \u000A    rows: cint; columns: cint; kernel: pointer; divisor: int8): cint {.cdecl, \u000A    importc: \"SDL_imageFilterConvolveKernel9x9Divide\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterConvolveKernel3x3ShiftRight", 
     "type": "skProc", 
-    "code": "proc imageFilterConvolveKernel3x3ShiftRight*(Src: cstring; Dest: cstring; \u000D\u000A    rows: cint; columns: cint; Kernel: pointer; NRightShift: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterConvolveKernel3x3ShiftRight\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc imageFilterConvolveKernel3x3ShiftRight*(src: cstring; dest: cstring; \u000A    rows: cint; columns: cint; kernel: pointer; nRightShift: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterConvolveKernel3x3ShiftRight\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterConvolveKernel5x5ShiftRight", 
     "type": "skProc", 
-    "code": "proc imageFilterConvolveKernel5x5ShiftRight*(Src: cstring; Dest: cstring; \u000D\u000A    rows: cint; columns: cint; Kernel: pointer; NRightShift: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterConvolveKernel5x5ShiftRight\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc imageFilterConvolveKernel5x5ShiftRight*(src: cstring; dest: cstring; \u000A    rows: cint; columns: cint; kernel: pointer; nRightShift: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterConvolveKernel5x5ShiftRight\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterConvolveKernel7x7ShiftRight", 
     "type": "skProc", 
-    "code": "proc imageFilterConvolveKernel7x7ShiftRight*(Src: cstring; Dest: cstring; \u000D\u000A    rows: cint; columns: cint; Kernel: pointer; NRightShift: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterConvolveKernel7x7ShiftRight\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc imageFilterConvolveKernel7x7ShiftRight*(src: cstring; dest: cstring; \u000A    rows: cint; columns: cint; kernel: pointer; nRightShift: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterConvolveKernel7x7ShiftRight\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterConvolveKernel9x9ShiftRight", 
     "type": "skProc", 
-    "code": "proc imageFilterConvolveKernel9x9ShiftRight*(Src: cstring; Dest: cstring; \u000D\u000A    rows: cint; columns: cint; Kernel: pointer; NRightShift: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterConvolveKernel9x9ShiftRight\", \u000D\u000A    dynlib: gfxLibName.}"
+    "code": "proc imageFilterConvolveKernel9x9ShiftRight*(src: cstring; dest: cstring; \u000A    rows: cint; columns: cint; kernel: pointer; nRightShift: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterConvolveKernel9x9ShiftRight\", \u000A    dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterSobelX", 
     "type": "skProc", 
-    "code": "proc imageFilterSobelX*(Src: cstring; Dest: cstring; rows: cint; columns: cint): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterSobelX\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterSobelX*(src: cstring; dest: cstring; rows: cint; columns: cint): cint {.\u000A    cdecl, importc: \"SDL_imageFilterSobelX\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterSobelXShiftRight", 
     "type": "skProc", 
-    "code": "proc imageFilterSobelXShiftRight*(Src: cstring; Dest: cstring; rows: cint; \u000D\u000A                                  columns: cint; NRightShift: char): cint {.\u000D\u000A    cdecl, importc: \"SDL_imageFilterSobelXShiftRight\", dynlib: gfxLibName.}"
+    "code": "proc imageFilterSobelXShiftRight*(src: cstring; dest: cstring; rows: cint; \u000A                                  columns: cint; nRightShift: char): cint {.\u000A    cdecl, importc: \"SDL_imageFilterSobelXShiftRight\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterAlignStack", 
     "type": "skProc", 
-    "code": "proc imageFilterAlignStack*() {.cdecl, importc: \"SDL_imageFilterAlignStack\", \u000D\u000A                                dynlib: gfxLibName.}"
+    "code": "proc imageFilterAlignStack*() {.cdecl, importc: \"SDL_imageFilterAlignStack\", \u000A                                dynlib: gfxLibName.}"
   }, 
   {
     "name": "imageFilterRestoreStack", 
     "type": "skProc", 
-    "code": "proc imageFilterRestoreStack*() {.cdecl, importc: \"SDL_imageFilterRestoreStack\", \u000D\u000A                                  dynlib: gfxLibName.}"
+    "code": "proc imageFilterRestoreStack*() {.cdecl, importc: \"SDL_imageFilterRestoreStack\", \u000A                                  dynlib: gfxLibName.}"
   }, 
   {
     "name": "rotozoomSurface", 
     "type": "skProc", 
-    "code": "proc rotozoomSurface*(src: PSurface; angle: float64; zoom: float64; smooth: cint): PSurface {.\u000D\u000A    cdecl, importc: \"rotozoomSurface\", dynlib: gfxLibName.}"
+    "code": "proc rotozoomSurface*(src: PSurface; angle: float64; zoom: float64; smooth: cint): PSurface {.\u000A    cdecl, importc: \"rotozoomSurface\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "rotozoomSurfaceXY", 
     "type": "skProc", 
-    "code": "proc rotozoomSurfaceXY*(src: PSurface; angle: float64; zoomx: float64; \u000D\u000A                        zoomy: float64; smooth: cint): PSurface {.cdecl, \u000D\u000A    importc: \"rotozoomSurfaceXY\", dynlib: gfxLibName.}"
+    "code": "proc rotozoomSurfaceXY*(src: PSurface; angle: float64; zoomx: float64; \u000A                        zoomy: float64; smooth: cint): PSurface {.cdecl, \u000A    importc: \"rotozoomSurfaceXY\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "rotozoomSurfaceSize", 
     "type": "skProc", 
-    "code": "proc rotozoomSurfaceSize*(width: cint; height: cint; angle: float64; \u000D\u000A                          zoom: float64; dstwidth: var cint; dstheight: var cint) {.\u000D\u000A    cdecl, importc: \"rotozoomSurfaceSize\", dynlib: gfxLibName.}"
+    "code": "proc rotozoomSurfaceSize*(width: cint; height: cint; angle: float64; \u000A                          zoom: float64; dstwidth: var cint; dstheight: var cint) {.\u000A    cdecl, importc: \"rotozoomSurfaceSize\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "rotozoomSurfaceSizeXY", 
     "type": "skProc", 
-    "code": "proc rotozoomSurfaceSizeXY*(width: cint; height: cint; angle: float64; \u000D\u000A                            zoomx: float64; zoomy: float64; dstwidth: var cint; \u000D\u000A                            dstheight: var cint) {.cdecl, \u000D\u000A    importc: \"rotozoomSurfaceSizeXY\", dynlib: gfxLibName.}"
+    "code": "proc rotozoomSurfaceSizeXY*(width: cint; height: cint; angle: float64; \u000A                            zoomx: float64; zoomy: float64; dstwidth: var cint; \u000A                            dstheight: var cint) {.cdecl, \u000A    importc: \"rotozoomSurfaceSizeXY\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "zoomSurface", 
     "type": "skProc", 
-    "code": "proc zoomSurface*(src: PSurface; zoomx: float64; zoomy: float64; smooth: cint): PSurface {.\u000D\u000A    cdecl, importc: \"zoomSurface\", dynlib: gfxLibName.}"
+    "code": "proc zoomSurface*(src: PSurface; zoomx: float64; zoomy: float64; smooth: cint): PSurface {.\u000A    cdecl, importc: \"zoomSurface\", dynlib: gfxLibName.}"
   }, 
   {
     "name": "zoomSurfaceSize", 
     "type": "skProc", 
-    "code": "proc zoomSurfaceSize*(width: cint; height: cint; zoomx: float64; zoomy: float64; \u000D\u000A                      dstwidth: var cint; dstheight: var cint) {.cdecl, \u000D\u000A    importc: \"zoomSurfaceSize\", dynlib: gfxLibName.}"
+    "code": "proc zoomSurfaceSize*(width: cint; height: cint; zoomx: float64; zoomy: float64; \u000A                      dstwidth: var cint; dstheight: var cint) {.cdecl, \u000A    importc: \"zoomSurfaceSize\", dynlib: gfxLibName.}"
   }
 ]

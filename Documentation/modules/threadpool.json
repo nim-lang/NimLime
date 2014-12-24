@@ -1,0 +1,83 @@
+[
+  {
+    "comment": "Implements Nim's 'spawn'."
+  }, 
+  {
+    "name": "await", 
+    "type": "skProc", 
+    "description": "waits until the value for the flowVar arrives. Usually it is not necessary to call this explicitly.", 
+    "code": "proc await*(fv: FlowVarBase)"
+  }, 
+  {
+    "name": "awaitAndThen", 
+    "type": "skProc", 
+    "description": "blocks until the <tt class=\"docutils literal\"><span class=\"pre\">fv</span></tt> is available and then passes its value to <tt class=\"docutils literal\"><span class=\"pre\">action</span></tt>. Note that due to Nim's parameter passing semantics this means that <tt class=\"docutils literal\"><span class=\"pre\">T</span></tt> doesn't need to be copied and so <tt class=\"docutils literal\"><span class=\"pre\">awaitAndThen</span></tt> can sometimes be more efficient than <tt class=\"docutils literal\"><span class=\"pre\">^</span></tt>.", 
+    "code": "proc awaitAndThen*[T](fv: FlowVar[T]; action: proc (x: T) {.closure.})"
+  }, 
+  {
+    "name": "`^`", 
+    "type": "skProc", 
+    "description": "blocks until the value is available and then returns this value.", 
+    "code": "proc `^`*[T](fv: FlowVar[ref T]): foreign ptr T"
+  }, 
+  {
+    "name": "`^`", 
+    "type": "skProc", 
+    "description": "blocks until the value is available and then returns this value.", 
+    "code": "proc `^`*[T](fv: FlowVar[T]): T"
+  }, 
+  {
+    "name": "awaitAny", 
+    "type": "skProc", 
+    "description": "awaits any of the given flowVars. Returns the index of one flowVar for which a value arrived. A flowVar only supports one call to 'awaitAny' at the same time. That means if you await([a,b]) and await([b,c]) the second call will only await 'c'. If there is no flowVar left to be able to wait on, -1 is returned. <strong>Note</strong>: This results in non-deterministic behaviour and so should be avoided.", 
+    "code": "proc awaitAny*(flowVars: openArray[FlowVarBase]): int"
+  }, 
+  {
+    "name": "MaxThreadPoolSize", 
+    "type": "skConst", 
+    "description": "maximal size of the thread pool. 256 threads should be good enough for anybody ;-)", 
+    "code": "MaxThreadPoolSize* = 256"
+  }, 
+  {
+    "name": "setMinPoolSize", 
+    "type": "skProc", 
+    "description": "sets the minimal thread pool size. The default value of this is 4.", 
+    "code": "proc setMinPoolSize*(size: range[1 .. MaxThreadPoolSize])"
+  }, 
+  {
+    "name": "setMaxPoolSize", 
+    "type": "skProc", 
+    "description": "sets the minimal thread pool size. The default value of this is <tt class=\"docutils literal\"><span class=\"pre\">MaxThreadPoolSize</span></tt>.", 
+    "code": "proc setMaxPoolSize*(size: range[1 .. MaxThreadPoolSize])"
+  }, 
+  {
+    "name": "preferSpawn", 
+    "type": "skProc", 
+    "description": "Use this proc to determine quickly if a 'spawn' or a direct call is preferable. If it returns 'true' a 'spawn' may make sense. In general it is not necessary to call this directly; use 'spawnX' instead.", 
+    "code": "proc preferSpawn*(): bool"
+  }, 
+  {
+    "name": "spawn", 
+    "type": "skProc", 
+    "description": "always spawns a new task, so that the 'call' is never executed on the calling thread. 'call' has to be proc call 'p(...)' where 'p' is gcsafe and has a return type that is either 'void' or compatible with <tt class=\"docutils literal\"><span class=\"pre\">FlowVar[T]</span></tt>.", 
+    "code": "proc spawn*(call: expr): expr {.magic: \"Spawn\".}"
+  }, 
+  {
+    "name": "spawnX", 
+    "type": "skTemplate", 
+    "description": "spawns a new task if a CPU core is ready, otherwise executes the call in the calling thread. Usually it is advised to use 'spawn' in order to not block the producer for an unknown amount of time. 'call' has to be proc call 'p(...)' where 'p' is gcsafe and has a return type that is either 'void' or compatible with <tt class=\"docutils literal\"><span class=\"pre\">FlowVar[T]</span></tt>.", 
+    "code": "template spawnX*(call: expr): expr"
+  }, 
+  {
+    "name": "parallel", 
+    "type": "skProc", 
+    "description": "a parallel section can be used to execute a block in parallel. <tt class=\"docutils literal\"><span class=\"pre\">body</span></tt> has to be in a DSL that is a particular subset of the language. Please refer to the manual for further information.", 
+    "code": "proc parallel*(body: stmt) {.magic: \"Parallel\".}"
+  }, 
+  {
+    "name": "sync", 
+    "type": "skProc", 
+    "description": "a simple barrier to wait for all spawn'ed tasks. If you need more elaborate waiting, you have to use an explicit barrier.", 
+    "code": "proc sync*()"
+  }
+]

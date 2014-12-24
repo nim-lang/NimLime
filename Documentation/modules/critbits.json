@@ -1,149 +1,149 @@
 [
   {
-    "comment": "This module implements a `crit bit tree`:idx: which is an efficient\u000D\u000A## container for a set or a mapping of strings. Based on the excellent paper\u000D\u000A## by Adam Langley."
+    "comment": "This module implements a `crit bit tree`:idx: which is an efficient\u000A## container for a set or a mapping of strings. Based on the excellent paper\u000A## by Adam Langley."
   }, 
   {
-    "name": "TCritBitTree", 
+    "name": "CritBitTree", 
     "type": "skType", 
     "description": "The crit bit tree can either be used as a mapping from strings to some type <tt class=\"docutils literal\"><span class=\"pre\">T</span></tt> or as a set of strings if <tt class=\"docutils literal\"><span class=\"pre\">T</span></tt> is void.", 
-    "code": "TCritBitTree*[T] = object  {.pure, final.}\u000D\u000A  root: PNode[T]\u000D\u000A  count: int\u000D\u000A"
+    "code": "CritBitTree*[T] = object  {.pure, final.}\u000A  root: Node[T]\u000A  count: int\u000A"
   }, 
   {
     "name": "len", 
     "type": "skProc", 
     "description": "returns the number of elements in <cite>c</cite> in O(1).", 
-    "code": "proc len*[T](c: TCritBitTree[T]): int"
+    "code": "proc len*[T](c: CritBitTree[T]): int"
   }, 
   {
     "name": "contains", 
     "type": "skProc", 
     "description": "returns true iff <cite>c</cite> contains the given <cite>key</cite>.", 
-    "code": "proc contains*[T](c: TCritBitTree[T]; key: string): bool {.inline.}"
+    "code": "proc contains*[T](c: CritBitTree[T]; key: string): bool {.inline.}"
   }, 
   {
     "name": "hasKey", 
     "type": "skProc", 
     "description": "alias for <cite>contains</cite>.", 
-    "code": "proc hasKey*[T](c: TCritBitTree[T]; key: string): bool {.inline.}"
+    "code": "proc hasKey*[T](c: CritBitTree[T]; key: string): bool {.inline.}"
   }, 
   {
     "name": "containsOrIncl", 
     "type": "skProc", 
     "description": "returns true iff <cite>c</cite> contains the given <cite>key</cite>. If the key does not exist <tt class=\"docutils literal\"><span class=\"pre\">c[key] = val</span></tt> is performed.", 
-    "code": "proc containsOrIncl*[T](c: var TCritBitTree[T]; key: string; val: T): bool"
+    "code": "proc containsOrIncl*[T](c: var CritBitTree[T]; key: string; val: T): bool"
   }, 
   {
     "name": "containsOrIncl", 
     "type": "skProc", 
     "description": "returns true iff <cite>c</cite> contains the given <cite>key</cite>. If the key does not exist it is inserted into <cite>c</cite>.", 
-    "code": "proc containsOrIncl*(c: var TCritBitTree[void]; key: string): bool"
+    "code": "proc containsOrIncl*(c: var CritBitTree[void]; key: string): bool"
   }, 
   {
     "name": "incl", 
     "type": "skProc", 
     "description": "includes <cite>key</cite> in <cite>c</cite>.", 
-    "code": "proc incl*(c: var TCritBitTree[void]; key: string)"
+    "code": "proc incl*(c: var CritBitTree[void]; key: string)"
   }, 
   {
     "name": "`[]=`", 
     "type": "skProc", 
     "description": "puts a (key, value)-pair into <cite>t</cite>.", 
-    "code": "proc `[] =`*[T](c: var TCritBitTree[T]; key: string; val: T)"
+    "code": "proc `[]=`*[T](c: var CritBitTree[T]; key: string; val: T)"
   }, 
   {
     "name": "`[]`", 
     "type": "skProc", 
     "description": "retrieves the value at <tt class=\"docutils literal\"><span class=\"pre\">c[key]</span></tt>. If <cite>key</cite> is not in <cite>t</cite>, default empty value for the type <cite>B</cite> is returned and no exception is raised. One can check with <tt class=\"docutils literal\"><span class=\"pre\">hasKey</span></tt> whether the key exists.", 
-    "code": "proc `[]`*[T](c: var TCritBitTree[T]; key: string): T {.inline.}"
+    "code": "proc `[]`*[T](c: CritBitTree[T]; key: string): T {.inline.}"
   }, 
   {
     "name": "mget", 
     "type": "skProc", 
-    "description": "retrieves the value at <tt class=\"docutils literal\"><span class=\"pre\">c[key]</span></tt>. The value can be modified. If <cite>key</cite> is not in <cite>t</cite>, the <tt class=\"docutils literal\"><span class=\"pre\">EInvalidKey</span></tt> exception is raised.", 
-    "code": "proc mget*[T](c: var TCritBitTree[T]; key: string): var T {.inline.}"
+    "description": "retrieves the value at <tt class=\"docutils literal\"><span class=\"pre\">c[key]</span></tt>. The value can be modified. If <cite>key</cite> is not in <cite>t</cite>, the <tt class=\"docutils literal\"><span class=\"pre\">KeyError</span></tt> exception is raised.", 
+    "code": "proc mget*[T](c: var CritBitTree[T]; key: string): var T {.inline.}"
   }, 
   {
     "name": "excl", 
     "type": "skProc", 
     "description": "removes <cite>key</cite> (and its associated value) from the set <cite>c</cite>. If the <cite>key</cite> does not exist, nothing happens.", 
-    "code": "proc excl*[T](c: var TCritBitTree[T]; key: string)"
+    "code": "proc excl*[T](c: var CritBitTree[T]; key: string)"
   }, 
   {
     "name": "keys", 
     "type": "skIterator", 
     "description": "yields all keys in lexicographical order.", 
-    "code": "iterator keys*[T](c: TCritBitTree[T]): string"
+    "code": "iterator keys*[T](c: CritBitTree[T]): string"
   }, 
   {
     "name": "values", 
     "type": "skIterator", 
     "description": "yields all values of <cite>c</cite> in the lexicographical order of the corresponding keys.", 
-    "code": "iterator values*[T](c: TCritBitTree[T]): T"
+    "code": "iterator values*[T](c: CritBitTree[T]): T"
   }, 
   {
     "name": "mvalues", 
     "type": "skIterator", 
     "description": "yields all values of <cite>c</cite> in the lexicographical order of the corresponding keys. The values can be modified.", 
-    "code": "iterator mvalues*[T](c: var TCritBitTree[T]): var T"
+    "code": "iterator mvalues*[T](c: var CritBitTree[T]): var T"
   }, 
   {
     "name": "items", 
     "type": "skIterator", 
     "description": "yields all keys in lexicographical order.", 
-    "code": "iterator items*[T](c: TCritBitTree[T]): string"
+    "code": "iterator items*[T](c: CritBitTree[T]): string"
   }, 
   {
     "name": "pairs", 
     "type": "skIterator", 
     "description": "yields all (key, value)-pairs of <cite>c</cite>.", 
-    "code": "iterator pairs*[T](c: TCritBitTree[T]): tuple[key: string, val: T]"
+    "code": "iterator pairs*[T](c: CritBitTree[T]): tuple[key: string, val: T]"
   }, 
   {
     "name": "mpairs", 
     "type": "skIterator", 
     "description": "yields all (key, value)-pairs of <cite>c</cite>. The yielded values can be modified.", 
-    "code": "iterator mpairs*[T](c: var TCritBitTree[T]): tuple[key: string, val: var T]"
+    "code": "iterator mpairs*[T](c: var CritBitTree[T]): tuple[key: string, val: var T]"
   }, 
   {
     "name": "itemsWithPrefix", 
     "type": "skIterator", 
     "description": "yields all keys starting with <cite>prefix</cite>.", 
-    "code": "iterator itemsWithPrefix*[T](c: TCritBitTree[T]; prefix: string): string"
+    "code": "iterator itemsWithPrefix*[T](c: CritBitTree[T]; prefix: string): string"
   }, 
   {
     "name": "keysWithPrefix", 
     "type": "skIterator", 
     "description": "yields all keys starting with <cite>prefix</cite>.", 
-    "code": "iterator keysWithPrefix*[T](c: TCritBitTree[T]; prefix: string): string"
+    "code": "iterator keysWithPrefix*[T](c: CritBitTree[T]; prefix: string): string"
   }, 
   {
     "name": "valuesWithPrefix", 
     "type": "skIterator", 
     "description": "yields all values of <cite>c</cite> starting with <cite>prefix</cite> of the corresponding keys.", 
-    "code": "iterator valuesWithPrefix*[T](c: TCritBitTree[T]; prefix: string): T"
+    "code": "iterator valuesWithPrefix*[T](c: CritBitTree[T]; prefix: string): T"
   }, 
   {
     "name": "mvaluesWithPrefix", 
     "type": "skIterator", 
     "description": "yields all values of <cite>c</cite> starting with <cite>prefix</cite> of the corresponding keys. The values can be modified.", 
-    "code": "iterator mvaluesWithPrefix*[T](c: var TCritBitTree[T]; prefix: string): var T"
+    "code": "iterator mvaluesWithPrefix*[T](c: var CritBitTree[T]; prefix: string): var T"
   }, 
   {
     "name": "pairsWithPrefix", 
     "type": "skIterator", 
     "description": "yields all (key, value)-pairs of <cite>c</cite> starting with <cite>prefix</cite>.", 
-    "code": "iterator pairsWithPrefix*[T](c: TCritBitTree[T]; prefix: string): tuple[\u000D\u000A    key: string, val: T]"
+    "code": "iterator pairsWithPrefix*[T](c: CritBitTree[T]; prefix: string): tuple[\u000A    key: string, val: T]"
   }, 
   {
     "name": "mpairsWithPrefix", 
     "type": "skIterator", 
     "description": "yields all (key, value)-pairs of <cite>c</cite> starting with <cite>prefix</cite>. The yielded values can be modified.", 
-    "code": "iterator mpairsWithPrefix*[T](c: var TCritBitTree[T]; prefix: string): tuple[\u000D\u000A    key: string, val: var T]"
+    "code": "iterator mpairsWithPrefix*[T](c: var CritBitTree[T]; prefix: string): tuple[\u000A    key: string, val: var T]"
   }, 
   {
     "name": "`$`", 
     "type": "skProc", 
     "description": "turns <cite>c</cite> into a string representation. Example outputs: <tt class=\"docutils literal\"><span class=\"pre\">{keyA: value, keyB: value}</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">{:}</span></tt> If <cite>T</cite> is void the outputs look like: <tt class=\"docutils literal\"><span class=\"pre\">{keyA, keyB}</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">{}</span></tt>.", 
-    "code": "proc `$`*[T](c: TCritBitTree[T]): string"
+    "code": "proc `$`*[T](c: CritBitTree[T]): string"
   }
 ]

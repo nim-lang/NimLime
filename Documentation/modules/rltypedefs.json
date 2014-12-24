@@ -22,7 +22,7 @@
   {
     "name": "Tgetc_func", 
     "type": "skType", 
-    "code": "Tgetc_func* = proc (a2: TFile): cint {.cdecl.}"
+    "code": "Tgetc_func* = proc (a2: File): cint {.cdecl.}"
   }, 
   {
     "name": "Tlinebuf_func", 

@@ -1,6 +1,6 @@
 [
   {
-    "comment": "This module implements a redis client. It allows you to connect to a\u000D\u000A## redis-server instance, send commands and receive replies.\u000D\u000A##\u000D\u000A## **Beware**: Most (if not all) functions that return a ``TRedisString`` may\u000D\u000A## return ``redisNil``, and functions which return a ``TRedisList`` \u000D\u000A## may return ``nil``."
+    "comment": "This module implements a redis client. It allows you to connect to a\u000A## redis-server instance, send commands and receive replies.\u000A##\u000A## **Beware**: Most (if not all) functions that return a ``TRedisString`` may\u000A## return ``redisNil``, and functions which return a ``TRedisList`` \u000A## may return ``nil``."
   }, 
   {
     "name": "redisNil", 
@@ -8,675 +8,687 @@
     "code": "redisNil* = \"\\0\\0\""
   }, 
   {
-    "name": "ERedis", 
+    "name": "RedisError", 
     "type": "skType", 
     "description": "Error in redis", 
-    "code": "ERedis* = object of ESynch"
+    "code": "RedisError* = object of IOError"
   }, 
   {
     "name": "open", 
     "type": "skProc", 
     "description": "Opens a connection to the redis server.", 
-    "code": "proc open*(host = \"localhost\"; port = 6379.TPort): TRedis"
+    "code": "proc open*(host = \"localhost\"; port = 6379.Port): Redis"
+  }, 
+  {
+    "name": "flushPipeline", 
+    "type": "skProc", 
+    "description": "Send buffered commands, clear buffer, return results", 
+    "code": "proc flushPipeline*(r: Redis; wasMulti = false): RedisList"
+  }, 
+  {
+    "name": "startPipelining", 
+    "type": "skProc", 
+    "description": "Enable command pipelining (reduces network roundtrips). Note that when enabled, you must call flushPipeline to actually send commands, except for multi/exec() which enable and flush the pipeline automatically. Commands return immediately with dummy values; actual results returned from flushPipeline() or exec()", 
+    "code": "proc startPipelining*(r: Redis)"
   }, 
   {
     "name": "del", 
     "type": "skProc", 
     "description": "Delete a key or multiple keys", 
-    "code": "proc del*(r: TRedis; keys: varargs[string]): TRedisInteger"
+    "code": "proc del*(r: Redis; keys: varargs[string]): RedisInteger"
   }, 
   {
     "name": "exists", 
     "type": "skProc", 
     "description": "Determine if a key exists", 
-    "code": "proc exists*(r: TRedis; key: string): bool"
+    "code": "proc exists*(r: Redis; key: string): bool"
   }, 
   {
     "name": "expire", 
     "type": "skProc", 
     "description": "Set a key's time to live in seconds. Returns <cite>false</cite> if the key could not be found or the timeout could not be set.", 
-    "code": "proc expire*(r: TRedis; key: string; seconds: int): bool"
+    "code": "proc expire*(r: Redis; key: string; seconds: int): bool"
   }, 
   {
     "name": "expireAt", 
     "type": "skProc", 
     "description": "Set the expiration for a key as a UNIX timestamp. Returns <cite>false</cite> if the key could not be found or the timeout could not be set.", 
-    "code": "proc expireAt*(r: TRedis; key: string; timestamp: int): bool"
+    "code": "proc expireAt*(r: Redis; key: string; timestamp: int): bool"
   }, 
   {
     "name": "keys", 
     "type": "skProc", 
     "description": "Find all keys matching the given pattern", 
-    "code": "proc keys*(r: TRedis; pattern: string): TRedisList"
+    "code": "proc keys*(r: Redis; pattern: string): RedisList"
   }, 
   {
     "name": "move", 
     "type": "skProc", 
     "description": "Move a key to another database. Returns <cite>true</cite> on a successful move.", 
-    "code": "proc move*(r: TRedis; key: string; db: int): bool"
+    "code": "proc move*(r: Redis; key: string; db: int): bool"
   }, 
   {
     "name": "persist", 
     "type": "skProc", 
     "description": "Remove the expiration from a key. Returns <cite>true</cite> when the timeout was removed.", 
-    "code": "proc persist*(r: TRedis; key: string): bool"
+    "code": "proc persist*(r: Redis; key: string): bool"
   }, 
   {
     "name": "randomKey", 
     "type": "skProc", 
     "description": "Return a random key from the keyspace", 
-    "code": "proc randomKey*(r: TRedis): TRedisString"
+    "code": "proc randomKey*(r: Redis): RedisString"
   }, 
   {
     "name": "rename", 
     "type": "skProc", 
-    "description": "<p>Rename a key.</p>\u000D\u000A<p><strong>WARNING:</strong> Overwrites <cite>newkey</cite> if it exists!</p>\u000D\u000A", 
-    "code": "proc rename*(r: TRedis; key, newkey: string): TRedisStatus"
+    "description": "<p>Rename a key.</p>\u000A<p><strong>WARNING:</strong> Overwrites <cite>newkey</cite> if it exists!</p>\u000A", 
+    "code": "proc rename*(r: Redis; key, newkey: string): RedisStatus"
   }, 
   {
     "name": "renameNX", 
     "type": "skProc", 
     "description": "Same as <tt class=\"docutils literal\"><span class=\"pre\">rename</span></tt> but doesn't continue if <cite>newkey</cite> exists. Returns <cite>true</cite> if key was renamed.", 
-    "code": "proc renameNX*(r: TRedis; key, newkey: string): bool"
+    "code": "proc renameNX*(r: Redis; key, newkey: string): bool"
   }, 
   {
     "name": "ttl", 
     "type": "skProc", 
     "description": "Get the time to live for a key", 
-    "code": "proc ttl*(r: TRedis; key: string): TRedisInteger"
+    "code": "proc ttl*(r: Redis; key: string): RedisInteger"
   }, 
   {
     "name": "keyType", 
     "type": "skProc", 
     "description": "Determine the type stored at key", 
-    "code": "proc keyType*(r: TRedis; key: string): TRedisStatus"
+    "code": "proc keyType*(r: Redis; key: string): RedisStatus"
   }, 
   {
     "name": "append", 
     "type": "skProc", 
     "description": "Append a value to a key", 
-    "code": "proc append*(r: TRedis; key, value: string): TRedisInteger"
+    "code": "proc append*(r: Redis; key, value: string): RedisInteger"
   }, 
   {
     "name": "decr", 
     "type": "skProc", 
     "description": "Decrement the integer value of a key by one", 
-    "code": "proc decr*(r: TRedis; key: string): TRedisInteger"
+    "code": "proc decr*(r: Redis; key: string): RedisInteger"
   }, 
   {
     "name": "decrBy", 
     "type": "skProc", 
     "description": "Decrement the integer value of a key by the given number", 
-    "code": "proc decrBy*(r: TRedis; key: string; decrement: int): TRedisInteger"
+    "code": "proc decrBy*(r: Redis; key: string; decrement: int): RedisInteger"
   }, 
   {
     "name": "get", 
     "type": "skProc", 
     "description": "Get the value of a key. Returns <cite>redisNil</cite> when <cite>key</cite> doesn't exist.", 
-    "code": "proc get*(r: TRedis; key: string): TRedisString"
+    "code": "proc get*(r: Redis; key: string): RedisString"
   }, 
   {
     "name": "getBit", 
     "type": "skProc", 
     "description": "Returns the bit value at offset in the string value stored at key", 
-    "code": "proc getBit*(r: TRedis; key: string; offset: int): TRedisInteger"
+    "code": "proc getBit*(r: Redis; key: string; offset: int): RedisInteger"
   }, 
   {
     "name": "getRange", 
     "type": "skProc", 
     "description": "Get a substring of the string stored at a key", 
-    "code": "proc getRange*(r: TRedis; key: string; start, stop: int): TRedisString"
+    "code": "proc getRange*(r: Redis; key: string; start, stop: int): RedisString"
   }, 
   {
     "name": "getSet", 
     "type": "skProc", 
     "description": "Set the string value of a key and return its old value. Returns <cite>redisNil</cite> when key doesn't exist.", 
-    "code": "proc getSet*(r: TRedis; key: string; value: string): TRedisString"
+    "code": "proc getSet*(r: Redis; key: string; value: string): RedisString"
   }, 
   {
     "name": "incr", 
     "type": "skProc", 
     "description": "Increment the integer value of a key by one.", 
-    "code": "proc incr*(r: TRedis; key: string): TRedisInteger"
+    "code": "proc incr*(r: Redis; key: string): RedisInteger"
   }, 
   {
     "name": "incrBy", 
     "type": "skProc", 
     "description": "Increment the integer value of a key by the given number", 
-    "code": "proc incrBy*(r: TRedis; key: string; increment: int): TRedisInteger"
+    "code": "proc incrBy*(r: Redis; key: string; increment: int): RedisInteger"
   }, 
   {
     "name": "setk", 
     "type": "skProc", 
-    "description": "<p>Set the string value of a key.</p>\u000D\u000A<p>NOTE: This function had to be renamed due to a clash with the <cite>set</cite> type.</p>\u000D\u000A", 
-    "code": "proc setk*(r: TRedis; key, value: string)"
+    "description": "<p>Set the string value of a key.</p>\u000A<p>NOTE: This function had to be renamed due to a clash with the <cite>set</cite> type.</p>\u000A", 
+    "code": "proc setk*(r: Redis; key, value: string)"
   }, 
   {
     "name": "setNX", 
     "type": "skProc", 
     "description": "Set the value of a key, only if the key does not exist. Returns <cite>true</cite> if the key was set.", 
-    "code": "proc setNX*(r: TRedis; key, value: string): bool"
+    "code": "proc setNX*(r: Redis; key, value: string): bool"
   }, 
   {
     "name": "setBit", 
     "type": "skProc", 
     "description": "Sets or clears the bit at offset in the string value stored at key", 
-    "code": "proc setBit*(r: TRedis; key: string; offset: int; value: string): TRedisInteger"
+    "code": "proc setBit*(r: Redis; key: string; offset: int; value: string): RedisInteger"
   }, 
   {
     "name": "setEx", 
     "type": "skProc", 
     "description": "Set the value and expiration of a key", 
-    "code": "proc setEx*(r: TRedis; key: string; seconds: int; value: string): TRedisStatus"
+    "code": "proc setEx*(r: Redis; key: string; seconds: int; value: string): RedisStatus"
   }, 
   {
     "name": "setRange", 
     "type": "skProc", 
     "description": "Overwrite part of a string at key starting at the specified offset", 
-    "code": "proc setRange*(r: TRedis; key: string; offset: int; value: string): TRedisInteger"
+    "code": "proc setRange*(r: Redis; key: string; offset: int; value: string): RedisInteger"
   }, 
   {
     "name": "strlen", 
     "type": "skProc", 
     "description": "Get the length of the value stored in a key. Returns 0 when key doesn't exist.", 
-    "code": "proc strlen*(r: TRedis; key: string): TRedisInteger"
+    "code": "proc strlen*(r: Redis; key: string): RedisInteger"
   }, 
   {
     "name": "hDel", 
     "type": "skProc", 
     "description": "Delete a hash field at <cite>key</cite>. Returns <cite>true</cite> if the field was removed.", 
-    "code": "proc hDel*(r: TRedis; key, field: string): bool"
+    "code": "proc hDel*(r: Redis; key, field: string): bool"
   }, 
   {
     "name": "hExists", 
     "type": "skProc", 
     "description": "Determine if a hash field exists.", 
-    "code": "proc hExists*(r: TRedis; key, field: string): bool"
+    "code": "proc hExists*(r: Redis; key, field: string): bool"
   }, 
   {
     "name": "hGet", 
     "type": "skProc", 
     "description": "Get the value of a hash field", 
-    "code": "proc hGet*(r: TRedis; key, field: string): TRedisString"
+    "code": "proc hGet*(r: Redis; key, field: string): RedisString"
   }, 
   {
     "name": "hGetAll", 
     "type": "skProc", 
     "description": "Get all the fields and values in a hash", 
-    "code": "proc hGetAll*(r: TRedis; key: string): TRedisList"
+    "code": "proc hGetAll*(r: Redis; key: string): RedisList"
   }, 
   {
     "name": "hIncrBy", 
     "type": "skProc", 
     "description": "Increment the integer value of a hash field by the given number", 
-    "code": "proc hIncrBy*(r: TRedis; key, field: string; incr: int): TRedisInteger"
+    "code": "proc hIncrBy*(r: Redis; key, field: string; incr: int): RedisInteger"
   }, 
   {
     "name": "hKeys", 
     "type": "skProc", 
     "description": "Get all the fields in a hash", 
-    "code": "proc hKeys*(r: TRedis; key: string): TRedisList"
+    "code": "proc hKeys*(r: Redis; key: string): RedisList"
   }, 
   {
     "name": "hLen", 
     "type": "skProc", 
     "description": "Get the number of fields in a hash", 
-    "code": "proc hLen*(r: TRedis; key: string): TRedisInteger"
+    "code": "proc hLen*(r: Redis; key: string): RedisInteger"
   }, 
   {
     "name": "hMGet", 
     "type": "skProc", 
     "description": "Get the values of all the given hash fields", 
-    "code": "proc hMGet*(r: TRedis; key: string; fields: varargs[string]): TRedisList"
+    "code": "proc hMGet*(r: Redis; key: string; fields: varargs[string]): RedisList"
   }, 
   {
     "name": "hMSet", 
     "type": "skProc", 
     "description": "Set multiple hash fields to multiple values", 
-    "code": "proc hMSet*(r: TRedis; key: string; \u000D\u000A            fieldValues: openarray[tuple[field, value: string]])"
+    "code": "proc hMSet*(r: Redis; key: string; \u000A            fieldValues: openArray[tuple[field, value: string]])"
   }, 
   {
     "name": "hSet", 
     "type": "skProc", 
     "description": "Set the string value of a hash field", 
-    "code": "proc hSet*(r: TRedis; key, field, value: string): TRedisInteger"
+    "code": "proc hSet*(r: Redis; key, field, value: string): RedisInteger"
   }, 
   {
     "name": "hSetNX", 
     "type": "skProc", 
     "description": "Set the value of a hash field, only if the field does <strong>not</strong> exist", 
-    "code": "proc hSetNX*(r: TRedis; key, field, value: string): TRedisInteger"
+    "code": "proc hSetNX*(r: Redis; key, field, value: string): RedisInteger"
   }, 
   {
     "name": "hVals", 
     "type": "skProc", 
     "description": "Get all the values in a hash", 
-    "code": "proc hVals*(r: TRedis; key: string): TRedisList"
+    "code": "proc hVals*(r: Redis; key: string): RedisList"
   }, 
   {
     "name": "bLPop", 
     "type": "skProc", 
     "description": "Remove and get the <em>first</em> element in a list, or block until one is available", 
-    "code": "proc bLPop*(r: TRedis; keys: varargs[string]; timeout: int): TRedisList"
+    "code": "proc bLPop*(r: Redis; keys: varargs[string]; timeout: int): RedisList"
   }, 
   {
     "name": "bRPop", 
     "type": "skProc", 
     "description": "Remove and get the <em>last</em> element in a list, or block until one is available.", 
-    "code": "proc bRPop*(r: TRedis; keys: varargs[string]; timeout: int): TRedisList"
+    "code": "proc bRPop*(r: Redis; keys: varargs[string]; timeout: int): RedisList"
   }, 
   {
     "name": "bRPopLPush", 
     "type": "skProc", 
-    "description": "<p>Pop a value from a list, push it to another list and return it; or block until one is available.</p>\u000D\u000A<p><a class=\"reference external\" href=\"http://redis.io/commands/brpoplpush\">http://redis.io/commands/brpoplpush</a></p>\u000D\u000A", 
-    "code": "proc bRPopLPush*(r: TRedis; source, destination: string; timeout: int): TRedisString"
+    "description": "<p>Pop a value from a list, push it to another list and return it; or block until one is available.</p>\u000A<p><a class=\"reference external\" href=\"http://redis.io/commands/brpoplpush\">http://redis.io/commands/brpoplpush</a></p>\u000A", 
+    "code": "proc bRPopLPush*(r: Redis; source, destination: string; timeout: int): RedisString"
   }, 
   {
     "name": "lIndex", 
     "type": "skProc", 
     "description": "Get an element from a list by its index", 
-    "code": "proc lIndex*(r: TRedis; key: string; index: int): TRedisString"
+    "code": "proc lIndex*(r: Redis; key: string; index: int): RedisString"
   }, 
   {
     "name": "lInsert", 
     "type": "skProc", 
     "description": "Insert an element before or after another element in a list", 
-    "code": "proc lInsert*(r: TRedis; key: string; before: bool; pivot, value: string): TRedisInteger"
+    "code": "proc lInsert*(r: Redis; key: string; before: bool; pivot, value: string): RedisInteger"
   }, 
   {
     "name": "lLen", 
     "type": "skProc", 
     "description": "Get the length of a list", 
-    "code": "proc lLen*(r: TRedis; key: string): TRedisInteger"
+    "code": "proc lLen*(r: Redis; key: string): RedisInteger"
   }, 
   {
     "name": "lPop", 
     "type": "skProc", 
     "description": "Remove and get the first element in a list", 
-    "code": "proc lPop*(r: TRedis; key: string): TRedisString"
+    "code": "proc lPop*(r: Redis; key: string): RedisString"
   }, 
   {
     "name": "lPush", 
     "type": "skProc", 
-    "description": "Prepend a value to a list. Returns the length of the list after the push. The <tt class=\"docutils literal\"><span class=\"pre\">create</span></tt> param specifies whether a list should be created if it doesn't exist at <tt class=\"docutils literal\"><span class=\"pre\">key</span></tt>. More specifically if <tt class=\"docutils literal\"><span class=\"pre\">create</span></tt> is True, <cite>LPUSH</cite> will be used, otherwise <cite>LPUSHX</cite>.", 
-    "code": "proc lPush*(r: TRedis; key, value: string; create: bool = True): TRedisInteger"
+    "description": "Prepend a value to a list. Returns the length of the list after the push. The <tt class=\"docutils literal\"><span class=\"pre\">create</span></tt> param specifies whether a list should be created if it doesn't exist at <tt class=\"docutils literal\"><span class=\"pre\">key</span></tt>. More specifically if <tt class=\"docutils literal\"><span class=\"pre\">create</span></tt> is true, <cite>LPUSH</cite> will be used, otherwise <cite>LPUSHX</cite>.", 
+    "code": "proc lPush*(r: Redis; key, value: string; create: bool = true): RedisInteger"
   }, 
   {
     "name": "lRange", 
     "type": "skProc", 
     "description": "Get a range of elements from a list. Returns <cite>nil</cite> when <cite>key</cite> doesn't exist.", 
-    "code": "proc lRange*(r: TRedis; key: string; start, stop: int): TRedisList"
+    "code": "proc lRange*(r: Redis; key: string; start, stop: int): RedisList"
   }, 
   {
     "name": "lRem", 
     "type": "skProc", 
     "description": "Remove elements from a list. Returns the number of elements that have been removed.", 
-    "code": "proc lRem*(r: TRedis; key: string; value: string; count: int = 0): TRedisInteger"
+    "code": "proc lRem*(r: Redis; key: string; value: string; count: int = 0): RedisInteger"
   }, 
   {
     "name": "lSet", 
     "type": "skProc", 
     "description": "Set the value of an element in a list by its index", 
-    "code": "proc lSet*(r: TRedis; key: string; index: int; value: string)"
+    "code": "proc lSet*(r: Redis; key: string; index: int; value: string)"
   }, 
   {
     "name": "lTrim", 
     "type": "skProc", 
     "description": "Trim a list to the specified range", 
-    "code": "proc lTrim*(r: TRedis; key: string; start, stop: int)"
+    "code": "proc lTrim*(r: Redis; key: string; start, stop: int)"
   }, 
   {
     "name": "rPop", 
     "type": "skProc", 
     "description": "Remove and get the last element in a list", 
-    "code": "proc rPop*(r: TRedis; key: string): TRedisString"
+    "code": "proc rPop*(r: Redis; key: string): RedisString"
   }, 
   {
     "name": "rPopLPush", 
     "type": "skProc", 
     "description": "Remove the last element in a list, append it to another list and return it", 
-    "code": "proc rPopLPush*(r: TRedis; source, destination: string): TRedisString"
+    "code": "proc rPopLPush*(r: Redis; source, destination: string): RedisString"
   }, 
   {
     "name": "rPush", 
     "type": "skProc", 
-    "description": "Append a value to a list. Returns the length of the list after the push. The <tt class=\"docutils literal\"><span class=\"pre\">create</span></tt> param specifies whether a list should be created if it doesn't exist at <tt class=\"docutils literal\"><span class=\"pre\">key</span></tt>. More specifically if <tt class=\"docutils literal\"><span class=\"pre\">create</span></tt> is True, <cite>RPUSH</cite> will be used, otherwise <cite>RPUSHX</cite>.", 
-    "code": "proc rPush*(r: TRedis; key, value: string; create: bool = True): TRedisInteger"
+    "description": "Append a value to a list. Returns the length of the list after the push. The <tt class=\"docutils literal\"><span class=\"pre\">create</span></tt> param specifies whether a list should be created if it doesn't exist at <tt class=\"docutils literal\"><span class=\"pre\">key</span></tt>. More specifically if <tt class=\"docutils literal\"><span class=\"pre\">create</span></tt> is true, <cite>RPUSH</cite> will be used, otherwise <cite>RPUSHX</cite>.", 
+    "code": "proc rPush*(r: Redis; key, value: string; create: bool = true): RedisInteger"
   }, 
   {
     "name": "sadd", 
     "type": "skProc", 
     "description": "Add a member to a set", 
-    "code": "proc sadd*(r: TRedis; key: string; member: string): TRedisInteger"
+    "code": "proc sadd*(r: Redis; key: string; member: string): RedisInteger"
   }, 
   {
     "name": "scard", 
     "type": "skProc", 
     "description": "Get the number of members in a set", 
-    "code": "proc scard*(r: TRedis; key: string): TRedisInteger"
+    "code": "proc scard*(r: Redis; key: string): RedisInteger"
   }, 
   {
     "name": "sdiff", 
     "type": "skProc", 
     "description": "Subtract multiple sets", 
-    "code": "proc sdiff*(r: TRedis; keys: varargs[string]): TRedisList"
+    "code": "proc sdiff*(r: Redis; keys: varargs[string]): RedisList"
   }, 
   {
     "name": "sdiffstore", 
     "type": "skProc", 
     "description": "Subtract multiple sets and store the resulting set in a key", 
-    "code": "proc sdiffstore*(r: TRedis; destination: string; keys: varargs[string]): TRedisInteger"
+    "code": "proc sdiffstore*(r: Redis; destination: string; keys: varargs[string]): RedisInteger"
   }, 
   {
     "name": "sinter", 
     "type": "skProc", 
     "description": "Intersect multiple sets", 
-    "code": "proc sinter*(r: TRedis; keys: varargs[string]): TRedisList"
+    "code": "proc sinter*(r: Redis; keys: varargs[string]): RedisList"
   }, 
   {
     "name": "sinterstore", 
     "type": "skProc", 
     "description": "Intersect multiple sets and store the resulting set in a key", 
-    "code": "proc sinterstore*(r: TRedis; destination: string; keys: varargs[string]): TRedisInteger"
+    "code": "proc sinterstore*(r: Redis; destination: string; keys: varargs[string]): RedisInteger"
   }, 
   {
     "name": "sismember", 
     "type": "skProc", 
     "description": "Determine if a given value is a member of a set", 
-    "code": "proc sismember*(r: TRedis; key: string; member: string): TRedisInteger"
+    "code": "proc sismember*(r: Redis; key: string; member: string): RedisInteger"
   }, 
   {
     "name": "smembers", 
     "type": "skProc", 
     "description": "Get all the members in a set", 
-    "code": "proc smembers*(r: TRedis; key: string): TRedisList"
+    "code": "proc smembers*(r: Redis; key: string): RedisList"
   }, 
   {
     "name": "smove", 
     "type": "skProc", 
     "description": "Move a member from one set to another", 
-    "code": "proc smove*(r: TRedis; source: string; destination: string; member: string): TRedisInteger"
+    "code": "proc smove*(r: Redis; source: string; destination: string; member: string): RedisInteger"
   }, 
   {
     "name": "spop", 
     "type": "skProc", 
     "description": "Remove and return a random member from a set", 
-    "code": "proc spop*(r: TRedis; key: string): TRedisString"
+    "code": "proc spop*(r: Redis; key: string): RedisString"
   }, 
   {
     "name": "srandmember", 
     "type": "skProc", 
     "description": "Get a random member from a set", 
-    "code": "proc srandmember*(r: TRedis; key: string): TRedisString"
+    "code": "proc srandmember*(r: Redis; key: string): RedisString"
   }, 
   {
     "name": "srem", 
     "type": "skProc", 
     "description": "Remove a member from a set", 
-    "code": "proc srem*(r: TRedis; key: string; member: string): TRedisInteger"
+    "code": "proc srem*(r: Redis; key: string; member: string): RedisInteger"
   }, 
   {
     "name": "sunion", 
     "type": "skProc", 
     "description": "Add multiple sets", 
-    "code": "proc sunion*(r: TRedis; keys: varargs[string]): TRedisList"
+    "code": "proc sunion*(r: Redis; keys: varargs[string]): RedisList"
   }, 
   {
     "name": "sunionstore", 
     "type": "skProc", 
     "description": "Add multiple sets and store the resulting set in a key ", 
-    "code": "proc sunionstore*(r: TRedis; destination: string; key: varargs[string]): TRedisInteger"
+    "code": "proc sunionstore*(r: Redis; destination: string; key: varargs[string]): RedisInteger"
   }, 
   {
     "name": "zadd", 
     "type": "skProc", 
     "description": "Add a member to a sorted set, or update its score if it already exists", 
-    "code": "proc zadd*(r: TRedis; key: string; score: int; member: string): TRedisInteger"
+    "code": "proc zadd*(r: Redis; key: string; score: int; member: string): RedisInteger"
   }, 
   {
     "name": "zcard", 
     "type": "skProc", 
     "description": "Get the number of members in a sorted set", 
-    "code": "proc zcard*(r: TRedis; key: string): TRedisInteger"
+    "code": "proc zcard*(r: Redis; key: string): RedisInteger"
   }, 
   {
     "name": "zcount", 
     "type": "skProc", 
     "description": "Count the members in a sorted set with scores within the given values", 
-    "code": "proc zcount*(r: TRedis; key: string; min: string; max: string): TRedisInteger"
+    "code": "proc zcount*(r: Redis; key: string; min: string; max: string): RedisInteger"
   }, 
   {
     "name": "zincrby", 
     "type": "skProc", 
     "description": "Increment the score of a member in a sorted set", 
-    "code": "proc zincrby*(r: TRedis; key: string; increment: string; member: string): TRedisString"
+    "code": "proc zincrby*(r: Redis; key: string; increment: string; member: string): RedisString"
   }, 
   {
     "name": "zinterstore", 
     "type": "skProc", 
     "description": "Intersect multiple sorted sets and store the resulting sorted set in a new key", 
-    "code": "proc zinterstore*(r: TRedis; destination: string; numkeys: string; \u000D\u000A                  keys: openarray[string]; weights: openarray[string] = []; \u000D\u000A                  aggregate: string = \"\"): TRedisInteger"
+    "code": "proc zinterstore*(r: Redis; destination: string; numkeys: string; \u000A                  keys: openArray[string]; weights: openArray[string] = []; \u000A                  aggregate: string = \"\"): RedisInteger"
   }, 
   {
     "name": "zrange", 
     "type": "skProc", 
     "description": "Return a range of members in a sorted set, by index", 
-    "code": "proc zrange*(r: TRedis; key: string; start: string; stop: string; \u000D\u000A             withScores: bool): TRedisList"
+    "code": "proc zrange*(r: Redis; key: string; start: string; stop: string; \u000A             withScores: bool): RedisList"
   }, 
   {
     "name": "zrangebyscore", 
     "type": "skProc", 
     "description": "Return a range of members in a sorted set, by score", 
-    "code": "proc zrangebyscore*(r: TRedis; key: string; min: string; max: string; \u000D\u000A                    withScore: bool = false; limit: bool = False; \u000D\u000A                    limitOffset: int = 0; limitCount: int = 0): TRedisList"
+    "code": "proc zrangebyscore*(r: Redis; key: string; min: string; max: string; \u000A                    withScore: bool = false; limit: bool = false; \u000A                    limitOffset: int = 0; limitCount: int = 0): RedisList"
   }, 
   {
     "name": "zrank", 
     "type": "skProc", 
     "description": "Determine the index of a member in a sorted set", 
-    "code": "proc zrank*(r: TRedis; key: string; member: string): TRedisString"
+    "code": "proc zrank*(r: Redis; key: string; member: string): RedisString"
   }, 
   {
     "name": "zrem", 
     "type": "skProc", 
     "description": "Remove a member from a sorted set", 
-    "code": "proc zrem*(r: TRedis; key: string; member: string): TRedisInteger"
+    "code": "proc zrem*(r: Redis; key: string; member: string): RedisInteger"
   }, 
   {
     "name": "zremrangebyrank", 
     "type": "skProc", 
     "description": "Remove all members in a sorted set within the given indexes", 
-    "code": "proc zremrangebyrank*(r: TRedis; key: string; start: string; stop: string): TRedisInteger"
+    "code": "proc zremrangebyrank*(r: Redis; key: string; start: string; stop: string): RedisInteger"
   }, 
   {
     "name": "zremrangebyscore", 
     "type": "skProc", 
     "description": "Remove all members in a sorted set within the given scores", 
-    "code": "proc zremrangebyscore*(r: TRedis; key: string; min: string; max: string): TRedisInteger"
+    "code": "proc zremrangebyscore*(r: Redis; key: string; min: string; max: string): RedisInteger"
   }, 
   {
     "name": "zrevrange", 
     "type": "skProc", 
     "description": "Return a range of members in a sorted set, by index, with scores ordered from high to low", 
-    "code": "proc zrevrange*(r: TRedis; key: string; start: string; stop: string; \u000D\u000A                withScore: bool): TRedisList"
+    "code": "proc zrevrange*(r: Redis; key: string; start: string; stop: string; \u000A                withScore: bool): RedisList"
   }, 
   {
     "name": "zrevrangebyscore", 
     "type": "skProc", 
     "description": "Return a range of members in a sorted set, by score, with scores ordered from high to low", 
-    "code": "proc zrevrangebyscore*(r: TRedis; key: string; min: string; max: string; \u000D\u000A                       withScore: bool = false; limit: bool = False; \u000D\u000A                       limitOffset: int = 0; limitCount: int = 0): TRedisList"
+    "code": "proc zrevrangebyscore*(r: Redis; key: string; min: string; max: string; \u000A                       withScore: bool = false; limit: bool = false; \u000A                       limitOffset: int = 0; limitCount: int = 0): RedisList"
   }, 
   {
     "name": "zrevrank", 
     "type": "skProc", 
     "description": "Determine the index of a member in a sorted set, with scores ordered from high to low", 
-    "code": "proc zrevrank*(r: TRedis; key: string; member: string): TRedisString"
+    "code": "proc zrevrank*(r: Redis; key: string; member: string): RedisString"
   }, 
   {
     "name": "zscore", 
     "type": "skProc", 
     "description": "Get the score associated with the given member in a sorted set", 
-    "code": "proc zscore*(r: TRedis; key: string; member: string): TRedisString"
+    "code": "proc zscore*(r: Redis; key: string; member: string): RedisString"
   }, 
   {
     "name": "zunionstore", 
     "type": "skProc", 
     "description": "Add multiple sorted sets and store the resulting sorted set in a new key ", 
-    "code": "proc zunionstore*(r: TRedis; destination: string; numkeys: string; \u000D\u000A                  keys: openarray[string]; weights: openarray[string] = []; \u000D\u000A                  aggregate: string = \"\"): TRedisInteger"
+    "code": "proc zunionstore*(r: Redis; destination: string; numkeys: string; \u000A                  keys: openArray[string]; weights: openArray[string] = []; \u000A                  aggregate: string = \"\"): RedisInteger"
   }, 
   {
     "name": "discardMulti", 
     "type": "skProc", 
     "description": "Discard all commands issued after MULTI", 
-    "code": "proc discardMulti*(r: TRedis)"
+    "code": "proc discardMulti*(r: Redis)"
   }, 
   {
     "name": "exec", 
     "type": "skProc", 
     "description": "Execute all commands issued after MULTI", 
-    "code": "proc exec*(r: TRedis): TRedisList"
+    "code": "proc exec*(r: Redis): RedisList"
   }, 
   {
     "name": "multi", 
     "type": "skProc", 
     "description": "Mark the start of a transaction block", 
-    "code": "proc multi*(r: TRedis)"
+    "code": "proc multi*(r: Redis)"
   }, 
   {
     "name": "unwatch", 
     "type": "skProc", 
     "description": "Forget about all watched keys", 
-    "code": "proc unwatch*(r: TRedis)"
+    "code": "proc unwatch*(r: Redis)"
   }, 
   {
     "name": "watch", 
     "type": "skProc", 
     "description": "Watch the given keys to determine execution of the MULTI/EXEC block ", 
-    "code": "proc watch*(r: TRedis; key: varargs[string])"
+    "code": "proc watch*(r: Redis; key: varargs[string])"
   }, 
   {
     "name": "auth", 
     "type": "skProc", 
     "description": "Authenticate to the server", 
-    "code": "proc auth*(r: TRedis; password: string)"
+    "code": "proc auth*(r: Redis; password: string)"
   }, 
   {
     "name": "echoServ", 
     "type": "skProc", 
     "description": "Echo the given string", 
-    "code": "proc echoServ*(r: TRedis; message: string): TRedisString"
+    "code": "proc echoServ*(r: Redis; message: string): RedisString"
   }, 
   {
     "name": "ping", 
     "type": "skProc", 
     "description": "Ping the server", 
-    "code": "proc ping*(r: TRedis): TRedisStatus"
+    "code": "proc ping*(r: Redis): RedisStatus"
   }, 
   {
     "name": "quit", 
     "type": "skProc", 
     "description": "Close the connection", 
-    "code": "proc quit*(r: TRedis)"
+    "code": "proc quit*(r: Redis)"
   }, 
   {
     "name": "select", 
     "type": "skProc", 
     "description": "Change the selected database for the current connection ", 
-    "code": "proc select*(r: TRedis; index: int): TRedisStatus"
+    "code": "proc select*(r: Redis; index: int): RedisStatus"
   }, 
   {
     "name": "bgrewriteaof", 
     "type": "skProc", 
     "description": "Asynchronously rewrite the append-only file", 
-    "code": "proc bgrewriteaof*(r: TRedis)"
+    "code": "proc bgrewriteaof*(r: Redis)"
   }, 
   {
     "name": "bgsave", 
     "type": "skProc", 
     "description": "Asynchronously save the dataset to disk", 
-    "code": "proc bgsave*(r: TRedis)"
+    "code": "proc bgsave*(r: Redis)"
   }, 
   {
     "name": "configGet", 
     "type": "skProc", 
     "description": "Get the value of a configuration parameter", 
-    "code": "proc configGet*(r: TRedis; parameter: string): TRedisList"
+    "code": "proc configGet*(r: Redis; parameter: string): RedisList"
   }, 
   {
     "name": "configSet", 
     "type": "skProc", 
     "description": "Set a configuration parameter to the given value", 
-    "code": "proc configSet*(r: TRedis; parameter: string; value: string)"
+    "code": "proc configSet*(r: Redis; parameter: string; value: string)"
   }, 
   {
     "name": "configResetStat", 
     "type": "skProc", 
     "description": "Reset the stats returned by INFO", 
-    "code": "proc configResetStat*(r: TRedis)"
+    "code": "proc configResetStat*(r: Redis)"
   }, 
   {
     "name": "dbsize", 
     "type": "skProc", 
     "description": "Return the number of keys in the selected database", 
-    "code": "proc dbsize*(r: TRedis): TRedisInteger"
+    "code": "proc dbsize*(r: Redis): RedisInteger"
   }, 
   {
     "name": "debugObject", 
     "type": "skProc", 
     "description": "Get debugging information about a key", 
-    "code": "proc debugObject*(r: TRedis; key: string): TRedisStatus"
+    "code": "proc debugObject*(r: Redis; key: string): RedisStatus"
   }, 
   {
     "name": "debugSegfault", 
     "type": "skProc", 
     "description": "Make the server crash", 
-    "code": "proc debugSegfault*(r: TRedis)"
+    "code": "proc debugSegfault*(r: Redis)"
   }, 
   {
     "name": "flushall", 
     "type": "skProc", 
     "description": "Remove all keys from all databases", 
-    "code": "proc flushall*(r: TRedis): TRedisStatus"
+    "code": "proc flushall*(r: Redis): RedisStatus"
   }, 
   {
     "name": "flushdb", 
     "type": "skProc", 
     "description": "Remove all keys from the current database", 
-    "code": "proc flushdb*(r: TRedis): TRedisStatus"
+    "code": "proc flushdb*(r: Redis): RedisStatus"
   }, 
   {
     "name": "info", 
     "type": "skProc", 
     "description": "Get information and statistics about the server", 
-    "code": "proc info*(r: TRedis): TRedisString"
+    "code": "proc info*(r: Redis): RedisString"
   }, 
   {
     "name": "lastsave", 
     "type": "skProc", 
     "description": "Get the UNIX time stamp of the last successful save to disk", 
-    "code": "proc lastsave*(r: TRedis): TRedisInteger"
+    "code": "proc lastsave*(r: Redis): RedisInteger"
   }, 
   {
     "name": "save", 
     "type": "skProc", 
     "description": "Synchronously save the dataset to disk", 
-    "code": "proc save*(r: TRedis)"
+    "code": "proc save*(r: Redis)"
   }, 
   {
     "name": "shutdown", 
     "type": "skProc", 
     "description": "Synchronously save the dataset to disk and then shut down the server", 
-    "code": "proc shutdown*(r: TRedis)"
+    "code": "proc shutdown*(r: Redis)"
   }, 
   {
     "name": "slaveof", 
     "type": "skProc", 
     "description": "Make the server a slave of another instance, or promote it as master", 
-    "code": "proc slaveof*(r: TRedis; host: string; port: string)"
+    "code": "proc slaveof*(r: Redis; host: string; port: string)"
   }, 
   {
     "name": "hPairs", 
     "type": "skIterator", 
     "description": "Iterator for keys and values in a hash.", 
-    "code": "iterator hPairs*(r: TRedis; key: string): tuple[key, value: string]"
+    "code": "iterator hPairs*(r: Redis; key: string): tuple[key, value: string]"
   }
 ]

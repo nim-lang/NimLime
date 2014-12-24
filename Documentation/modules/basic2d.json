@@ -1,12 +1,12 @@
 [
   {
-    "comment": "Basic 2d support with vectors, points, matrices and some basic utilities.\u000D\u000A## Vectors are implemented as direction vectors, ie. when transformed with a matrix\u000D\u000A## the translation part of matrix is ignored. \u000D\u000A## Operators `+` , `-` , `*` , `/` , `+=` , `-=` , `*=` and `/=` are implemented for vectors and scalars.\u000D\u000A##\u000D\u000A## Quick start example:\u000D\u000A##   \u000D\u000A##   # Create a matrix wich first rotates, then scales and at last translates\u000D\u000A##   \u000D\u000A##   var m:TMatrix2d=rotate(DEG90) & scale(2.0) & move(100.0,200.0)\u000D\u000A##   \u000D\u000A##   # Create a 2d point at (100,0) and a vector (5,2)\u000D\u000A##   \u000D\u000A##   var pt:TPoint2d=point2d(100.0,0.0) \u000D\u000A##   \u000D\u000A##   var vec:TVector2d=vector2d(5.0,2.0)\u000D\u000A##   \u000D\u000A##   \u000D\u000A##   pt &= m # transforms pt in place\u000D\u000A##   \u000D\u000A##   var pt2:TPoint2d=pt & m #concatenates pt with m and returns a new point\u000D\u000A##   \u000D\u000A##   var vec2:TVector2d=vec & m #concatenates vec with m and returns a new vector"
+    "comment": "Basic 2d support with vectors, points, matrices and some basic utilities.\u000A## Vectors are implemented as direction vectors, ie. when transformed with a matrix\u000A## the translation part of matrix is ignored. \u000A## Operators `+` , `-` , `*` , `/` , `+=` , `-=` , `*=` and `/=` are implemented for vectors and scalars.\u000A##\u000A## Quick start example:\u000A##   \u000A##   # Create a matrix wich first rotates, then scales and at last translates\u000A##   \u000A##   var m:TMatrix2d=rotate(DEG90) & scale(2.0) & move(100.0,200.0)\u000A##   \u000A##   # Create a 2d point at (100,0) and a vector (5,2)\u000A##   \u000A##   var pt:TPoint2d=point2d(100.0,0.0) \u000A##   \u000A##   var vec:TVector2d=vector2d(5.0,2.0)\u000A##   \u000A##   \u000A##   pt &= m # transforms pt in place\u000A##   \u000A##   var pt2:TPoint2d=pt & m #concatenates pt with m and returns a new point\u000A##   \u000A##   var vec2:TVector2d=vec & m #concatenates vec with m and returns a new vector"
   }, 
   {
     "name": "TVector2d", 
     "type": "skType", 
     "description": "Implements a 2d <strong>direction vector</strong> stored as an <cite>x</cite> coordinate and an <cite>y</cite> coordinate. Direction vector means, that when transforming a vector with a matrix, the translational part of the matrix is ignored.", 
-    "code": "TVector2d* = object \u000D\u000A  x*, y*: float\u000D\u000A"
+    "code": "TVector2d* = object \u000A  x*, y*: float\u000A"
   }, 
   {
     "name": "matrix2d", 
@@ -30,7 +30,7 @@
     "name": "YAXIS", 
     "type": "skLet", 
     "description": "Quick acces to an 2d y-axis unit vector", 
-    "code": "YAXIS*: TVector2d = vector2d(0.0000000000000000e+000, 1.0000000000000000e+000)"
+    "code": "YAXIS*: TVector2d = vector2d(0.0, 1.0)"
   }, 
   {
     "name": "setElements", 
@@ -125,7 +125,7 @@
     "name": "isUniform", 
     "type": "skProc", 
     "description": "Checks if the transform is uniform, that is perpendicular axes of equal lenght, which means (for example) it cannot transform a circle into an ellipse. <cite>tol</cite> is used as tolerance for both equal length comparison and perp. comparison.", 
-    "code": "proc isUniform*(t: TMatrix2d; tol = 9.9999999999999995e-007): bool"
+    "code": "proc isUniform*(t: TMatrix2d; tol = 1e-06): bool"
   }, 
   {
     "name": "determinant", 
@@ -149,7 +149,7 @@
     "name": "equals", 
     "type": "skProc", 
     "description": "Checks if all elements of <cite>m1`and `m2</cite> is equal within a given tolerance <cite>tol</cite>.", 
-    "code": "proc equals*(m1: TMatrix2d; m2: TMatrix2d; tol = 9.9999999999999995e-007): bool"
+    "code": "proc equals*(m1: TMatrix2d; m2: TMatrix2d; tol = 1e-06): bool"
   }, 
   {
     "name": "`=~`", 
@@ -161,7 +161,7 @@
     "name": "isIdentity", 
     "type": "skProc", 
     "description": "Checks is a matrix is approximately an identity matrix, using <cite>tol</cite> as tolerance for each element.", 
-    "code": "proc isIdentity*(m: TMatrix2d; tol = 9.9999999999999995e-007): bool"
+    "code": "proc isIdentity*(m: TMatrix2d; tol = 1e-06): bool"
   }, 
   {
     "name": "apply", 
@@ -322,7 +322,7 @@
     "name": "equals", 
     "type": "skProc", 
     "description": "Checks if two vectors approximately equals with a tolerance.", 
-    "code": "proc equals*(v1, v2: TVector2d; tol = 9.9999999999999995e-007): bool"
+    "code": "proc equals*(v1, v2: TVector2d; tol = 1e-06): bool"
   }, 
   {
     "name": "`=~`", 

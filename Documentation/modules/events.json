@@ -1,70 +1,70 @@
 [
   {
-    "comment": ":Author: Alex Mitchell\u000D\u000A##\u000D\u000A## This module implements an event system that is not dependant on external\u000D\u000A## graphical toolkits. It was originally called ``NimEE`` because \u000D\u000A## it was inspired by Python's PyEE module. There are two ways you can use\u000D\u000A## events: one is a python-inspired way; the other is more of a C-style way.\u000D\u000A##\u000D\u000A## .. code-block:: Nimrod\u000D\u000A##    var ee = initEventEmitter()\u000D\u000A##    var genericargs: TEventArgs\u000D\u000A##    proc handleevent(e: TEventArgs) =\u000D\u000A##        echo(\"Handled!\")\u000D\u000A##\u000D\u000A##    # Python way\u000D\u000A##    ee.on(\"EventName\", handleevent)\u000D\u000A##    ee.emit(\"EventName\", genericargs)\u000D\u000A## \u000D\u000A##    # C/Java way\u000D\u000A##    # Declare a type\u000D\u000A##    type\u000D\u000A##        TSomeObject = object of TObject\u000D\u000A##            SomeEvent: TEventHandler\u000D\u000A##    var myobj: TSomeObject\u000D\u000A##    myobj.SomeEvent = initEventHandler(\"SomeEvent\")\u000D\u000A##    myobj.SomeEvent.addHandler(handleevent)\u000D\u000A##    ee.emit(myobj.SomeEvent, genericargs)"
+    "comment": ":Author: Alex Mitchell\u000A##\u000A## This module implements an event system that is not dependant on external\u000A## graphical toolkits. It was originally called ``NimEE`` because \u000A## it was inspired by Python's PyEE module. There are two ways you can use\u000A## events: one is a python-inspired way; the other is more of a C-style way.\u000A##\u000A## .. code-block:: Nim\u000A##    var ee = initEventEmitter()\u000A##    var genericargs: EventArgs\u000A##    proc handleevent(e: EventArgs) =\u000A##        echo(\"Handled!\")\u000A##\u000A##    # Python way\u000A##    ee.on(\"EventName\", handleevent)\u000A##    ee.emit(\"EventName\", genericargs)\u000A## \u000A##    # C/Java way\u000A##    # Declare a type\u000A##    type\u000A##        SomeObject = object of RootObj\u000A##            SomeEvent: EventHandler\u000A##    var myobj: SomeObject\u000A##    myobj.SomeEvent = initEventHandler(\"SomeEvent\")\u000A##    myobj.SomeEvent.addHandler(handleevent)\u000A##    ee.emit(myobj.SomeEvent, genericargs)"
   }, 
   {
-    "name": "TEventHandler", 
+    "name": "EventHandler", 
     "type": "skType", 
     "description": "An eventhandler for an event.", 
-    "code": "TEventHandler* = tuple[name: string, \u000D\u000A                       handlers: seq[proc (e: TEventArgs) {.closure.}]]"
+    "code": "EventHandler* = tuple[name: string, \u000A                      handlers: seq[proc (e: EventArgs) {.closure.}]]"
   }, 
   {
-    "name": "EInvalidEvent", 
+    "name": "EventError", 
     "type": "skType", 
-    "code": "EInvalidEvent* = object of EInvalidValue"
+    "code": "EventError* = object of ValueError"
   }, 
   {
     "name": "initEventHandler", 
     "type": "skProc", 
     "description": "Initializes an EventHandler with the specified name and returns it.", 
-    "code": "proc initEventHandler*(name: string): TEventHandler"
+    "code": "proc initEventHandler*(name: string): EventHandler"
   }, 
   {
     "name": "addHandler", 
     "type": "skProc", 
     "description": "Adds the callback to the specified event handler.", 
-    "code": "proc addHandler*(handler: var TEventHandler; \u000D\u000A                 func: proc (e: TEventArgs) {.closure.})"
+    "code": "proc addHandler*(handler: var EventHandler; fn: proc (e: EventArgs) {.closure.})"
   }, 
   {
     "name": "removeHandler", 
     "type": "skProc", 
     "description": "Removes the callback from the specified event handler.", 
-    "code": "proc removeHandler*(handler: var TEventHandler; \u000D\u000A                    func: proc (e: TEventArgs) {.closure.})"
+    "code": "proc removeHandler*(handler: var EventHandler; \u000A                    fn: proc (e: EventArgs) {.closure.})"
   }, 
   {
     "name": "containsHandler", 
     "type": "skProc", 
     "description": "Checks if a callback is registered to this event handler.", 
-    "code": "proc containsHandler*(handler: var TEventHandler; \u000D\u000A                      func: proc (e: TEventArgs) {.closure.}): bool"
+    "code": "proc containsHandler*(handler: var EventHandler; \u000A                      fn: proc (e: EventArgs) {.closure.}): bool"
   }, 
   {
     "name": "clearHandlers", 
     "type": "skProc", 
     "description": "Clears all of the callbacks from the event handler.", 
-    "code": "proc clearHandlers*(handler: var TEventHandler)"
+    "code": "proc clearHandlers*(handler: var EventHandler)"
   }, 
   {
     "name": "on", 
     "type": "skProc", 
     "description": "Assigns a event handler with the specified callback. If the event doesn't exist, it will be created.", 
-    "code": "proc on*(emitter: var TEventEmitter; event: string; \u000D\u000A         func: proc (e: TEventArgs) {.closure.})"
+    "code": "proc on*(emitter: var EventEmitter; event: string; \u000A         fn: proc (e: EventArgs) {.closure.})"
   }, 
   {
     "name": "emit", 
     "type": "skProc", 
     "description": "Fires an event handler with specified event arguments.", 
-    "code": "proc emit*(emitter: var TEventEmitter; eventhandler: var TEventHandler; \u000D\u000A           args: TEventArgs)"
+    "code": "proc emit*(emitter: var EventEmitter; eventhandler: var EventHandler; \u000A           args: EventArgs)"
   }, 
   {
     "name": "emit", 
     "type": "skProc", 
     "description": "Fires an event handler with specified event arguments.", 
-    "code": "proc emit*(emitter: var TEventEmitter; event: string; args: TEventArgs)"
+    "code": "proc emit*(emitter: var EventEmitter; event: string; args: EventArgs)"
   }, 
   {
     "name": "initEventEmitter", 
     "type": "skProc", 
     "description": "Creates and returns a new EventEmitter.", 
-    "code": "proc initEventEmitter*(): TEventEmitter"
+    "code": "proc initEventEmitter*(): EventEmitter"
   }
 ]

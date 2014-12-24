@@ -6,7 +6,7 @@
     "name": "encode", 
     "type": "skProc", 
     "description": "encodes <cite>s</cite> into base64 representation. After <cite>lineLen</cite> characters, a <cite>newline</cite> is added.", 
-    "code": "proc encode*[T: TInteger | char](s: openarray[T]; lineLen = 75; \u000D\u000A                                 newLine = \"\\x0D\\x0A\"): string"
+    "code": "proc encode*[T: SomeInteger | char](s: openarray[T]; lineLen = 75; \u000A                                    newLine = \"\\x0D\\x0A\"): string"
   }, 
   {
     "name": "encode", 

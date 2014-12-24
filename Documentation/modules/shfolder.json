@@ -12,17 +12,17 @@
   {
     "name": "SHGetFolderPathA", 
     "type": "skProc", 
-    "code": "proc SHGetFolderPathA*(Ahwnd: HWND; Csidl: int; Token: THandle; Flags: DWord; \u000D\u000A                       Path: cstring): HRESULT {.stdcall, dynlib: LibName, \u000D\u000A    importc: \"SHGetFolderPathA\".}"
+    "code": "proc SHGetFolderPathA*(Ahwnd: HWND; Csidl: int; Token: THandle; Flags: DWord; \u000A                       Path: cstring): HRESULT {.stdcall, dynlib: LibName, \u000A    importc: \"SHGetFolderPathA\".}"
   }, 
   {
     "name": "SHGetFolderPathW", 
     "type": "skProc", 
-    "code": "proc SHGetFolderPathW*(Ahwnd: HWND; Csidl: int; Token: THandle; Flags: DWord; \u000D\u000A                       Path: cstring): HRESULT {.stdcall, dynlib: LibName, \u000D\u000A    importc: \"SHGetFolderPathW\".}"
+    "code": "proc SHGetFolderPathW*(Ahwnd: HWND; Csidl: int; Token: THandle; Flags: DWord; \u000A                       Path: cstring): HRESULT {.stdcall, dynlib: LibName, \u000A    importc: \"SHGetFolderPathW\".}"
   }, 
   {
     "name": "SHGetFolderPath", 
     "type": "skProc", 
-    "code": "proc SHGetFolderPath*(Ahwnd: HWND; Csidl: int; Token: THandle; Flags: DWord; \u000D\u000A                      Path: cstring): HRESULT {.stdcall, dynlib: LibName, \u000D\u000A    importc: \"SHGetFolderPathA\".}"
+    "code": "proc SHGetFolderPath*(Ahwnd: HWND; Csidl: int; Token: THandle; Flags: DWord; \u000A                      Path: cstring): HRESULT {.stdcall, dynlib: LibName, \u000A    importc: \"SHGetFolderPathA\".}"
   }, 
   {
     "name": "TSHGetFolderPath", 

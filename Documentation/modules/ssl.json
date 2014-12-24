@@ -1,17 +1,17 @@
 [
   {
-    "comment": "This module provides an easy to use sockets-style \u000D\u000A## nimrod interface to the OpenSSL library."
+    "comment": "This module provides an easy to use sockets-style \u000A## nim interface to the OpenSSL library."
   }, 
   {
     "name": "TSecureSocket", 
     "type": "skType", 
-    "code": "TSecureSocket* {.final.} = object \u000D\u000A  ssl: PSSL\u000D\u000A  bio: PBIO\u000D\u000A"
+    "code": "TSecureSocket* = object \u000A  ssl: SslPtr\u000A  bio: BIO\u000A"
   }, 
   {
     "name": "connect", 
     "type": "skProc", 
     "description": "Connects to the specified <cite>address</cite> on the specified <cite>port</cite>. Returns the result of the certificate validation.", 
-    "code": "proc connect*(sock: var TSecureSocket; address: string; port: int): Int"
+    "code": "proc connect*(sock: var TSecureSocket; address: string; port: int): int"
   }, 
   {
     "name": "recvLine", 

@@ -5,14 +5,14 @@
   {
     "name": "parseHex", 
     "type": "skProc", 
-    "description": "<p>Parses a hexadecimal number and stores its value in <tt class=\"docutils literal\"><span class=\"pre\">number</span></tt>.</p>\u000D\u000A<p>Returns the number of the parsed characters or 0 in case of an error. This proc is sensitive to the already existing value of <tt class=\"docutils literal\"><span class=\"pre\">number</span></tt> and will likely not do what you want unless you make sure <tt class=\"docutils literal\"><span class=\"pre\">number</span></tt> is zero. You can use this feature to <em>chain</em> calls, though the result int will quickly overflow. Example:</p>\u000D\u000A<pre><span class=\"Keyword\">var</span> <span class=\"Identifier\">value</span> <span class=\"Operator\">=</span> <span class=\"DecNumber\">0</span>\u000D\u000A<span class=\"Keyword\">discard</span> <span class=\"Identifier\">parseHex</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;0x38&quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">value</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Identifier\">assert</span> <span class=\"Identifier\">value</span> <span class=\"Operator\">==</span> <span class=\"DecNumber\">56</span>\u000D\u000A<span class=\"Keyword\">discard</span> <span class=\"Identifier\">parseHex</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;0x34&quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">value</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Identifier\">assert</span> <span class=\"Identifier\">value</span> <span class=\"Operator\">==</span> <span class=\"DecNumber\">56</span> <span class=\"Operator\">*</span> <span class=\"DecNumber\">256</span> <span class=\"Operator\">+</span> <span class=\"DecNumber\">52</span>\u000D\u000A<span class=\"Identifier\">value</span> <span class=\"Operator\">=</span> <span class=\"Operator\">-</span><span class=\"DecNumber\">1</span>\u000D\u000A<span class=\"Keyword\">discard</span> <span class=\"Identifier\">parseHex</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;0x38&quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">value</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Identifier\">assert</span> <span class=\"Identifier\">value</span> <span class=\"Operator\">==</span> <span class=\"Operator\">-</span><span class=\"DecNumber\">200</span></pre>", 
-    "code": "proc parseHex*(s: string; number: var int; start = 0): int {.rtl, \u000D\u000A    extern: \"npuParseHex\", noSideEffect.}"
+    "description": "<p>Parses a hexadecimal number and stores its value in <tt class=\"docutils literal\"><span class=\"pre\">number</span></tt>.</p>\u000A<p>Returns the number of the parsed characters or 0 in case of an error. This proc is sensitive to the already existing value of <tt class=\"docutils literal\"><span class=\"pre\">number</span></tt> and will likely not do what you want unless you make sure <tt class=\"docutils literal\"><span class=\"pre\">number</span></tt> is zero. You can use this feature to <em>chain</em> calls, though the result int will quickly overflow. Example:</p>\u000A<pre><span class=\"Keyword\">var</span> <span class=\"Identifier\">value</span> <span class=\"Operator\">=</span> <span class=\"DecNumber\">0</span>\u000A<span class=\"Keyword\">discard</span> <span class=\"Identifier\">parseHex</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;0x38&quot;</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">value</span><span class=\"Punctuation\">)</span>\u000A<span class=\"Identifier\">assert</span> <span class=\"Identifier\">value</span> <span class=\"Operator\">==</span> <span class=\"DecNumber\">56</span>\u000A<span class=\"Keyword\">discard</span> <span class=\"Identifier\">parseHex</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;0x34&quot;</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">value</span><span class=\"Punctuation\">)</span>\u000A<span class=\"Identifier\">assert</span> <span class=\"Identifier\">value</span> <span class=\"Operator\">==</span> <span class=\"DecNumber\">56</span> <span class=\"Operator\">*</span> <span class=\"DecNumber\">256</span> <span class=\"Operator\">+</span> <span class=\"DecNumber\">52</span>\u000A<span class=\"Identifier\">value</span> <span class=\"Operator\">=</span> <span class=\"Operator\">-</span><span class=\"DecNumber\">1</span>\u000A<span class=\"Keyword\">discard</span> <span class=\"Identifier\">parseHex</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;0x38&quot;</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">value</span><span class=\"Punctuation\">)</span>\u000A<span class=\"Identifier\">assert</span> <span class=\"Identifier\">value</span> <span class=\"Operator\">==</span> <span class=\"Operator\">-</span><span class=\"DecNumber\">200</span></pre>", 
+    "code": "proc parseHex*(s: string; number: var int; start = 0): int {.rtl, \u000A    extern: \"npuParseHex\", noSideEffect.}"
   }, 
   {
     "name": "parseOct", 
     "type": "skProc", 
     "description": "parses an octal number and stores its value in <tt class=\"docutils literal\"><span class=\"pre\">number</span></tt>. Returns the number of the parsed characters or 0 in case of an error.", 
-    "code": "proc parseOct*(s: string; number: var int; start = 0): int {.rtl, \u000D\u000A    extern: \"npuParseOct\", noSideEffect.}"
+    "code": "proc parseOct*(s: string; number: var int; start = 0): int {.rtl, \u000A    extern: \"npuParseOct\", noSideEffect.}"
   }, 
   {
     "name": "parseIdent", 
@@ -29,8 +29,8 @@
   {
     "name": "parseToken", 
     "type": "skProc", 
-    "description": "<p>parses a token and stores it in <tt class=\"docutils literal\"><span class=\"pre\">token</span></tt>. Returns the number of the parsed characters or 0 in case of an error. A token consists of the characters in <cite>validChars</cite>.</p>\u000D\u000A<p><strong>Deprecated since version 0.8.12</strong>: Use <tt class=\"docutils literal\"><span class=\"pre\">parseWhile</span></tt> instead.</p>\u000D\u000A", 
-    "code": "proc parseToken*(s: string; token: var string; validChars: set[char]; start = 0): int {.\u000D\u000A    inline, deprecated.}"
+    "description": "<p>parses a token and stores it in <tt class=\"docutils literal\"><span class=\"pre\">token</span></tt>. Returns the number of the parsed characters or 0 in case of an error. A token consists of the characters in <cite>validChars</cite>.</p>\u000A<p><strong>Deprecated since version 0.8.12</strong>: Use <tt class=\"docutils literal\"><span class=\"pre\">parseWhile</span></tt> instead.</p>\u000A", 
+    "code": "proc parseToken*(s: string; token: var string; validChars: set[char]; start = 0): int {.\u000A    inline, deprecated.}"
   }, 
   {
     "name": "skipWhitespace", 
@@ -72,19 +72,19 @@
     "name": "parseUntil", 
     "type": "skProc", 
     "description": "parses a token and stores it in <tt class=\"docutils literal\"><span class=\"pre\">token</span></tt>. Returns the number of the parsed characters or 0 in case of an error. A token consists of the characters notin <cite>until</cite>. ", 
-    "code": "proc parseUntil*(s: string; token: var string; until: set[char]; start = 0): int {.\u000D\u000A    inline.}"
+    "code": "proc parseUntil*(s: string; token: var string; until: set[char]; start = 0): int {.\u000A    inline.}"
   }, 
   {
     "name": "parseUntil", 
     "type": "skProc", 
     "description": "parses a token and stores it in <tt class=\"docutils literal\"><span class=\"pre\">token</span></tt>. Returns the number of the parsed characters or 0 in case of an error. A token consists of any character that is not the <cite>until</cite> character.", 
-    "code": "proc parseUntil*(s: string; token: var string; until: char; start = 0): int {.\u000D\u000A    inline.}"
+    "code": "proc parseUntil*(s: string; token: var string; until: char; start = 0): int {.\u000A    inline.}"
   }, 
   {
     "name": "parseWhile", 
     "type": "skProc", 
     "description": "parses a token and stores it in <tt class=\"docutils literal\"><span class=\"pre\">token</span></tt>. Returns the number of the parsed characters or 0 in case of an error. A token consists of the characters in <cite>validChars</cite>. ", 
-    "code": "proc parseWhile*(s: string; token: var string; validChars: set[char]; start = 0): int {.\u000D\u000A    inline.}"
+    "code": "proc parseWhile*(s: string; token: var string; validChars: set[char]; start = 0): int {.\u000A    inline.}"
   }, 
   {
     "name": "captureBetween", 
@@ -96,36 +96,36 @@
     "name": "parseBiggestInt", 
     "type": "skProc", 
     "description": "parses an integer starting at <cite>start</cite> and stores the value into <cite>number</cite>. Result is the number of processed chars or 0 if there is no integer. <cite>EOverflow</cite> is raised if an overflow occurs.", 
-    "code": "proc parseBiggestInt*(s: string; number: var biggestInt; start = 0): int {.rtl, \u000D\u000A    extern: \"npuParseBiggestInt\", noSideEffect.}"
+    "code": "proc parseBiggestInt*(s: string; number: var BiggestInt; start = 0): int {.rtl, \u000A    extern: \"npuParseBiggestInt\", noSideEffect.}"
   }, 
   {
     "name": "parseInt", 
     "type": "skProc", 
     "description": "parses an integer starting at <cite>start</cite> and stores the value into <cite>number</cite>. Result is the number of processed chars or 0 if there is no integer. <cite>EOverflow</cite> is raised if an overflow occurs.", 
-    "code": "proc parseInt*(s: string; number: var int; start = 0): int {.rtl, \u000D\u000A    extern: \"npuParseInt\", noSideEffect.}"
+    "code": "proc parseInt*(s: string; number: var int; start = 0): int {.rtl, \u000A    extern: \"npuParseInt\", noSideEffect.}"
   }, 
   {
     "name": "parseBiggestFloat", 
     "type": "skProc", 
-    "description": "parses a float starting at <cite>start</cite> and stores the value into <cite>number</cite>. Result is the number of processed chars or 0 if there occured a parsing error.", 
-    "code": "proc parseBiggestFloat*(s: string; number: var biggestFloat; start = 0): int {.\u000D\u000A    rtl, extern: \"npuParseBiggestFloat\", noSideEffect.}"
+    "description": "parses a float starting at <cite>start</cite> and stores the value into <cite>number</cite>. Result is the number of processed chars or 0 if a parsing error occurred.", 
+    "code": "proc parseBiggestFloat*(s: string; number: var BiggestFloat; start = 0): int {.\u000A    magic: \"ParseBiggestFloat\", importc: \"nimParseBiggestFloat\", noSideEffect.}"
   }, 
   {
     "name": "parseFloat", 
     "type": "skProc", 
     "description": "parses a float starting at <cite>start</cite> and stores the value into <cite>number</cite>. Result is the number of processed chars or 0 if there occured a parsing error.", 
-    "code": "proc parseFloat*(s: string; number: var float; start = 0): int {.rtl, \u000D\u000A    extern: \"npuParseFloat\", noSideEffect.}"
+    "code": "proc parseFloat*(s: string; number: var float; start = 0): int {.rtl, \u000A    extern: \"npuParseFloat\", noSideEffect.}"
   }, 
   {
-    "name": "TInterpolatedKind", 
+    "name": "InterpolatedKind", 
     "type": "skType", 
     "description": "describes for <cite>interpolatedFragments</cite> which part of the interpolated string is yielded; for example in &quot;str$$$var${expr}&quot;", 
-    "code": "TInterpolatedKind* = enum \u000D\u000A  ikStr,                      ## ``str`` part of the interpolated string\u000D\u000A  ikDollar,                   ## escaped ``$`` part of the interpolated string\u000D\u000A  ikVar,                      ## ``var`` part of the interpolated string\u000D\u000A  ikExpr                      ## ``expr`` part of the interpolated string"
+    "code": "InterpolatedKind* = enum \u000A  ikStr,                      ## ``str`` part of the interpolated string\u000A  ikDollar,                   ## escaped ``$`` part of the interpolated string\u000A  ikVar,                      ## ``var`` part of the interpolated string\u000A  ikExpr                      ## ``expr`` part of the interpolated string"
   }, 
   {
     "name": "interpolatedFragments", 
     "type": "skIterator", 
-    "description": "<p>Tokenizes the string <cite>s</cite> into substrings for interpolation purposes.</p>\u000D\u000A<p>Example:</p>\u000D\u000A<pre><span class=\"Keyword\">for</span> <span class=\"Identifier\">k</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">v</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">interpolatedFragments</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;  $this is ${an  example}  $$&quot;</span><span class=\"Punctation\">)</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Identifier\">echo</span> <span class=\"StringLit\">&quot;(&quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">k</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;, </span><span class=\"EscapeSequence\">\\&quot;</span><span class=\"StringLit\">&quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">v</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;</span><span class=\"EscapeSequence\">\\&quot;</span><span class=\"StringLit\">)&quot;</span></pre><p>Results in:</p>\u000D\u000A<pre><span class=\"Punctation\">(</span><span class=\"Identifier\">ikString</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;  &quot;</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"Identifier\">ikExpr</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;this&quot;</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"Identifier\">ikString</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot; is &quot;</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"Identifier\">ikExpr</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;an  example&quot;</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"Identifier\">ikString</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;  &quot;</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Punctation\">(</span><span class=\"Identifier\">ikDollar</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;$&quot;</span><span class=\"Punctation\">)</span></pre>", 
-    "code": "iterator interpolatedFragments*(s: string): tuple[kind: TInterpolatedKind, \u000D\u000A    value: string]"
+    "description": "<p>Tokenizes the string <cite>s</cite> into substrings for interpolation purposes.</p>\u000A<p>Example:</p>\u000A<pre><span class=\"Keyword\">for</span> <span class=\"Identifier\">k</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">v</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">interpolatedFragments</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;  $this is ${an  example}  $$&quot;</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">:</span>\u000A  <span class=\"Identifier\">echo</span> <span class=\"StringLit\">&quot;(&quot;</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">k</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;, </span><span class=\"EscapeSequence\">\\&quot;</span><span class=\"StringLit\">&quot;</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">v</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;</span><span class=\"EscapeSequence\">\\&quot;</span><span class=\"StringLit\">)&quot;</span></pre><p>Results in:</p>\u000A<pre><span class=\"Punctuation\">(</span><span class=\"Identifier\">ikString</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;  &quot;</span><span class=\"Punctuation\">)</span>\u000A<span class=\"Punctuation\">(</span><span class=\"Identifier\">ikExpr</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;this&quot;</span><span class=\"Punctuation\">)</span>\u000A<span class=\"Punctuation\">(</span><span class=\"Identifier\">ikString</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot; is &quot;</span><span class=\"Punctuation\">)</span>\u000A<span class=\"Punctuation\">(</span><span class=\"Identifier\">ikExpr</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;an  example&quot;</span><span class=\"Punctuation\">)</span>\u000A<span class=\"Punctuation\">(</span><span class=\"Identifier\">ikString</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;  &quot;</span><span class=\"Punctuation\">)</span>\u000A<span class=\"Punctuation\">(</span><span class=\"Identifier\">ikDollar</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;$&quot;</span><span class=\"Punctuation\">)</span></pre>", 
+    "code": "iterator interpolatedFragments*(s: string): tuple[kind: InterpolatedKind, \u000A    value: string]"
   }
 ]

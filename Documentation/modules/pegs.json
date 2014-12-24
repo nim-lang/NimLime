@@ -1,198 +1,198 @@
 [
   {
-    "comment": "Simple PEG (Parsing expression grammar) matching. Uses no memorization, but\u000D\u000A## uses superoperators and symbol inlining to improve performance. Note:\u000D\u000A## Matching performance is hopefully competitive with optimized regular\u000D\u000A## expression engines.\u000D\u000A##\u000D\u000A## .. include:: ../doc/pegdocs.txt\u000D\u000A##"
+    "comment": "Simple PEG (Parsing expression grammar) matching. Uses no memorization, but\u000A## uses superoperators and symbol inlining to improve performance. Note:\u000A## Matching performance is hopefully competitive with optimized regular\u000A## expression engines.\u000A##\u000A## .. include:: ../doc/pegdocs.txt\u000A##"
   }, 
   {
     "name": "MaxSubpatterns", 
     "type": "skConst", 
     "description": "defines the maximum number of subpatterns that can be captured. More subpatterns cannot be captured! ", 
-    "code": "MaxSubpatterns* = 10"
+    "code": "MaxSubpatterns* = 20"
   }, 
   {
-    "name": "TPeg", 
+    "name": "Peg", 
     "type": "skType", 
     "description": "type that represents a PEG", 
-    "code": "TPeg* = TNode"
+    "code": "Peg* = TNode"
   }, 
   {
     "name": "term", 
     "type": "skProc", 
     "description": "constructs a PEG from a terminal string", 
-    "code": "proc term*(t: string): TPeg {.nosideEffect, rtl, extern: \"npegs$1Str\".}"
+    "code": "proc term*(t: string): Peg {.nosideEffect, rtl, extern: \"npegs$1Str\".}"
   }, 
   {
     "name": "termIgnoreCase", 
     "type": "skProc", 
     "description": "constructs a PEG from a terminal string; ignore case for matching", 
-    "code": "proc termIgnoreCase*(t: string): TPeg {.nosideEffect, rtl, extern: \"npegs$1\".}"
+    "code": "proc termIgnoreCase*(t: string): Peg {.nosideEffect, rtl, extern: \"npegs$1\".}"
   }, 
   {
     "name": "termIgnoreStyle", 
     "type": "skProc", 
     "description": "constructs a PEG from a terminal string; ignore style for matching", 
-    "code": "proc termIgnoreStyle*(t: string): TPeg {.nosideEffect, rtl, extern: \"npegs$1\".}"
+    "code": "proc termIgnoreStyle*(t: string): Peg {.nosideEffect, rtl, extern: \"npegs$1\".}"
   }, 
   {
     "name": "term", 
     "type": "skProc", 
     "description": "constructs a PEG from a terminal char", 
-    "code": "proc term*(t: char): TPeg {.nosideEffect, rtl, extern: \"npegs$1Char\".}"
+    "code": "proc term*(t: char): Peg {.nosideEffect, rtl, extern: \"npegs$1Char\".}"
   }, 
   {
     "name": "charSet", 
     "type": "skProc", 
     "description": "constructs a PEG from a character set <cite>s</cite>", 
-    "code": "proc charSet*(s: set[char]): TPeg {.nosideEffect, rtl, extern: \"npegs$1\".}"
+    "code": "proc charSet*(s: set[char]): Peg {.nosideEffect, rtl, extern: \"npegs$1\".}"
   }, 
   {
     "name": "`/`", 
     "type": "skProc", 
     "description": "constructs an ordered choice with the PEGs in <cite>a</cite>", 
-    "code": "proc `/`*(a: varargs[TPeg]): TPeg {.nosideEffect, rtl, \u000D\u000A                                    extern: \"npegsOrderedChoice\".}"
+    "code": "proc `/`*(a: varargs[Peg]): Peg {.nosideEffect, rtl, \u000A                                  extern: \"npegsOrderedChoice\".}"
   }, 
   {
     "name": "sequence", 
     "type": "skProc", 
     "description": "constructs a sequence with all the PEGs from <cite>a</cite>", 
-    "code": "proc sequence*(a: varargs[TPeg]): TPeg {.nosideEffect, rtl, extern: \"npegs$1\".}"
+    "code": "proc sequence*(a: varargs[Peg]): Peg {.nosideEffect, rtl, extern: \"npegs$1\".}"
   }, 
   {
     "name": "`?`", 
     "type": "skProc", 
     "description": "constructs an optional for the PEG <cite>a</cite>", 
-    "code": "proc `?`*(a: TPeg): TPeg {.nosideEffect, rtl, extern: \"npegsOptional\".}"
+    "code": "proc `?`*(a: Peg): Peg {.nosideEffect, rtl, extern: \"npegsOptional\".}"
   }, 
   {
     "name": "`*`", 
     "type": "skProc", 
     "description": "constructs a &quot;greedy repetition&quot; for the PEG <cite>a</cite>", 
-    "code": "proc `*`*(a: TPeg): TPeg {.nosideEffect, rtl, extern: \"npegsGreedyRep\".}"
+    "code": "proc `*`*(a: Peg): Peg {.nosideEffect, rtl, extern: \"npegsGreedyRep\".}"
   }, 
   {
     "name": "`!*`", 
     "type": "skProc", 
     "description": "constructs a &quot;search&quot; for the PEG <cite>a</cite>", 
-    "code": "proc `!*`*(a: TPeg): TPeg {.nosideEffect, rtl, extern: \"npegsSearch\".}"
+    "code": "proc `!*`*(a: Peg): Peg {.nosideEffect, rtl, extern: \"npegsSearch\".}"
   }, 
   {
     "name": "`!*\\`", 
     "type": "skProc", 
     "description": "constructs a &quot;captured search&quot; for the PEG <cite>a</cite>", 
-    "code": "proc `!*\\`*(a: TPeg): TPeg {.noSideEffect, rtl, extern: \"npgegsCapturedSearch\".}"
+    "code": "proc `!*\\`*(a: Peg): Peg {.noSideEffect, rtl, extern: \"npgegsCapturedSearch\".}"
   }, 
   {
     "name": "`+`", 
     "type": "skProc", 
     "description": "constructs a &quot;greedy positive repetition&quot; with the PEG <cite>a</cite>", 
-    "code": "proc `+`*(a: TPeg): TPeg {.nosideEffect, rtl, extern: \"npegsGreedyPosRep\".}"
+    "code": "proc `+`*(a: Peg): Peg {.nosideEffect, rtl, extern: \"npegsGreedyPosRep\".}"
   }, 
   {
     "name": "`&amp;`", 
     "type": "skProc", 
     "description": "constructs an &quot;and predicate&quot; with the PEG <cite>a</cite>", 
-    "code": "proc `&`*(a: TPeg): TPeg {.nosideEffect, rtl, extern: \"npegsAndPredicate\".}"
+    "code": "proc `&`*(a: Peg): Peg {.nosideEffect, rtl, extern: \"npegsAndPredicate\".}"
   }, 
   {
     "name": "`!`", 
     "type": "skProc", 
     "description": "constructs a &quot;not predicate&quot; with the PEG <cite>a</cite>", 
-    "code": "proc `!`*(a: TPeg): TPeg {.nosideEffect, rtl, extern: \"npegsNotPredicate\".}"
+    "code": "proc `!`*(a: Peg): Peg {.nosideEffect, rtl, extern: \"npegsNotPredicate\".}"
   }, 
   {
     "name": "any", 
     "type": "skProc", 
-    "description": "constructs the PEG <span id=\"any-character_1562215945\">any character</span> (<tt class=\"docutils literal\"><span class=\"pre\">.</span></tt>)", 
-    "code": "proc any*(): TPeg {.inline.}"
+    "description": "constructs the PEG <span id=\"any-character_1\">any character</span> (<tt class=\"docutils literal\"><span class=\"pre\">.</span></tt>)", 
+    "code": "proc any*(): Peg {.inline.}"
   }, 
   {
     "name": "anyRune", 
     "type": "skProc", 
-    "description": "constructs the PEG <span id=\"any-rune_795168309\">any rune</span> (<tt class=\"docutils literal\"><span class=\"pre\">_</span></tt>)", 
-    "code": "proc anyRune*(): TPeg {.inline.}"
+    "description": "constructs the PEG <span id=\"any-rune_1\">any rune</span> (<tt class=\"docutils literal\"><span class=\"pre\">_</span></tt>)", 
+    "code": "proc anyRune*(): Peg {.inline.}"
   }, 
   {
     "name": "newLine", 
     "type": "skProc", 
-    "description": "constructs the PEG <span id=\"newline_525429927\">newline</span> (<tt class=\"docutils literal\"><span class=\"pre\">\\n</span></tt>)", 
-    "code": "proc newLine*(): TPeg {.inline.}"
+    "description": "constructs the PEG <span id=\"newline_1\">newline</span> (<tt class=\"docutils literal\"><span class=\"pre\">\\n</span></tt>)", 
+    "code": "proc newLine*(): Peg {.inline.}"
   }, 
   {
-    "name": "UnicodeLetter", 
+    "name": "unicodeLetter", 
     "type": "skProc", 
     "description": "constructs the PEG <tt class=\"docutils literal\"><span class=\"pre\">\\letter</span></tt> which matches any Unicode letter.", 
-    "code": "proc UnicodeLetter*(): TPeg {.inline.}"
+    "code": "proc unicodeLetter*(): Peg {.inline.}"
   }, 
   {
-    "name": "UnicodeLower", 
+    "name": "unicodeLower", 
     "type": "skProc", 
     "description": "constructs the PEG <tt class=\"docutils literal\"><span class=\"pre\">\\lower</span></tt> which matches any Unicode lowercase letter.", 
-    "code": "proc UnicodeLower*(): TPeg {.inline.}"
+    "code": "proc unicodeLower*(): Peg {.inline.}"
   }, 
   {
-    "name": "UnicodeUpper", 
+    "name": "unicodeUpper", 
     "type": "skProc", 
     "description": "constructs the PEG <tt class=\"docutils literal\"><span class=\"pre\">\\upper</span></tt> which matches any Unicode uppercase letter.", 
-    "code": "proc UnicodeUpper*(): TPeg {.inline.}"
+    "code": "proc unicodeUpper*(): Peg {.inline.}"
   }, 
   {
-    "name": "UnicodeTitle", 
+    "name": "unicodeTitle", 
     "type": "skProc", 
     "description": "constructs the PEG <tt class=\"docutils literal\"><span class=\"pre\">\\title</span></tt> which matches any Unicode title letter.", 
-    "code": "proc UnicodeTitle*(): TPeg {.inline.}"
+    "code": "proc unicodeTitle*(): Peg {.inline.}"
   }, 
   {
-    "name": "UnicodeWhitespace", 
+    "name": "unicodeWhitespace", 
     "type": "skProc", 
     "description": "constructs the PEG <tt class=\"docutils literal\"><span class=\"pre\">\\white</span></tt> which matches any Unicode whitespace character.", 
-    "code": "proc UnicodeWhitespace*(): TPeg {.inline.}"
+    "code": "proc unicodeWhitespace*(): Peg {.inline.}"
   }, 
   {
     "name": "startAnchor", 
     "type": "skProc", 
     "description": "constructs the PEG <tt class=\"docutils literal\"><span class=\"pre\">^</span></tt> which matches the start of the input.  ", 
-    "code": "proc startAnchor*(): TPeg {.inline.}"
+    "code": "proc startAnchor*(): Peg {.inline.}"
   }, 
   {
     "name": "endAnchor", 
     "type": "skProc", 
     "description": "constructs the PEG <tt class=\"docutils literal\"><span class=\"pre\">$</span></tt> which matches the end of the input.  ", 
-    "code": "proc endAnchor*(): TPeg {.inline.}"
+    "code": "proc endAnchor*(): Peg {.inline.}"
   }, 
   {
     "name": "capture", 
     "type": "skProc", 
     "description": "constructs a capture with the PEG <cite>a</cite>", 
-    "code": "proc capture*(a: TPeg): TPeg {.nosideEffect, rtl, extern: \"npegsCapture\".}"
+    "code": "proc capture*(a: Peg): Peg {.nosideEffect, rtl, extern: \"npegsCapture\".}"
   }, 
   {
     "name": "backref", 
     "type": "skProc", 
     "description": "constructs a back reference of the given <cite>index</cite>. <cite>index</cite> starts counting from 1.", 
-    "code": "proc backref*(index: range[1 .. MaxSubPatterns]): TPeg {.nosideEffect, rtl, \u000D\u000A    extern: \"npegs$1\".}"
+    "code": "proc backref*(index: range[1 .. MaxSubpatterns]): Peg {.nosideEffect, rtl, \u000A    extern: \"npegs$1\".}"
   }, 
   {
     "name": "backrefIgnoreCase", 
     "type": "skProc", 
     "description": "constructs a back reference of the given <cite>index</cite>. <cite>index</cite> starts counting from 1. Ignores case for matching.", 
-    "code": "proc backrefIgnoreCase*(index: range[1 .. MaxSubPatterns]): TPeg {.nosideEffect, \u000D\u000A    rtl, extern: \"npegs$1\".}"
+    "code": "proc backrefIgnoreCase*(index: range[1 .. MaxSubpatterns]): Peg {.nosideEffect, \u000A    rtl, extern: \"npegs$1\".}"
   }, 
   {
     "name": "backrefIgnoreStyle", 
     "type": "skProc", 
     "description": "constructs a back reference of the given <cite>index</cite>. <cite>index</cite> starts counting from 1. Ignores style for matching.", 
-    "code": "proc backrefIgnoreStyle*(index: range[1 .. MaxSubPatterns]): TPeg {.\u000D\u000A    nosideEffect, rtl, extern: \"npegs$1\".}"
+    "code": "proc backrefIgnoreStyle*(index: range[1 .. MaxSubpatterns]): Peg {.nosideEffect, \u000A    rtl, extern: \"npegs$1\".}"
   }, 
   {
     "name": "nonterminal", 
     "type": "skProc", 
     "description": "constructs a PEG that consists of the nonterminal symbol", 
-    "code": "proc nonterminal*(n: PNonTerminal): TPeg {.nosideEffect, rtl, extern: \"npegs$1\".}"
+    "code": "proc nonterminal*(n: NonTerminal): Peg {.nosideEffect, rtl, extern: \"npegs$1\".}"
   }, 
   {
     "name": "newNonTerminal", 
     "type": "skProc", 
     "description": "constructs a nonterminal symbol", 
-    "code": "proc newNonTerminal*(name: string; line, column: int): PNonTerminal {.\u000D\u000A    nosideEffect, rtl, extern: \"npegs$1\".}"
+    "code": "proc newNonTerminal*(name: string; line, column: int): NonTerminal {.\u000A    nosideEffect, rtl, extern: \"npegs$1\".}"
   }, 
   {
     "name": "letters", 
@@ -240,157 +240,157 @@
     "name": "`$`", 
     "type": "skProc", 
     "description": "converts a PEG to its string representation", 
-    "code": "proc `$`*(r: TPeg): string {.nosideEffect, rtl, extern: \"npegsToString\".}"
+    "code": "proc `$`*(r: Peg): string {.nosideEffect, rtl, extern: \"npegsToString\".}"
   }, 
   {
-    "name": "TCaptures", 
+    "name": "Captures", 
     "type": "skType", 
     "description": "contains the captured substrings.", 
-    "code": "TCaptures* {.final.} = object \u000D\u000A  matches: array[0 .. maxSubpatterns - 1, tuple[first, last: int]]\u000D\u000A  ml: int\u000D\u000A  origStart: int\u000D\u000A"
+    "code": "Captures* = object \u000A  matches: array[0 .. MaxSubpatterns - 1, tuple[first, last: int]]\u000A  ml: int\u000A  origStart: int\u000A"
   }, 
   {
     "name": "bounds", 
     "type": "skProc", 
     "description": "returns the bounds <tt class=\"docutils literal\"><span class=\"pre\">[first..last]</span></tt> of the <cite>i</cite>'th capture.", 
-    "code": "proc bounds*(c: TCaptures; i: range[0 .. maxSubpatterns - 1]): tuple[\u000D\u000A    first, last: int]"
+    "code": "proc bounds*(c: Captures; i: range[0 .. MaxSubpatterns - 1]): tuple[\u000A    first, last: int]"
   }, 
   {
     "name": "rawMatch", 
     "type": "skProc", 
     "description": "low-level matching proc that implements the PEG interpreter. Use this for maximum efficiency (every other PEG operation ends up calling this proc). Returns -1 if it does not match, else the length of the match", 
-    "code": "proc rawMatch*(s: string; p: TPeg; start: int; c: var TCaptures): int {.\u000D\u000A    nosideEffect, rtl, extern: \"npegs$1\".}"
+    "code": "proc rawMatch*(s: string; p: Peg; start: int; c: var Captures): int {.\u000A    nosideEffect, rtl, extern: \"npegs$1\".}"
   }, 
   {
     "name": "match", 
     "type": "skProc", 
     "description": "returns <tt class=\"docutils literal\"><span class=\"pre\">true</span></tt> if <tt class=\"docutils literal\"><span class=\"pre\">s[start..]</span></tt> matches the <tt class=\"docutils literal\"><span class=\"pre\">pattern</span></tt> and the captured substrings in the array <tt class=\"docutils literal\"><span class=\"pre\">matches</span></tt>. If it does not match, nothing is written into <tt class=\"docutils literal\"><span class=\"pre\">matches</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">false</span></tt> is returned.", 
-    "code": "proc match*(s: string; pattern: TPeg; matches: var openarray[string]; start = 0): bool {.\u000D\u000A    nosideEffect, rtl, extern: \"npegs$1Capture\".}"
+    "code": "proc match*(s: string; pattern: Peg; matches: var openArray[string]; start = 0): bool {.\u000A    nosideEffect, rtl, extern: \"npegs$1Capture\".}"
   }, 
   {
     "name": "match", 
     "type": "skProc", 
     "description": "returns <tt class=\"docutils literal\"><span class=\"pre\">true</span></tt> if <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> matches the <tt class=\"docutils literal\"><span class=\"pre\">pattern</span></tt> beginning from <tt class=\"docutils literal\"><span class=\"pre\">start</span></tt>.", 
-    "code": "proc match*(s: string; pattern: TPeg; start = 0): bool {.nosideEffect, rtl, \u000D\u000A    extern: \"npegs$1\".}"
+    "code": "proc match*(s: string; pattern: Peg; start = 0): bool {.nosideEffect, rtl, \u000A    extern: \"npegs$1\".}"
   }, 
   {
     "name": "matchLen", 
     "type": "skProc", 
     "description": "the same as <tt class=\"docutils literal\"><span class=\"pre\">match</span></tt>, but it returns the length of the match, if there is no match, -1 is returned. Note that a match length of zero can happen. It's possible that a suffix of <cite>s</cite> remains that does not belong to the match.", 
-    "code": "proc matchLen*(s: string; pattern: TPeg; matches: var openarray[string]; \u000D\u000A               start = 0): int {.nosideEffect, rtl, extern: \"npegs$1Capture\".}"
+    "code": "proc matchLen*(s: string; pattern: Peg; matches: var openArray[string]; \u000A               start = 0): int {.nosideEffect, rtl, extern: \"npegs$1Capture\".}"
   }, 
   {
     "name": "matchLen", 
     "type": "skProc", 
     "description": "the same as <tt class=\"docutils literal\"><span class=\"pre\">match</span></tt>, but it returns the length of the match, if there is no match, -1 is returned. Note that a match length of zero can happen. It's possible that a suffix of <cite>s</cite> remains that does not belong to the match.", 
-    "code": "proc matchLen*(s: string; pattern: TPeg; start = 0): int {.nosideEffect, rtl, \u000D\u000A    extern: \"npegs$1\".}"
+    "code": "proc matchLen*(s: string; pattern: Peg; start = 0): int {.nosideEffect, rtl, \u000A    extern: \"npegs$1\".}"
   }, 
   {
     "name": "find", 
     "type": "skProc", 
     "description": "returns the starting position of <tt class=\"docutils literal\"><span class=\"pre\">pattern</span></tt> in <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> and the captured substrings in the array <tt class=\"docutils literal\"><span class=\"pre\">matches</span></tt>. If it does not match, nothing is written into <tt class=\"docutils literal\"><span class=\"pre\">matches</span></tt> and -1 is returned.", 
-    "code": "proc find*(s: string; pattern: TPeg; matches: var openarray[string]; start = 0): int {.\u000D\u000A    nosideEffect, rtl, extern: \"npegs$1Capture\".}"
+    "code": "proc find*(s: string; pattern: Peg; matches: var openArray[string]; start = 0): int {.\u000A    nosideEffect, rtl, extern: \"npegs$1Capture\".}"
   }, 
   {
     "name": "findBounds", 
     "type": "skProc", 
     "description": "returns the starting position and end position of <tt class=\"docutils literal\"><span class=\"pre\">pattern</span></tt> in <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> and the captured substrings in the array <tt class=\"docutils literal\"><span class=\"pre\">matches</span></tt>. If it does not match, nothing is written into <tt class=\"docutils literal\"><span class=\"pre\">matches</span></tt> and (-1,0) is returned.", 
-    "code": "proc findBounds*(s: string; pattern: TPeg; matches: var openarray[string]; \u000D\u000A                 start = 0): tuple[first, last: int] {.nosideEffect, rtl, \u000D\u000A    extern: \"npegs$1Capture\".}"
+    "code": "proc findBounds*(s: string; pattern: Peg; matches: var openArray[string]; \u000A                 start = 0): tuple[first, last: int] {.nosideEffect, rtl, \u000A    extern: \"npegs$1Capture\".}"
   }, 
   {
     "name": "find", 
     "type": "skProc", 
     "description": "returns the starting position of <tt class=\"docutils literal\"><span class=\"pre\">pattern</span></tt> in <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt>. If it does not match, -1 is returned.", 
-    "code": "proc find*(s: string; pattern: TPeg; start = 0): int {.nosideEffect, rtl, \u000D\u000A    extern: \"npegs$1\".}"
+    "code": "proc find*(s: string; pattern: Peg; start = 0): int {.nosideEffect, rtl, \u000A    extern: \"npegs$1\".}"
   }, 
   {
     "name": "findAll", 
     "type": "skIterator", 
     "description": "yields all matching <em>substrings</em> of <cite>s</cite> that match <cite>pattern</cite>.", 
-    "code": "iterator findAll*(s: string; pattern: TPeg; start = 0): string"
+    "code": "iterator findAll*(s: string; pattern: Peg; start = 0): string"
   }, 
   {
     "name": "findAll", 
     "type": "skProc", 
     "description": "returns all matching <em>substrings</em> of <cite>s</cite> that match <cite>pattern</cite>. If it does not match, @[] is returned.", 
-    "code": "proc findAll*(s: string; pattern: TPeg; start = 0): seq[string] {.nosideEffect, \u000D\u000A    rtl, extern: \"npegs$1\".}"
+    "code": "proc findAll*(s: string; pattern: Peg; start = 0): seq[string] {.nosideEffect, \u000A    rtl, extern: \"npegs$1\".}"
   }, 
   {
     "name": "`=~`", 
     "type": "skTemplate", 
-    "description": "This calls <tt class=\"docutils literal\"><span class=\"pre\">match</span></tt> with an implicit declared <tt class=\"docutils literal\"><span class=\"pre\">matches</span></tt> array that can be used in the scope of the <tt class=\"docutils literal\"><span class=\"pre\">=~</span></tt> call:<pre><span class=\"Keyword\">if</span> <span class=\"Identifier\">line</span> <span class=\"Operator\">=~</span> <span class=\"RawData\">peg&quot;\\s* {\\w+} \\s* '=' \\s* {\\w+}&quot;</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Comment\"># matches a key=value pair:</span>\u000D\u000A  <span class=\"Identifier\">echo</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;Key: &quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">matches</span><span class=\"Punctation\">[</span><span class=\"DecNumber\">0</span><span class=\"Punctation\">]</span><span class=\"Punctation\">)</span>\u000D\u000A  <span class=\"Identifier\">echo</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;Value: &quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">matches</span><span class=\"Punctation\">[</span><span class=\"DecNumber\">1</span><span class=\"Punctation\">]</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Keyword\">elif</span> <span class=\"Identifier\">line</span> <span class=\"Operator\">=~</span> <span class=\"RawData\">peg&quot;\\s*{'#'.*}&quot;</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Comment\"># matches a comment</span>\u000D\u000A  <span class=\"Comment\"># note that the implicit ``matches`` array is different from the</span>\u000D\u000A  <span class=\"Comment\"># ``matches`` array of the first branch</span>\u000D\u000A  <span class=\"Identifier\">echo</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;comment: &quot;</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">matches</span><span class=\"Punctation\">[</span><span class=\"DecNumber\">0</span><span class=\"Punctation\">]</span><span class=\"Punctation\">)</span>\u000D\u000A<span class=\"Keyword\">else</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Identifier\">echo</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;syntax error&quot;</span><span class=\"Punctation\">)</span></pre>", 
-    "code": "template `=~`*(s: string; pattern: TPeg): bool"
+    "description": "This calls <tt class=\"docutils literal\"><span class=\"pre\">match</span></tt> with an implicit declared <tt class=\"docutils literal\"><span class=\"pre\">matches</span></tt> array that can be used in the scope of the <tt class=\"docutils literal\"><span class=\"pre\">=~</span></tt> call:<pre><span class=\"Keyword\">if</span> <span class=\"Identifier\">line</span> <span class=\"Operator\">=~</span> <span class=\"RawData\">peg&quot;\\s* {\\w+} \\s* '=' \\s* {\\w+}&quot;</span><span class=\"Punctuation\">:</span>\u000A  <span class=\"Comment\"># matches a key=value pair:</span>\u000A  <span class=\"Identifier\">echo</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;Key: &quot;</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">matches</span><span class=\"Punctuation\">[</span><span class=\"DecNumber\">0</span><span class=\"Punctuation\">]</span><span class=\"Punctuation\">)</span>\u000A  <span class=\"Identifier\">echo</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;Value: &quot;</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">matches</span><span class=\"Punctuation\">[</span><span class=\"DecNumber\">1</span><span class=\"Punctuation\">]</span><span class=\"Punctuation\">)</span>\u000A<span class=\"Keyword\">elif</span> <span class=\"Identifier\">line</span> <span class=\"Operator\">=~</span> <span class=\"RawData\">peg&quot;\\s*{'#'.*}&quot;</span><span class=\"Punctuation\">:</span>\u000A  <span class=\"Comment\"># matches a comment</span>\u000A  <span class=\"Comment\"># note that the implicit ``matches`` array is different from the</span>\u000A  <span class=\"Comment\"># ``matches`` array of the first branch</span>\u000A  <span class=\"Identifier\">echo</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;comment: &quot;</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">matches</span><span class=\"Punctuation\">[</span><span class=\"DecNumber\">0</span><span class=\"Punctuation\">]</span><span class=\"Punctuation\">)</span>\u000A<span class=\"Keyword\">else</span><span class=\"Punctuation\">:</span>\u000A  <span class=\"Identifier\">echo</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;syntax error&quot;</span><span class=\"Punctuation\">)</span></pre>", 
+    "code": "template `=~`*(s: string; pattern: Peg): bool"
   }, 
   {
     "name": "contains", 
     "type": "skProc", 
     "description": "same as <tt class=\"docutils literal\"><span class=\"pre\">find(s, pattern, start) &gt;= 0</span></tt>", 
-    "code": "proc contains*(s: string; pattern: TPeg; start = 0): bool {.nosideEffect, rtl, \u000D\u000A    extern: \"npegs$1\".}"
+    "code": "proc contains*(s: string; pattern: Peg; start = 0): bool {.nosideEffect, rtl, \u000A    extern: \"npegs$1\".}"
   }, 
   {
     "name": "contains", 
     "type": "skProc", 
     "description": "same as <tt class=\"docutils literal\"><span class=\"pre\">find(s, pattern, matches, start) &gt;= 0</span></tt>", 
-    "code": "proc contains*(s: string; pattern: TPeg; matches: var openArray[string]; \u000D\u000A               start = 0): bool {.nosideEffect, rtl, extern: \"npegs$1Capture\".}"
+    "code": "proc contains*(s: string; pattern: Peg; matches: var openArray[string]; \u000A               start = 0): bool {.nosideEffect, rtl, extern: \"npegs$1Capture\".}"
   }, 
   {
     "name": "startsWith", 
     "type": "skProc", 
     "description": "returns true if <cite>s</cite> starts with the pattern <cite>prefix</cite>", 
-    "code": "proc startsWith*(s: string; prefix: TPeg; start = 0): bool {.nosideEffect, rtl, \u000D\u000A    extern: \"npegs$1\".}"
+    "code": "proc startsWith*(s: string; prefix: Peg; start = 0): bool {.nosideEffect, rtl, \u000A    extern: \"npegs$1\".}"
   }, 
   {
     "name": "endsWith", 
     "type": "skProc", 
     "description": "returns true if <cite>s</cite> ends with the pattern <cite>prefix</cite>", 
-    "code": "proc endsWith*(s: string; suffix: TPeg; start = 0): bool {.nosideEffect, rtl, \u000D\u000A    extern: \"npegs$1\".}"
+    "code": "proc endsWith*(s: string; suffix: Peg; start = 0): bool {.nosideEffect, rtl, \u000A    extern: \"npegs$1\".}"
   }, 
   {
     "name": "replacef", 
     "type": "skProc", 
-    "description": "Replaces <cite>sub</cite> in <cite>s</cite> by the string <cite>by</cite>. Captures can be accessed in <cite>by</cite> with the notation <tt class=\"docutils literal\"><span class=\"pre\">$i</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">$#</span></tt> (see strutils.`%`). Examples:<pre><span class=\"StringLit\">&quot;var1=key; var2=key2&quot;</span><span class=\"Operator\">.</span><span class=\"Identifier\">replace</span><span class=\"Punctation\">(</span><span class=\"RawData\">peg&quot;{\\ident}'='{\\ident}&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;$1&lt;-$2$2&quot;</span><span class=\"Punctation\">)</span></pre><p>Results in:</p>\u000D\u000A<pre><span class=\"StringLit\">&quot;var1&lt;-keykey; val2&lt;-key2key2&quot;</span></pre>", 
-    "code": "proc replacef*(s: string; sub: TPeg; by: string): string {.nosideEffect, rtl, \u000D\u000A    extern: \"npegs$1\".}"
+    "description": "Replaces <cite>sub</cite> in <cite>s</cite> by the string <cite>by</cite>. Captures can be accessed in <cite>by</cite> with the notation <tt class=\"docutils literal\"><span class=\"pre\">$i</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">$#</span></tt> (see strutils.`%`). Examples:<pre><span class=\"StringLit\">&quot;var1=key; var2=key2&quot;</span><span class=\"Operator\">.</span><span class=\"Identifier\">replace</span><span class=\"Punctuation\">(</span><span class=\"RawData\">peg&quot;{\\ident}'='{\\ident}&quot;</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;$1&lt;-$2$2&quot;</span><span class=\"Punctuation\">)</span></pre><p>Results in:</p>\u000A<pre><span class=\"StringLit\">&quot;var1&lt;-keykey; val2&lt;-key2key2&quot;</span></pre>", 
+    "code": "proc replacef*(s: string; sub: Peg; by: string): string {.nosideEffect, rtl, \u000A    extern: \"npegs$1\".}"
   }, 
   {
     "name": "replace", 
     "type": "skProc", 
     "description": "Replaces <cite>sub</cite> in <cite>s</cite> by the string <cite>by</cite>. Captures cannot be accessed in <cite>by</cite>.", 
-    "code": "proc replace*(s: string; sub: TPeg; by = \"\"): string {.nosideEffect, rtl, \u000D\u000A    extern: \"npegs$1\".}"
+    "code": "proc replace*(s: string; sub: Peg; by = \"\"): string {.nosideEffect, rtl, \u000A    extern: \"npegs$1\".}"
   }, 
   {
     "name": "parallelReplace", 
     "type": "skProc", 
     "description": "Returns a modified copy of <cite>s</cite> with the substitutions in <cite>subs</cite> applied in parallel.", 
-    "code": "proc parallelReplace*(s: string; \u000D\u000A                      subs: varargs[tuple[pattern: TPeg, repl: string]]): string {.\u000D\u000A    nosideEffect, rtl, extern: \"npegs$1\".}"
+    "code": "proc parallelReplace*(s: string; \u000A                      subs: varargs[tuple[pattern: Peg, repl: string]]): string {.\u000A    nosideEffect, rtl, extern: \"npegs$1\".}"
   }, 
   {
     "name": "transformFile", 
     "type": "skProc", 
     "description": "reads in the file <cite>infile</cite>, performs a parallel replacement (calls <cite>parallelReplace</cite>) and writes back to <cite>outfile</cite>. Raises <tt class=\"docutils literal\"><span class=\"pre\">EIO</span></tt> if an error occurs. This is supposed to be used for quick scripting.", 
-    "code": "proc transformFile*(infile, outfile: string; \u000D\u000A                    subs: varargs[tuple[pattern: TPeg, repl: string]]) {.rtl, \u000D\u000A    extern: \"npegs$1\".}"
+    "code": "proc transformFile*(infile, outfile: string; \u000A                    subs: varargs[tuple[pattern: Peg, repl: string]]) {.rtl, \u000A    extern: \"npegs$1\".}"
   }, 
   {
     "name": "split", 
     "type": "skIterator", 
-    "description": "<p>Splits the string <cite>s</cite> into substrings.</p>\u000D\u000A<p>Substrings are separated by the PEG <cite>sep</cite>. Examples:</p>\u000D\u000A<pre><span class=\"Keyword\">for</span> <span class=\"Identifier\">word</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">split</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;00232this02939is39an22example111&quot;</span><span class=\"Punctation\">,</span> <span class=\"RawData\">peg&quot;\\d+&quot;</span><span class=\"Punctation\">)</span><span class=\"Punctation\">:</span>\u000D\u000A  <span class=\"Identifier\">writeln</span><span class=\"Punctation\">(</span><span class=\"Identifier\">stdout</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">word</span><span class=\"Punctation\">)</span></pre><p>Results in:</p>\u000D\u000A<pre><span class=\"StringLit\">&quot;this&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;is&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;an&quot;</span>\u000D\u000A<span class=\"StringLit\">&quot;example&quot;</span></pre>", 
-    "code": "iterator split*(s: string; sep: TPeg): string"
+    "description": "<p>Splits the string <cite>s</cite> into substrings.</p>\u000A<p>Substrings are separated by the PEG <cite>sep</cite>. Examples:</p>\u000A<pre><span class=\"Keyword\">for</span> <span class=\"Identifier\">word</span> <span class=\"Keyword\">in</span> <span class=\"Identifier\">split</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;00232this02939is39an22example111&quot;</span><span class=\"Punctuation\">,</span> <span class=\"RawData\">peg&quot;\\d+&quot;</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">:</span>\u000A  <span class=\"Identifier\">writeln</span><span class=\"Punctuation\">(</span><span class=\"Identifier\">stdout</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">word</span><span class=\"Punctuation\">)</span></pre><p>Results in:</p>\u000A<pre><span class=\"StringLit\">&quot;this&quot;</span>\u000A<span class=\"StringLit\">&quot;is&quot;</span>\u000A<span class=\"StringLit\">&quot;an&quot;</span>\u000A<span class=\"StringLit\">&quot;example&quot;</span></pre>", 
+    "code": "iterator split*(s: string; sep: Peg): string"
   }, 
   {
     "name": "split", 
     "type": "skProc", 
     "description": "Splits the string <cite>s</cite> into substrings.", 
-    "code": "proc split*(s: string; sep: TPeg): seq[string] {.nosideEffect, rtl, \u000D\u000A    extern: \"npegs$1\".}"
+    "code": "proc split*(s: string; sep: Peg): seq[string] {.nosideEffect, rtl, \u000A    extern: \"npegs$1\".}"
   }, 
   {
     "name": "parsePeg", 
     "type": "skProc", 
-    "description": "constructs a TPeg object from <cite>pattern</cite>. <cite>filename</cite>, <cite>line</cite>, <cite>col</cite> are used for error messages, but they only provide start offsets. <cite>parsePeg</cite> keeps track of line and column numbers within <cite>pattern</cite>.", 
-    "code": "proc parsePeg*(pattern: string; filename = \"pattern\"; line = 1; col = 0): TPeg"
+    "description": "constructs a Peg object from <cite>pattern</cite>. <cite>filename</cite>, <cite>line</cite>, <cite>col</cite> are used for error messages, but they only provide start offsets. <cite>parsePeg</cite> keeps track of line and column numbers within <cite>pattern</cite>.", 
+    "code": "proc parsePeg*(pattern: string; filename = \"pattern\"; line = 1; col = 0): Peg"
   }, 
   {
     "name": "peg", 
     "type": "skProc", 
-    "description": "constructs a TPeg object from the <cite>pattern</cite>. The short name has been chosen to encourage its use as a raw string modifier:<pre>\u000D\u000Apeg&quot;{\\ident} \\s* '=' \\s* {.*}&quot;</pre>\u000D\u000A", 
-    "code": "proc peg*(pattern: string): TPeg"
+    "description": "constructs a Peg object from the <cite>pattern</cite>. The short name has been chosen to encourage its use as a raw string modifier:<pre>\u000Apeg&quot;{\\ident} \\s* '=' \\s* {.*}&quot;</pre>\u000A", 
+    "code": "proc peg*(pattern: string): Peg"
   }, 
   {
     "name": "escapePeg", 

@@ -1,0 +1,59 @@
+[
+  {
+    "name": "hash", 
+    "type": "skProc", 
+    "code": "proc hash*(x: SocketHandle): THash {.borrow.}"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "code": "proc `$`*(x: SocketHandle): string {.borrow.}"
+  }, 
+  {
+    "name": "ReadyInfo", 
+    "type": "skType", 
+    "code": "ReadyInfo* = tuple[key: SelectorKey, events: set[Event]]"
+  }, 
+  {
+    "name": "Selector", 
+    "type": "skType", 
+    "description": "An object which holds file descripters to be checked for read/write status.", 
+    "code": "Selector* = ref object \u000A  fds: Table[SocketHandle, SelectorKey]\u000A"
+  }, 
+  {
+    "name": "register", 
+    "type": "skProc", 
+    "description": "Registers file descriptor <tt class=\"docutils literal\"><span class=\"pre\">fd</span></tt> to selector <tt class=\"docutils literal\"><span class=\"pre\">s</span></tt> with a set of TEvent <tt class=\"docutils literal\"><span class=\"pre\">events</span></tt>.", 
+    "code": "proc register*(s: Selector; fd: SocketHandle; events: set[Event]; data: RootRef): SelectorKey {.\u000A    discardable.}"
+  }, 
+  {
+    "name": "update", 
+    "type": "skProc", 
+    "description": "Updates the events which <tt class=\"docutils literal\"><span class=\"pre\">fd</span></tt> wants notifications for.", 
+    "code": "proc update*(s: Selector; fd: SocketHandle; events: set[Event]): SelectorKey {.\u000A    discardable.}"
+  }, 
+  {
+    "name": "select", 
+    "type": "skProc", 
+    "description": "The <tt class=\"docutils literal\"><span class=\"pre\">events</span></tt> field of the returned <tt class=\"docutils literal\"><span class=\"pre\">key</span></tt> contains the original events for which the <tt class=\"docutils literal\"><span class=\"pre\">fd</span></tt> was bound. This is contrary to the <tt class=\"docutils literal\"><span class=\"pre\">events</span></tt> field of the <tt class=\"docutils literal\"><span class=\"pre\">TReadyInfo</span></tt> tuple which determines which events are ready on the <tt class=\"docutils literal\"><span class=\"pre\">fd</span></tt>.", 
+    "code": "proc select*(s: Selector; timeout: int): seq[ReadyInfo]"
+  }, 
+  {
+    "name": "contains", 
+    "type": "skProc", 
+    "description": "Determines whether selector contains a file descriptor.", 
+    "code": "proc contains*(s: Selector; fd: SocketHandle): bool"
+  }, 
+  {
+    "name": "`[]`", 
+    "type": "skProc", 
+    "description": "Retrieves the selector key for <tt class=\"docutils literal\"><span class=\"pre\">fd</span></tt>.", 
+    "code": "proc `[]`*(s: Selector; fd: SocketHandle): SelectorKey"
+  }, 
+  {
+    "name": "contains", 
+    "type": "skProc", 
+    "description": "Determines whether selector contains this selector key. More accurate than checking if the file descriptor is in the selector because it ensures that the keys are equal. File descriptors may not always be unique especially when an fd is closed and then a new one is opened, the new one may have the same value.", 
+    "code": "proc contains*(s: Selector; key: SelectorKey): bool"
+  }
+]

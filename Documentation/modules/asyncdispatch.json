@@ -1,0 +1,207 @@
+[
+  {
+    "comment": "AsyncDispatch\u000A## *************\u000A##\u000A## This module implements asynchronous IO. This includes a dispatcher,\u000A## a ``Future`` type implementation, and an ``async`` macro which allows\u000A## asynchronous code to be written in a synchronous style with the ``await``\u000A## keyword.\u000A##\u000A## The dispatcher acts as a kind of event loop. You must call ``poll`` on it\u000A## (or a function which does so for you such as ``waitFor`` or ``runForever``)\u000A## in order to poll for any outstanding events. The underlying implementation\u000A## is based on epoll on Linux, IO Completion Ports on Windows and select on\u000A## other operating systems.\u000A##\u000A## The ``poll`` function will not, on its own, return any events. Instead\u000A## an appropriate ``Future`` object will be completed. A ``Future`` is a\u000A## type which holds a value which is not yet available, but which *may* be\u000A## available in the future. You can check whether a future is finished\u000A## by using the ``finished`` function. When a future is finished it means that\u000A## either the value that it holds is now available or it holds an error instead.\u000A## The latter situation occurs when the operation to complete a future fails\u000A## with an exception. You can distinguish between the two situations with the\u000A## ``failed`` function.\u000A##\u000A## Future objects can also store a callback procedure which will be called\u000A## automatically once the future completes.\u000A##\u000A## Futures therefore can be thought of as an implementation of the proactor\u000A## pattern. In this\u000A## pattern you make a request for an action, and once that action is fulfilled\u000A## a future is completed with the result of that action. Requests can be\u000A## made by calling the appropriate functions. For example: calling the ``recv``\u000A## function will create a request for some data to be read from a socket. The\u000A## future which the ``recv`` function returns will then complete once the\u000A## requested amount of data is read **or** an exception occurs.\u000A##\u000A## Code to read some data from a socket may look something like this:\u000A##\u000A##   .. code-block::nim\u000A##      var future = socket.recv(100)\u000A##      future.callback =\u000A##        proc () =\u000A##          echo(future.read)\u000A##\u000A## All asynchronous functions returning a ``Future`` will not block. They\u000A## will not however return immediately. An asynchronous function will have\u000A## code which will be executed before an asynchronous request is made, in most\u000A## cases this code sets up the request.\u000A##\u000A## In the above example, the ``recv`` function will return a brand new\u000A## ``Future`` instance once the request for data to be read from the socket\u000A## is made. This ``Future`` instance will complete once the requested amount\u000A## of data is read, in this case it is 100 bytes. The second line sets a\u000A## callback on this future which will be called once the future completes.\u000A## All the callback does is write the data stored in the future to ``stdout``.\u000A## The ``read`` function is used for this and it checks whether the future\u000A## completes with an error for you (if it did it will simply raise the\u000A## error), if there is no error however it returns the value of the future.\u000A##\u000A## Asynchronous procedures\u000A## -----------------------\u000A##\u000A## Asynchronous procedures remove the pain of working with callbacks. They do\u000A## this by allowing you to write asynchronous code the same way as you would\u000A## write synchronous code.\u000A##\u000A## An asynchronous procedure is marked using the ``{.async.}`` pragma.\u000A## When marking a procedure with the ``{.async.}`` pragma it must have a\u000A## ``Future[T]`` return type or no return type at all. If you do not specify\u000A## a return type then ``Future[void]`` is assumed.\u000A##\u000A## Inside asynchronous procedures ``await`` can be used to call any\u000A## procedures which return a\u000A## ``Future``; this includes asynchronous procedures. When a procedure is\u000A## \"awaited\", the asynchronous procedure it is awaited in will\u000A## suspend its execution\u000A## until the awaited procedure's Future completes. At which point the\u000A## asynchronous procedure will resume its execution. During the period\u000A## when an asynchronous procedure is suspended other asynchronous procedures\u000A## will be run by the dispatcher.\u000A##\u000A## The ``await`` call may be used in many contexts. It can be used on the right\u000A## hand side of a variable declaration: ``var data = await socket.recv(100)``,\u000A## in which case the variable will be set to the value of the future\u000A## automatically. It can be used to await a ``Future`` object, and it can\u000A## be used to await a procedure returning a ``Future[void]``:\u000A## ``await socket.send(\"foobar\")``.\u000A##\u000A## Discarding futures\u000A## ------------------\u000A##\u000A## Futures should **never** be discarded. This is because they may contain\u000A## errors. If you do not care for the result of a Future then you should\u000A## use the ``asyncCheck`` procedure instead of the ``discard`` keyword.\u000A##\u000A## Examples\u000A## --------\u000A##\u000A## For examples take a look at the documentation for the modules implementing\u000A## asynchronous IO. A good place to start is the\u000A## `asyncnet module <asyncnet.html>`_.\u000A##\u000A## Limitations/Bugs\u000A## ----------------\u000A## \u000A## * ``except`` statement (without `try`) does not work inside async procedures.\u000A## * The effect system (``raises: []``) does not work with async procedures.\u000A## * Can't await in a ``except`` body"
+  }, 
+  {
+    "name": "Future", 
+    "type": "skType", 
+    "description": "Typed future.", 
+    "code": "Future*[T] = ref object of FutureBase\u000A  value: T                    ## Stored value\u000A  "
+  }, 
+  {
+    "name": "newFuture", 
+    "type": "skProc", 
+    "description": "<p>Creates a new future.</p>\u000A<p>Specifying <tt class=\"docutils literal\"><span class=\"pre\">fromProc</span></tt>, which is a string specifying the name of the proc that this future belongs to, is a good habit as it helps with debugging.</p>\u000A", 
+    "code": "proc newFuture*[T](fromProc: string = \"unspecified\"): Future[T]"
+  }, 
+  {
+    "name": "complete", 
+    "type": "skProc", 
+    "description": "Completes <tt class=\"docutils literal\"><span class=\"pre\">future</span></tt> with value <tt class=\"docutils literal\"><span class=\"pre\">val</span></tt>.", 
+    "code": "proc complete*[T](future: Future[T]; val: T)"
+  }, 
+  {
+    "name": "complete", 
+    "type": "skProc", 
+    "description": "Completes a void <tt class=\"docutils literal\"><span class=\"pre\">future</span></tt>.", 
+    "code": "proc complete*(future: Future[void])"
+  }, 
+  {
+    "name": "fail", 
+    "type": "skProc", 
+    "description": "Completes <tt class=\"docutils literal\"><span class=\"pre\">future</span></tt> with <tt class=\"docutils literal\"><span class=\"pre\">error</span></tt>.", 
+    "code": "proc fail*[T](future: Future[T]; error: ref Exception)"
+  }, 
+  {
+    "name": "`callback=`", 
+    "type": "skProc", 
+    "description": "<p>Sets the callback proc to be called when the future completes.</p>\u000A<p>If future has already completed then <tt class=\"docutils literal\"><span class=\"pre\">cb</span></tt> will be called immediately.</p>\u000A<p><strong>Note</strong>: You most likely want the other <tt class=\"docutils literal\"><span class=\"pre\">callback</span></tt> setter which passes <tt class=\"docutils literal\"><span class=\"pre\">future</span></tt> as a param to the callback.</p>\u000A", 
+    "code": "proc `callback =`*(future: FutureBase; cb: proc () {.closure, gcsafe.})"
+  }, 
+  {
+    "name": "`callback=`", 
+    "type": "skProc", 
+    "description": "<p>Sets the callback proc to be called when the future completes.</p>\u000A<p>If future has already completed then <tt class=\"docutils literal\"><span class=\"pre\">cb</span></tt> will be called immediately.</p>\u000A", 
+    "code": "proc `callback =`*[T](future: Future[T]; \u000A                      cb: proc (future: Future[T]) {.closure, gcsafe.})"
+  }, 
+  {
+    "name": "read", 
+    "type": "skProc", 
+    "description": "<p>Retrieves the value of <tt class=\"docutils literal\"><span class=\"pre\">future</span></tt>. Future must be finished otherwise this function will fail with a <tt class=\"docutils literal\"><span class=\"pre\">ValueError</span></tt> exception.</p>\u000A<p>If the result of the future is an error then that error will be raised.</p>\u000A", 
+    "code": "proc read*[T](future: Future[T]): T"
+  }, 
+  {
+    "name": "readError", 
+    "type": "skProc", 
+    "description": "<p>Retrieves the exception stored in <tt class=\"docutils literal\"><span class=\"pre\">future</span></tt>.</p>\u000A<p>An <tt class=\"docutils literal\"><span class=\"pre\">ValueError</span></tt> exception will be thrown if no exception exists in the specified Future.</p>\u000A", 
+    "code": "proc readError*[T](future: Future[T]): ref Exception"
+  }, 
+  {
+    "name": "finished", 
+    "type": "skProc", 
+    "description": "<p>Determines whether <tt class=\"docutils literal\"><span class=\"pre\">future</span></tt> has completed.</p>\u000A<p><tt class=\"docutils literal\"><span class=\"pre\">True</span></tt> may indicate an error or a value. Use <tt class=\"docutils literal\"><span class=\"pre\">failed</span></tt> to distinguish.</p>\u000A", 
+    "code": "proc finished*[T](future: Future[T]): bool"
+  }, 
+  {
+    "name": "failed", 
+    "type": "skProc", 
+    "description": "Determines whether <tt class=\"docutils literal\"><span class=\"pre\">future</span></tt> completed with an error.", 
+    "code": "proc failed*(future: FutureBase): bool"
+  }, 
+  {
+    "name": "asyncCheck", 
+    "type": "skProc", 
+    "description": "<p>Sets a callback on <tt class=\"docutils literal\"><span class=\"pre\">future</span></tt> which raises an exception if the future finished with an error.</p>\u000A<p>This should be used instead of <tt class=\"docutils literal\"><span class=\"pre\">discard</span></tt> to discard void futures.</p>\u000A", 
+    "code": "proc asyncCheck*[T](future: Future[T])"
+  }, 
+  {
+    "name": "`and`", 
+    "type": "skProc", 
+    "description": "Returns a future which will complete once both <tt class=\"docutils literal\"><span class=\"pre\">fut1</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">fut2</span></tt> complete.", 
+    "code": "proc `and`*[T, Y](fut1: Future[T]; fut2: Future[Y]): Future[void]"
+  }, 
+  {
+    "name": "`or`", 
+    "type": "skProc", 
+    "description": "Returns a future which will complete once either <tt class=\"docutils literal\"><span class=\"pre\">fut1</span></tt> or <tt class=\"docutils literal\"><span class=\"pre\">fut2</span></tt> complete.", 
+    "code": "proc `or`*[T, Y](fut1: Future[T]; fut2: Future[Y]): Future[void]"
+  }, 
+  {
+    "name": "TAsyncFD", 
+    "type": "skType", 
+    "code": "TAsyncFD* = distinct int"
+  }, 
+  {
+    "name": "`==`", 
+    "type": "skProc", 
+    "code": "proc `==`*(x: TAsyncFD; y: TAsyncFD): bool {.borrow.}"
+  }, 
+  {
+    "name": "newDispatcher", 
+    "type": "skProc", 
+    "description": "Creates a new Dispatcher instance.", 
+    "code": "proc newDispatcher*(): PDispatcher"
+  }, 
+  {
+    "name": "getGlobalDispatcher", 
+    "type": "skProc", 
+    "description": "Retrieves the global thread-local dispatcher.", 
+    "code": "proc getGlobalDispatcher*(): PDispatcher"
+  }, 
+  {
+    "name": "register", 
+    "type": "skProc", 
+    "description": "Registers <tt class=\"docutils literal\"><span class=\"pre\">fd</span></tt> with the dispatcher.", 
+    "code": "proc register*(fd: TAsyncFD)"
+  }, 
+  {
+    "name": "poll", 
+    "type": "skProc", 
+    "description": "Waits for completion events and processes them.", 
+    "code": "proc poll*(timeout = 500)"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "description": "<p>Connects <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> to server at <tt class=\"docutils literal\"><span class=\"pre\">address:port</span></tt>.</p>\u000A<p>Returns a <tt class=\"docutils literal\"><span class=\"pre\">Future</span></tt> which will complete when the connection succeeds or an error occurs.</p>\u000A", 
+    "code": "proc connect*(socket: TAsyncFD; address: string; port: Port; af = AF_INET): Future[\u000A    void]"
+  }, 
+  {
+    "name": "recv", 
+    "type": "skProc", 
+    "description": "<p>Reads <strong>up to</strong> <tt class=\"docutils literal\"><span class=\"pre\">size</span></tt> bytes from <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt>. Returned future will complete once all the data requested is read, a part of the data has been read, or the socket has disconnected in which case the future will complete with a value of <tt class=\"docutils literal\"><span class=\"pre\">&quot;&quot;</span></tt>.</p>\u000A<p><strong>Warning</strong>: The <tt class=\"docutils literal\"><span class=\"pre\">Peek</span></tt> socket flag is not supported on Windows.</p>\u000A", 
+    "code": "proc recv*(socket: TAsyncFD; size: int; flags = {SocketFlag.SafeDisconn}): Future[\u000A    string]"
+  }, 
+  {
+    "name": "send", 
+    "type": "skProc", 
+    "description": "Sends <tt class=\"docutils literal\"><span class=\"pre\">data</span></tt> to <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt>. The returned future will complete once all data has been sent.", 
+    "code": "proc send*(socket: TAsyncFD; data: string; flags = {SocketFlag.SafeDisconn}): Future[\u000A    void]"
+  }, 
+  {
+    "name": "acceptAddr", 
+    "type": "skProc", 
+    "description": "<p>Accepts a new connection. Returns a future containing the client socket corresponding to that connection and the remote address of the client. The future will complete when the connection is successfully accepted.</p>\u000A<p>The resulting client socket is automatically registered to the dispatcher.</p>\u000A<p>The <tt class=\"docutils literal\"><span class=\"pre\">accept</span></tt> call may result in an error if the connecting socket disconnects during the duration of the <tt class=\"docutils literal\"><span class=\"pre\">accept</span></tt>. If the <tt class=\"docutils literal\"><span class=\"pre\">SafeDisconn</span></tt> flag is specified then this error will not be raised and instead accept will be called again.</p>\u000A", 
+    "code": "proc acceptAddr*(socket: TAsyncFD; flags = {SocketFlag.SafeDisconn}): Future[\u000A    tuple[address: string, client: TAsyncFD]]"
+  }, 
+  {
+    "name": "newAsyncRawSocket", 
+    "type": "skProc", 
+    "description": "Creates a new socket and registers it with the dispatcher implicitly.", 
+    "code": "proc newAsyncRawSocket*(domain, typ, protocol: cint): TAsyncFD"
+  }, 
+  {
+    "name": "newAsyncRawSocket", 
+    "type": "skProc", 
+    "description": "Creates a new socket and registers it with the dispatcher implicitly.", 
+    "code": "proc newAsyncRawSocket*(domain: Domain = AF_INET; typ: SockType = SOCK_STREAM; \u000A                        protocol: Protocol = IPPROTO_TCP): TAsyncFD"
+  }, 
+  {
+    "name": "closeSocket", 
+    "type": "skProc", 
+    "description": "Closes a socket and ensures that it is unregistered.", 
+    "code": "proc closeSocket*(socket: TAsyncFD)"
+  }, 
+  {
+    "name": "unregister", 
+    "type": "skProc", 
+    "description": "Unregisters <tt class=\"docutils literal\"><span class=\"pre\">fd</span></tt>.", 
+    "code": "proc unregister*(fd: TAsyncFD)"
+  }, 
+  {
+    "name": "sleepAsync", 
+    "type": "skProc", 
+    "description": "Suspends the execution of the current async procedure for the next <tt class=\"docutils literal\"><span class=\"pre\">ms</span></tt> miliseconds.", 
+    "code": "proc sleepAsync*(ms: int): Future[void]"
+  }, 
+  {
+    "name": "accept", 
+    "type": "skProc", 
+    "description": "Accepts a new connection. Returns a future containing the client socket corresponding to that connection. The future will complete when the connection is successfully accepted.", 
+    "code": "proc accept*(socket: TAsyncFD; flags = {SocketFlag.SafeDisconn}): Future[\u000A    TAsyncFD]"
+  }, 
+  {
+    "name": "async", 
+    "type": "skMacro", 
+    "description": "Macro which processes async procedures into the appropriate iterators and yield statements.", 
+    "code": "macro async*(prc: stmt): stmt {.immediate.}"
+  }, 
+  {
+    "name": "recvLine", 
+    "type": "skProc", 
+    "description": "<p>Reads a line of data from <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt>. Returned future will complete once a full line is read or an error occurs.</p>\u000A<p>If a full line is read <tt class=\"docutils literal\"><span class=\"pre\">\\r\\L</span></tt> is not added to <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt>, however if solely <tt class=\"docutils literal\"><span class=\"pre\">\\r\\L</span></tt> is read then <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt> will be set to it.</p>\u000A<p>If the socket is disconnected, <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt> will be set to <tt class=\"docutils literal\"><span class=\"pre\">&quot;&quot;</span></tt>.</p>\u000A<p>If the socket is disconnected in the middle of a line (before <tt class=\"docutils literal\"><span class=\"pre\">\\r\\L</span></tt> is read) then line will be set to <tt class=\"docutils literal\"><span class=\"pre\">&quot;&quot;</span></tt>. The partial line <strong>will be lost</strong>.</p>\u000A<p><strong>Warning</strong>: This assumes that lines are delimited by <tt class=\"docutils literal\"><span class=\"pre\">\\r\\L</span></tt>.</p>\u000A<p><strong>Note</strong>: This procedure is mostly used for testing. You likely want to use <tt class=\"docutils literal\"><span class=\"pre\">asyncnet.recvLine</span></tt> instead.</p>\u000A", 
+    "code": "proc recvLine*(socket: TAsyncFD): Future[string] {.async.}"
+  }, 
+  {
+    "name": "runForever", 
+    "type": "skProc", 
+    "description": "Begins a never ending global dispatcher poll loop.", 
+    "code": "proc runForever*()"
+  }, 
+  {
+    "name": "waitFor", 
+    "type": "skProc", 
+    "description": "<strong>Blocks</strong> the current thread until the specified future completes.", 
+    "code": "proc waitFor*[T](fut: Future[T]): T"
+  }
+]

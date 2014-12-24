@@ -6,7 +6,7 @@ const mod_path = "modules"
 
 proc dump*: string {.noinit.} =
     ## Generate a list of paths
-    osproc.execCmdEx("nimrod dump").output
+    osproc.execCmdEx("nim dump").output
 
 
 iterator documents*(path: string, ext = "*.nim"): string =
@@ -24,7 +24,7 @@ proc make_documentation*(path: string) =
 
     echo path
     discard osproc.execCmdEx(
-        "nimrod jsondoc -o:\"" & outpath &
+        "nim jsondoc -o:\"" & outpath &
         "\" \"" & path & "\""
     )
 
@@ -57,7 +57,7 @@ for module in documents(mod_path, ext = "*.json"):
     let moduleData = json.parseFile(module)
 
     #Determine top-level module comment
-    var description: PJsonNode = nil
+    var description: JsonNode = nil
     for obj in moduleData.items:
         var comment = obj["comment"]
         if comment != nil:

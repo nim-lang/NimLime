@@ -1,6 +1,6 @@
 [
   {
-    "comment": "This module implements an interface to Nimrod's runtime type information.\u000D\u000A## Note that even though ``TAny`` and its operations hide the nasty low level\u000D\u000A## details from its clients, it remains inherently unsafe!"
+    "comment": "This module implements an interface to Nim's `runtime type information`:idx:\u000A## (`RTTI`:idx:).\u000A## Note that even though ``TAny`` and its operations hide the nasty low level\u000A## details from its clients, it remains inherently unsafe!\u000A##\u000A## See the `marshal <marshal.html>`_ module for what this module allows you\u000A## to do."
   }, 
   {
     "name": "toAny", 
@@ -72,7 +72,7 @@
     "name": "`[]=`", 
     "type": "skProc", 
     "description": "accessor for an any <cite>x</cite> that represents an array or a sequence.", 
-    "code": "proc `[] =`*(x: TAny; i: int; y: TAny)"
+    "code": "proc `[]=`*(x: TAny; i: int; y: TAny)"
   }, 
   {
     "name": "len", 
@@ -114,7 +114,7 @@
     "name": "`[]=`", 
     "type": "skProc", 
     "description": "sets a field of <cite>x</cite>; <cite>x</cite> represents an object or a tuple.", 
-    "code": "proc `[] =`*(x: TAny; fieldName: string; value: TAny)"
+    "code": "proc `[]=`*(x: TAny; fieldName: string; value: TAny)"
   }, 
   {
     "name": "`[]`", 
@@ -132,7 +132,7 @@
     "name": "`[]=`", 
     "type": "skProc", 
     "description": "dereference operation for the any <cite>x</cite> that represents a ptr or a ref.", 
-    "code": "proc `[] =`*(x, y: TAny)"
+    "code": "proc `[]=`*(x, y: TAny)"
   }, 
   {
     "name": "getInt", 
@@ -167,14 +167,56 @@
   {
     "name": "getBiggestInt", 
     "type": "skProc", 
-    "description": "retrieve the integer value out of <cite>x</cite>. <cite>x</cite> needs to represent some integer, a bool, a char, an enum or a small enough bit set. The value might be sign-extended to <tt class=\"docutils literal\"><span class=\"pre\">biggestInt</span></tt>.", 
-    "code": "proc getBiggestInt*(x: TAny): biggestInt"
+    "description": "retrieve the integer value out of <cite>x</cite>. <cite>x</cite> needs to represent some integer, a bool, a char, an enum or a small enough bit set. The value might be sign-extended to <tt class=\"docutils literal\"><span class=\"pre\">BiggestInt</span></tt>.", 
+    "code": "proc getBiggestInt*(x: TAny): BiggestInt"
   }, 
   {
     "name": "setBiggestInt", 
     "type": "skProc", 
     "description": "sets the integer value of <cite>x</cite>. <cite>x</cite> needs to represent some integer, a bool, a char, an enum or a small enough bit set.", 
-    "code": "proc setBiggestInt*(x: TAny; y: biggestInt)"
+    "code": "proc setBiggestInt*(x: TAny; y: BiggestInt)"
+  }, 
+  {
+    "name": "getUInt", 
+    "type": "skProc", 
+    "description": "retrieve the uint value out of <cite>x</cite>, <cite>x</cite> needs to represent an uint.", 
+    "code": "proc getUInt*(x: TAny): uint"
+  }, 
+  {
+    "name": "getUInt8", 
+    "type": "skProc", 
+    "description": "retrieve the uint8 value out of <cite>x</cite>, <cite>x</cite> needs to represent an uint8.", 
+    "code": "proc getUInt8*(x: TAny): uint8"
+  }, 
+  {
+    "name": "getUInt16", 
+    "type": "skProc", 
+    "description": "retrieve the uint16 value out of <cite>x</cite>, <cite>x</cite> needs to represent an uint16.", 
+    "code": "proc getUInt16*(x: TAny): uint16"
+  }, 
+  {
+    "name": "getUInt32", 
+    "type": "skProc", 
+    "description": "retrieve the uint32 value out of <cite>x</cite>, <cite>x</cite> needs to represent an uint32.", 
+    "code": "proc getUInt32*(x: TAny): uint32"
+  }, 
+  {
+    "name": "getUInt64", 
+    "type": "skProc", 
+    "description": "retrieve the uint64 value out of <cite>x</cite>, <cite>x</cite> needs to represent an uint64.", 
+    "code": "proc getUInt64*(x: TAny): uint64"
+  }, 
+  {
+    "name": "getBiggestUint", 
+    "type": "skProc", 
+    "description": "retrieve the unsigned integer value out of <cite>x</cite>. <cite>x</cite> needs to represent an unsigned integer.", 
+    "code": "proc getBiggestUint*(x: TAny): uint64"
+  }, 
+  {
+    "name": "setBiggestUint", 
+    "type": "skProc", 
+    "description": "sets the unsigned integer value of <cite>c</cite>. <cite>c</cite> needs to represent an unsigned integer.", 
+    "code": "proc setBiggestUint*(x: TAny; y: uint64)"
   }, 
   {
     "name": "getChar", 
@@ -233,14 +275,14 @@
   {
     "name": "getBiggestFloat", 
     "type": "skProc", 
-    "description": "retrieve the float value out of <cite>x</cite>. <cite>x</cite> needs to represent some float. The value is extended to <tt class=\"docutils literal\"><span class=\"pre\">biggestFloat</span></tt>.", 
-    "code": "proc getBiggestFloat*(x: TAny): biggestFloat"
+    "description": "retrieve the float value out of <cite>x</cite>. <cite>x</cite> needs to represent some float. The value is extended to <tt class=\"docutils literal\"><span class=\"pre\">BiggestFloat</span></tt>.", 
+    "code": "proc getBiggestFloat*(x: TAny): BiggestFloat"
   }, 
   {
     "name": "setBiggestFloat", 
     "type": "skProc", 
     "description": "sets the float value of <cite>x</cite>. <cite>x</cite> needs to represent some float.", 
-    "code": "proc setBiggestFloat*(x: TAny; y: biggestFloat)"
+    "code": "proc setBiggestFloat*(x: TAny; y: BiggestFloat)"
   }, 
   {
     "name": "getString", 
@@ -269,13 +311,13 @@
   {
     "name": "elements", 
     "type": "skIterator", 
-    "description": "iterates over every element of <cite>x</cite> that represents a Nimrod bitset.", 
+    "description": "iterates over every element of <cite>x</cite> that represents a Nim bitset.", 
     "code": "iterator elements*(x: TAny): int"
   }, 
   {
     "name": "inclSetElement", 
     "type": "skProc", 
-    "description": "includes an element <cite>elem</cite> in <cite>x</cite>. <cite>x</cite> needs to represent a Nimrod bitset.", 
+    "description": "includes an element <cite>elem</cite> in <cite>x</cite>. <cite>x</cite> needs to represent a Nim bitset.", 
     "code": "proc inclSetElement*(x: TAny; elem: int)"
   }
 ]

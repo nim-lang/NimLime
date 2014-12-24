@@ -1,6 +1,6 @@
 [
   {
-    "comment": "This module implements graphical output for Nimrod; the current\u000D\u000A## implementation uses SDL but the interface is meant to support multiple\u000D\u000A## backends some day. There is no need to init SDL as this module does that \u000D\u000A## implicitly."
+    "comment": "This module implements graphical output for Nim; the current\u000A## implementation uses SDL but the interface is meant to support multiple\u000A## backends some day. There is no need to init SDL as this module does that \u000A## implicitly."
   }, 
   {
     "name": "PFont", 
@@ -11,14 +11,14 @@
   {
     "name": "toSdlColor", 
     "type": "skProc", 
-    "description": "Convert colors.TColor to SDL.TColor", 
-    "code": "proc toSdlColor*(c: TColor): Sdl.TColor"
+    "description": "Convert colors.TColor to sdl.TColor", 
+    "code": "proc toSdlColor*(c: Color): sdl.TColor"
   }, 
   {
     "name": "createSdlColor", 
     "type": "skProc", 
     "description": "Creates a color using <tt class=\"docutils literal\"><span class=\"pre\">sdl.MapRGBA</span></tt>.", 
-    "code": "proc createSdlColor*(sur: PSurface; c: TColor; alpha: int = 0): int32"
+    "code": "proc createSdlColor*(sur: PSurface; c: Color; alpha: int = 0): int32"
   }, 
   {
     "name": "toSdlRect", 
@@ -66,31 +66,31 @@
     "name": "`[]`", 
     "type": "skProc", 
     "description": "get pixel at position <cite>p</cite>. No range checking is done!", 
-    "code": "proc `[]`*(sur: PSurface; p: TPoint): TColor"
+    "code": "proc `[]`*(sur: PSurface; p: TPoint): Color"
   }, 
   {
     "name": "`[]`", 
     "type": "skProc", 
     "description": "get pixel at position <tt class=\"docutils literal\"><span class=\"pre\">(x, y)</span></tt>. No range checking is done!", 
-    "code": "proc `[]`*(sur: PSurface; x, y: int): TColor"
+    "code": "proc `[]`*(sur: PSurface; x, y: int): Color"
   }, 
   {
     "name": "`[]=`", 
     "type": "skProc", 
     "description": "set the pixel at position <cite>p</cite>. No range checking is done!", 
-    "code": "proc `[] =`*(sur: PSurface; p: TPoint; col: TColor)"
+    "code": "proc `[]=`*(sur: PSurface; p: TPoint; col: Color)"
   }, 
   {
     "name": "`[]=`", 
     "type": "skProc", 
     "description": "set the pixel at position <tt class=\"docutils literal\"><span class=\"pre\">(x, y)</span></tt>. No range checking is done!", 
-    "code": "proc `[] =`*(sur: PSurface; x, y: int; col: TColor)"
+    "code": "proc `[]=`*(sur: PSurface; x, y: int; col: Color)"
   }, 
   {
     "name": "blit", 
     "type": "skProc", 
     "description": "Copies <tt class=\"docutils literal\"><span class=\"pre\">srcSurf</span></tt> into <tt class=\"docutils literal\"><span class=\"pre\">destSurf</span></tt>", 
-    "code": "proc blit*(destSurf: PSurface; destRect: TRect; srcSurf: PSurface; \u000D\u000A           srcRect: TRect)"
+    "code": "proc blit*(destSurf: PSurface; destRect: TRect; srcSurf: PSurface; \u000A           srcRect: TRect)"
   }, 
   {
     "name": "textBounds", 
@@ -107,72 +107,72 @@
     "name": "drawText", 
     "type": "skProc", 
     "description": "Draws text, at location <tt class=\"docutils literal\"><span class=\"pre\">p</span></tt> with font <tt class=\"docutils literal\"><span class=\"pre\">font</span></tt>. <tt class=\"docutils literal\"><span class=\"pre\">bg</span></tt> is the background color.", 
-    "code": "proc drawText*(sur: PSurface; p: TPoint; text: string; bg: TColor; \u000D\u000A               font = defaultFont)"
+    "code": "proc drawText*(sur: PSurface; p: TPoint; text: string; bg: Color; \u000A               font = defaultFont)"
   }, 
   {
     "name": "drawCircle", 
     "type": "skProc", 
     "description": "draws a circle with center <cite>p</cite> and radius <cite>r</cite> with the given color onto the surface <cite>sur</cite>.", 
-    "code": "proc drawCircle*(sur: PSurface; p: TPoint; r: Natural; color: TColor)"
+    "code": "proc drawCircle*(sur: PSurface; p: TPoint; r: Natural; color: Color)"
   }, 
   {
     "name": "drawLine", 
     "type": "skProc", 
     "description": "draws a line between the two points <cite>p1</cite> and <cite>p2</cite> with the given color onto the surface <cite>sur</cite>.", 
-    "code": "proc drawLine*(sur: PSurface; p1, p2: TPoint; color: TColor)"
+    "code": "proc drawLine*(sur: PSurface; p1, p2: TPoint; color: Color)"
   }, 
   {
     "name": "drawHorLine", 
     "type": "skProc", 
     "description": "draws a horizontal line from (x,y) to (x+w-1, y).", 
-    "code": "proc drawHorLine*(sur: PSurface; x, y, w: Natural; Color: TColor)"
+    "code": "proc drawHorLine*(sur: PSurface; x, y, w: Natural; color: Color)"
   }, 
   {
     "name": "drawVerLine", 
     "type": "skProc", 
     "description": "draws a vertical line from (x,y) to (x, y+h-1).", 
-    "code": "proc drawVerLine*(sur: PSurface; x, y, h: Natural; Color: TColor)"
+    "code": "proc drawVerLine*(sur: PSurface; x, y, h: Natural; color: Color)"
   }, 
   {
     "name": "fillCircle", 
     "type": "skProc", 
     "description": "draws a circle with center <cite>p</cite> and radius <cite>r</cite> with the given color onto the surface <cite>sur</cite> and fills it.", 
-    "code": "proc fillCircle*(s: PSurface; p: TPoint; r: Natural; color: TColor)"
+    "code": "proc fillCircle*(s: PSurface; p: TPoint; r: Natural; color: Color)"
   }, 
   {
     "name": "drawRect", 
     "type": "skProc", 
     "description": "draws a rectangle.", 
-    "code": "proc drawRect*(sur: PSurface; r: TRect; color: TColor)"
+    "code": "proc drawRect*(sur: PSurface; r: TRect; color: Color)"
   }, 
   {
     "name": "fillRect", 
     "type": "skProc", 
     "description": "Fills a rectangle using sdl's <tt class=\"docutils literal\"><span class=\"pre\">FillRect</span></tt> function.", 
-    "code": "proc fillRect*(sur: PSurface; r: TRect; col: TColor)"
+    "code": "proc fillRect*(sur: PSurface; r: TRect; col: Color)"
   }, 
   {
     "name": "drawEllipse", 
     "type": "skProc", 
     "description": "Draws an ellipse, <tt class=\"docutils literal\"><span class=\"pre\">CX</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">CY</span></tt> specify the center X and Y of the ellipse, <tt class=\"docutils literal\"><span class=\"pre\">XRadius</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">YRadius</span></tt> specify half the width and height of the ellipse.", 
-    "code": "proc drawEllipse*(sur: PSurface; CX, CY, XRadius, YRadius: Natural; col: TColor)"
+    "code": "proc drawEllipse*(sur: PSurface; cx, cy, xRadius, yRadius: Natural; col: Color)"
   }, 
   {
     "name": "drawLineAA", 
     "type": "skProc", 
     "description": "Draws a anti-aliased line from <tt class=\"docutils literal\"><span class=\"pre\">p1</span></tt> to <tt class=\"docutils literal\"><span class=\"pre\">p2</span></tt>, using Xiaolin Wu's line algorithm", 
-    "code": "proc drawLineAA*(sur: PSurface; p1, p2: TPoint; color: TColor)"
+    "code": "proc drawLineAA*(sur: PSurface; p1, p2: TPoint; color: Color)"
   }, 
   {
     "name": "fillSurface", 
     "type": "skProc", 
     "description": "Fills the entire surface with <tt class=\"docutils literal\"><span class=\"pre\">color</span></tt>.", 
-    "code": "proc fillSurface*(sur: PSurface; color: TColor)"
+    "code": "proc fillSurface*(sur: PSurface; color: Color)"
   }, 
   {
     "name": "withEvents", 
     "type": "skTemplate", 
     "description": "Simple template which creates an event loop. <tt class=\"docutils literal\"><span class=\"pre\">Event</span></tt> is the name of the variable containing the TEvent object.", 
-    "code": "template withEvents*(surf: PSurface; event: expr; actions: stmt): stmt {.\u000D\u000A    immediate.}"
+    "code": "template withEvents*(surf: PSurface; event: expr; actions: stmt): stmt {.\u000A    immediate.}"
   }
 ]

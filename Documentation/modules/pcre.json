@@ -45,96 +45,96 @@
     "code": "Pjit_stack* = ptr Tjit_stack"
   }, 
   {
-    "name": "Textra", 
+    "name": "TExtra", 
     "type": "skType", 
     "description": "Bits for which fields are set ", 
-    "code": "Textra* {.pure, final.} = object \u000D\u000A  flags*: int\u000D\u000A  study_data*: pointer        ## Opaque data from pcre_study() \u000D\u000A  match_limit*: int           ## Maximum number of calls to match() \u000D\u000A  callout_data*: pointer      ## Data passed back in callouts \u000D\u000A  tables*: cstring            ## Pointer to character tables \u000D\u000A  match_limit_recursion*: int ## Max recursive calls to match() \u000D\u000A  mark*: ptr cstring          ## For passing back a mark pointer \u000D\u000A  executable_jit*: pointer    ## Contains a pointer to a compiled jit code\u000D\u000A  "
+    "code": "TExtra* {.pure, final.} = object \u000A  flags*: int\u000A  study_data*: pointer        ## Opaque data from pcre_study() \u000A  match_limit*: int           ## Maximum number of calls to match() \u000A  callout_data*: pointer      ## Data passed back in callouts \u000A  tables*: cstring            ## Pointer to character tables \u000A  match_limit_recursion*: int ## Max recursive calls to match() \u000A  mark*: ptr cstring          ## For passing back a mark pointer \u000A  executable_jit*: pointer    ## Contains a pointer to a compiled jit code\u000A  "
   }, 
   {
-    "name": "Tcallout_block", 
+    "name": "TCalloutBlock", 
     "type": "skType", 
     "description": "Identifies version of block ", 
-    "code": "Tcallout_block* {.pure, final.} = object \u000D\u000A  version*: cint\u000D\u000A  callout_number*: cint       ## Number compiled into pattern \u000D\u000A  offset_vector*: ptr cint    ## The offset vector \u000D\u000A  subject*: cstring           ## The subject being matched \u000D\u000A  subject_length*: cint       ## The length of the subject \u000D\u000A  start_match*: cint          ## Offset to start of this match attempt \u000D\u000A  current_position*: cint     ## Where we currently are in the subject \u000D\u000A  capture_top*: cint          ## Max current capture \u000D\u000A  capture_last*: cint         ## Most recently closed capture \u000D\u000A  callout_data*: pointer      ## Data passed in with the call \u000D\u000A  pattern_position*: cint     ## Offset to next item in the pattern \u000D\u000A  next_item_length*: cint     ## Length of next item in the pattern\u000D\u000A  mark*: cstring              ## Pointer to current mark or NULL\u000D\u000A  "
+    "code": "TCalloutBlock* {.pure, final.} = object \u000A  version*: cint\u000A  callout_number*: cint       ## Number compiled into pattern \u000A  offset_vector*: ptr cint    ## The offset vector \u000A  subject*: cstring           ## The subject being matched \u000A  subject_length*: cint       ## The length of the subject \u000A  start_match*: cint          ## Offset to start of this match attempt \u000A  current_position*: cint     ## Where we currently are in the subject \u000A  capture_top*: cint          ## Max current capture \u000A  capture_last*: cint         ## Most recently closed capture \u000A  callout_data*: pointer      ## Data passed in with the call \u000A  pattern_position*: cint     ## Offset to next item in the pattern \u000A  next_item_length*: cint     ## Length of next item in the pattern\u000A  mark*: cstring              ## Pointer to current mark or NULL\u000A  "
   }, 
   {
-    "name": "Tjit_callback", 
+    "name": "TJitCallback", 
     "type": "skType", 
-    "code": "Tjit_callback* = proc (p: pointer): ptr Tjit_stack {.cdecl.}"
+    "code": "TJitCallback* = proc (p: pointer): ptr Tjit_stack {.cdecl.}"
   }, 
   {
     "name": "compile", 
     "type": "skProc", 
-    "code": "proc compile*(a2: cstring; a3: cint; a4: ptr cstring; a5: ptr cint; a6: ptr char): ptr TPcre {.\u000D\u000A    cdecl, importc: \"pcre_compile\", pcreImport.}"
+    "code": "proc compile*(a2: cstring; a3: cint; a4: ptr cstring; a5: ptr cint; a6: ptr char): ptr TPcre {.\u000A    cdecl, importc: \"pcre_compile\", pcreImport.}"
   }, 
   {
     "name": "compile2", 
     "type": "skProc", 
-    "code": "proc compile2*(a2: cstring; a3: cint; a4: ptr cint; a5: ptr cstring; \u000D\u000A               a6: ptr cint; a7: ptr char): ptr TPcre {.cdecl, \u000D\u000A    importc: \"pcre_compile2\", pcreImport.}"
+    "code": "proc compile2*(a2: cstring; a3: cint; a4: ptr cint; a5: ptr cstring; \u000A               a6: ptr cint; a7: ptr char): ptr TPcre {.cdecl, \u000A    importc: \"pcre_compile2\", pcreImport.}"
   }, 
   {
     "name": "config", 
     "type": "skProc", 
-    "code": "proc config*(a2: cint; a3: pointer): cint {.cdecl, importc: \"pcre_config\", \u000D\u000A    pcreImport.}"
+    "code": "proc config*(a2: cint; a3: pointer): cint {.cdecl, importc: \"pcre_config\", \u000A    pcreImport.}"
   }, 
   {
     "name": "copy_named_substring", 
     "type": "skProc", 
-    "code": "proc copy_named_substring*(a2: ptr TPcre; a3: cstring; a4: ptr cint; a5: cint; \u000D\u000A                           a6: cstring; a7: cstring; a8: cint): cint {.cdecl, \u000D\u000A    importc: \"pcre_copy_named_substring\", pcreImport.}"
+    "code": "proc copy_named_substring*(a2: ptr TPcre; a3: cstring; a4: ptr cint; a5: cint; \u000A                           a6: cstring; a7: cstring; a8: cint): cint {.cdecl, \u000A    importc: \"pcre_copy_named_substring\", pcreImport.}"
   }, 
   {
     "name": "copy_substring", 
     "type": "skProc", 
-    "code": "proc copy_substring*(a2: cstring; a3: ptr cint; a4: cint; a5: cint; a6: cstring; \u000D\u000A                     a7: cint): cint {.cdecl, importc: \"pcre_copy_substring\", \u000D\u000A                                       pcreImport.}"
+    "code": "proc copy_substring*(a2: cstring; a3: ptr cint; a4: cint; a5: cint; a6: cstring; \u000A                     a7: cint): cint {.cdecl, importc: \"pcre_copy_substring\", \u000A                                       pcreImport.}"
   }, 
   {
     "name": "dfa_exec", 
     "type": "skProc", 
-    "code": "proc dfa_exec*(a2: ptr TPcre; a3: ptr Textra; a4: cstring; a5: cint; a6: cint; \u000D\u000A               a7: cint; a8: ptr cint; a9: cint; a10: ptr cint; a11: cint): cint {.\u000D\u000A    cdecl, importc: \"pcre_dfa_exec\", pcreImport.}"
+    "code": "proc dfa_exec*(a2: ptr TPcre; a3: ptr TExtra; a4: cstring; a5: cint; a6: cint; \u000A               a7: cint; a8: ptr cint; a9: cint; a10: ptr cint; a11: cint): cint {.\u000A    cdecl, importc: \"pcre_dfa_exec\", pcreImport.}"
   }, 
   {
     "name": "exec", 
     "type": "skProc", 
-    "code": "proc exec*(a2: ptr TPcre; a3: ptr Textra; a4: cstring; a5: cint; a6: cint; \u000D\u000A           a7: cint; a8: ptr cint; a9: cint): cint {.cdecl, \u000D\u000A    importc: \"pcre_exec\", pcreImport.}"
+    "code": "proc exec*(a2: ptr TPcre; a3: ptr TExtra; a4: cstring; a5: cint; a6: cint; \u000A           a7: cint; a8: ptr cint; a9: cint): cint {.cdecl, \u000A    importc: \"pcre_exec\", pcreImport.}"
   }, 
   {
     "name": "free_substring", 
     "type": "skProc", 
-    "code": "proc free_substring*(a2: cstring) {.cdecl, importc: \"pcre_free_substring\", \u000D\u000A                                    pcreImport.}"
+    "code": "proc free_substring*(a2: cstring) {.cdecl, importc: \"pcre_free_substring\", \u000A                                    pcreImport.}"
   }, 
   {
     "name": "free_substring_list", 
     "type": "skProc", 
-    "code": "proc free_substring_list*(a2: cstringArray) {.cdecl, \u000D\u000A    importc: \"pcre_free_substring_list\", pcreImport.}"
+    "code": "proc free_substring_list*(a2: cstringArray) {.cdecl, \u000A    importc: \"pcre_free_substring_list\", pcreImport.}"
   }, 
   {
     "name": "fullinfo", 
     "type": "skProc", 
-    "code": "proc fullinfo*(a2: ptr TPcre; a3: ptr Textra; a4: cint; a5: pointer): cint {.\u000D\u000A    cdecl, importc: \"pcre_fullinfo\", pcreImport.}"
+    "code": "proc fullinfo*(a2: ptr TPcre; a3: ptr TExtra; a4: cint; a5: pointer): cint {.\u000A    cdecl, importc: \"pcre_fullinfo\", pcreImport.}"
   }, 
   {
     "name": "get_named_substring", 
     "type": "skProc", 
-    "code": "proc get_named_substring*(a2: ptr TPcre; a3: cstring; a4: ptr cint; a5: cint; \u000D\u000A                          a6: cstring; a7: cstringArray): cint {.cdecl, \u000D\u000A    importc: \"pcre_get_named_substring\", pcreImport.}"
+    "code": "proc get_named_substring*(a2: ptr TPcre; a3: cstring; a4: ptr cint; a5: cint; \u000A                          a6: cstring; a7: cstringArray): cint {.cdecl, \u000A    importc: \"pcre_get_named_substring\", pcreImport.}"
   }, 
   {
     "name": "get_stringnumber", 
     "type": "skProc", 
-    "code": "proc get_stringnumber*(a2: ptr TPcre; a3: cstring): cint {.cdecl, \u000D\u000A    importc: \"pcre_get_stringnumber\", pcreImport.}"
+    "code": "proc get_stringnumber*(a2: ptr TPcre; a3: cstring): cint {.cdecl, \u000A    importc: \"pcre_get_stringnumber\", pcreImport.}"
   }, 
   {
     "name": "get_stringtable_entries", 
     "type": "skProc", 
-    "code": "proc get_stringtable_entries*(a2: ptr TPcre; a3: cstring; a4: cstringArray; \u000D\u000A                              a5: cstringArray): cint {.cdecl, \u000D\u000A    importc: \"pcre_get_stringtable_entries\", pcreImport.}"
+    "code": "proc get_stringtable_entries*(a2: ptr TPcre; a3: cstring; a4: cstringArray; \u000A                              a5: cstringArray): cint {.cdecl, \u000A    importc: \"pcre_get_stringtable_entries\", pcreImport.}"
   }, 
   {
     "name": "get_substring", 
     "type": "skProc", 
-    "code": "proc get_substring*(a2: cstring; a3: ptr cint; a4: cint; a5: cint; \u000D\u000A                    a6: cstringArray): cint {.cdecl, \u000D\u000A    importc: \"pcre_get_substring\", pcreImport.}"
+    "code": "proc get_substring*(a2: cstring; a3: ptr cint; a4: cint; a5: cint; \u000A                    a6: cstringArray): cint {.cdecl, \u000A    importc: \"pcre_get_substring\", pcreImport.}"
   }, 
   {
     "name": "get_substring_list", 
     "type": "skProc", 
-    "code": "proc get_substring_list*(a2: cstring; a3: ptr cint; a4: cint; \u000D\u000A                         a5: ptr cstringArray): cint {.cdecl, \u000D\u000A    importc: \"pcre_get_substring_list\", pcreImport.}"
+    "code": "proc get_substring_list*(a2: cstring; a3: ptr cint; a4: cint; \u000A                         a5: ptr cstringArray): cint {.cdecl, \u000A    importc: \"pcre_get_substring_list\", pcreImport.}"
   }, 
   {
     "name": "maketables", 
@@ -144,12 +144,12 @@
   {
     "name": "refcount", 
     "type": "skProc", 
-    "code": "proc refcount*(a2: ptr TPcre; a3: cint): cint {.cdecl, importc: \"pcre_refcount\", \u000D\u000A    pcreImport.}"
+    "code": "proc refcount*(a2: ptr TPcre; a3: cint): cint {.cdecl, importc: \"pcre_refcount\", \u000A    pcreImport.}"
   }, 
   {
     "name": "study", 
     "type": "skProc", 
-    "code": "proc study*(a2: ptr TPcre; a3: cint; a4: var cstring): ptr Textra {.cdecl, \u000D\u000A    importc: \"pcre_study\", pcreImport.}"
+    "code": "proc study*(a2: ptr TPcre; a3: cint; a4: var cstring): ptr TExtra {.cdecl, \u000A    importc: \"pcre_study\", pcreImport.}"
   }, 
   {
     "name": "version", 
@@ -159,22 +159,22 @@
   {
     "name": "pattern_to_host_byte_order", 
     "type": "skProc", 
-    "code": "proc pattern_to_host_byte_order*(a2: ptr TPcre; a3: ptr Textra; a4: ptr char): cint {.\u000D\u000A    cdecl, importc: \"pcre_pattern_to_host_byte_order\", pcreImport.}"
+    "code": "proc pattern_to_host_byte_order*(a2: ptr TPcre; a3: ptr TExtra; a4: ptr char): cint {.\u000A    cdecl, importc: \"pcre_pattern_to_host_byte_order\", pcreImport.}"
   }, 
   {
     "name": "jit_stack_alloc", 
     "type": "skProc", 
-    "code": "proc jit_stack_alloc*(a2: cint; a3: cint): ptr Tjit_stack {.cdecl, \u000D\u000A    importc: \"pcre_jit_stack_alloc\", pcreImport.}"
+    "code": "proc jit_stack_alloc*(a2: cint; a3: cint): ptr Tjit_stack {.cdecl, \u000A    importc: \"pcre_jit_stack_alloc\", pcreImport.}"
   }, 
   {
     "name": "jit_stack_free", 
     "type": "skProc", 
-    "code": "proc jit_stack_free*(a2: ptr Tjit_stack) {.cdecl, \u000D\u000A    importc: \"pcre_jit_stack_free\", pcreImport.}"
+    "code": "proc jit_stack_free*(a2: ptr Tjit_stack) {.cdecl, \u000A    importc: \"pcre_jit_stack_free\", pcreImport.}"
   }, 
   {
     "name": "assign_jit_stack", 
     "type": "skProc", 
-    "code": "proc assign_jit_stack*(a2: ptr Textra; a3: Tjit_callback; a4: pointer) {.cdecl, \u000D\u000A    importc: \"pcre_assign_jit_stack\", pcreImport.}"
+    "code": "proc assign_jit_stack*(a2: ptr TExtra; a3: TJitCallback; a4: pointer) {.cdecl, \u000A    importc: \"pcre_assign_jit_stack\", pcreImport.}"
   }, 
   {
     "name": "pcre_free", 

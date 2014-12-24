@@ -3,25 +3,25 @@
     "comment": "This module provides support to handle the Unicode UTF-8 encoding."
   }, 
   {
-    "name": "TRune16", 
+    "name": "Rune16", 
     "type": "skType", 
     "description": "16 bit Unicode character", 
-    "code": "TRune16* = distinct int16"
+    "code": "Rune16* = distinct int16"
   }, 
   {
     "name": "`&lt;=%`", 
     "type": "skProc", 
-    "code": "proc `<=%`*(a, b: TRune): bool"
+    "code": "proc `<=%`*(a, b: Rune): bool"
   }, 
   {
     "name": "`&lt;%`", 
     "type": "skProc", 
-    "code": "proc `<%`*(a, b: TRune): bool"
+    "code": "proc `<%`*(a, b: Rune): bool"
   }, 
   {
     "name": "`==`", 
     "type": "skProc", 
-    "code": "proc `==`*(a, b: TRune): bool"
+    "code": "proc `==`*(a, b: Rune): bool"
   }, 
   {
     "name": "runeLen", 
@@ -45,71 +45,77 @@
     "name": "runeAt", 
     "type": "skProc", 
     "description": "returns the unicode character in <cite>s</cite> at byte index <cite>i</cite>", 
-    "code": "proc runeAt*(s: string; i: int): TRune"
+    "code": "proc runeAt*(s: string; i: int): Rune"
   }, 
   {
     "name": "toUTF8", 
     "type": "skProc", 
     "description": "converts a rune into its UTF8 representation", 
-    "code": "proc toUTF8*(c: TRune): string {.rtl, extern: \"nuc$1\".}"
+    "code": "proc toUTF8*(c: Rune): string {.rtl, extern: \"nuc$1\".}"
+  }, 
+  {
+    "name": "`$`", 
+    "type": "skProc", 
+    "description": "converts a rune to a string", 
+    "code": "proc `$`*(rune: Rune): string"
   }, 
   {
     "name": "`$`", 
     "type": "skProc", 
     "description": "converts a sequence of runes to a string", 
-    "code": "proc `$`*(runes: seq[TRune]): string"
+    "code": "proc `$`*(runes: seq[Rune]): string"
   }, 
   {
     "name": "toLower", 
     "type": "skProc", 
     "description": "Converts <cite>c</cite> into lower case. This works for any Unicode character. If possible, prefer <cite>toLower</cite> over <cite>toUpper</cite>. ", 
-    "code": "proc toLower*(c: TRune): TRune {.rtl, extern: \"nuc$1\", procvar.}"
+    "code": "proc toLower*(c: Rune): Rune {.rtl, extern: \"nuc$1\", procvar.}"
   }, 
   {
     "name": "toUpper", 
     "type": "skProc", 
     "description": "Converts <cite>c</cite> into upper case. This works for any Unicode character. If possible, prefer <cite>toLower</cite> over <cite>toUpper</cite>. ", 
-    "code": "proc toUpper*(c: TRune): TRune {.rtl, extern: \"nuc$1\", procvar.}"
+    "code": "proc toUpper*(c: Rune): Rune {.rtl, extern: \"nuc$1\", procvar.}"
   }, 
   {
     "name": "toTitle", 
     "type": "skProc", 
-    "code": "proc toTitle*(c: TRune): TRune {.rtl, extern: \"nuc$1\", procvar.}"
+    "code": "proc toTitle*(c: Rune): Rune {.rtl, extern: \"nuc$1\", procvar.}"
   }, 
   {
     "name": "isLower", 
     "type": "skProc", 
     "description": "returns true iff <cite>c</cite> is a lower case Unicode character If possible, prefer <cite>isLower</cite> over <cite>isUpper</cite>. ", 
-    "code": "proc isLower*(c: TRune): bool {.rtl, extern: \"nuc$1\", procvar.}"
+    "code": "proc isLower*(c: Rune): bool {.rtl, extern: \"nuc$1\", procvar.}"
   }, 
   {
     "name": "isUpper", 
     "type": "skProc", 
     "description": "returns true iff <cite>c</cite> is a upper case Unicode character If possible, prefer <cite>isLower</cite> over <cite>isUpper</cite>. ", 
-    "code": "proc isUpper*(c: TRune): bool {.rtl, extern: \"nuc$1\", procvar.}"
+    "code": "proc isUpper*(c: Rune): bool {.rtl, extern: \"nuc$1\", procvar.}"
   }, 
   {
     "name": "isAlpha", 
     "type": "skProc", 
     "description": "returns true iff <cite>c</cite> is an <em>alpha</em> Unicode character (i.e. a letter)", 
-    "code": "proc isAlpha*(c: TRune): bool {.rtl, extern: \"nuc$1\", procvar.}"
+    "code": "proc isAlpha*(c: Rune): bool {.rtl, extern: \"nuc$1\", procvar.}"
   }, 
   {
     "name": "isTitle", 
     "type": "skProc", 
-    "code": "proc isTitle*(c: TRune): bool {.rtl, extern: \"nuc$1\", procvar.}"
+    "code": "proc isTitle*(c: Rune): bool {.rtl, extern: \"nuc$1\", procvar.}"
   }, 
   {
     "name": "isWhiteSpace", 
     "type": "skProc", 
     "description": "returns true iff <cite>c</cite> is a Unicode whitespace character", 
-    "code": "proc isWhiteSpace*(c: TRune): bool {.rtl, extern: \"nuc$1\", procvar.}"
+    "code": "proc isWhiteSpace*(c: Rune): bool {.rtl, extern: \"nuc$1\", procvar.}"
   }, 
   {
     "name": "runes", 
     "type": "skIterator", 
     "description": "iterates over any unicode character of the string <cite>s</cite>.", 
-    "code": "iterator runes*(s: string): TRune"
+    "code": "iterator runes*(s: string): Rune"
   }, 
   {
     "name": "cmpRunesIgnoreCase", 

@@ -1,0 +1,112 @@
+[
+  {
+    "comment": "This module implements a simple logger. It has been designed to be as simple\u000A## as possible to avoid bloat, if this library does not fullfill your needs,\u000A## write your own.\u000A## \u000A## Format strings support the following variables which must be prefixed with\u000A## the dollar operator (``$``):\u000A##\u000A## ============  =======================\u000A##   Operator     Output\u000A## ============  =======================\u000A## $date         Current date\u000A## $time         Current time\u000A## $app          ``os.getAppFilename()``\u000A## ============  =======================\u000A## \u000A##\u000A## The following example demonstrates logging to three different handlers\u000A## simultaneously:\u000A##\u000A## .. code-block:: nim\u000A##     \u000A##    var L = newConsoleLogger()\u000A##    var fL = newFileLogger(\"test.log\", fmtStr = verboseFmtStr)\u000A##    var rL = newRollingFileLogger(\"rolling.log\", fmtStr = verboseFmtStr)\u000A##    handlers.add(L)\u000A##    handlers.add(fL)\u000A##    handlers.add(rL)\u000A##    info(\"920410:52 accepted\")\u000A##    warn(\"4 8 15 16 23 4-- Error\")\u000A##    error(\"922044:16 SYSTEM FAILURE\")\u000A##    fatal(\"SYSTEM FAILURE SYSTEM FAILURE\")"
+  }, 
+  {
+    "name": "Level", 
+    "type": "skType", 
+    "description": "logging level", 
+    "code": "Level* = enum \u000A  lvlAll,                     ## all levels active\u000A  lvlDebug,                   ## debug level (and any above) active\u000A  lvlInfo,                    ## info level (and any above) active\u000A  lvlWarn,                    ## warn level (and any above) active\u000A  lvlError,                   ## error level (and any above) active\u000A  lvlFatal,                   ## fatal level (and any above) active\u000A  lvlNone                     ## no levels active"
+  }, 
+  {
+    "name": "verboseFmtStr", 
+    "type": "skConst", 
+    "code": "verboseFmtStr* = \"$date $time \""
+  }, 
+  {
+    "name": "RollingFileLogger", 
+    "type": "skType", 
+    "description": "logger that writes the messages to a file and performs log rotation", 
+    "code": "RollingFileLogger* = ref object of FileLogger\u000A  maxLines: int\u000A  curLine: int\u000A  baseName: string\u000A  baseMode: FileMode\u000A  logFiles: int\u000A"
+  }, 
+  {
+    "name": "log", 
+    "type": "skMethod", 
+    "description": "Override this method in custom loggers. Default implementation does nothing.", 
+    "code": "method log*(logger: Logger; level: Level; frmt: string; \u000A            args: varargs[string, `$`]) {.raises: [Exception], \u000A    tags: [TimeEffect, WriteIOEffect, ReadIOEffect].}"
+  }, 
+  {
+    "name": "log", 
+    "type": "skMethod", 
+    "description": "Logs to the console using <tt class=\"docutils literal\"><span class=\"pre\">logger</span></tt> only.", 
+    "code": "method log*(logger: ConsoleLogger; level: Level; frmt: string; \u000A            args: varargs[string, `$`])"
+  }, 
+  {
+    "name": "log", 
+    "type": "skMethod", 
+    "description": "Logs to a file using <tt class=\"docutils literal\"><span class=\"pre\">logger</span></tt> only.", 
+    "code": "method log*(logger: FileLogger; level: Level; frmt: string; \u000A            args: varargs[string, `$`])"
+  }, 
+  {
+    "name": "defaultFilename", 
+    "type": "skProc", 
+    "description": "Returns the default filename for a logger.", 
+    "code": "proc defaultFilename*(): string"
+  }, 
+  {
+    "name": "newConsoleLogger", 
+    "type": "skProc", 
+    "description": "Creates a new console logger. This logger logs to the console.", 
+    "code": "proc newConsoleLogger*(levelThreshold = lvlAll; fmtStr = defaultFmtStr): ConsoleLogger"
+  }, 
+  {
+    "name": "newFileLogger", 
+    "type": "skProc", 
+    "description": "Creates a new file logger. This logger logs to a file.", 
+    "code": "proc newFileLogger*(filename = defaultFilename(); mode: FileMode = fmAppend; \u000A                    levelThreshold = lvlAll; fmtStr = defaultFmtStr): FileLogger"
+  }, 
+  {
+    "name": "newRollingFileLogger", 
+    "type": "skProc", 
+    "description": "Creates a new rolling file logger. Once a file reaches <tt class=\"docutils literal\"><span class=\"pre\">maxLines</span></tt> lines a new log file will be started and the old will be renamed.", 
+    "code": "proc newRollingFileLogger*(filename = defaultFilename(); \u000A                           mode: FileMode = fmReadWrite; \u000A                           levelThreshold = lvlAll; fmtStr = defaultFmtStr; \u000A                           maxLines = 1000): RollingFileLogger"
+  }, 
+  {
+    "name": "log", 
+    "type": "skMethod", 
+    "description": "Logs to a file using rolling <tt class=\"docutils literal\"><span class=\"pre\">logger</span></tt> only.", 
+    "code": "method log*(logger: RollingFileLogger; level: Level; frmt: string; \u000A            args: varargs[string, `$`])"
+  }, 
+  {
+    "name": "handlers", 
+    "type": "skVar", 
+    "description": "handlers with their own log levels", 
+    "code": "handlers*: seq[Logger] = @ []"
+  }, 
+  {
+    "name": "log", 
+    "type": "skTemplate", 
+    "description": "Logs a message to all registered handlers at the given level.", 
+    "code": "template log*(level: Level; frmt: string; args: varargs[string, `$`])"
+  }, 
+  {
+    "name": "debug", 
+    "type": "skTemplate", 
+    "description": "Logs a debug message to all registered handlers.", 
+    "code": "template debug*(frmt: string; args: varargs[string, `$`])"
+  }, 
+  {
+    "name": "info", 
+    "type": "skTemplate", 
+    "description": "Logs an info message to all registered handlers.", 
+    "code": "template info*(frmt: string; args: varargs[string, `$`])"
+  }, 
+  {
+    "name": "warn", 
+    "type": "skTemplate", 
+    "description": "Logs a warning message to all registered handlers.", 
+    "code": "template warn*(frmt: string; args: varargs[string, `$`])"
+  }, 
+  {
+    "name": "error", 
+    "type": "skTemplate", 
+    "description": "Logs an error message to all registered handlers.", 
+    "code": "template error*(frmt: string; args: varargs[string, `$`])"
+  }, 
+  {
+    "name": "fatal", 
+    "type": "skTemplate", 
+    "description": "Logs a fatal error message to all registered handlers.", 
+    "code": "template fatal*(frmt: string; args: varargs[string, `$`])"
+  }
+]

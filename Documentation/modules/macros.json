@@ -1,6 +1,6 @@
 [
   {
-    "comment": "This module contains the interface to the compiler's abstract syntax\u000D\u000A## tree (`AST`:idx:). Macros operate on this tree."
+    "comment": "This module contains the interface to the compiler's abstract syntax\u000A## tree (`AST`:idx:). Macros operate on this tree."
   }, 
   {
     "comment": ".. include:: ../doc/astspec.txt"
@@ -19,37 +19,37 @@
   {
     "name": "nnkCallKinds", 
     "type": "skConst", 
-    "code": "nnkCallKinds* = {nnkCall, nnkInfix, nnkPrefix, nnkPostfix, nnkCommand, \u000D\u000A                 nnkCallStrLit}"
+    "code": "nnkCallKinds* = {nnkCall, nnkInfix, nnkPrefix, nnkPostfix, nnkCommand, \u000A                 nnkCallStrLit}"
   }, 
   {
     "name": "`[]`", 
     "type": "skProc", 
     "description": "get <cite>n</cite>'s <cite>i</cite>'th child.", 
-    "code": "proc `[]`*(n: PNimrodNode; i: int): PNimrodNode {.magic: \"NChild\".}"
+    "code": "proc `[]`*(n: PNimrodNode; i: int): PNimrodNode {.magic: \"NChild\", noSideEffect.}"
   }, 
   {
     "name": "`[]=`", 
     "type": "skProc", 
     "description": "set <cite>n</cite>'s <cite>i</cite>'th child to <cite>child</cite>.", 
-    "code": "proc `[] =`*(n: PNimrodNode; i: int; child: PNimrodNode) {.magic: \"NSetChild\".}"
+    "code": "proc `[]=`*(n: PNimrodNode; i: int; child: PNimrodNode) {.magic: \"NSetChild\", \u000A    noSideEffect.}"
   }, 
   {
     "name": "`!`", 
     "type": "skProc", 
     "description": "constructs an identifier from the string <cite>s</cite>", 
-    "code": "proc `!`*(s: string): TNimrodIdent {.magic: \"StrToIdent\".}"
+    "code": "proc `!`*(s: string): TNimrodIdent {.magic: \"StrToIdent\", noSideEffect.}"
   }, 
   {
     "name": "`$`", 
     "type": "skProc", 
     "description": "converts a Nimrod identifier to a string", 
-    "code": "proc `$`*(i: TNimrodIdent): string {.magic: \"IdentToStr\".}"
+    "code": "proc `$`*(i: TNimrodIdent): string {.magic: \"IdentToStr\", noSideEffect.}"
   }, 
   {
     "name": "`$`", 
     "type": "skProc", 
     "description": "converts a Nimrod symbol to a string", 
-    "code": "proc `$`*(s: PNimrodSymbol): string {.magic: \"IdentToStr\".}"
+    "code": "proc `$`*(s: PNimrodSymbol): string {.magic: \"IdentToStr\", noSideEffect.}"
   }, 
   {
     "name": "`==`", 
@@ -67,142 +67,137 @@
     "name": "len", 
     "type": "skProc", 
     "description": "returns the number of children of <cite>n</cite>.", 
-    "code": "proc len*(n: PNimrodNode): int {.magic: \"NLen\".}"
+    "code": "proc len*(n: PNimrodNode): int {.magic: \"NLen\", noSideEffect.}"
   }, 
   {
     "name": "add", 
     "type": "skProc", 
     "description": "Adds the <cite>child</cite> to the <cite>father</cite> node. Returns the father node so that calls can be nested.", 
-    "code": "proc add*(father, child: PNimrodNode): PNimrodNode {.magic: \"NAdd\", discardable.}"
+    "code": "proc add*(father, child: PNimrodNode): PNimrodNode {.magic: \"NAdd\", discardable, \u000A    noSideEffect.}"
   }, 
   {
     "name": "add", 
     "type": "skProc", 
     "description": "Adds each child of <cite>children</cite> to the <cite>father</cite> node. Returns the <cite>father</cite> node so that calls can be nested.", 
-    "code": "proc add*(father: PNimrodNode; children: varargs[PNimrodNode]): PNimrodNode {.\u000D\u000A    magic: \"NAddMultiple\", discardable.}"
+    "code": "proc add*(father: PNimrodNode; children: varargs[PNimrodNode]): PNimrodNode {.\u000A    magic: \"NAddMultiple\", discardable, noSideEffect.}"
   }, 
   {
     "name": "del", 
     "type": "skProc", 
     "description": "deletes <cite>n</cite> children of <cite>father</cite> starting at index <cite>idx</cite>.", 
-    "code": "proc del*(father: PNimrodNode; idx = 0; n = 1) {.magic: \"NDel\".}"
+    "code": "proc del*(father: PNimrodNode; idx = 0; n = 1) {.magic: \"NDel\", noSideEffect.}"
   }, 
   {
     "name": "kind", 
     "type": "skProc", 
     "description": "returns the <cite>kind</cite> of the node <cite>n</cite>.", 
-    "code": "proc kind*(n: PNimrodNode): TNimrodNodeKind {.magic: \"NKind\".}"
+    "code": "proc kind*(n: PNimrodNode): TNimrodNodeKind {.magic: \"NKind\", noSideEffect.}"
   }, 
   {
     "name": "intVal", 
     "type": "skProc", 
-    "code": "proc intVal*(n: PNimrodNode): biggestInt {.magic: \"NIntVal\".}"
+    "code": "proc intVal*(n: PNimrodNode): BiggestInt {.magic: \"NIntVal\", noSideEffect.}"
   }, 
   {
     "name": "floatVal", 
     "type": "skProc", 
-    "code": "proc floatVal*(n: PNimrodNode): biggestFloat {.magic: \"NFloatVal\".}"
+    "code": "proc floatVal*(n: PNimrodNode): BiggestFloat {.magic: \"NFloatVal\", noSideEffect.}"
   }, 
   {
     "name": "symbol", 
     "type": "skProc", 
-    "code": "proc symbol*(n: PNimrodNode): PNimrodSymbol {.magic: \"NSymbol\".}"
+    "code": "proc symbol*(n: PNimrodNode): PNimrodSymbol {.magic: \"NSymbol\", noSideEffect.}"
   }, 
   {
     "name": "ident", 
     "type": "skProc", 
-    "code": "proc ident*(n: PNimrodNode): TNimrodIdent {.magic: \"NIdent\".}"
+    "code": "proc ident*(n: PNimrodNode): TNimrodIdent {.magic: \"NIdent\", noSideEffect.}"
   }, 
   {
     "name": "typ", 
     "type": "skProc", 
-    "code": "proc typ*(n: PNimrodNode): typedesc {.magic: \"NGetType\".}"
+    "code": "proc typ*(n: PNimrodNode): typedesc {.magic: \"NGetType\", noSideEffect.}"
   }, 
   {
     "name": "strVal", 
     "type": "skProc", 
-    "code": "proc strVal*(n: PNimrodNode): string {.magic: \"NStrVal\".}"
+    "code": "proc strVal*(n: PNimrodNode): string {.magic: \"NStrVal\", noSideEffect.}"
   }, 
   {
     "name": "`intVal=`", 
     "type": "skProc", 
-    "code": "proc `intVal =`*(n: PNimrodNode; val: biggestInt) {.magic: \"NSetIntVal\".}"
+    "code": "proc `intVal =`*(n: PNimrodNode; val: BiggestInt) {.magic: \"NSetIntVal\", \u000A    noSideEffect.}"
   }, 
   {
     "name": "`floatVal=`", 
     "type": "skProc", 
-    "code": "proc `floatVal =`*(n: PNimrodNode; val: biggestFloat) {.magic: \"NSetFloatVal\".}"
+    "code": "proc `floatVal =`*(n: PNimrodNode; val: BiggestFloat) {.magic: \"NSetFloatVal\", \u000A    noSideEffect.}"
   }, 
   {
     "name": "`symbol=`", 
     "type": "skProc", 
-    "code": "proc `symbol =`*(n: PNimrodNode; val: PNimrodSymbol) {.magic: \"NSetSymbol\".}"
+    "code": "proc `symbol =`*(n: PNimrodNode; val: PNimrodSymbol) {.magic: \"NSetSymbol\", \u000A    noSideEffect.}"
   }, 
   {
     "name": "`ident=`", 
     "type": "skProc", 
-    "code": "proc `ident =`*(n: PNimrodNode; val: TNimrodIdent) {.magic: \"NSetIdent\".}"
-  }, 
-  {
-    "name": "`typ=`", 
-    "type": "skProc", 
-    "code": "proc `typ =`*(n: PNimrodNode; typ: typedesc) {.magic: \"NSetType\".}"
+    "code": "proc `ident =`*(n: PNimrodNode; val: TNimrodIdent) {.magic: \"NSetIdent\", \u000A    noSideEffect.}"
   }, 
   {
     "name": "`strVal=`", 
     "type": "skProc", 
-    "code": "proc `strVal =`*(n: PNimrodNode; val: string) {.magic: \"NSetStrVal\".}"
+    "code": "proc `strVal =`*(n: PNimrodNode; val: string) {.magic: \"NSetStrVal\", \u000A    noSideEffect.}"
   }, 
   {
     "name": "newNimNode", 
     "type": "skProc", 
-    "code": "proc newNimNode*(kind: TNimrodNodeKind; n: PNimrodNode = nil): PNimrodNode {.\u000D\u000A    magic: \"NNewNimNode\".}"
+    "code": "proc newNimNode*(kind: TNimrodNodeKind; n: PNimrodNode = nil): PNimrodNode {.\u000A    magic: \"NNewNimNode\", noSideEffect.}"
   }, 
   {
     "name": "copyNimNode", 
     "type": "skProc", 
-    "code": "proc copyNimNode*(n: PNimrodNode): PNimrodNode {.magic: \"NCopyNimNode\".}"
+    "code": "proc copyNimNode*(n: PNimrodNode): PNimrodNode {.magic: \"NCopyNimNode\", \u000A    noSideEffect.}"
   }, 
   {
     "name": "copyNimTree", 
     "type": "skProc", 
-    "code": "proc copyNimTree*(n: PNimrodNode): PNimrodNode {.magic: \"NCopyNimTree\".}"
+    "code": "proc copyNimTree*(n: PNimrodNode): PNimrodNode {.magic: \"NCopyNimTree\", \u000A    noSideEffect.}"
   }, 
   {
     "name": "error", 
     "type": "skProc", 
     "description": "writes an error message at compile time", 
-    "code": "proc error*(msg: string) {.magic: \"NError\".}"
+    "code": "proc error*(msg: string) {.magic: \"NError\", gcsafe.}"
   }, 
   {
     "name": "warning", 
     "type": "skProc", 
     "description": "writes a warning message at compile time", 
-    "code": "proc warning*(msg: string) {.magic: \"NWarning\".}"
+    "code": "proc warning*(msg: string) {.magic: \"NWarning\", gcsafe.}"
   }, 
   {
     "name": "hint", 
     "type": "skProc", 
     "description": "writes a hint message at compile time", 
-    "code": "proc hint*(msg: string) {.magic: \"NHint\".}"
+    "code": "proc hint*(msg: string) {.magic: \"NHint\", gcsafe.}"
   }, 
   {
     "name": "newStrLitNode", 
     "type": "skProc", 
     "description": "creates a string literal node from <cite>s</cite>", 
-    "code": "proc newStrLitNode*(s: string): PNimrodNode {.compileTime.}"
+    "code": "proc newStrLitNode*(s: string): PNimrodNode {.compileTime, noSideEffect.}"
   }, 
   {
     "name": "newIntLitNode", 
     "type": "skProc", 
     "description": "creates a int literal node from <cite>i</cite>", 
-    "code": "proc newIntLitNode*(i: biggestInt): PNimrodNode {.compileTime.}"
+    "code": "proc newIntLitNode*(i: BiggestInt): PNimrodNode {.compileTime.}"
   }, 
   {
     "name": "newFloatLitNode", 
     "type": "skProc", 
     "description": "creates a float literal node from <cite>f</cite>", 
-    "code": "proc newFloatLitNode*(f: biggestFloat): PNimrodNode {.compileTime.}"
+    "code": "proc newFloatLitNode*(f: BiggestFloat): PNimrodNode {.compileTime.}"
   }, 
   {
     "name": "newIdentNode", 
@@ -220,25 +215,25 @@
     "name": "TBindSymRule", 
     "type": "skType", 
     "description": "specifies how <tt class=\"docutils literal\"><span class=\"pre\">bindSym</span></tt> behaves", 
-    "code": "TBindSymRule* = enum \u000D\u000A  brClosed,                   ## only the symbols in current scope are bound\u000D\u000A  brOpen, ## open wrt overloaded symbols, but may be a single\u000D\u000A          ## symbol if not ambiguous (the rules match that of\u000D\u000A          ## binding in generics)\u000D\u000A  brForceOpen                 ## same as brOpen, but it will always be open even\u000D\u000A                              ## if not ambiguous (this cannot be achieved with\u000D\u000A                              ## any other means in the language currently)"
+    "code": "TBindSymRule* = enum \u000A  brClosed,                   ## only the symbols in current scope are bound\u000A  brOpen, ## open wrt overloaded symbols, but may be a single\u000A          ## symbol if not ambiguous (the rules match that of\u000A          ## binding in generics)\u000A  brForceOpen                 ## same as brOpen, but it will always be open even\u000A                              ## if not ambiguous (this cannot be achieved with\u000A                              ## any other means in the language currently)"
   }, 
   {
     "name": "bindSym", 
     "type": "skProc", 
     "description": "creates a node that binds <cite>ident</cite> to a symbol node. The bound symbol may be an overloaded symbol. If <tt class=\"docutils literal\"><span class=\"pre\">rule == brClosed</span></tt> either an <tt class=\"docutils literal\"><span class=\"pre\">nkClosedSymChoice</span></tt> tree is returned or <tt class=\"docutils literal\"><span class=\"pre\">nkSym</span></tt> if the symbol is not ambiguous. If <tt class=\"docutils literal\"><span class=\"pre\">rule == brOpen</span></tt> either an <tt class=\"docutils literal\"><span class=\"pre\">nkOpenSymChoice</span></tt> tree is returned or <tt class=\"docutils literal\"><span class=\"pre\">nkSym</span></tt> if the symbol is not ambiguous. If <tt class=\"docutils literal\"><span class=\"pre\">rule == brForceOpen</span></tt> always an <tt class=\"docutils literal\"><span class=\"pre\">nkOpenSymChoice</span></tt> tree is returned even if the symbol is not ambiguous.", 
-    "code": "proc bindSym*(ident: string; rule: TBindSymRule = brClosed): PNimrodNode {.\u000D\u000A    magic: \"NBindSym\".}"
+    "code": "proc bindSym*(ident: string; rule: TBindSymRule = brClosed): PNimrodNode {.\u000A    magic: \"NBindSym\", noSideEffect.}"
   }, 
   {
     "name": "genSym", 
     "type": "skProc", 
     "description": "generates a fresh symbol that is guaranteed to be unique. The symbol needs to occur in a declaration context.", 
-    "code": "proc genSym*(kind: TNimrodSymKind = nskLet; ident = \"\"): PNimrodNode {.\u000D\u000A    magic: \"NGenSym\".}"
+    "code": "proc genSym*(kind: TNimrodSymKind = nskLet; ident = \"\"): PNimrodNode {.\u000A    magic: \"NGenSym\", noSideEffect.}"
   }, 
   {
     "name": "callsite", 
     "type": "skProc", 
     "description": "returns the AST if the invokation expression that invoked this macro.", 
-    "code": "proc callsite*(): PNimrodNode {.magic: \"NCallSite\".}"
+    "code": "proc callsite*(): PNimrodNode {.magic: \"NCallSite\", gcsafe.}"
   }, 
   {
     "name": "toStrLit", 
@@ -250,37 +245,37 @@
     "name": "lineinfo", 
     "type": "skProc", 
     "description": "returns the position the node appears in the original source file in the form filename(line, col)", 
-    "code": "proc lineinfo*(n: PNimrodNode): string {.magic: \"NLineInfo\".}"
+    "code": "proc lineinfo*(n: PNimrodNode): string {.magic: \"NLineInfo\", noSideEffect.}"
+  }, 
+  {
+    "name": "internalErrorFlag", 
+    "type": "skProc", 
+    "description": "Some builtins set an error flag. This is then turned into a proper exception. <strong>Note</strong>: Ordinary application code should not call this.", 
+    "code": "proc internalErrorFlag*(): string {.magic: \"NError\", noSideEffect.}"
   }, 
   {
     "name": "parseExpr", 
     "type": "skProc", 
-    "description": "Compiles the passed string to its AST representation. Expects a single expression.", 
-    "code": "proc parseExpr*(s: string): PNimrodNode {.magic: \"ParseExprToAst\".}"
+    "description": "Compiles the passed string to its AST representation. Expects a single expression. Raises <tt class=\"docutils literal\"><span class=\"pre\">ValueError</span></tt> for parsing errors.", 
+    "code": "proc parseExpr*(s: string): PNimrodNode {.noSideEffect, compileTime.}"
   }, 
   {
     "name": "parseStmt", 
     "type": "skProc", 
-    "description": "Compiles the passed string to its AST representation. Expects one or more statements.", 
-    "code": "proc parseStmt*(s: string): PNimrodNode {.magic: \"ParseStmtToAst\".}"
+    "description": "Compiles the passed string to its AST representation. Expects one or more statements. Raises <tt class=\"docutils literal\"><span class=\"pre\">ValueError</span></tt> for parsing errors.", 
+    "code": "proc parseStmt*(s: string): PNimrodNode {.noSideEffect, compileTime.}"
   }, 
   {
     "name": "getAst", 
     "type": "skProc", 
-    "description": "Obtains the AST nodes returned from a macro or template invocation. Example:<pre><span class=\"Keyword\">macro</span> <span class=\"Identifier\">FooMacro</span><span class=\"Punctation\">(</span><span class=\"Punctation\">)</span> <span class=\"Operator\">=</span>\u000D\u000A  <span class=\"Keyword\">var</span> <span class=\"Identifier\">ast</span> <span class=\"Operator\">=</span> <span class=\"Identifier\">getAst</span><span class=\"Punctation\">(</span><span class=\"Identifier\">BarTemplate</span><span class=\"Punctation\">(</span><span class=\"Punctation\">)</span><span class=\"Punctation\">)</span></pre>", 
-    "code": "proc getAst*(macroOrTemplate: expr): PNimrodNode {.magic: \"ExpandToAst\".}"
+    "description": "Obtains the AST nodes returned from a macro or template invocation. Example:<pre><span class=\"Keyword\">macro</span> <span class=\"Identifier\">FooMacro</span><span class=\"Punctuation\">(</span><span class=\"Punctuation\">)</span> <span class=\"Operator\">=</span>\u000A  <span class=\"Keyword\">var</span> <span class=\"Identifier\">ast</span> <span class=\"Operator\">=</span> <span class=\"Identifier\">getAst</span><span class=\"Punctuation\">(</span><span class=\"Identifier\">BarTemplate</span><span class=\"Punctuation\">(</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">)</span></pre>", 
+    "code": "proc getAst*(macroOrTemplate: expr): PNimrodNode {.magic: \"ExpandToAst\", \u000A    noSideEffect.}"
   }, 
   {
     "name": "quote", 
     "type": "skProc", 
-    "description": "<p>Quasi-quoting operator. Accepts an expression or a block and returns the AST that represents it. Within the quoted AST, you are able to interpolate PNimrodNode expressions from the surrounding scope. If no operator is given, quoting is done using backticks. Otherwise, the given operator must be used as a prefix operator for any interpolated expression. The original meaning of the interpolation operator may be obtained by escaping it (by prefixing it with itself): e.g. <cite>@</cite> is escaped as <cite>@@</cite>, <cite>@@</cite> is escaped as <cite>@@@</cite> and so on.</p>\u000D\u000A<p>Example:</p>\u000D\u000A<blockquote><p><dl class=\"docutils\"><dt>macro check(ex: expr): stmt =</dt>\u000D\u000A<dd><p># this is a simplified version of the check macro from the # unittest module.</p>\u000D\u000A<p># If there is a failed check, we want to make it easy for # the user to jump to the faulty line in the code, so we # get the line info here: var info = ex.lineinfo</p>\u000D\u000A<p># We will also display the code string of the failed check: var expString = ex.toStrLit</p>\u000D\u000A<p># Finally we compose the code to implement the check:</p>\u000D\u000A<dl class=\"docutils\"><dt>result = quote do:</dt>\u000D\u000A<dd><dl class=\"docutils\"><dt>if not <cite>ex</cite>:</dt>\u000D\u000A<dd>echo <cite>info</cite> &amp; &quot;: Check failed: &quot; &amp; <cite>expString</cite></dd>\u000D\u000A</dl>\u000D\u000A</dd>\u000D\u000A</dl>\u000D\u000A</dd>\u000D\u000A</dl>\u000D\u000A</p></blockquote>\u000D\u000A", 
-    "code": "proc quote*(bl: stmt; op = \"``\"): PNimrodNode {.magic: \"QuoteAst\".}"
-  }, 
-  {
-    "name": "emit", 
-    "type": "skTemplate", 
-    "description": "accepts a single string argument and treats it as nimrod code that should be inserted verbatim in the program Example:<blockquote><p>emit(&quot;echo &quot; &amp; '&quot;' &amp; &quot;hello world&quot;.toUpper &amp; '&quot;')</p></blockquote>\u000D\u000A", 
-    "code": "template emit*(e: expr[string]): stmt"
+    "description": "<p>Quasi-quoting operator. Accepts an expression or a block and returns the AST that represents it. Within the quoted AST, you are able to interpolate PNimrodNode expressions from the surrounding scope. If no operator is given, quoting is done using backticks. Otherwise, the given operator must be used as a prefix operator for any interpolated expression. The original meaning of the interpolation operator may be obtained by escaping it (by prefixing it with itself): e.g. <cite>@</cite> is escaped as <cite>@@</cite>, <cite>@@</cite> is escaped as <cite>@@@</cite> and so on.</p>\u000A<p>Example:</p>\u000A<pre><span class=\"Keyword\">macro</span> <span class=\"Identifier\">check</span><span class=\"Punctuation\">(</span><span class=\"Identifier\">ex</span><span class=\"Punctuation\">:</span> <span class=\"Identifier\">expr</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">:</span> <span class=\"Identifier\">stmt</span> <span class=\"Operator\">=</span>\u000A  <span class=\"Comment\"># this is a simplified version of the check macro from the</span>\u000A  <span class=\"Comment\"># unittest module.</span>\u000A  \u000A  <span class=\"Comment\"># If there is a failed check, we want to make it easy for</span>\u000A  <span class=\"Comment\"># the user to jump to the faulty line in the code, so we</span>\u000A  <span class=\"Comment\"># get the line info here:</span>\u000A  <span class=\"Keyword\">var</span> <span class=\"Identifier\">info</span> <span class=\"Operator\">=</span> <span class=\"Identifier\">ex</span><span class=\"Operator\">.</span><span class=\"Identifier\">lineinfo</span>\u000A  \u000A  <span class=\"Comment\"># We will also display the code string of the failed check:</span>\u000A  <span class=\"Keyword\">var</span> <span class=\"Identifier\">expString</span> <span class=\"Operator\">=</span> <span class=\"Identifier\">ex</span><span class=\"Operator\">.</span><span class=\"Identifier\">toStrLit</span>\u000A  \u000A  <span class=\"Comment\"># Finally we compose the code to implement the check:</span>\u000A  <span class=\"Identifier\">result</span> <span class=\"Operator\">=</span> <span class=\"Identifier\">quote</span> <span class=\"Keyword\">do</span><span class=\"Punctuation\">:</span>\u000A    <span class=\"Keyword\">if</span> <span class=\"Keyword\">not</span> <span class=\"Punctuation\">`</span><span class=\"Identifier\">ex</span><span class=\"Punctuation\">`</span><span class=\"Punctuation\">:</span>\u000A      <span class=\"Identifier\">echo</span> <span class=\"Punctuation\">`</span><span class=\"Identifier\">info</span><span class=\"Punctuation\">`</span> <span class=\"Operator\">&amp;</span> <span class=\"StringLit\">&quot;: Check failed: &quot;</span> <span class=\"Operator\">&amp;</span> <span class=\"Punctuation\">`</span><span class=\"Identifier\">expString</span><span class=\"Punctuation\">`</span></pre>", 
+    "code": "proc quote*(bl: stmt; op = \"``\"): PNimrodNode {.magic: \"QuoteAst\", noSideEffect.}"
   }, 
   {
     "name": "expectKind", 
@@ -304,19 +299,19 @@
     "name": "newCall", 
     "type": "skProc", 
     "description": "produces a new call node. <cite>theProc</cite> is the proc that is called with the arguments <tt class=\"docutils literal\"><span class=\"pre\">args[0..]</span></tt>.", 
-    "code": "proc newCall*(theProc: PNimrodNode; args: varargs[PNimrodNode]): PNimrodNode {.\u000D\u000A    compileTime.}"
+    "code": "proc newCall*(theProc: PNimrodNode; args: varargs[PNimrodNode]): PNimrodNode {.\u000A    compileTime.}"
   }, 
   {
     "name": "newCall", 
     "type": "skProc", 
     "description": "produces a new call node. <cite>theProc</cite> is the proc that is called with the arguments <tt class=\"docutils literal\"><span class=\"pre\">args[0..]</span></tt>.", 
-    "code": "proc newCall*(theProc: TNimrodIdent; args: varargs[PNimrodNode]): PNimrodNode {.\u000D\u000A    compileTime.}"
+    "code": "proc newCall*(theProc: TNimrodIdent; args: varargs[PNimrodNode]): PNimrodNode {.\u000A    compileTime.}"
   }, 
   {
     "name": "newCall", 
     "type": "skProc", 
     "description": "produces a new call node. <cite>theProc</cite> is the proc that is called with the arguments <tt class=\"docutils literal\"><span class=\"pre\">args[0..]</span></tt>.", 
-    "code": "proc newCall*(theProc: string; args: varargs[PNimrodNode]): PNimrodNode {.\u000D\u000A    compileTime.}"
+    "code": "proc newCall*(theProc: string; args: varargs[PNimrodNode]): PNimrodNode {.\u000A    compileTime.}"
   }, 
   {
     "name": "newLit", 
@@ -328,13 +323,13 @@
     "name": "newLit", 
     "type": "skProc", 
     "description": "produces a new integer literal node.", 
-    "code": "proc newLit*(i: biggestInt): PNimrodNode {.compileTime.}"
+    "code": "proc newLit*(i: BiggestInt): PNimrodNode {.compileTime.}"
   }, 
   {
     "name": "newLit", 
     "type": "skProc", 
     "description": "produces a new float literal node.", 
-    "code": "proc newLit*(f: biggestFloat): PNimrodNode {.compileTime.}"
+    "code": "proc newLit*(f: BiggestFloat): PNimrodNode {.compileTime.}"
   }, 
   {
     "name": "newLit", 
@@ -351,25 +346,25 @@
   {
     "name": "treeRepr", 
     "type": "skProc", 
-    "description": "<p>Convert the AST <cite>n</cite> to a human-readable tree-like string.</p>\u000D\u000A<p>See also <cite>repr</cite> and <cite>lispRepr</cite>.</p>\u000D\u000A", 
+    "description": "<p>Convert the AST <cite>n</cite> to a human-readable tree-like string.</p>\u000A<p>See also <cite>repr</cite> and <cite>lispRepr</cite>.</p>\u000A", 
     "code": "proc treeRepr*(n: PNimrodNode): string {.compileTime.}"
   }, 
   {
     "name": "lispRepr", 
     "type": "skProc", 
-    "description": "<p>Convert the AST <cite>n</cite> to a human-readable lisp-like string,</p>\u000D\u000A<p>See also <cite>repr</cite> and <cite>treeRepr</cite>.</p>\u000D\u000A", 
+    "description": "<p>Convert the AST <cite>n</cite> to a human-readable lisp-like string,</p>\u000A<p>See also <cite>repr</cite> and <cite>treeRepr</cite>.</p>\u000A", 
     "code": "proc lispRepr*(n: PNimrodNode): string {.compileTime.}"
   }, 
   {
     "name": "dumpTree", 
     "type": "skMacro", 
-    "description": "<p>Accepts a block of nimrod code and prints the parsed abstract syntax tree using the <cite>toTree</cite> function. Printing is done <em>at compile time</em>.</p>\u000D\u000A<p>You can use this as a tool to explore the Nimrod's abstract syntax tree and to discover what kind of nodes must be created to represent a certain expression/statement.</p>\u000D\u000A", 
+    "description": "<p>Accepts a block of nim code and prints the parsed abstract syntax tree using the <cite>toTree</cite> function. Printing is done <em>at compile time</em>.</p>\u000A<p>You can use this as a tool to explore the Nimrod's abstract syntax tree and to discover what kind of nodes must be created to represent a certain expression/statement.</p>\u000A", 
     "code": "macro dumpTree*(s: stmt): stmt {.immediate.}"
   }, 
   {
     "name": "dumpLisp", 
     "type": "skMacro", 
-    "description": "<p>Accepts a block of nimrod code and prints the parsed abstract syntax tree using the <cite>toLisp</cite> function. Printing is done <em>at compile time</em>.</p>\u000D\u000A<p>See <cite>dumpTree</cite>.</p>\u000D\u000A", 
+    "description": "<p>Accepts a block of nim code and prints the parsed abstract syntax tree using the <cite>toLisp</cite> function. Printing is done <em>at compile time</em>.</p>\u000A<p>See <cite>dumpTree</cite>.</p>\u000A", 
     "code": "macro dumpLisp*(s: stmt): stmt {.immediate.}"
   }, 
   {
@@ -434,7 +429,8 @@
   {
     "name": "newIdentDefs", 
     "type": "skProc", 
-    "code": "proc newIdentDefs*(name, kind: PNimrodNode; default = newEmptyNode()): PNimrodNode {.\u000D\u000A    compileTime.}"
+    "description": "<p>Creates a new <tt class=\"docutils literal\"><span class=\"pre\">nnkIdentDefs</span></tt> node of a specific kind and value.</p>\u000A<p><tt class=\"docutils literal\"><span class=\"pre\">nnkIdentDefs</span></tt> need to have at least three children, but they can have more: first comes a list of identifiers followed by a type and value nodes. This helper proc creates a three node subtree, the first subnode being a single identifier name. Both the <tt class=\"docutils literal\"><span class=\"pre\">kind</span></tt> node and <tt class=\"docutils literal\"><span class=\"pre\">default</span></tt> (value) nodes may be empty depending on where the <tt class=\"docutils literal\"><span class=\"pre\">nnkIdentDefs</span></tt> appears: tuple or object definitions will have an empty <tt class=\"docutils literal\"><span class=\"pre\">default</span></tt> node, <tt class=\"docutils literal\"><span class=\"pre\">let</span></tt> or <tt class=\"docutils literal\"><span class=\"pre\">var</span></tt> blocks may have an empty <tt class=\"docutils literal\"><span class=\"pre\">kind</span></tt> node if the identifier is being assigned a value. Example:</p>\u000A<pre><span class=\"Keyword\">var</span> <span class=\"Identifier\">varSection</span> <span class=\"Operator\">=</span> <span class=\"Identifier\">newNimNode</span><span class=\"Punctuation\">(</span><span class=\"Identifier\">nnkVarSection</span><span class=\"Punctuation\">)</span><span class=\"Operator\">.</span><span class=\"Identifier\">add</span><span class=\"Punctuation\">(</span>\u000A  <span class=\"Identifier\">newIdentDefs</span><span class=\"Punctuation\">(</span><span class=\"Identifier\">ident</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;a&quot;</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">ident</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;string&quot;</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">,</span>\u000A  <span class=\"Identifier\">newIdentDefs</span><span class=\"Punctuation\">(</span><span class=\"Identifier\">ident</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;b&quot;</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">newEmptyNode</span><span class=\"Punctuation\">(</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">newLit</span><span class=\"Punctuation\">(</span><span class=\"DecNumber\">3</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">)</span>\u000A<span class=\"Comment\"># --&gt; var</span>\u000A<span class=\"Comment\">#       a: string</span>\u000A<span class=\"Comment\">#       b = 3</span></pre><p>If you need to create multiple identifiers you need to use the lower level <tt class=\"docutils literal\"><span class=\"pre\">newNimNode</span></tt>:</p>\u000A<pre><span class=\"Identifier\">result</span> <span class=\"Operator\">=</span> <span class=\"Identifier\">newNimNode</span><span class=\"Punctuation\">(</span><span class=\"Identifier\">nnkIdentDefs</span><span class=\"Punctuation\">)</span><span class=\"Operator\">.</span><span class=\"Identifier\">add</span><span class=\"Punctuation\">(</span>\u000A  <span class=\"Identifier\">ident</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;a&quot;</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">ident</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;b&quot;</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">ident</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;c&quot;</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">ident</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;string&quot;</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">,</span>\u000A    <span class=\"Identifier\">newStrLitNode</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;Hello&quot;</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">)</span></pre>", 
+    "code": "proc newIdentDefs*(name, kind: PNimrodNode; default = newEmptyNode()): PNimrodNode {.\u000A    compileTime.}"
   }, 
   {
     "name": "newNilLit", 
@@ -457,7 +453,7 @@
   {
     "name": "CallNodes", 
     "type": "skConst", 
-    "code": "CallNodes* = {nnkCall, nnkInfix, nnkPrefix, nnkPostfix, nnkCommand, \u000D\u000A              nnkCallStrLit, nnkHiddenCallConv}"
+    "code": "CallNodes* = {nnkCall, nnkInfix, nnkPrefix, nnkPostfix, nnkCommand, \u000A              nnkCallStrLit, nnkHiddenCallConv}"
   }, 
   {
     "name": "expectKind", 
@@ -467,14 +463,14 @@
   {
     "name": "newProc", 
     "type": "skProc", 
-    "description": "<p>shortcut for creating a new proc</p>\u000D\u000A<p>The <tt class=\"docutils literal\"><span class=\"pre\">params</span></tt> array should start with the return type of the proc, followed by a list of IdentDefs which specify the params.</p>\u000D\u000A", 
-    "code": "proc newProc*(name = newEmptyNode(); params: openarray[PNimrodNode] = []; \u000D\u000A              body: PNimrodNode = newStmtList(); procType = nnkProcDef): PNimrodNode {.\u000D\u000A    compileTime.}"
+    "description": "<p>shortcut for creating a new proc</p>\u000A<p>The <tt class=\"docutils literal\"><span class=\"pre\">params</span></tt> array must start with the return type of the proc, followed by a list of IdentDefs which specify the params.</p>\u000A", 
+    "code": "proc newProc*(name = newEmptyNode(); \u000A              params: openArray[PNimrodNode] = [newEmptyNode()]; \u000A              body: PNimrodNode = newStmtList(); procType = nnkProcDef): PNimrodNode {.\u000A    compileTime.}"
   }, 
   {
     "name": "newIfStmt", 
     "type": "skProc", 
-    "description": "Constructor for <tt class=\"docutils literal\"><span class=\"pre\">if</span></tt> statements.<pre><span class=\"Identifier\">newIfStmt</span><span class=\"Punctation\">(</span>\u000D\u000A  <span class=\"Punctation\">(</span><span class=\"Identifier\">Ident</span><span class=\"Punctation\">,</span> <span class=\"Identifier\">StmtList</span><span class=\"Punctation\">)</span><span class=\"Punctation\">,</span>\u000D\u000A  <span class=\"Operator\">...</span>\u000D\u000A<span class=\"Punctation\">)</span></pre>", 
-    "code": "proc newIfStmt*(branches: varargs[tuple[cond, body: PNimrodNode]]): PNimrodNode {.\u000D\u000A    compiletime.}"
+    "description": "Constructor for <tt class=\"docutils literal\"><span class=\"pre\">if</span></tt> statements.<pre><span class=\"Identifier\">newIfStmt</span><span class=\"Punctuation\">(</span>\u000A  <span class=\"Punctuation\">(</span><span class=\"Identifier\">Ident</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">StmtList</span><span class=\"Punctuation\">)</span><span class=\"Punctuation\">,</span>\u000A  <span class=\"Operator\">...</span>\u000A<span class=\"Punctuation\">)</span></pre>", 
+    "code": "proc newIfStmt*(branches: varargs[tuple[cond, body: PNimrodNode]]): PNimrodNode {.\u000A    compiletime.}"
   }, 
   {
     "name": "copyChildrenTo", 
@@ -525,6 +521,11 @@
     "code": "proc `body =`*(someProc: PNimrodNode; val: PNimrodNode) {.compileTime.}"
   }, 
   {
+    "name": "basename", 
+    "type": "skProc", 
+    "code": "proc basename*(a: PNimrodNode): PNimrodNode {.compiletime.}"
+  }, 
+  {
     "name": "`$`", 
     "type": "skProc", 
     "description": "Get the string of an identifier node", 
@@ -544,20 +545,20 @@
   {
     "name": "findChild", 
     "type": "skTemplate", 
-    "description": "Find the first child node matching condition (or nil) var res = findChild(n, it.kind == nnkPostfix and it.basename.ident == !&quot;foo&quot;)", 
+    "description": "Find the first child node matching condition (or nil).<pre><span class=\"Keyword\">var</span> <span class=\"Identifier\">res</span> <span class=\"Operator\">=</span> <span class=\"Identifier\">findChild</span><span class=\"Punctuation\">(</span><span class=\"Identifier\">n</span><span class=\"Punctuation\">,</span> <span class=\"Identifier\">it</span><span class=\"Operator\">.</span><span class=\"Identifier\">kind</span> <span class=\"Operator\">==</span> <span class=\"Identifier\">nnkPostfix</span> <span class=\"Keyword\">and</span>\u000A                       <span class=\"Identifier\">it</span><span class=\"Operator\">.</span><span class=\"Identifier\">basename</span><span class=\"Operator\">.</span><span class=\"Identifier\">ident</span> <span class=\"Operator\">==</span> <span class=\"Operator\">!</span><span class=\"StringLit\">&quot;foo&quot;</span><span class=\"Punctuation\">)</span></pre>", 
     "code": "template findChild*(n: PNimrodNode; cond: expr): PNimrodNode {.immediate, dirty.}"
   }, 
   {
     "name": "insert", 
     "type": "skProc", 
     "description": "Insert node B into A at pos", 
-    "code": "proc insert*(a: PNimrodNOde; pos: int; b: PNimrodNode) {.compileTime.}"
+    "code": "proc insert*(a: PNimrodNode; pos: int; b: PNimrodNode) {.compileTime.}"
   }, 
   {
     "name": "basename", 
     "type": "skProc", 
     "description": "Pull an identifier from prefix/postfix expressions", 
-    "code": "proc basename*(a: PNimrodNode): PNimrodNode {.compiletime.}"
+    "code": "proc basename*(a: PNimrodNode): PNimrodNode"
   }, 
   {
     "name": "`basename=`", 
@@ -577,22 +578,22 @@
   {
     "name": "infix", 
     "type": "skProc", 
-    "code": "proc infix*(a: PNimrodNode; op: string; b: PNimrodNode): PNimrodNode {.\u000D\u000A    compileTime.}"
+    "code": "proc infix*(a: PNimrodNode; op: string; b: PNimrodNode): PNimrodNode {.\u000A    compileTime.}"
   }, 
   {
     "name": "unpackPostfix", 
     "type": "skProc", 
-    "code": "proc unpackPostfix*(node: PNimrodNode): tuple[node: PNimrodNode, op: string] {.\u000D\u000A    compileTime.}"
+    "code": "proc unpackPostfix*(node: PNimrodNode): tuple[node: PNimrodNode, op: string] {.\u000A    compileTime.}"
   }, 
   {
     "name": "unpackPrefix", 
     "type": "skProc", 
-    "code": "proc unpackPrefix*(node: PNimrodNode): tuple[node: PNimrodNode, op: string] {.\u000D\u000A    compileTime.}"
+    "code": "proc unpackPrefix*(node: PNimrodNode): tuple[node: PNimrodNode, op: string] {.\u000A    compileTime.}"
   }, 
   {
     "name": "unpackInfix", 
     "type": "skProc", 
-    "code": "proc unpackInfix*(node: PNimrodNode): tuple[left: PNimrodNode, op: string, \u000D\u000A    right: PNimrodNode] {.compileTime.}"
+    "code": "proc unpackInfix*(node: PNimrodNode): tuple[left: PNimrodNode, op: string, \u000A    right: PNimrodNode] {.compileTime.}"
   }, 
   {
     "name": "copy", 
@@ -617,5 +618,11 @@
     "type": "skProc", 
     "description": "Add ident to dest if it is not present. This is intended for use with pragmas.", 
     "code": "proc addIdentIfAbsent*(dest: PNimrodNode; ident: string) {.compiletime.}"
+  }, 
+  {
+    "name": "emit", 
+    "type": "skTemplate", 
+    "description": "accepts a single string argument and treats it as nim code that should be inserted verbatim in the program Example:<pre><span class=\"Identifier\">emit</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;echo &quot;</span> <span class=\"Operator\">&amp;</span> <span class=\"CharLit\">'&quot;'</span> <span class=\"Operator\">&amp;</span> <span class=\"StringLit\">&quot;hello world&quot;</span><span class=\"Operator\">.</span><span class=\"Identifier\">toUpper</span> <span class=\"Operator\">&amp;</span> <span class=\"CharLit\">'&quot;'</span><span class=\"Punctuation\">)</span></pre>", 
+    "code": "template emit*(e: static[string]): stmt"
   }
 ]

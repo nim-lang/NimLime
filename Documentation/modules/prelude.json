@@ -1,5 +1,5 @@
 [
   {
-    "comment": "This is an include file that simply imports common modules for your\u000D\u000A## convenience:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##   include prelude\u000D\u000A##\u000D\u000A## Same as:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##   import os, strutils, times, parseutils, parseopt, hashes, tables, sets"
+    "comment": "This is an include file that simply imports common modules for your\u000A## convenience:\u000A##\u000A## .. code-block:: nim\u000A##   include prelude\u000A##\u000A## Same as:\u000A##\u000A## .. code-block:: nim\u000A##   import os, strutils, times, parseutils, parseopt, hashes, tables, sets"
   }
 ]

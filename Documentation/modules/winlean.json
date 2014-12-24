@@ -1,6 +1,6 @@
 [
   {
-    "comment": "This module implements a small wrapper for some needed Win API procedures,\u000D\u000A## so that the Nimrod compiler does not depend on the huge Windows module."
+    "comment": "This module implements a small wrapper for some needed Win API procedures,\u000A## so that the Nim compiler does not depend on the huge Windows module."
   }, 
   {
     "name": "useWinUnicode", 
@@ -10,7 +10,7 @@
   {
     "name": "TBY_HANDLE_FILE_INFORMATION", 
     "type": "skType", 
-    "code": "TBY_HANDLE_FILE_INFORMATION* {.final, pure.} = object \u000D\u000A  dwFileAttributes*: DWORD\u000D\u000A  ftCreationTime*: TFILETIME\u000D\u000A  ftLastAccessTime*: TFILETIME\u000D\u000A  ftLastWriteTime*: TFILETIME\u000D\u000A  dwVolumeSerialNumber*: DWORD\u000D\u000A  nFileSizeHigh*: DWORD\u000D\u000A  nFileSizeLow*: DWORD\u000D\u000A  nNumberOfLinks*: DWORD\u000D\u000A  nFileIndexHigh*: DWORD\u000D\u000A  nFileIndexLow*: DWORD\u000D\u000A"
+    "code": "TBY_HANDLE_FILE_INFORMATION* {.final, pure.} = object \u000A  dwFileAttributes*: DWORD\u000A  ftCreationTime*: TFILETIME\u000A  ftLastAccessTime*: TFILETIME\u000A  ftLastWriteTime*: TFILETIME\u000A  dwVolumeSerialNumber*: DWORD\u000A  nFileSizeHigh*: DWORD\u000A  nFileSizeLow*: DWORD\u000A  nNumberOfLinks*: DWORD\u000A  nFileIndexHigh*: DWORD\u000A  nFileIndexLow*: DWORD\u000A"
   }, 
   {
     "name": "TWinChar", 
@@ -23,114 +23,124 @@
     "code": "CREATE_UNICODE_ENVIRONMENT* = 1024'i32"
   }, 
   {
-    "name": "CloseHandle", 
+    "name": "closeHandle", 
     "type": "skProc", 
-    "code": "proc CloseHandle*(hObject: THANDLE): WINBOOL {.stdcall, dynlib: \"kernel32\", \u000D\u000A    importc: \"CloseHandle\".}"
+    "code": "proc closeHandle*(hObject: THandle): WINBOOL {.stdcall, dynlib: \"kernel32\", \u000A    importc: \"CloseHandle\".}"
   }, 
   {
-    "name": "ReadFile", 
+    "name": "readFile", 
     "type": "skProc", 
-    "code": "proc ReadFile*(hFile: THandle; Buffer: pointer; nNumberOfBytesToRead: int32; \u000D\u000A               lpNumberOfBytesRead: var int32; lpOverlapped: pointer): WINBOOL {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"ReadFile\".}"
+    "code": "proc readFile*(hFile: THandle; Buffer: pointer; nNumberOfBytesToRead: int32; \u000A               lpNumberOfBytesRead: ptr int32; lpOverlapped: pointer): WINBOOL {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"ReadFile\".}"
   }, 
   {
-    "name": "WriteFile", 
+    "name": "writeFile", 
     "type": "skProc", 
-    "code": "proc WriteFile*(hFile: THandle; Buffer: pointer; nNumberOfBytesToWrite: int32; \u000D\u000A                lpNumberOfBytesWritten: var int32; lpOverlapped: pointer): WINBOOL {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"WriteFile\".}"
+    "code": "proc writeFile*(hFile: THandle; Buffer: pointer; nNumberOfBytesToWrite: int32; \u000A                lpNumberOfBytesWritten: ptr int32; lpOverlapped: pointer): WINBOOL {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"WriteFile\".}"
   }, 
   {
-    "name": "CreatePipe", 
+    "name": "createPipe", 
     "type": "skProc", 
-    "code": "proc CreatePipe*(hReadPipe, hWritePipe: var THandle; \u000D\u000A                 lpPipeAttributes: var TSECURITY_ATTRIBUTES; nSize: int32): WINBOOL {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"CreatePipe\".}"
+    "code": "proc createPipe*(hReadPipe, hWritePipe: var THandle; \u000A                 lpPipeAttributes: var TSECURITY_ATTRIBUTES; nSize: int32): WINBOOL {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"CreatePipe\".}"
   }, 
   {
-    "name": "CreateProcessW", 
+    "name": "createProcessW", 
     "type": "skProc", 
-    "code": "proc CreateProcessW*(lpApplicationName, lpCommandLine: widecstring; \u000D\u000A                     lpProcessAttributes: ptr TSECURITY_ATTRIBUTES; \u000D\u000A                     lpThreadAttributes: ptr TSECURITY_ATTRIBUTES; \u000D\u000A                     bInheritHandles: WINBOOL; dwCreationFlags: int32; \u000D\u000A                     lpEnvironment, lpCurrentDirectory: widecstring; \u000D\u000A                     lpStartupInfo: var TSTARTUPINFO; \u000D\u000A                     lpProcessInformation: var TPROCESS_INFORMATION): WINBOOL {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"CreateProcessW\".}"
+    "code": "proc createProcessW*(lpApplicationName, lpCommandLine: WideCString; \u000A                     lpProcessAttributes: ptr TSECURITY_ATTRIBUTES; \u000A                     lpThreadAttributes: ptr TSECURITY_ATTRIBUTES; \u000A                     bInheritHandles: WINBOOL; dwCreationFlags: int32; \u000A                     lpEnvironment, lpCurrentDirectory: WideCString; \u000A                     lpStartupInfo: var TSTARTUPINFO; \u000A                     lpProcessInformation: var TPROCESS_INFORMATION): WINBOOL {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"CreateProcessW\".}"
   }, 
   {
-    "name": "SuspendThread", 
+    "name": "suspendThread", 
     "type": "skProc", 
-    "code": "proc SuspendThread*(hThread: THANDLE): int32 {.stdcall, dynlib: \"kernel32\", \u000D\u000A    importc: \"SuspendThread\".}"
+    "code": "proc suspendThread*(hThread: THandle): int32 {.stdcall, dynlib: \"kernel32\", \u000A    importc: \"SuspendThread\".}"
   }, 
   {
-    "name": "ResumeThread", 
+    "name": "resumeThread", 
     "type": "skProc", 
-    "code": "proc ResumeThread*(hThread: THANDLE): int32 {.stdcall, dynlib: \"kernel32\", \u000D\u000A    importc: \"ResumeThread\".}"
+    "code": "proc resumeThread*(hThread: THandle): int32 {.stdcall, dynlib: \"kernel32\", \u000A    importc: \"ResumeThread\".}"
   }, 
   {
-    "name": "WaitForSingleObject", 
+    "name": "waitForSingleObject", 
     "type": "skProc", 
-    "code": "proc WaitForSingleObject*(hHandle: THANDLE; dwMilliseconds: int32): int32 {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"WaitForSingleObject\".}"
+    "code": "proc waitForSingleObject*(hHandle: THandle; dwMilliseconds: int32): int32 {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"WaitForSingleObject\".}"
   }, 
   {
-    "name": "TerminateProcess", 
+    "name": "terminateProcess", 
     "type": "skProc", 
-    "code": "proc TerminateProcess*(hProcess: THANDLE; uExitCode: int): WINBOOL {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc: \"TerminateProcess\".}"
+    "code": "proc terminateProcess*(hProcess: THandle; uExitCode: int): WINBOOL {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"TerminateProcess\".}"
   }, 
   {
-    "name": "GetExitCodeProcess", 
+    "name": "getExitCodeProcess", 
     "type": "skProc", 
-    "code": "proc GetExitCodeProcess*(hProcess: THANDLE; lpExitCode: var int32): WINBOOL {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"GetExitCodeProcess\".}"
+    "code": "proc getExitCodeProcess*(hProcess: THandle; lpExitCode: var int32): WINBOOL {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"GetExitCodeProcess\".}"
   }, 
   {
-    "name": "GetStdHandle", 
+    "name": "getStdHandle", 
     "type": "skProc", 
-    "code": "proc GetStdHandle*(nStdHandle: int32): THANDLE {.stdcall, dynlib: \"kernel32\", \u000D\u000A    importc: \"GetStdHandle\".}"
+    "code": "proc getStdHandle*(nStdHandle: int32): THandle {.stdcall, dynlib: \"kernel32\", \u000A    importc: \"GetStdHandle\".}"
   }, 
   {
-    "name": "SetStdHandle", 
+    "name": "setStdHandle", 
     "type": "skProc", 
-    "code": "proc SetStdHandle*(nStdHandle: int32; hHandle: THANDLE): WINBOOL {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc: \"SetStdHandle\".}"
+    "code": "proc setStdHandle*(nStdHandle: int32; hHandle: THandle): WINBOOL {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"SetStdHandle\".}"
   }, 
   {
-    "name": "FlushFileBuffers", 
+    "name": "flushFileBuffers", 
     "type": "skProc", 
-    "code": "proc FlushFileBuffers*(hFile: THANDLE): WINBOOL {.stdcall, dynlib: \"kernel32\", \u000D\u000A    importc: \"FlushFileBuffers\".}"
+    "code": "proc flushFileBuffers*(hFile: THandle): WINBOOL {.stdcall, dynlib: \"kernel32\", \u000A    importc: \"FlushFileBuffers\".}"
   }, 
   {
-    "name": "GetLastError", 
+    "name": "getLastError", 
     "type": "skProc", 
-    "code": "proc GetLastError*(): int32 {.importc, stdcall, dynlib: \"kernel32\".}"
+    "code": "proc getLastError*(): int32 {.importc: \"GetLastError\", stdcall, \u000A                              dynlib: \"kernel32\".}"
   }, 
   {
-    "name": "FormatMessageW", 
+    "name": "formatMessageW", 
     "type": "skProc", 
-    "code": "proc FormatMessageW*(dwFlags: int32; lpSource: pointer; \u000D\u000A                     dwMessageId, dwLanguageId: int32; lpBuffer: pointer; \u000D\u000A                     nSize: int32; Arguments: pointer): int32 {.importc, \u000D\u000A    stdcall, dynlib: \"kernel32\".}"
+    "code": "proc formatMessageW*(dwFlags: int32; lpSource: pointer; \u000A                     dwMessageId, dwLanguageId: int32; lpBuffer: pointer; \u000A                     nSize: int32; Arguments: pointer): int32 {.\u000A    importc: \"FormatMessageW\", stdcall, dynlib: \"kernel32\".}"
   }, 
   {
-    "name": "LocalFree", 
+    "name": "localFree", 
     "type": "skProc", 
-    "code": "proc LocalFree*(p: pointer) {.importc, stdcall, dynlib: \"kernel32\".}"
+    "code": "proc localFree*(p: pointer) {.importc: \"LocalFree\", stdcall, dynlib: \"kernel32\".}"
   }, 
   {
-    "name": "GetCurrentDirectoryW", 
+    "name": "getCurrentDirectoryW", 
     "type": "skProc", 
-    "code": "proc GetCurrentDirectoryW*(nBufferLength: int32; lpBuffer: widecstring): int32 {.\u000D\u000A    importc, dynlib: \"kernel32\", stdcall.}"
+    "code": "proc getCurrentDirectoryW*(nBufferLength: int32; lpBuffer: WideCString): int32 {.\u000A    importc: \"GetCurrentDirectoryW\", dynlib: \"kernel32\", stdcall.}"
   }, 
   {
-    "name": "SetCurrentDirectoryW", 
+    "name": "setCurrentDirectoryW", 
     "type": "skProc", 
-    "code": "proc SetCurrentDirectoryW*(lpPathName: widecstring): int32 {.importc, \u000D\u000A    dynlib: \"kernel32\", stdcall.}"
+    "code": "proc setCurrentDirectoryW*(lpPathName: WideCString): int32 {.\u000A    importc: \"SetCurrentDirectoryW\", dynlib: \"kernel32\", stdcall.}"
   }, 
   {
-    "name": "CreateDirectoryW", 
+    "name": "createDirectoryW", 
     "type": "skProc", 
-    "code": "proc CreateDirectoryW*(pathName: widecstring; security: Pointer = nil): int32 {.\u000D\u000A    importc: \"CreateDirectoryW\", dynlib: \"kernel32\", stdcall.}"
+    "code": "proc createDirectoryW*(pathName: WideCString; security: pointer = nil): int32 {.\u000A    importc: \"CreateDirectoryW\", dynlib: \"kernel32\", stdcall.}"
   }, 
   {
-    "name": "RemoveDirectoryW", 
+    "name": "removeDirectoryW", 
     "type": "skProc", 
-    "code": "proc RemoveDirectoryW*(lpPathName: widecstring): int32 {.importc, \u000D\u000A    dynlib: \"kernel32\", stdcall.}"
+    "code": "proc removeDirectoryW*(lpPathName: WideCString): int32 {.\u000A    importc: \"RemoveDirectoryW\", dynlib: \"kernel32\", stdcall.}"
   }, 
   {
-    "name": "SetEnvironmentVariableW", 
+    "name": "setEnvironmentVariableW", 
     "type": "skProc", 
-    "code": "proc SetEnvironmentVariableW*(lpName, lpValue: widecstring): int32 {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc.}"
+    "code": "proc setEnvironmentVariableW*(lpName, lpValue: WideCString): int32 {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"SetEnvironmentVariableW\".}"
   }, 
   {
-    "name": "GetModuleFileNameW", 
+    "name": "getModuleFileNameW", 
     "type": "skProc", 
-    "code": "proc GetModuleFileNameW*(handle: THandle; buf: wideCString; size: int32): int32 {.\u000D\u000A    importc, dynlib: \"kernel32\", stdcall.}"
+    "code": "proc getModuleFileNameW*(handle: THandle; buf: WideCString; size: int32): int32 {.\u000A    importc: \"GetModuleFileNameW\", dynlib: \"kernel32\", stdcall.}"
+  }, 
+  {
+    "name": "createSymbolicLinkW", 
+    "type": "skProc", 
+    "code": "proc createSymbolicLinkW*(lpSymlinkFileName, lpTargetFileName: WideCString; \u000A                          flags: DWORD): int32 {.importc: \"CreateSymbolicLinkW\", \u000A    dynlib: \"kernel32\", stdcall.}"
+  }, 
+  {
+    "name": "createHardLinkW", 
+    "type": "skProc", 
+    "code": "proc createHardLinkW*(lpFileName, lpExistingFileName: WideCString; \u000A                      security: pointer = nil): int32 {.\u000A    importc: \"CreateHardLinkW\", dynlib: \"kernel32\", stdcall.}"
   }, 
   {
     "name": "MAX_PATH", 
@@ -140,57 +150,57 @@
   {
     "name": "TWIN32_FIND_DATA", 
     "type": "skType", 
-    "code": "TWIN32_FIND_DATA* {.pure.} = object \u000D\u000A  dwFileAttributes*: int32\u000D\u000A  ftCreationTime*: TFILETIME\u000D\u000A  ftLastAccessTime*: TFILETIME\u000D\u000A  ftLastWriteTime*: TFILETIME\u000D\u000A  nFileSizeHigh*: int32\u000D\u000A  nFileSizeLow*: int32\u000D\u000A  dwReserved0: int32\u000D\u000A  dwReserved1: int32\u000D\u000A  cFileName*: array[0 .. (MAX_PATH) - 1, TWinChar]\u000D\u000A  cAlternateFileName*: array[0 .. 13, TWinChar]\u000D\u000A"
+    "code": "TWIN32_FIND_DATA* {.pure.} = object \u000A  dwFileAttributes*: int32\u000A  ftCreationTime*: TFILETIME\u000A  ftLastAccessTime*: TFILETIME\u000A  ftLastWriteTime*: TFILETIME\u000A  nFileSizeHigh*: int32\u000A  nFileSizeLow*: int32\u000A  dwReserved0: int32\u000A  dwReserved1: int32\u000A  cFileName*: array[0 .. (MAX_PATH) - 1, TWinChar]\u000A  cAlternateFileName*: array[0 .. 13, TWinChar]\u000A"
   }, 
   {
-    "name": "FindFirstFileW", 
+    "name": "findFirstFileW", 
     "type": "skProc", 
-    "code": "proc FindFirstFileW*(lpFileName: widecstring; \u000D\u000A                     lpFindFileData: var TWIN32_FIND_DATA): THANDLE {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc: \"FindFirstFileW\".}"
+    "code": "proc findFirstFileW*(lpFileName: WideCString; \u000A                     lpFindFileData: var TWIN32_FIND_DATA): THandle {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"FindFirstFileW\".}"
   }, 
   {
-    "name": "FindNextFileW", 
+    "name": "findNextFileW", 
     "type": "skProc", 
-    "code": "proc FindNextFileW*(hFindFile: THANDLE; lpFindFileData: var TWIN32_FIND_DATA): int32 {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"FindNextFileW\".}"
+    "code": "proc findNextFileW*(hFindFile: THandle; lpFindFileData: var TWIN32_FIND_DATA): int32 {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"FindNextFileW\".}"
   }, 
   {
-    "name": "FindClose", 
+    "name": "findClose", 
     "type": "skProc", 
-    "code": "proc FindClose*(hFindFile: THANDLE) {.stdcall, dynlib: \"kernel32\", \u000D\u000A                                      importc: \"FindClose\".}"
+    "code": "proc findClose*(hFindFile: THandle) {.stdcall, dynlib: \"kernel32\", \u000A                                      importc: \"FindClose\".}"
   }, 
   {
-    "name": "GetFullPathNameW", 
+    "name": "getFullPathNameW", 
     "type": "skProc", 
-    "code": "proc GetFullPathNameW*(lpFileName: widecstring; nBufferLength: int32; \u000D\u000A                       lpBuffer: widecstring; lpFilePart: var widecstring): int32 {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc.}"
+    "code": "proc getFullPathNameW*(lpFileName: WideCString; nBufferLength: int32; \u000A                       lpBuffer: WideCString; lpFilePart: var WideCString): int32 {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"GetFullPathNameW\".}"
   }, 
   {
-    "name": "GetFileAttributesW", 
+    "name": "getFileAttributesW", 
     "type": "skProc", 
-    "code": "proc GetFileAttributesW*(lpFileName: widecstring): int32 {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc.}"
+    "code": "proc getFileAttributesW*(lpFileName: WideCString): int32 {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"GetFileAttributesW\".}"
   }, 
   {
-    "name": "SetFileAttributesW", 
+    "name": "setFileAttributesW", 
     "type": "skProc", 
-    "code": "proc SetFileAttributesW*(lpFileName: widecstring; dwFileAttributes: int32): WINBOOL {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"SetFileAttributesW\".}"
+    "code": "proc setFileAttributesW*(lpFileName: WideCString; dwFileAttributes: int32): WINBOOL {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"SetFileAttributesW\".}"
   }, 
   {
-    "name": "CopyFileW", 
+    "name": "copyFileW", 
     "type": "skProc", 
-    "code": "proc CopyFileW*(lpExistingFileName, lpNewFileName: wideCString; \u000D\u000A                bFailIfExists: cint): cint {.importc, stdcall, \u000D\u000A    dynlib: \"kernel32\".}"
+    "code": "proc copyFileW*(lpExistingFileName, lpNewFileName: WideCString; \u000A                bFailIfExists: cint): cint {.importc: \"CopyFileW\", stdcall, \u000A    dynlib: \"kernel32\".}"
   }, 
   {
-    "name": "GetEnvironmentStringsW", 
+    "name": "getEnvironmentStringsW", 
     "type": "skProc", 
-    "code": "proc GetEnvironmentStringsW*(): widecstring {.stdcall, dynlib: \"kernel32\", \u000D\u000A    importc.}"
+    "code": "proc getEnvironmentStringsW*(): WideCString {.stdcall, dynlib: \"kernel32\", \u000A    importc: \"GetEnvironmentStringsW\".}"
   }, 
   {
-    "name": "FreeEnvironmentStringsW", 
+    "name": "freeEnvironmentStringsW", 
     "type": "skProc", 
-    "code": "proc FreeEnvironmentStringsW*(para1: widecstring): int32 {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc.}"
+    "code": "proc freeEnvironmentStringsW*(para1: WideCString): int32 {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"FreeEnvironmentStringsW\".}"
   }, 
   {
-    "name": "GetCommandLineW", 
+    "name": "getCommandLineW", 
     "type": "skProc", 
-    "code": "proc GetCommandLineW*(): wideCString {.importc, stdcall, dynlib: \"kernel32\".}"
+    "code": "proc getCommandLineW*(): WideCString {.importc: \"GetCommandLineW\", stdcall, \u000A                                       dynlib: \"kernel32\".}"
   }, 
   {
     "name": "rdFileTime", 
@@ -200,27 +210,27 @@
   {
     "name": "rdFileSize", 
     "type": "skProc", 
-    "code": "proc rdFileSize*(f: TWin32FindData): int64"
+    "code": "proc rdFileSize*(f: TWIN32_FIND_DATA): int64"
   }, 
   {
-    "name": "GetSystemTimeAsFileTime", 
+    "name": "getSystemTimeAsFileTime", 
     "type": "skProc", 
-    "code": "proc GetSystemTimeAsFileTime*(lpSystemTimeAsFileTime: var TFILETIME) {.\u000D\u000A    importc: \"GetSystemTimeAsFileTime\", dynlib: \"kernel32\", stdcall.}"
+    "code": "proc getSystemTimeAsFileTime*(lpSystemTimeAsFileTime: var TFILETIME) {.\u000A    importc: \"GetSystemTimeAsFileTime\", dynlib: \"kernel32\", stdcall.}"
   }, 
   {
-    "name": "Sleep", 
+    "name": "sleep", 
     "type": "skProc", 
-    "code": "proc Sleep*(dwMilliseconds: int32) {.stdcall, dynlib: \"kernel32\", \u000D\u000A                                     importc: \"Sleep\".}"
+    "code": "proc sleep*(dwMilliseconds: int32) {.stdcall, dynlib: \"kernel32\", \u000A                                     importc: \"Sleep\".}"
   }, 
   {
-    "name": "ShellExecuteW", 
+    "name": "shellExecuteW", 
     "type": "skProc", 
-    "code": "proc ShellExecuteW*(HWND: THandle; lpOperation, lpFile, lpParameters, \u000D\u000A                                   lpDirectory: widecstring; nShowCmd: int32): THandle {.\u000D\u000A    stdcall, dynlib: \"shell32.dll\", importc: \"ShellExecuteW\".}"
+    "code": "proc shellExecuteW*(HWND: THandle; lpOperation, lpFile, lpParameters, \u000A                                   lpDirectory: WideCString; nShowCmd: int32): THandle {.\u000A    stdcall, dynlib: \"shell32.dll\", importc: \"ShellExecuteW\".}"
   }, 
   {
-    "name": "GetFileInformationByHandle", 
+    "name": "getFileInformationByHandle", 
     "type": "skProc", 
-    "code": "proc GetFileInformationByHandle*(hFile: THandle; lpFileInformation: ptr TBY_HANDLE_FILE_INFORMATION): WINBOOL {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"GetFileInformationByHandle\".}"
+    "code": "proc getFileInformationByHandle*(hFile: THandle; lpFileInformation: ptr TBY_HANDLE_FILE_INFORMATION): WINBOOL {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"GetFileInformationByHandle\".}"
   }, 
   {
     "name": "WSAEINPROGRESS", 
@@ -228,169 +238,169 @@
     "code": "WSAEINPROGRESS* = 10036"
   }, 
   {
-    "name": "WSAGetLastError", 
+    "name": "wsaGetLastError", 
     "type": "skProc", 
-    "code": "proc WSAGetLastError*(): cint {.importc: \"WSAGetLastError\", dynlib: ws2dll.}"
+    "code": "proc wsaGetLastError*(): cint {.importc: \"WSAGetLastError\", dynlib: ws2dll.}"
   }, 
   {
-    "name": "TSocketHandle", 
+    "name": "SocketHandle", 
     "type": "skType", 
-    "code": "TSocketHandle* = distinct int"
+    "code": "SocketHandle* = distinct int"
   }, 
   {
-    "name": "Tsocklen", 
+    "name": "SockLen", 
     "type": "skType", 
-    "code": "Tsocklen* = cuint"
+    "code": "SockLen* = cuint"
   }, 
   {
-    "name": "SO_EXCLUSIVEADDRUSE", 
+    "name": "SO_ERROR", 
     "type": "skVar", 
-    "code": "SO_EXCLUSIVEADDRUSE* {.importc, header: \"Winsock2.h\".}: cint"
+    "code": "SO_ERROR* {.importc, header: \"Winsock2.h\".}: cint"
   }, 
   {
     "name": "`==`", 
     "type": "skProc", 
-    "code": "proc `==`*(x, y: TSocketHandle): bool {.borrow.}"
+    "code": "proc `==`*(x, y: SocketHandle): bool {.borrow.}"
   }, 
   {
     "name": "getservbyname", 
     "type": "skProc", 
-    "code": "proc getservbyname*(name, proto: cstring): ptr TServent {.stdcall, \u000D\u000A    importc: \"getservbyname\", dynlib: ws2dll.}"
+    "code": "proc getservbyname*(name, proto: cstring): ptr Servent {.stdcall, \u000A    importc: \"getservbyname\", dynlib: ws2dll.}"
   }, 
   {
     "name": "getservbyport", 
     "type": "skProc", 
-    "code": "proc getservbyport*(port: cint; proto: cstring): ptr TServent {.stdcall, \u000D\u000A    importc: \"getservbyport\", dynlib: ws2dll.}"
+    "code": "proc getservbyport*(port: cint; proto: cstring): ptr Servent {.stdcall, \u000A    importc: \"getservbyport\", dynlib: ws2dll.}"
   }, 
   {
     "name": "gethostbyaddr", 
     "type": "skProc", 
-    "code": "proc gethostbyaddr*(ip: ptr TInAddr; len: cuint; theType: cint): ptr THostEnt {.\u000D\u000A    stdcall, importc: \"gethostbyaddr\", dynlib: ws2dll.}"
+    "code": "proc gethostbyaddr*(ip: ptr InAddr; len: cuint; theType: cint): ptr Hostent {.\u000A    stdcall, importc: \"gethostbyaddr\", dynlib: ws2dll.}"
   }, 
   {
     "name": "gethostbyname", 
     "type": "skProc", 
-    "code": "proc gethostbyname*(name: cstring): ptr THostEnt {.stdcall, \u000D\u000A    importc: \"gethostbyname\", dynlib: ws2dll.}"
+    "code": "proc gethostbyname*(name: cstring): ptr Hostent {.stdcall, \u000A    importc: \"gethostbyname\", dynlib: ws2dll.}"
   }, 
   {
     "name": "socket", 
     "type": "skProc", 
-    "code": "proc socket*(af, typ, protocol: cint): TSocketHandle {.stdcall, \u000D\u000A    importc: \"socket\", dynlib: ws2dll.}"
+    "code": "proc socket*(af, typ, protocol: cint): SocketHandle {.stdcall, \u000A    importc: \"socket\", dynlib: ws2dll.}"
   }, 
   {
     "name": "closesocket", 
     "type": "skProc", 
-    "code": "proc closesocket*(s: TSocketHandle): cint {.stdcall, importc: \"closesocket\", \u000D\u000A    dynlib: ws2dll.}"
+    "code": "proc closesocket*(s: SocketHandle): cint {.stdcall, importc: \"closesocket\", \u000A    dynlib: ws2dll.}"
   }, 
   {
     "name": "accept", 
     "type": "skProc", 
-    "code": "proc accept*(s: TSocketHandle; a: ptr TSockAddr; addrlen: ptr TSockLen): TSocketHandle {.\u000D\u000A    stdcall, importc: \"accept\", dynlib: ws2dll.}"
+    "code": "proc accept*(s: SocketHandle; a: ptr SockAddr; addrlen: ptr SockLen): SocketHandle {.\u000A    stdcall, importc: \"accept\", dynlib: ws2dll.}"
   }, 
   {
     "name": "bindSocket", 
     "type": "skProc", 
-    "code": "proc bindSocket*(s: TSocketHandle; name: ptr TSockAddr; namelen: TSockLen): cint {.\u000D\u000A    stdcall, importc: \"bind\", dynlib: ws2dll.}"
+    "code": "proc bindSocket*(s: SocketHandle; name: ptr SockAddr; namelen: SockLen): cint {.\u000A    stdcall, importc: \"bind\", dynlib: ws2dll.}"
   }, 
   {
     "name": "connect", 
     "type": "skProc", 
-    "code": "proc connect*(s: TSocketHandle; name: ptr TSockAddr; namelen: TSockLen): cint {.\u000D\u000A    stdcall, importc: \"connect\", dynlib: ws2dll.}"
+    "code": "proc connect*(s: SocketHandle; name: ptr SockAddr; namelen: SockLen): cint {.\u000A    stdcall, importc: \"connect\", dynlib: ws2dll.}"
   }, 
   {
     "name": "getsockname", 
     "type": "skProc", 
-    "code": "proc getsockname*(s: TSocketHandle; name: ptr TSockAddr; namelen: ptr TSockLen): cint {.\u000D\u000A    stdcall, importc: \"getsockname\", dynlib: ws2dll.}"
+    "code": "proc getsockname*(s: SocketHandle; name: ptr SockAddr; namelen: ptr SockLen): cint {.\u000A    stdcall, importc: \"getsockname\", dynlib: ws2dll.}"
   }, 
   {
     "name": "getsockopt", 
     "type": "skProc", 
-    "code": "proc getsockopt*(s: TSocketHandle; level, optname: cint; optval: pointer; \u000D\u000A                 optlen: ptr TSockLen): cint {.stdcall, importc: \"getsockopt\", \u000D\u000A    dynlib: ws2dll.}"
+    "code": "proc getsockopt*(s: SocketHandle; level, optname: cint; optval: pointer; \u000A                 optlen: ptr SockLen): cint {.stdcall, importc: \"getsockopt\", \u000A    dynlib: ws2dll.}"
   }, 
   {
     "name": "setsockopt", 
     "type": "skProc", 
-    "code": "proc setsockopt*(s: TSocketHandle; level, optname: cint; optval: pointer; \u000D\u000A                 optlen: TSockLen): cint {.stdcall, importc: \"setsockopt\", \u000D\u000A    dynlib: ws2dll.}"
+    "code": "proc setsockopt*(s: SocketHandle; level, optname: cint; optval: pointer; \u000A                 optlen: SockLen): cint {.stdcall, importc: \"setsockopt\", \u000A    dynlib: ws2dll.}"
   }, 
   {
     "name": "listen", 
     "type": "skProc", 
-    "code": "proc listen*(s: TSocketHandle; backlog: cint): cint {.stdcall, \u000D\u000A    importc: \"listen\", dynlib: ws2dll.}"
+    "code": "proc listen*(s: SocketHandle; backlog: cint): cint {.stdcall, importc: \"listen\", \u000A    dynlib: ws2dll.}"
   }, 
   {
     "name": "recv", 
     "type": "skProc", 
-    "code": "proc recv*(s: TSocketHandle; buf: pointer; len, flags: cint): cint {.stdcall, \u000D\u000A    importc: \"recv\", dynlib: ws2dll.}"
+    "code": "proc recv*(s: SocketHandle; buf: pointer; len, flags: cint): cint {.stdcall, \u000A    importc: \"recv\", dynlib: ws2dll.}"
   }, 
   {
     "name": "recvfrom", 
     "type": "skProc", 
-    "code": "proc recvfrom*(s: TSocketHandle; buf: cstring; len, flags: cint; \u000D\u000A               fromm: ptr TSockAddr; fromlen: ptr Tsocklen): cint {.stdcall, \u000D\u000A    importc: \"recvfrom\", dynlib: ws2dll.}"
+    "code": "proc recvfrom*(s: SocketHandle; buf: cstring; len, flags: cint; \u000A               fromm: ptr SockAddr; fromlen: ptr SockLen): cint {.stdcall, \u000A    importc: \"recvfrom\", dynlib: ws2dll.}"
   }, 
   {
     "name": "select", 
     "type": "skProc", 
-    "code": "proc select*(nfds: cint; readfds, writefds, exceptfds: ptr TFdSet; \u000D\u000A             timeout: ptr TTimeval): cint {.stdcall, importc: \"select\", \u000D\u000A    dynlib: ws2dll.}"
+    "code": "proc select*(nfds: cint; readfds, writefds, exceptfds: ptr TFdSet; \u000A             timeout: ptr Timeval): cint {.stdcall, importc: \"select\", \u000A    dynlib: ws2dll.}"
   }, 
   {
     "name": "send", 
     "type": "skProc", 
-    "code": "proc send*(s: TSocketHandle; buf: pointer; len, flags: cint): cint {.stdcall, \u000D\u000A    importc: \"send\", dynlib: ws2dll.}"
+    "code": "proc send*(s: SocketHandle; buf: pointer; len, flags: cint): cint {.stdcall, \u000A    importc: \"send\", dynlib: ws2dll.}"
   }, 
   {
     "name": "sendto", 
     "type": "skProc", 
-    "code": "proc sendto*(s: TSocketHandle; buf: pointer; len, flags: cint; \u000D\u000A             to: ptr TSockAddr; tolen: Tsocklen): cint {.stdcall, \u000D\u000A    importc: \"sendto\", dynlib: ws2dll.}"
+    "code": "proc sendto*(s: SocketHandle; buf: pointer; len, flags: cint; to: ptr SockAddr; \u000A             tolen: SockLen): cint {.stdcall, importc: \"sendto\", dynlib: ws2dll.}"
   }, 
   {
     "name": "shutdown", 
     "type": "skProc", 
-    "code": "proc shutdown*(s: TSocketHandle; how: cint): cint {.stdcall, \u000D\u000A    importc: \"shutdown\", dynlib: ws2dll.}"
+    "code": "proc shutdown*(s: SocketHandle; how: cint): cint {.stdcall, importc: \"shutdown\", \u000A    dynlib: ws2dll.}"
   }, 
   {
     "name": "getnameinfo", 
     "type": "skProc", 
-    "code": "proc getnameinfo*(a1: ptr Tsockaddr; a2: Tsocklen; a3: cstring; a4: Tsocklen; \u000D\u000A                  a5: cstring; a6: Tsocklen; a7: cint): cint {.stdcall, \u000D\u000A    importc: \"getnameinfo\", dynlib: ws2dll.}"
+    "code": "proc getnameinfo*(a1: ptr SockAddr; a2: SockLen; a3: cstring; a4: SockLen; \u000A                  a5: cstring; a6: SockLen; a7: cint): cint {.stdcall, \u000A    importc: \"getnameinfo\", dynlib: ws2dll.}"
   }, 
   {
     "name": "inet_addr", 
     "type": "skProc", 
-    "code": "proc inet_addr*(cp: cstring): int32 {.stdcall, importc: \"inet_addr\", \u000D\u000A                                      dynlib: ws2dll.}"
+    "code": "proc inet_addr*(cp: cstring): int32 {.stdcall, importc: \"inet_addr\", \u000A                                      dynlib: ws2dll.}"
   }, 
   {
     "name": "FD_ISSET", 
     "type": "skProc", 
-    "code": "proc FD_ISSET*(Socket: TSocketHandle; FDSet: var TFDSet): cint"
+    "code": "proc FD_ISSET*(socket: SocketHandle; set: var TFdSet): cint"
   }, 
   {
     "name": "FD_SET", 
     "type": "skProc", 
-    "code": "proc FD_SET*(Socket: TSocketHandle; FDSet: var TFDSet)"
+    "code": "proc FD_SET*(socket: SocketHandle; s: var TFdSet)"
   }, 
   {
     "name": "FD_ZERO", 
     "type": "skProc", 
-    "code": "proc FD_ZERO*(FDSet: var TFDSet)"
+    "code": "proc FD_ZERO*(s: var TFdSet)"
   }, 
   {
-    "name": "WSAStartup", 
+    "name": "wsaStartup", 
     "type": "skProc", 
-    "code": "proc WSAStartup*(wVersionRequired: int16; WSData: ptr TWSAData): cint {.stdcall, \u000D\u000A    importc: \"WSAStartup\", dynlib: ws2dll.}"
+    "code": "proc wsaStartup*(wVersionRequired: int16; WSData: ptr WSAData): cint {.stdcall, \u000A    importc: \"WSAStartup\", dynlib: ws2dll.}"
   }, 
   {
     "name": "getaddrinfo", 
     "type": "skProc", 
-    "code": "proc getaddrinfo*(nodename, servname: cstring; hints: ptr TAddrInfo; \u000D\u000A                  res: var ptr TAddrInfo): cint {.stdcall, \u000D\u000A    importc: \"getaddrinfo\", dynlib: ws2dll.}"
+    "code": "proc getaddrinfo*(nodename, servname: cstring; hints: ptr AddrInfo; \u000A                  res: var ptr AddrInfo): cint {.stdcall, \u000A    importc: \"getaddrinfo\", dynlib: ws2dll.}"
   }, 
   {
     "name": "freeaddrinfo", 
     "type": "skProc", 
-    "code": "proc freeaddrinfo*(ai: ptr TAddrInfo) {.stdcall, importc: \"freeaddrinfo\", \u000D\u000A                                        dynlib: ws2dll.}"
+    "code": "proc freeaddrinfo*(ai: ptr AddrInfo) {.stdcall, importc: \"freeaddrinfo\", \u000A                                       dynlib: ws2dll.}"
   }, 
   {
     "name": "inet_ntoa", 
     "type": "skProc", 
-    "code": "proc inet_ntoa*(i: TInAddr): cstring {.stdcall, importc, dynlib: ws2dll.}"
+    "code": "proc inet_ntoa*(i: InAddr): cstring {.stdcall, importc, dynlib: ws2dll.}"
   }, 
   {
     "name": "MAXIMUM_WAIT_OBJECTS", 
@@ -403,53 +413,143 @@
     "code": "PWOHandleArray* = ptr TWOHandleArray"
   }, 
   {
-    "name": "WaitForMultipleObjects", 
+    "name": "waitForMultipleObjects", 
     "type": "skProc", 
-    "code": "proc WaitForMultipleObjects*(nCount: DWORD; lpHandles: PWOHandleArray; \u000D\u000A                             bWaitAll: WINBOOL; dwMilliseconds: DWORD): DWORD {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"WaitForMultipleObjects\".}"
+    "code": "proc waitForMultipleObjects*(nCount: DWORD; lpHandles: PWOHandleArray; \u000A                             bWaitAll: WINBOOL; dwMilliseconds: DWORD): DWORD {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"WaitForMultipleObjects\".}"
   }, 
   {
-    "name": "FILE_FLAG_BACKUP_SEMANTICS", 
+    "name": "FILE_FLAG_OPEN_REPARSE_POINT", 
     "type": "skConst", 
-    "code": "FILE_FLAG_BACKUP_SEMANTICS* = 33554432'i32"
+    "code": "FILE_FLAG_OPEN_REPARSE_POINT* = 0x00200000'i32"
   }, 
   {
-    "name": "CreateFileW", 
-    "type": "skProc", 
-    "code": "proc CreateFileW*(lpFileName: widecstring; dwDesiredAccess, dwShareMode: DWORD; \u000D\u000A                  lpSecurityAttributes: pointer; \u000D\u000A                  dwCreationDisposition, dwFlagsAndAttributes: DWORD; \u000D\u000A                  hTemplateFile: THANDLE): THANDLE {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc: \"CreateFileW\".}"
+    "name": "ERROR_HANDLE_EOF", 
+    "type": "skConst", 
+    "code": "ERROR_HANDLE_EOF* = 38"
   }, 
   {
-    "name": "SetEndOfFile", 
+    "name": "createFileW", 
     "type": "skProc", 
-    "code": "proc SetEndOfFile*(hFile: THANDLE): WINBOOL {.stdcall, dynlib: \"kernel32\", \u000D\u000A    importc: \"SetEndOfFile\".}"
+    "code": "proc createFileW*(lpFileName: WideCString; dwDesiredAccess, dwShareMode: DWORD; \u000A                  lpSecurityAttributes: pointer; \u000A                  dwCreationDisposition, dwFlagsAndAttributes: DWORD; \u000A                  hTemplateFile: THandle): THandle {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"CreateFileW\".}"
   }, 
   {
-    "name": "SetFilePointer", 
+    "name": "deleteFileW", 
     "type": "skProc", 
-    "code": "proc SetFilePointer*(hFile: THANDLE; lDistanceToMove: LONG; \u000D\u000A                     lpDistanceToMoveHigh: ptr LONG; dwMoveMethod: DWORD): DWORD {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"SetFilePointer\".}"
+    "code": "proc deleteFileW*(pathName: WideCString): int32 {.importc: \"DeleteFileW\", \u000A    dynlib: \"kernel32\", stdcall.}"
   }, 
   {
-    "name": "GetFileSize", 
+    "name": "setEndOfFile", 
     "type": "skProc", 
-    "code": "proc GetFileSize*(hFile: THANDLE; lpFileSizeHigh: ptr DWORD): DWORD {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc: \"GetFileSize\".}"
+    "code": "proc setEndOfFile*(hFile: THandle): WINBOOL {.stdcall, dynlib: \"kernel32\", \u000A    importc: \"SetEndOfFile\".}"
   }, 
   {
-    "name": "MapViewOfFileEx", 
+    "name": "setFilePointer", 
     "type": "skProc", 
-    "code": "proc MapViewOfFileEx*(hFileMappingObject: THANDLE; dwDesiredAccess: DWORD; \u000D\u000A                      dwFileOffsetHigh, dwFileOffsetLow: DWORD; \u000D\u000A                      dwNumberOfBytesToMap: DWORD; lpBaseAddress: pointer): pointer {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"MapViewOfFileEx\".}"
+    "code": "proc setFilePointer*(hFile: THandle; lDistanceToMove: LONG; \u000A                     lpDistanceToMoveHigh: ptr LONG; dwMoveMethod: DWORD): DWORD {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"SetFilePointer\".}"
   }, 
   {
-    "name": "CreateFileMappingW", 
+    "name": "getFileSize", 
     "type": "skProc", 
-    "code": "proc CreateFileMappingW*(hFile: THANDLE; lpFileMappingAttributes: pointer; \u000D\u000A                         flProtect, dwMaximumSizeHigh: DWORD; \u000D\u000A                         dwMaximumSizeLow: DWORD; lpName: pointer): THANDLE {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"CreateFileMappingW\".}"
+    "code": "proc getFileSize*(hFile: THandle; lpFileSizeHigh: ptr DWORD): DWORD {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"GetFileSize\".}"
   }, 
   {
-    "name": "CreateFileMappingA", 
+    "name": "mapViewOfFileEx", 
     "type": "skProc", 
-    "code": "proc CreateFileMappingA*(hFile: THANDLE; lpFileMappingAttributes: pointer; \u000D\u000A                         flProtect, dwMaximumSizeHigh: DWORD; \u000D\u000A                         dwMaximumSizeLow: DWORD; lpName: cstring): THANDLE {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"CreateFileMappingA\".}"
+    "code": "proc mapViewOfFileEx*(hFileMappingObject: THandle; dwDesiredAccess: DWORD; \u000A                      dwFileOffsetHigh, dwFileOffsetLow: DWORD; \u000A                      dwNumberOfBytesToMap: DWORD; lpBaseAddress: pointer): pointer {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"MapViewOfFileEx\".}"
   }, 
   {
-    "name": "UnmapViewOfFile", 
+    "name": "createFileMappingW", 
     "type": "skProc", 
-    "code": "proc UnmapViewOfFile*(lpBaseAddress: pointer): WINBOOL {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc: \"UnmapViewOfFile\".}"
+    "code": "proc createFileMappingW*(hFile: THandle; lpFileMappingAttributes: pointer; \u000A                         flProtect, dwMaximumSizeHigh: DWORD; \u000A                         dwMaximumSizeLow: DWORD; lpName: pointer): THandle {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"CreateFileMappingW\".}"
+  }, 
+  {
+    "name": "createFileMappingA", 
+    "type": "skProc", 
+    "code": "proc createFileMappingA*(hFile: THANDLE; lpFileMappingAttributes: pointer; \u000A                         flProtect, dwMaximumSizeHigh: DWORD; \u000A                         dwMaximumSizeLow: DWORD; lpName: cstring): THANDLE {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"CreateFileMappingA\".}"
+  }, 
+  {
+    "name": "unmapViewOfFile", 
+    "type": "skProc", 
+    "code": "proc unmapViewOfFile*(lpBaseAddress: pointer): WINBOOL {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"UnmapViewOfFile\".}"
+  }, 
+  {
+    "name": "TGUID", 
+    "type": "skType", 
+    "code": "TGUID* {.final, pure.} = object \u000A  D1*: int32\u000A  D2*: int16\u000A  D3*: int16\u000A  D4*: array[0 .. 7, int8]\u000A"
+  }, 
+  {
+    "name": "ERROR_NETNAME_DELETED", 
+    "type": "skConst", 
+    "code": "ERROR_NETNAME_DELETED* = 64"
+  }, 
+  {
+    "name": "createIoCompletionPort", 
+    "type": "skProc", 
+    "code": "proc createIoCompletionPort*(FileHandle: THandle; \u000A                             ExistingCompletionPort: THandle; \u000A                             CompletionKey: DWORD; \u000A                             NumberOfConcurrentThreads: DWORD): THandle {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"CreateIoCompletionPort\".}"
+  }, 
+  {
+    "name": "getQueuedCompletionStatus", 
+    "type": "skProc", 
+    "code": "proc getQueuedCompletionStatus*(CompletionPort: THandle; \u000A                                lpNumberOfBytesTransferred: PDWORD; \u000A                                lpCompletionKey: PULONG; \u000A                                lpOverlapped: ptr POVERLAPPED; \u000A                                dwMilliseconds: DWORD): WINBOOL {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"GetQueuedCompletionStatus\".}"
+  }, 
+  {
+    "name": "getOverlappedResult", 
+    "type": "skProc", 
+    "code": "proc getOverlappedResult*(hFile: THandle; lpOverlapped: TOVERLAPPED; \u000A                          lpNumberOfBytesTransferred: var DWORD; bWait: WINBOOL): WINBOOL {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"GetOverlappedResult\".}"
+  }, 
+  {
+    "name": "IOC_INOUT", 
+    "type": "skConst", 
+    "code": "IOC_INOUT* = IOC_IN or IOC_OUT"
+  }, 
+  {
+    "name": "WSAIORW", 
+    "type": "skTemplate", 
+    "code": "template WSAIORW*(x, y): expr"
+  }, 
+  {
+    "name": "SO_UPDATE_ACCEPT_CONTEXT", 
+    "type": "skConst", 
+    "code": "SO_UPDATE_ACCEPT_CONTEXT* = 0x0000700B"
+  }, 
+  {
+    "name": "WSAID_GETACCEPTEXSOCKADDRS", 
+    "type": "skVar", 
+    "code": "WSAID_GETACCEPTEXSOCKADDRS*: TGUID = TGUID(D1: 0xB5367DF2'i32, D2: 0xCBAC'i16, \u000A    D3: 0x000011CF, D4: [0x95'i8, 0xCA'i8, 0x00'i8, 0x80'i8, 0x5F'i8, 0x48'i8, \u000A                         0xA1'i8, 0x92'i8])"
+  }, 
+  {
+    "name": "WSAIoctl", 
+    "type": "skProc", 
+    "code": "proc WSAIoctl*(s: SocketHandle; dwIoControlCode: DWORD; lpvInBuffer: pointer; \u000A               cbInBuffer: DWORD; lpvOutBuffer: pointer; cbOutBuffer: DWORD; \u000A               lpcbBytesReturned: PDWORD; lpOverlapped: POVERLAPPED; \u000A               lpCompletionRoutine: POVERLAPPED_COMPLETION_ROUTINE): cint {.\u000A    stdcall, importc: \"WSAIoctl\", dynlib: \"Ws2_32.dll\".}"
+  }, 
+  {
+    "name": "TWSABuf", 
+    "type": "skType", 
+    "code": "TWSABuf* {.importc: \"WSABUF\", header: \"winsock2.h\".} = object \u000A  len*: ULONG\u000A  buf*: cstring\u000A"
+  }, 
+  {
+    "name": "WSARecv", 
+    "type": "skProc", 
+    "code": "proc WSARecv*(s: SocketHandle; buf: ptr TWSABuf; bufCount: DWORD; \u000A              bytesReceived, flags: PDWORD; lpOverlapped: POVERLAPPED; \u000A              completionProc: POVERLAPPED_COMPLETION_ROUTINE): cint {.stdcall, \u000A    importc: \"WSARecv\", dynlib: \"Ws2_32.dll\".}"
+  }, 
+  {
+    "name": "WSASend", 
+    "type": "skProc", 
+    "code": "proc WSASend*(s: SocketHandle; buf: ptr TWSABuf; bufCount: DWORD; \u000A              bytesSent: PDWORD; flags: DWORD; lpOverlapped: POVERLAPPED; \u000A              completionProc: POVERLAPPED_COMPLETION_ROUTINE): cint {.stdcall, \u000A    importc: \"WSASend\", dynlib: \"Ws2_32.dll\".}"
+  }, 
+  {
+    "name": "get_osfhandle", 
+    "type": "skProc", 
+    "code": "proc get_osfhandle*(fd: FileHandle): THandle {.importc: \"_get_osfhandle\", \u000A    header: \"<io.h>\".}"
+  }, 
+  {
+    "name": "getSystemTimes", 
+    "type": "skProc", 
+    "code": "proc getSystemTimes*(lpIdleTime, lpKernelTime, lpUserTime: var TFILETIME): WINBOOL {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"GetSystemTimes\".}"
+  }, 
+  {
+    "name": "getProcessTimes", 
+    "type": "skProc", 
+    "code": "proc getProcessTimes*(hProcess: THandle; lpCreationTime, lpExitTime, \u000A    lpKernelTime, lpUserTime: var TFILETIME): WINBOOL {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"GetProcessTimes\".}"
   }
 ]

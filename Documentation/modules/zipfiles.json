@@ -6,13 +6,13 @@
     "name": "TZipArchive", 
     "type": "skType", 
     "description": "represents a zip archive", 
-    "code": "TZipArchive* = object of TObject\u000D\u000A  mode: TFileMode\u000D\u000A  w: PZip\u000D\u000A"
+    "code": "TZipArchive* = object of RootObj\u000A  mode: FileMode\u000A  w: PZip\u000A"
   }, 
   {
     "name": "open", 
     "type": "skProc", 
     "description": "Opens a zip file for reading, writing or appending. All file modes are supported. Returns true iff successful, false otherwise.", 
-    "code": "proc open*(z: var TZipArchive; filename: string; mode: TFileMode = fmRead): bool"
+    "code": "proc open*(z: var TZipArchive; filename: string; mode: FileMode = fmRead): bool"
   }, 
   {
     "name": "close", 
@@ -42,7 +42,7 @@
     "name": "addFile", 
     "type": "skProc", 
     "description": "Adds a file named with <cite>dest</cite> to the archive <cite>z</cite>. <cite>dest</cite> may contain a path. The file's content is read from the <cite>src</cite> stream.", 
-    "code": "proc addFile*(z: var TZipArchive; dest: string; src: PStream)"
+    "code": "proc addFile*(z: var TZipArchive; dest: string; src: Stream)"
   }, 
   {
     "name": "PZipFileStream", 
@@ -66,7 +66,7 @@
     "name": "extractFile", 
     "type": "skProc", 
     "description": "extracts a file from the zip archive <cite>z</cite> to the destination stream.", 
-    "code": "proc extractFile*(z: var TZipArchive; srcFile: string; dest: PStream)"
+    "code": "proc extractFile*(z: var TZipArchive; srcFile: string; dest: Stream)"
   }, 
   {
     "name": "extractFile", 

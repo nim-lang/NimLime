@@ -1,0 +1,15 @@
+[
+  {
+    "comment": "This module implements a helper for a thread pool to determine whether\u000A## creating a thread is a good idea."
+  }, 
+  {
+    "name": "ThreadPoolState", 
+    "type": "skType", 
+    "code": "ThreadPoolState* = object \u000A  when defined(windows): \u000A      prevSysKernel, prevSysUser, prevProcKernel, prevProcUser: TFILETIME\u000A\u000A  calls*: int\u000A"
+  }, 
+  {
+    "name": "advice", 
+    "type": "skProc", 
+    "code": "proc advice*(s: var ThreadPoolState): ThreadPoolAdvice"
+  }
+]

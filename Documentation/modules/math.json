@@ -1,24 +1,24 @@
 [
   {
-    "comment": "Constructive mathematics is naturally typed. -- Simon Thompson\u000D\u000A## \u000D\u000A## Basic math routines for Nimrod.\u000D\u000A## This module is available for the JavaScript target."
+    "comment": "Constructive mathematics is naturally typed. -- Simon Thompson\u000A## \u000A## Basic math routines for Nim.\u000A## This module is available for the `JavaScript target\u000A## <backends.html#the-javascript-target>`_."
   }, 
   {
     "name": "MaxFloatPrecision", 
     "type": "skConst", 
-    "description": "maximum number of meaningful digits after the decimal point for Nimrod's <tt class=\"docutils literal\"><span class=\"pre\">float</span></tt> type.", 
+    "description": "maximum number of meaningful digits after the decimal point for Nim's <tt class=\"docutils literal\"><span class=\"pre\">float</span></tt> type.", 
     "code": "MaxFloatPrecision* = MaxFloat64Precision"
   }, 
   {
-    "name": "TFloatClass", 
+    "name": "FloatClass", 
     "type": "skType", 
     "description": "describes the class a floating point value belongs to. This is the type that is returned by <cite>classify</cite>.", 
-    "code": "TFloatClass* = enum \u000D\u000A  fcNormal,                   ## value is an ordinary nonzero floating point value\u000D\u000A  fcSubnormal,                ## value is a subnormal (a very small) floating point value\u000D\u000A  fcZero,                     ## value is zero\u000D\u000A  fcNegZero,                  ## value is the negative zero\u000D\u000A  fcNan,                      ## value is Not-A-Number (NAN)\u000D\u000A  fcInf,                      ## value is positive infinity\u000D\u000A  fcNegInf                    ## value is negative infinity"
+    "code": "FloatClass* = enum \u000A  fcNormal,                   ## value is an ordinary nonzero floating point value\u000A  fcSubnormal,                ## value is a subnormal (a very small) floating point value\u000A  fcZero,                     ## value is zero\u000A  fcNegZero,                  ## value is the negative zero\u000A  fcNan,                      ## value is Not-A-Number (NAN)\u000A  fcInf,                      ## value is positive infinity\u000A  fcNegInf                    ## value is negative infinity"
   }, 
   {
     "name": "classify", 
     "type": "skProc", 
-    "description": "classifies a floating point value. Returns <cite>x</cite>'s class as specified by <cite>TFloatClass</cite>.", 
-    "code": "proc classify*(x: float): TFloatClass"
+    "description": "classifies a floating point value. Returns <cite>x</cite>'s class as specified by <cite>FloatClass</cite>.", 
+    "code": "proc classify*(x: float): FloatClass"
   }, 
   {
     "name": "binom", 
@@ -29,20 +29,20 @@
   {
     "name": "fac", 
     "type": "skProc", 
-    "description": "computes the faculty function", 
+    "description": "computes the faculty/factorial function.", 
     "code": "proc fac*(n: int): int {.noSideEffect.}"
   }, 
   {
     "name": "isPowerOfTwo", 
     "type": "skProc", 
-    "description": "returns true, if x is a power of two, false otherwise. Negative numbers are not a power of two.", 
+    "description": "returns true, if <cite>x</cite> is a power of two, false otherwise. Zero and negative numbers are not a power of two.", 
     "code": "proc isPowerOfTwo*(x: int): bool {.noSideEffect.}"
   }, 
   {
     "name": "nextPowerOfTwo", 
     "type": "skProc", 
-    "description": "returns the nearest power of two, so that result**2 &gt;= x &gt; (result-1)**2.", 
-    "code": "proc nextPowerOfTwo*(x: int): int"
+    "description": "returns <cite>x</cite> rounded up to the nearest power of two. Zero and negative numbers get rounded up to 1.", 
+    "code": "proc nextPowerOfTwo*(x: int): int {.noSideEffect.}"
   }, 
   {
     "name": "countBits32", 
@@ -54,43 +54,43 @@
     "name": "sum", 
     "type": "skProc", 
     "description": "computes the sum of the elements in <cite>x</cite>. If <cite>x</cite> is empty, 0 is returned.", 
-    "code": "proc sum*[T](x: openarray[T]): T {.noSideEffect.}"
+    "code": "proc sum*[T](x: openArray[T]): T {.noSideEffect.}"
   }, 
   {
     "name": "mean", 
     "type": "skProc", 
     "description": "computes the mean of the elements in <cite>x</cite>. If <cite>x</cite> is empty, NaN is returned.", 
-    "code": "proc mean*(x: openarray[float]): float {.noSideEffect.}"
+    "code": "proc mean*(x: openArray[float]): float {.noSideEffect.}"
   }, 
   {
     "name": "variance", 
     "type": "skProc", 
     "description": "computes the variance of the elements in <cite>x</cite>. If <cite>x</cite> is empty, NaN is returned.", 
-    "code": "proc variance*(x: openarray[float]): float {.noSideEffect.}"
+    "code": "proc variance*(x: openArray[float]): float {.noSideEffect.}"
   }, 
   {
     "name": "random", 
     "type": "skProc", 
     "description": "returns a random number in the range 0..max-1. The sequence of random number is always the same, unless <cite>randomize</cite> is called which initializes the random number generator with a &quot;random&quot; number, i.e. a tickcount.", 
-    "code": "proc random*(max: int): int"
+    "code": "proc random*(max: int): int {.gcsafe.}"
   }, 
   {
     "name": "random", 
     "type": "skProc", 
-    "description": "returns a random number in the range 0..&lt;max. The sequence of random number is always the same, unless <cite>randomize</cite> is called which initializes the random number generator with a &quot;random&quot; number, i.e. a tickcount. This is currently not supported for windows.", 
-    "code": "proc random*(max: float): float"
+    "description": "returns a random number in the range 0..&lt;max. The sequence of random number is always the same, unless <cite>randomize</cite> is called which initializes the random number generator with a &quot;random&quot; number, i.e. a tickcount. This has a 16-bit resolution on windows and a 48-bit resolution on other platforms.", 
+    "code": "proc random*(max: float): float {.gcsafe.}"
   }, 
   {
     "name": "randomize", 
     "type": "skProc", 
     "description": "initializes the random number generator with a &quot;random&quot; number, i.e. a tickcount. Note: Does nothing for the JavaScript target, as JavaScript does not support this.", 
-    "code": "proc randomize*()"
+    "code": "proc randomize*() {.gcsafe.}"
   }, 
   {
     "name": "randomize", 
     "type": "skProc", 
     "description": "initializes the random number generator with a specific seed. Note: Does nothing for the JavaScript target, as JavaScript does not support this.", 
-    "code": "proc randomize*(seed: int)"
+    "code": "proc randomize*(seed: int) {.gcsafe.}"
   }, 
   {
     "name": "sqrt", 
@@ -124,7 +124,7 @@
     "name": "frexp", 
     "type": "skProc", 
     "description": "Split a number into mantissa and exponent. <cite>frexp</cite> calculates the mantissa m (a float greater than or equal to 0.5 and less than 1) and the integer value n such that <cite>x</cite> (the original float value) equals m * 2**n. frexp stores n in <cite>exponent</cite> and returns m.", 
-    "code": "proc frexp*(x: float; exponent: var int): float {.importc: \"frexp\", \u000D\u000A    header: \"<math.h>\".}"
+    "code": "proc frexp*(x: float; exponent: var int): float {.importc: \"frexp\", \u000A    header: \"<math.h>\".}"
   }, 
   {
     "name": "round", 
@@ -223,36 +223,37 @@
   {
     "name": "random", 
     "type": "skProc", 
-    "code": "proc random*[T](x: TSlice[T]): T"
+    "description": "For a slice <cite>a .. b</cite> returns a value in the range <cite>a .. b-1</cite>.", 
+    "code": "proc random*[T](x: Slice[T]): T"
   }, 
   {
-    "name": "TRunningStat", 
+    "name": "RunningStat", 
     "type": "skType", 
     "description": "an accumulator for statistical data", 
-    "code": "TRunningStat* {.pure, final.} = object \u000D\u000A  n*: int                     ## number of pushed data\u000D\u000A  sum*, min*, max*, mean*: float ## self-explaining\u000D\u000A  oldM, oldS, newS: float\u000D\u000A"
+    "code": "RunningStat* = object \u000A  n*: int                     ## number of pushed data\u000A  sum*, min*, max*, mean*: float ## self-explaining\u000A  oldM, oldS, newS: float\u000A"
   }, 
   {
     "name": "push", 
     "type": "skProc", 
     "description": "pushes a value <cite>x</cite> for processing", 
-    "code": "proc push*(s: var TRunningStat; x: float)"
+    "code": "proc push*(s: var RunningStat; x: float)"
   }, 
   {
     "name": "push", 
     "type": "skProc", 
     "description": "pushes a value <cite>x</cite> for processing. <cite>x</cite> is simply converted to <tt class=\"docutils literal\"><span class=\"pre\">float</span></tt> and the other push operation is called.", 
-    "code": "proc push*(s: var TRunningStat; x: int)"
+    "code": "proc push*(s: var RunningStat; x: int)"
   }, 
   {
     "name": "variance", 
     "type": "skProc", 
     "description": "computes the current variance of <cite>s</cite>", 
-    "code": "proc variance*(s: TRunningStat): float"
+    "code": "proc variance*(s: RunningStat): float"
   }, 
   {
     "name": "standardDeviation", 
     "type": "skProc", 
     "description": "computes the current standard deviation of <cite>s</cite>", 
-    "code": "proc standardDeviation*(s: TRunningStat): float"
+    "code": "proc standardDeviation*(s: RunningStat): float"
   }
 ]

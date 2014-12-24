@@ -5,9 +5,9 @@
     "code": "TPartitionInfo* = tuple[FreeSpace, TotalSpace: Tfiletime]"
   }, 
   {
-    "name": "GlobalMemoryStatusEx", 
+    "name": "globalMemoryStatusEx", 
     "type": "skProc", 
-    "code": "proc GlobalMemoryStatusEx*(lpBuffer: var TMEMORYSTATUSEX) {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc: \"GlobalMemoryStatusEx\".}"
+    "code": "proc globalMemoryStatusEx*(lpBuffer: var TMEMORYSTATUSEX) {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"GlobalMemoryStatusEx\".}"
   }, 
   {
     "name": "getMemoryInfo", 
@@ -16,19 +16,19 @@
     "code": "proc getMemoryInfo*(): TMemoryInfo"
   }, 
   {
-    "name": "GetVersionEx", 
+    "name": "getVersionEx", 
     "type": "skProc", 
-    "code": "proc GetVersionEx*(lpVersionInformation: var TOSVERSIONINFOEX): WINBOOL {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"GetVersionExA\".}"
+    "code": "proc getVersionEx*(lpVersionInformation: var TOSVERSIONINFOEX): WINBOOL {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"GetVersionExA\".}"
   }, 
   {
-    "name": "GetProcAddress", 
+    "name": "getProcAddress", 
     "type": "skProc", 
-    "code": "proc GetProcAddress*(hModule: int; lpProcName: cstring): pointer {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc: \"GetProcAddress\".}"
+    "code": "proc getProcAddress*(hModule: int; lpProcName: cstring): pointer {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"GetProcAddress\".}"
   }, 
   {
-    "name": "GetModuleHandleA", 
+    "name": "getModuleHandleA", 
     "type": "skProc", 
-    "code": "proc GetModuleHandleA*(lpModuleName: cstring): int {.stdcall, \u000D\u000A    dynlib: \"kernel32\", importc.}"
+    "code": "proc getModuleHandleA*(lpModuleName: cstring): int {.stdcall, \u000A    dynlib: \"kernel32\", importc: \"GetModuleHandleA\".}"
   }, 
   {
     "name": "getVersionInfo", 
@@ -43,9 +43,9 @@
     "code": "proc getProductInfo*(majorVersion, minorVersion, SPMajorVersion, SPMinorVersion: int): int"
   }, 
   {
-    "name": "GetSystemInfo", 
+    "name": "getSystemInfo", 
     "type": "skProc", 
-    "code": "proc GetSystemInfo*(lpSystemInfo: LPSYSTEM_INFO) {.stdcall, dynlib: \"kernel32\", \u000D\u000A    importc: \"GetSystemInfo\".}"
+    "code": "proc getSystemInfo*(lpSystemInfo: LPSYSTEM_INFO) {.stdcall, dynlib: \"kernel32\", \u000A    importc: \"GetSystemInfo\".}"
   }, 
   {
     "name": "getSystemInfo", 
@@ -54,9 +54,9 @@
     "code": "proc getSystemInfo*(): TSYSTEM_INFO"
   }, 
   {
-    "name": "GetSystemMetrics", 
+    "name": "getSystemMetrics", 
     "type": "skProc", 
-    "code": "proc GetSystemMetrics*(nIndex: int32): int32 {.stdcall, dynlib: \"user32\", \u000D\u000A    importc: \"GetSystemMetrics\".}"
+    "code": "proc getSystemMetrics*(nIndex: int32): int32 {.stdcall, dynlib: \"user32\", \u000A    importc: \"GetSystemMetrics\".}"
   }, 
   {
     "name": "`$`", 
@@ -67,12 +67,12 @@
   {
     "name": "getFileSize", 
     "type": "skProc", 
-    "code": "proc getFileSize*(file: string): biggestInt"
+    "code": "proc getFileSize*(file: string): BiggestInt"
   }, 
   {
-    "name": "GetDiskFreeSpaceEx", 
+    "name": "getDiskFreeSpaceEx", 
     "type": "skProc", 
-    "code": "proc GetDiskFreeSpaceEx*(lpDirectoryName: cstring; lpFreeBytesAvailableToCaller, \u000D\u000A    lpTotalNumberOfBytes, lpTotalNumberOfFreeBytes: var TFiletime): WINBOOL {.\u000D\u000A    stdcall, dynlib: \"kernel32\", importc: \"GetDiskFreeSpaceExA\".}"
+    "code": "proc getDiskFreeSpaceEx*(lpDirectoryName: cstring; lpFreeBytesAvailableToCaller, \u000A    lpTotalNumberOfBytes, lpTotalNumberOfFreeBytes: var TFiletime): WINBOOL {.\u000A    stdcall, dynlib: \"kernel32\", importc: \"GetDiskFreeSpaceExA\".}"
   }, 
   {
     "name": "getPartitionInfo", 

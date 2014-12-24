@@ -1,6 +1,6 @@
 [
   {
-    "comment": "This module implements efficient computations of hash values for diverse\u000D\u000A## Nimrod types."
+    "comment": "This module implements efficient computations of hash values for diverse\u000A## Nim types. All the procs are based on these two building blocks: the `!&\u000A## proc <#!&>`_ used to start or mix a hash value, and the `!$ proc <#!$>`_\u000A## used to *finish* the hash value.  If you want to implement hash procs for\u000A## your custom types you will end up writing the following kind of skeleton of\u000A## code:\u000A##\u000A## .. code-block:: Nim\u000A##  proc hash(x: Something): THash =\u000A##    ## Computes a THash from `x`.\u000A##    var h: THash = 0\u000A##    # Iterate over parts of `x`.\u000A##    for xAtom in x:\u000A##      # Mix the atom with the partial hash.\u000A##      h = h !& xAtom\u000A##    # Finish the hash.\u000A##    result = !$h\u000A##\u000A## If your custom types contain fields for which there already is a hash proc,\u000A## like for example objects made up of ``strings``, you can simply hash\u000A## together the hash value of the individual fields:\u000A##\u000A## .. code-block:: Nim\u000A##  proc hash(x: Something): THash =\u000A##    ## Computes a THash from `x`.\u000A##    var h: THash = 0\u000A##    h = h &! hash(x.foo)\u000A##    h = h &! hash(x.bar)\u000A##    result = !$h"
   }, 
   {
     "name": "THash", 
@@ -24,13 +24,13 @@
     "name": "hashData", 
     "type": "skProc", 
     "description": "hashes an array of bytes of size <cite>size</cite>", 
-    "code": "proc hashData*(Data: Pointer; Size: int): THash"
+    "code": "proc hashData*(data: pointer; size: int): THash"
   }, 
   {
     "name": "hash", 
     "type": "skProc", 
     "description": "efficient hashing of pointers", 
-    "code": "proc hash*(x: Pointer): THash {.inline.}"
+    "code": "proc hash*(x: pointer): THash {.inline.}"
   }, 
   {
     "name": "hash", 
@@ -88,6 +88,11 @@
   {
     "name": "hash", 
     "type": "skProc", 
-    "code": "proc hash*[A](x: openarray[A]): THash"
+    "code": "proc hash*[A](x: openArray[A]): THash"
+  }, 
+  {
+    "name": "hash", 
+    "type": "skProc", 
+    "code": "proc hash*[A](x: set[A]): THash"
   }
 ]

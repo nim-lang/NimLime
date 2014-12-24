@@ -3,9 +3,9 @@
     "comment": "Interface to the zlib http://www.zlib.net/ compression library."
   }, 
   {
-    "name": "gzFile", 
+    "name": "GzFile", 
     "type": "skType", 
-    "code": "gzFile* = pointer"
+    "code": "GzFile* = pointer"
   }, 
   {
     "name": "Z_NULL", 
@@ -20,182 +20,183 @@
   {
     "name": "deflate", 
     "type": "skProc", 
-    "code": "proc deflate*(strm: var TZStream; flush: int32): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"deflate\".}"
+    "code": "proc deflate*(strm: var TZStream; flush: int32): int32 {.cdecl, dynlib: libz, \u000A    importc: \"deflate\".}"
   }, 
   {
     "name": "deflateEnd", 
     "type": "skProc", 
-    "code": "proc deflateEnd*(strm: var TZStream): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"deflateEnd\".}"
+    "code": "proc deflateEnd*(strm: var TZStream): int32 {.cdecl, dynlib: libz, \u000A    importc: \"deflateEnd\".}"
   }, 
   {
     "name": "inflate", 
     "type": "skProc", 
-    "code": "proc inflate*(strm: var TZStream; flush: int32): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"inflate\".}"
+    "code": "proc inflate*(strm: var TZStream; flush: int32): int32 {.cdecl, dynlib: libz, \u000A    importc: \"inflate\".}"
   }, 
   {
     "name": "inflateEnd", 
     "type": "skProc", 
-    "code": "proc inflateEnd*(strm: var TZStream): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"inflateEnd\".}"
+    "code": "proc inflateEnd*(strm: var TZStream): int32 {.cdecl, dynlib: libz, \u000A    importc: \"inflateEnd\".}"
   }, 
   {
     "name": "deflateSetDictionary", 
     "type": "skProc", 
-    "code": "proc deflateSetDictionary*(strm: var TZStream; dictionary: pbytef; \u000D\u000A                           dictLength: uInt): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"deflateSetDictionary\".}"
+    "code": "proc deflateSetDictionary*(strm: var TZStream; dictionary: Pbytef; \u000A                           dictLength: Uint): int32 {.cdecl, dynlib: libz, \u000A    importc: \"deflateSetDictionary\".}"
   }, 
   {
     "name": "deflateCopy", 
     "type": "skProc", 
-    "code": "proc deflateCopy*(dest, source: var TZstream): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"deflateCopy\".}"
+    "code": "proc deflateCopy*(dest, source: var TZStream): int32 {.cdecl, dynlib: libz, \u000A    importc: \"deflateCopy\".}"
   }, 
   {
     "name": "deflateReset", 
     "type": "skProc", 
-    "code": "proc deflateReset*(strm: var TZStream): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"deflateReset\".}"
+    "code": "proc deflateReset*(strm: var TZStream): int32 {.cdecl, dynlib: libz, \u000A    importc: \"deflateReset\".}"
   }, 
   {
     "name": "deflateParams", 
     "type": "skProc", 
-    "code": "proc deflateParams*(strm: var TZStream; level: int32; strategy: int32): int32 {.\u000D\u000A    cdecl, dynlib: libz, importc: \"deflateParams\".}"
+    "code": "proc deflateParams*(strm: var TZStream; level: int32; strategy: int32): int32 {.\u000A    cdecl, dynlib: libz, importc: \"deflateParams\".}"
   }, 
   {
     "name": "inflateSetDictionary", 
     "type": "skProc", 
-    "code": "proc inflateSetDictionary*(strm: var TZStream; dictionary: pbytef; \u000D\u000A                           dictLength: uInt): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"inflateSetDictionary\".}"
+    "code": "proc inflateSetDictionary*(strm: var TZStream; dictionary: Pbytef; \u000A                           dictLength: Uint): int32 {.cdecl, dynlib: libz, \u000A    importc: \"inflateSetDictionary\".}"
   }, 
   {
     "name": "inflateSync", 
     "type": "skProc", 
-    "code": "proc inflateSync*(strm: var TZStream): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"inflateSync\".}"
+    "code": "proc inflateSync*(strm: var TZStream): int32 {.cdecl, dynlib: libz, \u000A    importc: \"inflateSync\".}"
   }, 
   {
     "name": "inflateReset", 
     "type": "skProc", 
-    "code": "proc inflateReset*(strm: var TZStream): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"inflateReset\".}"
+    "code": "proc inflateReset*(strm: var TZStream): int32 {.cdecl, dynlib: libz, \u000A    importc: \"inflateReset\".}"
   }, 
   {
     "name": "compress", 
     "type": "skProc", 
-    "code": "proc compress*(dest: pbytef; destLen: puLongf; source: pbytef; sourceLen: uLong): cint {.\u000D\u000A    cdecl, dynlib: libz, importc: \"compress\".}"
+    "code": "proc compress*(dest: Pbytef; destLen: Pulongf; source: Pbytef; sourceLen: Ulong): cint {.\u000A    cdecl, dynlib: libz, importc: \"compress\".}"
   }, 
   {
     "name": "compress2", 
     "type": "skProc", 
-    "code": "proc compress2*(dest: pbytef; destLen: puLongf; source: pbytef; \u000D\u000A                sourceLen: uLong; level: cint): cint {.cdecl, dynlib: libz, \u000D\u000A    importc: \"compress2\".}"
+    "code": "proc compress2*(dest: Pbytef; destLen: Pulongf; source: Pbytef; \u000A                sourceLen: Ulong; level: cint): cint {.cdecl, dynlib: libz, \u000A    importc: \"compress2\".}"
   }, 
   {
     "name": "uncompress", 
     "type": "skProc", 
-    "code": "proc uncompress*(dest: pbytef; destLen: puLongf; source: pbytef; \u000D\u000A                 sourceLen: uLong): cint {.cdecl, dynlib: libz, \u000D\u000A    importc: \"uncompress\".}"
+    "code": "proc uncompress*(dest: Pbytef; destLen: Pulongf; source: Pbytef; \u000A                 sourceLen: Ulong): cint {.cdecl, dynlib: libz, \u000A    importc: \"uncompress\".}"
   }, 
   {
     "name": "compressBound", 
     "type": "skProc", 
-    "code": "proc compressBound*(sourceLen: uLong): uLong {.cdecl, dynlib: libz, importc.}"
+    "code": "proc compressBound*(sourceLen: Ulong): Ulong {.cdecl, dynlib: libz, importc.}"
   }, 
   {
     "name": "gzopen", 
     "type": "skProc", 
-    "code": "proc gzopen*(path: cstring; mode: cstring): gzFile {.cdecl, dynlib: libz, \u000D\u000A    importc: \"gzopen\".}"
+    "code": "proc gzopen*(path: cstring; mode: cstring): GzFile {.cdecl, dynlib: libz, \u000A    importc: \"gzopen\".}"
   }, 
   {
     "name": "gzdopen", 
     "type": "skProc", 
-    "code": "proc gzdopen*(fd: int32; mode: cstring): gzFile {.cdecl, dynlib: libz, \u000D\u000A    importc: \"gzdopen\".}"
+    "code": "proc gzdopen*(fd: int32; mode: cstring): GzFile {.cdecl, dynlib: libz, \u000A    importc: \"gzdopen\".}"
   }, 
   {
     "name": "gzsetparams", 
     "type": "skProc", 
-    "code": "proc gzsetparams*(thefile: gzFile; level: int32; strategy: int32): int32 {.\u000D\u000A    cdecl, dynlib: libz, importc: \"gzsetparams\".}"
+    "code": "proc gzsetparams*(thefile: GzFile; level: int32; strategy: int32): int32 {.\u000A    cdecl, dynlib: libz, importc: \"gzsetparams\".}"
   }, 
   {
     "name": "gzread", 
     "type": "skProc", 
-    "code": "proc gzread*(thefile: gzFile; buf: pointer; length: int): int32 {.cdecl, \u000D\u000A    dynlib: libz, importc: \"gzread\".}"
+    "code": "proc gzread*(thefile: GzFile; buf: pointer; length: int): int32 {.cdecl, \u000A    dynlib: libz, importc: \"gzread\".}"
   }, 
   {
     "name": "gzwrite", 
     "type": "skProc", 
-    "code": "proc gzwrite*(thefile: gzFile; buf: pointer; length: int): int32 {.cdecl, \u000D\u000A    dynlib: libz, importc: \"gzwrite\".}"
+    "code": "proc gzwrite*(thefile: GzFile; buf: pointer; length: int): int32 {.cdecl, \u000A    dynlib: libz, importc: \"gzwrite\".}"
   }, 
   {
     "name": "gzprintf", 
     "type": "skProc", 
-    "code": "proc gzprintf*(thefile: gzFile; format: pbytef): int32 {.varargs, cdecl, \u000D\u000A    dynlib: libz, importc: \"gzprintf\".}"
+    "code": "proc gzprintf*(thefile: GzFile; format: Pbytef): int32 {.varargs, cdecl, \u000A    dynlib: libz, importc: \"gzprintf\".}"
   }, 
   {
     "name": "gzputs", 
     "type": "skProc", 
-    "code": "proc gzputs*(thefile: gzFile; s: pbytef): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"gzputs\".}"
+    "code": "proc gzputs*(thefile: GzFile; s: Pbytef): int32 {.cdecl, dynlib: libz, \u000A    importc: \"gzputs\".}"
   }, 
   {
     "name": "gzgets", 
     "type": "skProc", 
-    "code": "proc gzgets*(thefile: gzFile; buf: pbytef; length: int32): pbytef {.cdecl, \u000D\u000A    dynlib: libz, importc: \"gzgets\".}"
+    "code": "proc gzgets*(thefile: GzFile; buf: Pbytef; length: int32): Pbytef {.cdecl, \u000A    dynlib: libz, importc: \"gzgets\".}"
   }, 
   {
     "name": "gzputc", 
     "type": "skProc", 
-    "code": "proc gzputc*(thefile: gzFile; c: char): char {.cdecl, dynlib: libz, \u000D\u000A    importc: \"gzputc\".}"
+    "code": "proc gzputc*(thefile: GzFile; c: char): char {.cdecl, dynlib: libz, \u000A    importc: \"gzputc\".}"
   }, 
   {
     "name": "gzgetc", 
     "type": "skProc", 
-    "code": "proc gzgetc*(thefile: gzFile): char {.cdecl, dynlib: libz, importc: \"gzgetc\".}"
+    "code": "proc gzgetc*(thefile: GzFile): char {.cdecl, dynlib: libz, importc: \"gzgetc\".}"
   }, 
   {
     "name": "gzflush", 
     "type": "skProc", 
-    "code": "proc gzflush*(thefile: gzFile; flush: int32): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"gzflush\".}"
+    "code": "proc gzflush*(thefile: GzFile; flush: int32): int32 {.cdecl, dynlib: libz, \u000A    importc: \"gzflush\".}"
   }, 
   {
     "name": "gzseek", 
     "type": "skProc", 
-    "code": "proc gzseek*(thefile: gzFile; offset: z_off_t; whence: int32): z_off_t {.cdecl, \u000D\u000A    dynlib: libz, importc: \"gzseek\".}"
+    "code": "proc gzseek*(thefile: GzFile; offset: ZOffT; whence: int32): ZOffT {.cdecl, \u000A    dynlib: libz, importc: \"gzseek\".}"
   }, 
   {
     "name": "gzrewind", 
     "type": "skProc", 
-    "code": "proc gzrewind*(thefile: gzFile): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"gzrewind\".}"
+    "code": "proc gzrewind*(thefile: GzFile): int32 {.cdecl, dynlib: libz, \u000A    importc: \"gzrewind\".}"
   }, 
   {
     "name": "gztell", 
     "type": "skProc", 
-    "code": "proc gztell*(thefile: gzFile): z_off_t {.cdecl, dynlib: libz, importc: \"gztell\".}"
+    "code": "proc gztell*(thefile: GzFile): ZOffT {.cdecl, dynlib: libz, importc: \"gztell\".}"
   }, 
   {
     "name": "gzeof", 
     "type": "skProc", 
-    "code": "proc gzeof*(thefile: gzFile): int {.cdecl, dynlib: libz, importc: \"gzeof\".}"
+    "code": "proc gzeof*(thefile: GzFile): int {.cdecl, dynlib: libz, importc: \"gzeof\".}"
   }, 
   {
     "name": "gzclose", 
     "type": "skProc", 
-    "code": "proc gzclose*(thefile: gzFile): int32 {.cdecl, dynlib: libz, importc: \"gzclose\".}"
+    "code": "proc gzclose*(thefile: GzFile): int32 {.cdecl, dynlib: libz, importc: \"gzclose\".}"
   }, 
   {
     "name": "gzerror", 
     "type": "skProc", 
-    "code": "proc gzerror*(thefile: gzFile; errnum: var int32): pbytef {.cdecl, dynlib: libz, \u000D\u000A    importc: \"gzerror\".}"
+    "code": "proc gzerror*(thefile: GzFile; errnum: var int32): Pbytef {.cdecl, dynlib: libz, \u000A    importc: \"gzerror\".}"
   }, 
   {
     "name": "adler32", 
     "type": "skProc", 
-    "code": "proc adler32*(adler: uLong; buf: pbytef; length: uInt): uLong {.cdecl, \u000D\u000A    dynlib: libz, importc: \"adler32\".}"
+    "description": "<strong>Warning</strong>: Adler-32 requires at least a few hundred bytes to get rolling.", 
+    "code": "proc adler32*(adler: Ulong; buf: Pbytef; length: Uint): Ulong {.cdecl, \u000A    dynlib: libz, importc: \"adler32\".}"
   }, 
   {
     "name": "crc32", 
     "type": "skProc", 
-    "code": "proc crc32*(crc: uLong; buf: pbytef; length: uInt): uLong {.cdecl, dynlib: libz, \u000D\u000A    importc: \"crc32\".}"
+    "code": "proc crc32*(crc: Ulong; buf: Pbytef; length: Uint): Ulong {.cdecl, dynlib: libz, \u000A    importc: \"crc32\".}"
   }, 
   {
     "name": "deflateInitu", 
     "type": "skProc", 
-    "code": "proc deflateInitu*(strm: var TZStream; level: int32; version: cstring; \u000D\u000A                   stream_size: int32): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"deflateInit_\".}"
+    "code": "proc deflateInitu*(strm: var TZStream; level: int32; version: cstring; \u000A                   streamSize: int32): int32 {.cdecl, dynlib: libz, \u000A    importc: \"deflateInit_\".}"
   }, 
   {
     "name": "inflateInitu", 
     "type": "skProc", 
-    "code": "proc inflateInitu*(strm: var TZStream; version: cstring; stream_size: int32): int32 {.\u000D\u000A    cdecl, dynlib: libz, importc: \"inflateInit_\".}"
+    "code": "proc inflateInitu*(strm: var TZStream; version: cstring; streamSize: int32): int32 {.\u000A    cdecl, dynlib: libz, importc: \"inflateInit_\".}"
   }, 
   {
     "name": "deflateInit", 
@@ -210,17 +211,17 @@
   {
     "name": "deflateInit2u", 
     "type": "skProc", 
-    "code": "proc deflateInit2u*(strm: var TZStream; level: int32; `method`: int32; \u000D\u000A                    windowBits: int32; memLevel: int32; strategy: int32; \u000D\u000A                    version: cstring; stream_size: int32): int32 {.cdecl, \u000D\u000A    dynlib: libz, importc: \"deflateInit2_\".}"
+    "code": "proc deflateInit2u*(strm: var TZStream; level: int32; `method`: int32; \u000A                    windowBits: int32; memLevel: int32; strategy: int32; \u000A                    version: cstring; streamSize: int32): int32 {.cdecl, \u000A    dynlib: libz, importc: \"deflateInit2_\".}"
   }, 
   {
     "name": "inflateInit2u", 
     "type": "skProc", 
-    "code": "proc inflateInit2u*(strm: var TZStream; windowBits: int32; version: cstring; \u000D\u000A                    stream_size: int32): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"inflateInit2_\".}"
+    "code": "proc inflateInit2u*(strm: var TZStream; windowBits: int32; version: cstring; \u000A                    streamSize: int32): int32 {.cdecl, dynlib: libz, \u000A    importc: \"inflateInit2_\".}"
   }, 
   {
     "name": "deflateInit2", 
     "type": "skProc", 
-    "code": "proc deflateInit2*(strm: var TZStream; \u000D\u000A                   level, `method`, windowBits, memLevel, strategy: int32): int32"
+    "code": "proc deflateInit2*(strm: var TZStream; \u000A                   level, `method`, windowBits, memLevel, strategy: int32): int32"
   }, 
   {
     "name": "inflateInit2", 
@@ -235,21 +236,33 @@
   {
     "name": "inflateSyncPoint", 
     "type": "skProc", 
-    "code": "proc inflateSyncPoint*(z: PZstream): int32 {.cdecl, dynlib: libz, \u000D\u000A    importc: \"inflateSyncPoint\".}"
+    "code": "proc inflateSyncPoint*(z: PZstream): int32 {.cdecl, dynlib: libz, \u000A    importc: \"inflateSyncPoint\".}"
   }, 
   {
-    "name": "get_crc_table", 
+    "name": "getCrcTable", 
     "type": "skProc", 
-    "code": "proc get_crc_table*(): pointer {.cdecl, dynlib: libz, importc: \"get_crc_table\".}"
+    "code": "proc getCrcTable*(): pointer {.cdecl, dynlib: libz, importc: \"get_crc_table\".}"
   }, 
   {
     "name": "zlibAllocMem", 
     "type": "skProc", 
-    "code": "proc zlibAllocMem*(AppData: Pointer; Items, Size: int): Pointer {.cdecl.}"
+    "code": "proc zlibAllocMem*(appData: pointer; items, size: int): pointer {.cdecl.}"
   }, 
   {
     "name": "zlibFreeMem", 
     "type": "skProc", 
-    "code": "proc zlibFreeMem*(AppData, `Block`: Pointer) {.cdecl.}"
+    "code": "proc zlibFreeMem*(appData, `block`: pointer) {.cdecl.}"
+  }, 
+  {
+    "name": "uncompress", 
+    "type": "skProc", 
+    "description": "<p>Given a deflated cstring returns its inflated version.</p>\u000A<p>Passing a nil cstring will crash this proc in release mode and assert in debug mode.</p>\u000A<p>Returns nil on problems. Failure is a very loose concept, it could be you passing a non deflated string, or it could mean not having enough memory for the inflated version.</p>\u000A<p>The uncompression algorithm is based on <a class=\"reference external\" href=\"http://stackoverflow.com/questions/17820664\">http://stackoverflow.com/questions/17820664</a> but does ignore some of the original signed/unsigned checks, so may fail with big chunks of data exceeding the positive size of an int32. The algorithm can deal with concatenated deflated values properly.</p>\u000A", 
+    "code": "proc uncompress*(sourceBuf: cstring; sourceLen: int): string"
+  }, 
+  {
+    "name": "inflate", 
+    "type": "skProc", 
+    "description": "<p>Convenience proc which inflates a string containing compressed data.</p>\u000A<p>Passing a nil string will crash this proc in release mode and assert in debug mode. It is ok to pass a buffer which doesn't contain deflated data, in this case the proc won't modify the buffer.</p>\u000A<p>Returns true if <cite>buffer</cite> was successfully inflated.</p>\u000A", 
+    "code": "proc inflate*(buffer: var string): bool {.discardable.}"
   }
 ]

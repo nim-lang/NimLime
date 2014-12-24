@@ -1,6 +1,6 @@
 [
   {
-    "comment": "This module implements basic arithmetic operators for unsigned integers.\u000D\u000A## To discourage users from using ``unsigned``, it's not part of ``system``,\u000D\u000A## but an extra import."
+    "comment": "This module implements basic arithmetic operators for unsigned integers.\u000A## To discourage users from using ``unsigned``, it's not part of ``system``,\u000A## but an extra import."
   }, 
   {
     "name": "`not`", 

@@ -6,18 +6,18 @@
     "name": "parseCookies", 
     "type": "skProc", 
     "description": "parses cookies into a string table.", 
-    "code": "proc parseCookies*(s: string): PStringTable"
+    "code": "proc parseCookies*(s: string): StringTableRef"
   }, 
   {
     "name": "setCookie", 
     "type": "skProc", 
     "description": "Creates a command in the format of <tt class=\"docutils literal\"><span class=\"pre\">Set-Cookie: key=value; Domain=...; ...</span></tt>", 
-    "code": "proc setCookie*(key, value: string; domain = \"\"; path = \"\"; expires = \"\"; \u000D\u000A                noName = false): string"
+    "code": "proc setCookie*(key, value: string; domain = \"\"; path = \"\"; expires = \"\"; \u000A                noName = false; secure = false; httpOnly = false): string"
   }, 
   {
     "name": "setCookie", 
     "type": "skProc", 
-    "description": "<p>Creates a command in the format of <tt class=\"docutils literal\"><span class=\"pre\">Set-Cookie: key=value; Domain=...; ...</span></tt></p>\u000D\u000A<p><strong>Note:</strong> UTC is assumed as the timezone for <tt class=\"docutils literal\"><span class=\"pre\">expires</span></tt>.</p>\u000D\u000A", 
-    "code": "proc setCookie*(key, value: string; expires: TTimeInfo; domain = \"\"; path = \"\"; \u000D\u000A                noName = false): string"
+    "description": "<p>Creates a command in the format of <tt class=\"docutils literal\"><span class=\"pre\">Set-Cookie: key=value; Domain=...; ...</span></tt></p>\u000A<p><strong>Note:</strong> UTC is assumed as the timezone for <tt class=\"docutils literal\"><span class=\"pre\">expires</span></tt>.  </p>\u000A", 
+    "code": "proc setCookie*(key, value: string; expires: TimeInfo; domain = \"\"; path = \"\"; \u000A                noName = false; secure = false; httpOnly = false): string"
   }
 ]

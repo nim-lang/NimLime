@@ -1,0 +1,94 @@
+[
+  {
+    "comment": "This module implements a high-level asynchronous sockets API based on the\u000A## asynchronous dispatcher defined in the ``asyncdispatch`` module.\u000A##\u000A## SSL\u000A## ---\u000A##\u000A## SSL can be enabled by compiling with the ``-d:ssl`` flag.\u000A##\u000A## You must create a new SSL context with the ``newContext`` function defined\u000A## in the ``net`` module. You may then call ``wrapSocket`` on your socket using\u000A## the newly created SSL context to get an SSL socket.\u000A##\u000A## Examples\u000A## --------\u000A##\u000A## Chat server\u000A## ^^^^^^^^^^^\u000A## \u000A## The following example demonstrates a simple chat server.\u000A##\u000A## .. code-block::nim\u000A##\u000A##   import asyncnet, asyncdispatch\u000A##\u000A##   var clients {.threadvar.}: seq[AsyncSocket]\u000A##\u000A##   proc processClient(client: AsyncSocket) {.async.} =\u000A##     while true:\u000A##       let line = await client.recvLine()\u000A##       for c in clients:\u000A##         await c.send(line & \"\\c\\L\")\u000A##\u000A##   proc serve() {.async.} =\u000A##     clients = @[]\u000A##     var server = newAsyncSocket()\u000A##     server.bindAddr(Port(12345))\u000A##     server.listen()\u000A##\u000A##     while true:\u000A##       let client = await server.accept()\u000A##       clients.add client\u000A##\u000A##       asyncCheck processClient(client)\u000A##\u000A##   asyncCheck serve()\u000A##   runForever()\u000A##"
+  }, 
+  {
+    "name": "AsyncSocket", 
+    "type": "skType", 
+    "code": "AsyncSocket* = ref AsyncSocketDesc"
+  }, 
+  {
+    "name": "newAsyncSocket", 
+    "type": "skProc", 
+    "description": "Creates a new asynchronous socket.", 
+    "code": "proc newAsyncSocket*(domain: Domain = AF_INET; typ: SockType = SOCK_STREAM; \u000A                     protocol: Protocol = IPPROTO_TCP; buffered = true): AsyncSocket"
+  }, 
+  {
+    "name": "newAsyncSocket", 
+    "type": "skProc", 
+    "description": "Creates a new asynchronous socket.", 
+    "code": "proc newAsyncSocket*(domain, typ, protocol: cint; buffered = true): AsyncSocket"
+  }, 
+  {
+    "name": "connect", 
+    "type": "skProc", 
+    "description": "<p>Connects <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> to server at <tt class=\"docutils literal\"><span class=\"pre\">address:port</span></tt>.</p>\u000A<p>Returns a <tt class=\"docutils literal\"><span class=\"pre\">Future</span></tt> which will complete when the connection succeeds or an error occurs.</p>\u000A", 
+    "code": "proc connect*(socket: AsyncSocket; address: string; port: Port; af = AF_INET) {.\u000A    async.}"
+  }, 
+  {
+    "name": "recv", 
+    "type": "skProc", 
+    "description": "<p>Reads <strong>up to</strong> <tt class=\"docutils literal\"><span class=\"pre\">size</span></tt> bytes from <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt>.</p>\u000A<p>For buffered sockets this function will attempt to read all the requested data. It will read this data in <tt class=\"docutils literal\"><span class=\"pre\">BufferSize</span></tt> chunks.</p>\u000A<p>For unbuffered sockets this function makes no effort to read all the data requested. It will return as much data as the operating system gives it.</p>\u000A<p>If socket is disconnected during the recv operation then the future may complete with only a part of the requested data.</p>\u000A<p>If socket is disconnected and no data is available to be read then the future will complete with a value of <tt class=\"docutils literal\"><span class=\"pre\">&quot;&quot;</span></tt>.</p>\u000A", 
+    "code": "proc recv*(socket: AsyncSocket; size: int; flags = {SocketFlag.SafeDisconn}): Future[\u000A    string] {.async.}"
+  }, 
+  {
+    "name": "send", 
+    "type": "skProc", 
+    "description": "Sends <tt class=\"docutils literal\"><span class=\"pre\">data</span></tt> to <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt>. The returned future will complete once all data has been sent.", 
+    "code": "proc send*(socket: AsyncSocket; data: string; flags = {SocketFlag.SafeDisconn}) {.\u000A    async.}"
+  }, 
+  {
+    "name": "acceptAddr", 
+    "type": "skProc", 
+    "description": "Accepts a new connection. Returns a future containing the client socket corresponding to that connection and the remote address of the client. The future will complete when the connection is successfully accepted.", 
+    "code": "proc acceptAddr*(socket: AsyncSocket; flags = {SocketFlag.SafeDisconn}): Future[\u000A    tuple[address: string, client: AsyncSocket]]"
+  }, 
+  {
+    "name": "accept", 
+    "type": "skProc", 
+    "description": "Accepts a new connection. Returns a future containing the client socket corresponding to that connection. The future will complete when the connection is successfully accepted.", 
+    "code": "proc accept*(socket: AsyncSocket; flags = {SocketFlag.SafeDisconn}): Future[\u000A    AsyncSocket]"
+  }, 
+  {
+    "name": "recvLine", 
+    "type": "skProc", 
+    "description": "<p>Reads a line of data from <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt>. Returned future will complete once a full line is read or an error occurs.</p>\u000A<p>If a full line is read <tt class=\"docutils literal\"><span class=\"pre\">\\r\\L</span></tt> is not added to <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt>, however if solely <tt class=\"docutils literal\"><span class=\"pre\">\\r\\L</span></tt> is read then <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt> will be set to it.</p>\u000A<p>If the socket is disconnected, <tt class=\"docutils literal\"><span class=\"pre\">line</span></tt> will be set to <tt class=\"docutils literal\"><span class=\"pre\">&quot;&quot;</span></tt>.</p>\u000A<p>If the socket is disconnected in the middle of a line (before <tt class=\"docutils literal\"><span class=\"pre\">\\r\\L</span></tt> is read) then line will be set to <tt class=\"docutils literal\"><span class=\"pre\">&quot;&quot;</span></tt>. The partial line <strong>will be lost</strong>.</p>\u000A<p><strong>Warning</strong>: The <tt class=\"docutils literal\"><span class=\"pre\">Peek</span></tt> flag is not yet implemented.</p>\u000A<p><strong>Warning</strong>: <tt class=\"docutils literal\"><span class=\"pre\">recvLine</span></tt> on unbuffered sockets assumes that the protocol uses <tt class=\"docutils literal\"><span class=\"pre\">\\r\\L</span></tt> to delimit a new line.</p>\u000A", 
+    "code": "proc recvLine*(socket: AsyncSocket; flags = {SocketFlag.SafeDisconn}): Future[\u000A    string] {.async.}"
+  }, 
+  {
+    "name": "listen", 
+    "type": "skProc", 
+    "description": "<p>Marks <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> as accepting connections. <tt class=\"docutils literal\"><span class=\"pre\">Backlog</span></tt> specifies the maximum length of the queue of pending connections.</p>\u000A<p>Raises an EOS error upon failure.</p>\u000A", 
+    "code": "proc listen*(socket: AsyncSocket; backlog = SOMAXCONN) {.tags: [ReadIOEffect].}"
+  }, 
+  {
+    "name": "bindAddr", 
+    "type": "skProc", 
+    "description": "<p>Binds <tt class=\"docutils literal\"><span class=\"pre\">address</span></tt>:<tt class=\"docutils literal\"><span class=\"pre\">port</span></tt> to the socket.</p>\u000A<p>If <tt class=\"docutils literal\"><span class=\"pre\">address</span></tt> is &quot;&quot; then ADDR_ANY will be bound.</p>\u000A", 
+    "code": "proc bindAddr*(socket: AsyncSocket; port = Port(0); address = \"\") {.\u000A    tags: [ReadIOEffect].}"
+  }, 
+  {
+    "name": "close", 
+    "type": "skProc", 
+    "description": "Closes the socket.", 
+    "code": "proc close*(socket: AsyncSocket)"
+  }, 
+  {
+    "name": "wrapSocket", 
+    "type": "skProc", 
+    "description": "<p>Wraps a socket in an SSL context. This function effectively turns <tt class=\"docutils literal\"><span class=\"pre\">socket</span></tt> into an SSL socket.</p>\u000A<p><strong>Disclaimer</strong>: This code is not well tested, may be very unsafe and prone to security vulnerabilities.</p>\u000A", 
+    "code": "proc wrapSocket*(ctx: SslContext; socket: AsyncSocket)"
+  }, 
+  {
+    "name": "getSockOpt", 
+    "type": "skProc", 
+    "description": "Retrieves option <tt class=\"docutils literal\"><span class=\"pre\">opt</span></tt> as a boolean value.", 
+    "code": "proc getSockOpt*(socket: AsyncSocket; opt: SOBool; level = SOL_SOCKET): bool {.\u000A    tags: [ReadIOEffect].}"
+  }, 
+  {
+    "name": "setSockOpt", 
+    "type": "skProc", 
+    "description": "Sets option <tt class=\"docutils literal\"><span class=\"pre\">opt</span></tt> to a boolean value specified by <tt class=\"docutils literal\"><span class=\"pre\">value</span></tt>.", 
+    "code": "proc setSockOpt*(socket: AsyncSocket; opt: SOBool; value: bool; \u000A                 level = SOL_SOCKET) {.tags: [WriteIOEffect].}"
+  }
+]

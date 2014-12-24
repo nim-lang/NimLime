@@ -1,68 +1,68 @@
 [
   {
-    "comment": "The ``parsecfg`` module implements a high performance configuration file \u000D\u000A## parser. The configuration file's syntax is similar to the Windows ``.ini`` \u000D\u000A## format, but much more powerful, as it is not a line based parser. String \u000D\u000A## literals, raw string literals and triple quoted string literals are supported \u000D\u000A## as in the Nimrod programming language."
+    "comment": "The ``parsecfg`` module implements a high performance configuration file \u000A## parser. The configuration file's syntax is similar to the Windows ``.ini`` \u000A## format, but much more powerful, as it is not a line based parser. String \u000A## literals, raw string literals and triple quoted string literals are supported \u000A## as in the Nim programming language."
   }, 
   {
-    "comment": "This is an example of how a configuration file may look like:\u000D\u000A##\u000D\u000A## .. include:: doc/mytest.cfg\u000D\u000A##     :literal:\u000D\u000A## The file ``examples/parsecfgex.nim`` demonstrates how to use the \u000D\u000A## configuration file parser:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##     :file: examples/parsecfgex.nim"
+    "comment": "This is an example of how a configuration file may look like:\u000A##\u000A## .. include:: doc/mytest.cfg\u000A##     :literal:\u000A## The file ``examples/parsecfgex.nim`` demonstrates how to use the \u000A## configuration file parser:\u000A##\u000A## .. code-block:: nim\u000A##     :file: examples/parsecfgex.nim"
   }, 
   {
-    "name": "TCfgParser", 
+    "name": "CfgParser", 
     "type": "skType", 
     "description": "the parser object.", 
-    "code": "TCfgParser* = object of TBaseLexer\u000D\u000A  tok: TToken\u000D\u000A  filename: string\u000D\u000A"
+    "code": "CfgParser* = object of BaseLexer\u000A  tok: Token\u000A  filename: string\u000A"
   }, 
   {
     "name": "open", 
     "type": "skProc", 
     "description": "initializes the parser with an input stream. <cite>Filename</cite> is only used for nice error messages. <cite>lineOffset</cite> can be used to influence the line number information in the generated error messages.", 
-    "code": "proc open*(c: var TCfgParser; input: PStream; filename: string; lineOffset = 0) {.\u000D\u000A    rtl, extern: \"npc$1\".}"
+    "code": "proc open*(c: var CfgParser; input: Stream; filename: string; lineOffset = 0) {.\u000A    rtl, extern: \"npc$1\".}"
   }, 
   {
     "name": "close", 
     "type": "skProc", 
     "description": "closes the parser <cite>c</cite> and its associated input stream.", 
-    "code": "proc close*(c: var TCfgParser) {.rtl, extern: \"npc$1\".}"
+    "code": "proc close*(c: var CfgParser) {.rtl, extern: \"npc$1\".}"
   }, 
   {
     "name": "getColumn", 
     "type": "skProc", 
     "description": "get the current column the parser has arrived at.", 
-    "code": "proc getColumn*(c: TCfgParser): int {.rtl, extern: \"npc$1\".}"
+    "code": "proc getColumn*(c: CfgParser): int {.rtl, extern: \"npc$1\".}"
   }, 
   {
     "name": "getLine", 
     "type": "skProc", 
     "description": "get the current line the parser has arrived at.", 
-    "code": "proc getLine*(c: TCfgParser): int {.rtl, extern: \"npc$1\".}"
+    "code": "proc getLine*(c: CfgParser): int {.rtl, extern: \"npc$1\".}"
   }, 
   {
     "name": "getFilename", 
     "type": "skProc", 
     "description": "get the filename of the file that the parser processes.", 
-    "code": "proc getFilename*(c: TCfgParser): string {.rtl, extern: \"npc$1\".}"
+    "code": "proc getFilename*(c: CfgParser): string {.rtl, extern: \"npc$1\".}"
   }, 
   {
     "name": "errorStr", 
     "type": "skProc", 
     "description": "returns a properly formated error message containing current line and column information.", 
-    "code": "proc errorStr*(c: TCfgParser; msg: string): string {.rtl, extern: \"npc$1\".}"
+    "code": "proc errorStr*(c: CfgParser; msg: string): string {.rtl, extern: \"npc$1\".}"
   }, 
   {
     "name": "warningStr", 
     "type": "skProc", 
     "description": "returns a properly formated warning message containing current line and column information.", 
-    "code": "proc warningStr*(c: TCfgParser; msg: string): string {.rtl, extern: \"npc$1\".}"
+    "code": "proc warningStr*(c: CfgParser; msg: string): string {.rtl, extern: \"npc$1\".}"
   }, 
   {
     "name": "ignoreMsg", 
     "type": "skProc", 
     "description": "returns a properly formated warning message containing that an entry is ignored.", 
-    "code": "proc ignoreMsg*(c: TCfgParser; e: TCfgEvent): string {.rtl, extern: \"npc$1\".}"
+    "code": "proc ignoreMsg*(c: CfgParser; e: CfgEvent): string {.rtl, extern: \"npc$1\".}"
   }, 
   {
     "name": "next", 
     "type": "skProc", 
     "description": "retrieves the first/next event. This controls the parser.", 
-    "code": "proc next*(c: var TCfgParser): TCfgEvent {.rtl, extern: \"npc$1\".}"
+    "code": "proc next*(c: var CfgParser): CfgEvent {.rtl, extern: \"npc$1\".}"
   }
 ]

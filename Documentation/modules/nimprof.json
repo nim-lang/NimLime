@@ -1,6 +1,6 @@
 [
   {
-    "comment": "Profiling support for Nimrod. This is an embedded profiler that requires\u000D\u000A## ``--profiler:on``. You only need to import this module to get a profiling\u000D\u000A## report at program exit."
+    "comment": "Profiling support for Nim. This is an embedded profiler that requires\u000A## ``--profiler:on``. You only need to import this module to get a profiling\u000A## report at program exit."
   }, 
   {
     "name": "setSamplingFrequency", 

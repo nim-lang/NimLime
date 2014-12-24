@@ -1,6 +1,6 @@
 [
   {
-    "comment": "This module implements XML DOM Level 2 Core specification(http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html)"
+    "comment": "This module implements XML DOM Level 2 Core\u000A## specification (http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113/core.html)"
   }, 
   {
     "name": "EWrongDocumentErr", 
@@ -18,7 +18,7 @@
     "name": "createDocument", 
     "type": "skProc", 
     "description": "Creates an XML Document object of the specified type with its document element.", 
-    "code": "proc createDocument*(dom: PDOMImplementation; namespaceURI: string; \u000D\u000A                     qualifiedName: string): PDocument"
+    "code": "proc createDocument*(dom: PDOMImplementation; namespaceURI: string; \u000A                     qualifiedName: string): PDocument"
   }, 
   {
     "name": "createDocument", 
@@ -45,25 +45,25 @@
   {
     "name": "createAttribute", 
     "type": "skProc", 
-    "description": "Creates an Attr of the given name. Note that the Attr instance can then be set on an Element using the setAttributeNode method. To create an attribute with a qualified name and namespace URI, use the createAttributeNS method. ", 
+    "description": "Creates an Attr of the given name. Note that the Attr instance can then be set on an Element using the setAttributeNode method. To create an attribute with a qualified name and namespace URI, use the createAttributeNS method.", 
     "code": "proc createAttribute*(doc: PDocument; name: string): PAttr"
   }, 
   {
     "name": "createAttributeNS", 
     "type": "skProc", 
     "description": "Creates an attribute of the given qualified name and namespace URI", 
-    "code": "proc createAttributeNS*(doc: PDocument; namespaceURI: string; \u000D\u000A                        qualifiedName: string): PAttr"
+    "code": "proc createAttributeNS*(doc: PDocument; namespaceURI: string; \u000A                        qualifiedName: string): PAttr"
   }, 
   {
     "name": "createCDATASection", 
     "type": "skProc", 
     "description": "Creates a CDATASection node whose value is the specified string.", 
-    "code": "proc createCDATASection*(doc: PDocument; data: string): PCDATASection"
+    "code": "proc createCDATASection*(doc: PDocument; data: string): PCDataSection"
   }, 
   {
     "name": "createComment", 
     "type": "skProc", 
-    "description": "Creates a Comment node given the specified string. ", 
+    "description": "Creates a Comment node given the specified string.", 
     "code": "proc createComment*(doc: PDocument; data: string): PComment"
   }, 
   {
@@ -82,31 +82,31 @@
     "name": "createElementNS", 
     "type": "skProc", 
     "description": "Creates an element of the given qualified name and namespace URI.", 
-    "code": "proc createElementNS*(doc: PDocument; namespaceURI: string; \u000D\u000A                      qualifiedName: string): PElement"
+    "code": "proc createElementNS*(doc: PDocument; namespaceURI: string; \u000A                      qualifiedName: string): PElement"
   }, 
   {
     "name": "createProcessingInstruction", 
     "type": "skProc", 
-    "description": "Creates a ProcessingInstruction node given the specified name and data strings. ", 
+    "description": "Creates a ProcessingInstruction node given the specified name and data strings.", 
     "code": "proc createProcessingInstruction*(doc: PDocument; target: string; data: string): PProcessingInstruction"
   }, 
   {
     "name": "createTextNode", 
     "type": "skProc", 
-    "description": "Creates a Text node given the specified string. ", 
+    "description": "Creates a Text node given the specified string.", 
     "code": "proc createTextNode*(doc: PDocument; data: string): PText"
   }, 
   {
     "name": "getElementsByTagName", 
     "type": "skProc", 
-    "description": "Returns a NodeList of all the Elements with a given tag name in the order in which they are encountered in a preorder traversal of the Document tree. ", 
+    "description": "Returns a NodeList of all the Elements with a given tag name in the order in which they are encountered in a preorder traversal of the Document tree.", 
     "code": "proc getElementsByTagName*(doc: PDocument; tagName: string): seq[PNode]"
   }, 
   {
     "name": "getElementsByTagNameNS", 
     "type": "skProc", 
-    "description": "Returns a NodeList of all the Elements with a given localName and namespaceURI in the order in which they are encountered in a preorder traversal of the Document tree. ", 
-    "code": "proc getElementsByTagNameNS*(doc: PDocument; namespaceURI: string; \u000D\u000A                             localName: string): seq[PNode]"
+    "description": "Returns a NodeList of all the Elements with a given localName and namespaceURI in the order in which they are encountered in a preorder traversal of the Document tree.", 
+    "code": "proc getElementsByTagNameNS*(doc: PDocument; namespaceURI: string; \u000A                             localName: string): seq[PNode]"
   }, 
   {
     "name": "importNode", 
@@ -200,7 +200,7 @@
   {
     "name": "hasAttributes", 
     "type": "skProc", 
-    "description": "Returns whether this node (if it is an element) has any attributes. ", 
+    "description": "Returns whether this node (if it is an element) has any attributes.", 
     "code": "proc hasAttributes*(n: PNode): bool"
   }, 
   {
@@ -218,7 +218,7 @@
   {
     "name": "isSupported", 
     "type": "skProc", 
-    "description": "Tests whether the DOM implementation implements a specific feature and that feature is supported by this node. ", 
+    "description": "Tests whether the DOM implementation implements a specific feature and that feature is supported by this node.", 
     "code": "proc isSupported*(n: PNode; feature: string; version: string): bool"
   }, 
   {
@@ -243,67 +243,67 @@
     "name": "getNamedItem", 
     "type": "skProc", 
     "description": "Retrieves a node specified by <tt class=\"docutils literal\"><span class=\"pre\">name</span></tt>. If this node cannot be found returns <tt class=\"docutils literal\"><span class=\"pre\">nil</span></tt>", 
-    "code": "proc getNamedItem*(NList: seq[PNode]; name: string): PNode"
+    "code": "proc getNamedItem*(nList: seq[PNode]; name: string): PNode"
   }, 
   {
     "name": "getNamedItem", 
     "type": "skProc", 
     "description": "Retrieves a node specified by <tt class=\"docutils literal\"><span class=\"pre\">name</span></tt>. If this node cannot be found returns <tt class=\"docutils literal\"><span class=\"pre\">nil</span></tt>", 
-    "code": "proc getNamedItem*(NList: seq[PAttr]; name: string): PAttr"
+    "code": "proc getNamedItem*(nList: seq[PAttr]; name: string): PAttr"
   }, 
   {
     "name": "getNamedItemNS", 
     "type": "skProc", 
     "description": "Retrieves a node specified by <tt class=\"docutils literal\"><span class=\"pre\">localName</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">namespaceURI</span></tt>. If this node cannot be found returns <tt class=\"docutils literal\"><span class=\"pre\">nil</span></tt>", 
-    "code": "proc getNamedItemNS*(NList: seq[PNode]; namespaceURI: string; localName: string): PNode"
+    "code": "proc getNamedItemNS*(nList: seq[PNode]; namespaceURI: string; localName: string): PNode"
   }, 
   {
     "name": "getNamedItemNS", 
     "type": "skProc", 
     "description": "Retrieves a node specified by <tt class=\"docutils literal\"><span class=\"pre\">localName</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">namespaceURI</span></tt>. If this node cannot be found returns <tt class=\"docutils literal\"><span class=\"pre\">nil</span></tt>", 
-    "code": "proc getNamedItemNS*(NList: seq[PAttr]; namespaceURI: string; localName: string): PAttr"
+    "code": "proc getNamedItemNS*(nList: seq[PAttr]; namespaceURI: string; localName: string): PAttr"
   }, 
   {
     "name": "item", 
     "type": "skProc", 
     "description": "Returns the <tt class=\"docutils literal\"><span class=\"pre\">index</span></tt> th item in the map. If <tt class=\"docutils literal\"><span class=\"pre\">index</span></tt> is greater than or equal to the number of nodes in this map, this returns <tt class=\"docutils literal\"><span class=\"pre\">nil</span></tt>.", 
-    "code": "proc item*(NList: seq[PNode]; index: int): PNode"
+    "code": "proc item*(nList: seq[PNode]; index: int): PNode"
   }, 
   {
     "name": "removeNamedItem", 
     "type": "skProc", 
     "description": "Removes a node specified by <tt class=\"docutils literal\"><span class=\"pre\">name</span></tt> Raises the <tt class=\"docutils literal\"><span class=\"pre\">ENotFoundErr</span></tt> exception, if the node was not found", 
-    "code": "proc removeNamedItem*(NList: var seq[PNode]; name: string): PNode"
+    "code": "proc removeNamedItem*(nList: var seq[PNode]; name: string): PNode"
   }, 
   {
     "name": "removeNamedItemNS", 
     "type": "skProc", 
     "description": "Removes a node specified by local name and namespace URI", 
-    "code": "proc removeNamedItemNS*(NList: var seq[PNode]; namespaceURI: string; \u000D\u000A                        localName: string): PNode"
+    "code": "proc removeNamedItemNS*(nList: var seq[PNode]; namespaceURI: string; \u000A                        localName: string): PNode"
   }, 
   {
     "name": "setNamedItem", 
     "type": "skProc", 
     "description": "Adds <tt class=\"docutils literal\"><span class=\"pre\">arg</span></tt> as a <tt class=\"docutils literal\"><span class=\"pre\">Node</span></tt> to the <tt class=\"docutils literal\"><span class=\"pre\">NList</span></tt> If a node with the same name is already present in this map, it is replaced by the new one.", 
-    "code": "proc setNamedItem*(NList: var seq[PNode]; arg: PNode): PNode"
+    "code": "proc setNamedItem*(nList: var seq[PNode]; arg: PNode): PNode"
   }, 
   {
     "name": "setNamedItem", 
     "type": "skProc", 
     "description": "Adds <tt class=\"docutils literal\"><span class=\"pre\">arg</span></tt> as a <tt class=\"docutils literal\"><span class=\"pre\">Node</span></tt> to the <tt class=\"docutils literal\"><span class=\"pre\">NList</span></tt> If a node with the same name is already present in this map, it is replaced by the new one.", 
-    "code": "proc setNamedItem*(NList: var seq[PAttr]; arg: PAttr): PAttr"
+    "code": "proc setNamedItem*(nList: var seq[PAttr]; arg: PAttr): PAttr"
   }, 
   {
     "name": "setNamedItemNS", 
     "type": "skProc", 
     "description": "Adds a node using its <tt class=\"docutils literal\"><span class=\"pre\">namespaceURI</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">localName</span></tt>", 
-    "code": "proc setNamedItemNS*(NList: var seq[PNode]; arg: PNode): PNode"
+    "code": "proc setNamedItemNS*(nList: var seq[PNode]; arg: PNode): PNode"
   }, 
   {
     "name": "setNamedItemNS", 
     "type": "skProc", 
     "description": "Adds a node using its <tt class=\"docutils literal\"><span class=\"pre\">namespaceURI</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">localName</span></tt>", 
-    "code": "proc setNamedItemNS*(NList: var seq[PAttr]; arg: PAttr): PAttr"
+    "code": "proc setNamedItemNS*(nList: var seq[PAttr]; arg: PAttr): PAttr"
   }, 
   {
     "name": "name", 
@@ -363,18 +363,18 @@
     "name": "getElementsByTagNameNS", 
     "type": "skProc", 
     "description": "Returns a <cite>NodeList</cite> of all the descendant Elements with a given <tt class=\"docutils literal\"><span class=\"pre\">localName</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">namespaceURI</span></tt> in the order in which they are encountered in a preorder traversal of this Element tree", 
-    "code": "proc getElementsByTagNameNS*(el: PElement; namespaceURI: string; \u000D\u000A                             localName: string): seq[PNode]"
+    "code": "proc getElementsByTagNameNS*(el: PElement; namespaceURI: string; \u000A                             localName: string): seq[PNode]"
   }, 
   {
     "name": "hasAttribute", 
     "type": "skProc", 
-    "description": "Returns <tt class=\"docutils literal\"><span class=\"pre\">true</span></tt> when an attribute with a given <tt class=\"docutils literal\"><span class=\"pre\">name</span></tt> is specified on this element , <tt class=\"docutils literal\"><span class=\"pre\">false</span></tt> otherwise. ", 
+    "description": "Returns <tt class=\"docutils literal\"><span class=\"pre\">true</span></tt> when an attribute with a given <tt class=\"docutils literal\"><span class=\"pre\">name</span></tt> is specified on this element , <tt class=\"docutils literal\"><span class=\"pre\">false</span></tt> otherwise.", 
     "code": "proc hasAttribute*(el: PElement; name: string): bool"
   }, 
   {
     "name": "hasAttributeNS", 
     "type": "skProc", 
-    "description": "Returns <tt class=\"docutils literal\"><span class=\"pre\">true</span></tt> when an attribute with a given <tt class=\"docutils literal\"><span class=\"pre\">localName</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">namespaceURI</span></tt> is specified on this element , <tt class=\"docutils literal\"><span class=\"pre\">false</span></tt> otherwise ", 
+    "description": "Returns <tt class=\"docutils literal\"><span class=\"pre\">true</span></tt> when an attribute with a given <tt class=\"docutils literal\"><span class=\"pre\">localName</span></tt> and <tt class=\"docutils literal\"><span class=\"pre\">namespaceURI</span></tt> is specified on this element , <tt class=\"docutils literal\"><span class=\"pre\">false</span></tt> otherwise", 
     "code": "proc hasAttributeNS*(el: PElement; namespaceURI: string; localName: string): bool"
   }, 
   {
@@ -423,13 +423,13 @@
     "name": "splitData", 
     "type": "skProc", 
     "description": "Breaks this node into two nodes at the specified offset, keeping both in the tree as siblings.", 
-    "code": "proc splitData*(TextNode: PText; offset: int): PText"
+    "code": "proc splitData*(textNode: PText; offset: int): PText"
   }, 
   {
     "name": "target", 
     "type": "skProc", 
     "description": "Returns the Processing Instructions target", 
-    "code": "proc target*(PI: PProcessingInstruction): string"
+    "code": "proc target*(pi: PProcessingInstruction): string"
   }, 
   {
     "name": "`$`", 

@@ -1,12 +1,12 @@
 [
   {
-    "comment": "This module allows you to monitor files or directories for changes using\u000D\u000A## asyncio.\u000D\u000A##\u000D\u000A## Windows support is not yet implemented.\u000D\u000A##\u000D\u000A## **Note:** This module uses ``inotify`` on Linux (Other Unixes are not yet\u000D\u000A## supported). ``inotify`` was merged into the 2.6.13 Linux kernel, this\u000D\u000A## module will therefore not work with any Linux kernel prior to that, unless\u000D\u000A## it has been patched to support inotify."
+    "comment": "This module allows you to monitor files or directories for changes using\u000A## asyncio.\u000A##\u000A## Windows support is not yet implemented.\u000A##\u000A## **Note:** This module uses ``inotify`` on Linux (Other Unixes are not yet\u000A## supported). ``inotify`` was merged into the 2.6.13 Linux kernel, this\u000A## module will therefore not work with any Linux kernel prior to that, unless\u000A## it has been patched to support inotify."
   }, 
   {
-    "name": "TMonitorEvent", 
+    "name": "MonitorEvent", 
     "type": "skType", 
     "description": "Type of the event.", 
-    "code": "TMonitorEvent* = object \u000D\u000A  case kind*: TMonitorEventType\u000D\u000A  of MonitorMoveSelf, MonitorMoved: \u000D\u000A      oldPath*: string        ## Old absolute location\u000D\u000A      newPath*: string        ## New absolute location\u000D\u000A    \u000D\u000A  else: \u000D\u000A      fullname*: string       ## Absolute filename of the file/directory affected.\u000D\u000A    \u000D\u000A  name*: string               ## Non absolute filepath of the file/directory\u000D\u000A                              ## affected relative to the directory watched.\u000D\u000A                              ## \"\" if this event refers to the file/directory\u000D\u000A                              ## watched.\u000D\u000A  wd*: cint                   ## Watch descriptor.\u000D\u000A  "
+    "code": "MonitorEvent* = object \u000A  case kind*: MonitorEventType\u000A  of MonitorMoveSelf, MonitorMoved: \u000A      oldPath*: string        ## Old absolute location\u000A      newPath*: string        ## New absolute location\u000A    \u000A  else: \u000A      fullname*: string       ## Absolute filename of the file/directory affected.\u000A    \u000A  name*: string               ## Non absolute filepath of the file/directory\u000A                              ## affected relative to the directory watched.\u000A                              ## \"\" if this event refers to the file/directory\u000A                              ## watched.\u000A  wd*: cint                   ## Watch descriptor.\u000A  "
   }, 
   {
     "name": "newMonitor", 
@@ -18,18 +18,18 @@
     "name": "add", 
     "type": "skProc", 
     "description": "Adds <tt class=\"docutils literal\"><span class=\"pre\">target</span></tt> which may be a directory or a file to the list of watched paths of <tt class=\"docutils literal\"><span class=\"pre\">monitor</span></tt>. You can specify the events to report using the <tt class=\"docutils literal\"><span class=\"pre\">filters</span></tt> parameter.", 
-    "code": "proc add*(monitor: PFSMonitor; target: string; filters = {MonitorAll}): cint {.\u000D\u000A    discardable.}"
+    "code": "proc add*(monitor: PFSMonitor; target: string; filters = {MonitorAll}): cint {.\u000A    discardable.}"
   }, 
   {
     "name": "del", 
     "type": "skProc", 
-    "description": "<p>Removes watched directory or file as specified by <tt class=\"docutils literal\"><span class=\"pre\">wd</span></tt> from <tt class=\"docutils literal\"><span class=\"pre\">monitor</span></tt>.</p>\u000D\u000A<p>If <tt class=\"docutils literal\"><span class=\"pre\">wd</span></tt> is not a part of <tt class=\"docutils literal\"><span class=\"pre\">monitor</span></tt> an EOS error is raised.</p>\u000D\u000A", 
+    "description": "<p>Removes watched directory or file as specified by <tt class=\"docutils literal\"><span class=\"pre\">wd</span></tt> from <tt class=\"docutils literal\"><span class=\"pre\">monitor</span></tt>.</p>\u000A<p>If <tt class=\"docutils literal\"><span class=\"pre\">wd</span></tt> is not a part of <tt class=\"docutils literal\"><span class=\"pre\">monitor</span></tt> an EOS error is raised.</p>\u000A", 
     "code": "proc del*(monitor: PFSMonitor; wd: cint)"
   }, 
   {
     "name": "register", 
     "type": "skProc", 
     "description": "Registers <tt class=\"docutils literal\"><span class=\"pre\">monitor</span></tt> with dispatcher <tt class=\"docutils literal\"><span class=\"pre\">d</span></tt>.", 
-    "code": "proc register*(d: PDispatcher; monitor: PFSMonitor; \u000D\u000A               handleEvent: proc (m: PFSMonitor; ev: TMonitorEvent) {.closure.})"
+    "code": "proc register*(d: PDispatcher; monitor: PFSMonitor; \u000A               handleEvent: proc (m: PFSMonitor; ev: TMonitorEvent) {.closure.})"
   }
 ]

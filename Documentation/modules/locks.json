@@ -1,66 +1,54 @@
 [
   {
-    "comment": "This module contains Nimrod's support for locks and condition vars.\u000D\u000A## If the symbol ``preventDeadlocks`` is defined\u000D\u000A## (compiled with ``-d:preventDeadlocks``) special logic is added to\u000D\u000A## every ``acquire``, ``tryAcquire`` and ``release`` action that ensures at\u000D\u000A## runtime that no deadlock can occur. This is achieved by forcing a thread\u000D\u000A## to release its locks should it be part of a deadlock. This thread then\u000D\u000A## re-acquires its locks and proceeds."
+    "comment": "This module contains Nim's support for locks and condition vars."
   }, 
   {
-    "name": "FReleaseLock", 
+    "name": "ReleaseEffect", 
     "type": "skType", 
-    "description": "effect that denotes that some lock is released", 
-    "code": "FReleaseLock* = object of FLock"
+    "description": "\u000Aeffect that denotes that some lock is released. Deprecated, do not use anymore!", 
+    "code": "ReleaseEffect* {.deprecated.} = object of LockEffect"
   }, 
   {
-    "name": "maxLocksPerThread", 
-    "type": "skConst", 
-    "description": "max number of locks a thread can hold at the same time; this limit is only relevant when compiled with <tt class=\"docutils literal\"><span class=\"pre\">-d:preventDeadlocks</span></tt>.", 
-    "code": "maxLocksPerThread* = 10"
-  }, 
-  {
-    "name": "deadlocksPrevented", 
-    "type": "skVar", 
-    "description": "counts the number of times a deadlock has been prevented", 
-    "code": "deadlocksPrevented*: int"
-  }, 
-  {
-    "name": "InitLock", 
+    "name": "initLock", 
     "type": "skProc", 
     "description": "Initializes the given lock.", 
-    "code": "proc InitLock*(lock: var TLock) {.inline.}"
+    "code": "proc initLock*(lock: var TLock) {.inline.}"
   }, 
   {
-    "name": "DeinitLock", 
+    "name": "deinitLock", 
     "type": "skProc", 
     "description": "Frees the resources associated with the lock.", 
-    "code": "proc DeinitLock*(lock: var TLock) {.inline.}"
+    "code": "proc deinitLock*(lock: var TLock) {.inline.}"
   }, 
   {
-    "name": "TryAcquire", 
+    "name": "tryAcquire", 
     "type": "skProc", 
     "description": "Tries to acquire the given lock. Returns <cite>true</cite> on success.", 
-    "code": "proc TryAcquire*(lock: var TLock): bool {.tags: [FAquireLock].}"
+    "code": "proc tryAcquire*(lock: var TLock): bool"
   }, 
   {
-    "name": "Acquire", 
+    "name": "acquire", 
     "type": "skProc", 
     "description": "Acquires the given lock.", 
-    "code": "proc Acquire*(lock: var TLock) {.tags: [FAquireLock].}"
+    "code": "proc acquire*(lock: var TLock)"
   }, 
   {
-    "name": "Release", 
+    "name": "release", 
     "type": "skProc", 
     "description": "Releases the given lock.", 
-    "code": "proc Release*(lock: var TLock) {.tags: [FReleaseLock].}"
+    "code": "proc release*(lock: var TLock)"
   }, 
   {
-    "name": "InitCond", 
+    "name": "initCond", 
     "type": "skProc", 
     "description": "Initializes the given condition variable.", 
-    "code": "proc InitCond*(cond: var TCond) {.inline.}"
+    "code": "proc initCond*(cond: var TCond) {.inline.}"
   }, 
   {
-    "name": "DeinitCond", 
+    "name": "deinitCond", 
     "type": "skProc", 
     "description": "Frees the resources associated with the lock.", 
-    "code": "proc DeinitCond*(cond: var TCond) {.inline.}"
+    "code": "proc deinitCond*(cond: var TCond) {.inline.}"
   }, 
   {
     "name": "wait", 

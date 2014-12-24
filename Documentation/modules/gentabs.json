@@ -1,6 +1,6 @@
 [
   {
-    "comment": "The ``gentabs`` module implements an efficient hash table that is a\u000D\u000A## key-value mapping. The keys are required to be strings, but the values\u000D\u000A## may be any Nimrod or user defined type. This module supports matching \u000D\u000A## of keys in case-sensitive, case-insensitive and style-insensitive modes."
+    "comment": "The ``gentabs`` module implements an efficient hash table that is a\u000A## key-value mapping. The keys are required to be strings, but the values\u000A## may be any Nim or user defined type. This module supports matching \u000A## of keys in case-sensitive, case-insensitive and style-insensitive modes."
   }, 
   {
     "name": "PGenTable", 
@@ -42,6 +42,6 @@
     "name": "`[]=`", 
     "type": "skProc", 
     "description": "puts a (key, value)-pair into <cite>tbl</cite>.", 
-    "code": "proc `[] =`*[T](tbl: PGenTable[T]; key: string; val: T)"
+    "code": "proc `[]=`*[T](tbl: PGenTable[T]; key: string; val: T)"
   }
 ]

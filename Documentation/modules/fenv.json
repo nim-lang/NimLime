@@ -1,0 +1,83 @@
+[
+  {
+    "comment": "Floating-point environment. Handling of floating-point rounding and\u000A## exceptions (overflow, division by zero, etc.)."
+  }, 
+  {
+    "name": "FE_DFL_ENV", 
+    "type": "skVar", 
+    "description": "macro of type pointer to fenv_t to be used as the argument to functions taking an argument of type fenv_t; in this case the default environment will be used", 
+    "code": "FE_DFL_ENV* {.importc, header: \"<fenv.h>\".}: cint"
+  }, 
+  {
+    "name": "Tfexcept", 
+    "type": "skType", 
+    "description": "Represents the floating-point status flags collectively, including any status the implementation associates with the flags. A floating-point status flag is a system variable whose value is set (but never cleared) when a floating-point exception is raised, which occurs as a side effect of exceptional floating-point arithmetic to provide auxiliary information. A floating-point control mode is a system variable whose value may be set by the user to affect the subsequent behavior of floating-point arithmetic.", 
+    "code": "Tfexcept* {.importc: \"fexcept_t\", header: \"<fenv.h>\", final, pure.} = object "
+  }, 
+  {
+    "name": "feclearexcept", 
+    "type": "skProc", 
+    "description": "Clear the supported exceptions represented by <cite>excepts</cite>.", 
+    "code": "proc feclearexcept*(excepts: cint): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fegetexceptflag", 
+    "type": "skProc", 
+    "description": "Store implementation-defined representation of the exception flags indicated by <cite>excepts</cite> in the object pointed to by <cite>flagp</cite>.", 
+    "code": "proc fegetexceptflag*(flagp: ptr Tfexcept; excepts: cint): cint {.importc, \u000A    header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "feraiseexcept", 
+    "type": "skProc", 
+    "description": "Raise the supported exceptions represented by <cite>excepts</cite>.", 
+    "code": "proc feraiseexcept*(excepts: cint): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fesetexceptflag", 
+    "type": "skProc", 
+    "description": "Set complete status for exceptions indicated by <cite>excepts</cite> according to the representation in the object pointed to by <cite>flagp</cite>.", 
+    "code": "proc fesetexceptflag*(flagp: ptr Tfexcept; excepts: cint): cint {.importc, \u000A    header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fetestexcept", 
+    "type": "skProc", 
+    "description": "Determine which of subset of the exceptions specified by <cite>excepts</cite> are currently set.", 
+    "code": "proc fetestexcept*(excepts: cint): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fegetround", 
+    "type": "skProc", 
+    "description": "Get current rounding direction.", 
+    "code": "proc fegetround*(): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fesetround", 
+    "type": "skProc", 
+    "description": "Establish the rounding direction represented by <cite>roundingDirection</cite>.", 
+    "code": "proc fesetround*(roundingDirection: cint): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fegetenv", 
+    "type": "skProc", 
+    "description": "Store the current floating-point environment in the object pointed to by <cite>envp</cite>.", 
+    "code": "proc fegetenv*(envp: ptr Tfenv): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "feholdexcept", 
+    "type": "skProc", 
+    "description": "Save the current environment in the object pointed to by <cite>envp</cite>, clear exception flags and install a non-stop mode (if available) for all exceptions.", 
+    "code": "proc feholdexcept*(envp: ptr Tfenv): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "fesetenv", 
+    "type": "skProc", 
+    "description": "Establish the floating-point environment represented by the object pointed to by <cite>envp</cite>.", 
+    "code": "proc fesetenv*(a1: ptr Tfenv): cint {.importc, header: \"<fenv.h>\".}"
+  }, 
+  {
+    "name": "feupdateenv", 
+    "type": "skProc", 
+    "description": "Save current exceptions in temporary storage, install environment represented by object pointed to by <cite>envp</cite> and raise exceptions according to saved exceptions.", 
+    "code": "proc feupdateenv*(envp: ptr Tfenv): cint {.importc, header: \"<fenv.h>\".}"
+  }
+]

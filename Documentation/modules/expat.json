@@ -7,67 +7,67 @@
   {
     "name": "TContent_Quant", 
     "type": "skType", 
-    "code": "TContent_Quant* {.size: sizeof(cint).} = enum \u000D\u000A  CQUANT_NONE, CQUANT_OPT, CQUANT_REP, CQUANT_PLUS"
+    "code": "TContent_Quant* {.size: sizeof(cint).} = enum \u000A  CQUANT_NONE, CQUANT_OPT, CQUANT_REP, CQUANT_PLUS"
   }, 
   {
     "name": "TContent", 
     "type": "skType", 
-    "code": "TContent* {.pure, final.} = object \u000D\u000A  typ*: TContent_Type\u000D\u000A  quant*: TContent_Quant\u000D\u000A  name*: cstring\u000D\u000A  numchildren*: cint\u000D\u000A  children*: ptr TContent\u000D\u000A"
+    "code": "TContent* {.pure, final.} = object \u000A  typ*: TContentType\u000A  quant*: TContentQuant\u000A  name*: cstring\u000A  numchildren*: cint\u000A  children*: ptr TContent\u000A"
   }, 
   {
     "name": "TElementDeclHandler", 
     "type": "skType", 
-    "code": "TElementDeclHandler* = proc (userData: pointer; name: cstring; \u000D\u000A                             model: ptr TContent) {.cdecl.}"
+    "code": "TElementDeclHandler* = proc (userData: pointer; name: cstring; \u000A                             model: ptr TContent) {.cdecl.}"
   }, 
   {
-    "name": "SetElementDeclHandler", 
+    "name": "setElementDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetElementDeclHandler*(parser: PParser; eldecl: TElementDeclHandler) {.\u000D\u000A    cdecl, importc: \"XML_SetElementDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setElementDeclHandler*(parser: PParser; eldecl: TElementDeclHandler) {.\u000A    cdecl, importc: \"XML_SetElementDeclHandler\", dynlib: expatDll.}"
   }, 
   {
     "name": "TAttlistDeclHandler", 
     "type": "skType", 
-    "code": "TAttlistDeclHandler* = proc (userData: pointer; elname: cstring; \u000D\u000A                             attname: cstring; att_type: cstring; dflt: cstring; \u000D\u000A                             isrequired: cint) {.cdecl.}"
+    "code": "TAttlistDeclHandler* = proc (userData: pointer; elname: cstring; \u000A                             attname: cstring; attType: cstring; dflt: cstring; \u000A                             isrequired: cint) {.cdecl.}"
   }, 
   {
-    "name": "SetAttlistDeclHandler", 
+    "name": "setAttlistDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetAttlistDeclHandler*(parser: PParser; attdecl: TAttlistDeclHandler) {.\u000D\u000A    cdecl, importc: \"XML_SetAttlistDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setAttlistDeclHandler*(parser: PParser; attdecl: TAttlistDeclHandler) {.\u000A    cdecl, importc: \"XML_SetAttlistDeclHandler\", dynlib: expatDll.}"
   }, 
   {
     "name": "TXmlDeclHandler", 
     "type": "skType", 
-    "code": "TXmlDeclHandler* = proc (userData: pointer; version: cstring; encoding: cstring; \u000D\u000A                         standalone: cint) {.cdecl.}"
+    "code": "TXmlDeclHandler* = proc (userData: pointer; version: cstring; encoding: cstring; \u000A                         standalone: cint) {.cdecl.}"
   }, 
   {
-    "name": "SetXmlDeclHandler", 
+    "name": "setXmlDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetXmlDeclHandler*(parser: PParser; xmldecl: TXmlDeclHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetXmlDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setXmlDeclHandler*(parser: PParser; xmldecl: TXmlDeclHandler) {.cdecl, \u000A    importc: \"XML_SetXmlDeclHandler\", dynlib: expatDll.}"
   }, 
   {
     "name": "TMemory_Handling_Suite", 
     "type": "skType", 
-    "code": "TMemory_Handling_Suite* {.pure, final.} = object \u000D\u000A  malloc_fcn*: proc (size: int): pointer {.cdecl.}\u000D\u000A  realloc_fcn*: proc (p: pointer; size: int): pointer {.cdecl.}\u000D\u000A  free_fcn*: proc (p: pointer) {.cdecl.}\u000D\u000A"
+    "code": "TMemory_Handling_Suite* {.pure, final.} = object \u000A  mallocFcn*: proc (size: int): pointer {.cdecl.}\u000A  reallocFcn*: proc (p: pointer; size: int): pointer {.cdecl.}\u000A  freeFcn*: proc (p: pointer) {.cdecl.}\u000A"
   }, 
   {
-    "name": "ParserCreate", 
+    "name": "parserCreate", 
     "type": "skProc", 
-    "code": "proc ParserCreate*(encoding: cstring): PParser {.cdecl, \u000D\u000A    importc: \"XML_ParserCreate\", dynlib: expatDll.}"
+    "code": "proc parserCreate*(encoding: cstring): PParser {.cdecl, \u000A    importc: \"XML_ParserCreate\", dynlib: expatDll.}"
   }, 
   {
-    "name": "ParserCreateNS", 
+    "name": "parserCreateNS", 
     "type": "skProc", 
-    "code": "proc ParserCreateNS*(encoding: cstring; namespaceSeparator: char): PParser {.\u000D\u000A    cdecl, importc: \"XML_ParserCreateNS\", dynlib: expatDll.}"
+    "code": "proc parserCreateNS*(encoding: cstring; namespaceSeparator: char): PParser {.\u000A    cdecl, importc: \"XML_ParserCreateNS\", dynlib: expatDll.}"
   }, 
   {
-    "name": "ParserCreate_MM", 
+    "name": "parserCreateMM", 
     "type": "skProc", 
-    "code": "proc ParserCreate_MM*(encoding: cstring; memsuite: ptr TMemory_Handling_Suite; \u000D\u000A                      namespaceSeparator: cstring): PParser {.cdecl, \u000D\u000A    importc: \"XML_ParserCreate_MM\", dynlib: expatDll.}"
+    "code": "proc parserCreateMM*(encoding: cstring; memsuite: ptr TMemoryHandlingSuite; \u000A                     namespaceSeparator: cstring): PParser {.cdecl, \u000A    importc: \"XML_ParserCreate_MM\", dynlib: expatDll.}"
   }, 
   {
-    "name": "ParserReset", 
+    "name": "parserReset", 
     "type": "skProc", 
-    "code": "proc ParserReset*(parser: PParser; encoding: cstring): Bool {.cdecl, \u000D\u000A    importc: \"XML_ParserReset\", dynlib: expatDll.}"
+    "code": "proc parserReset*(parser: PParser; encoding: cstring): bool {.cdecl, \u000A    importc: \"XML_ParserReset\", dynlib: expatDll.}"
   }, 
   {
     "name": "TEndElementHandler", 
@@ -82,7 +82,7 @@
   {
     "name": "TProcessingInstructionHandler", 
     "type": "skType", 
-    "code": "TProcessingInstructionHandler* = proc (userData: pointer; target: cstring; \u000D\u000A                                       data: cstring) {.cdecl.}"
+    "code": "TProcessingInstructionHandler* = proc (userData: pointer; target: cstring; \u000A                                       data: cstring) {.cdecl.}"
   }, 
   {
     "name": "TEndCdataSectionHandler", 
@@ -97,7 +97,7 @@
   {
     "name": "TStartDoctypeDeclHandler", 
     "type": "skType", 
-    "code": "TStartDoctypeDeclHandler* = proc (userData: pointer; doctypeName: cstring; \u000D\u000A                                  sysid: cstring; pubid: cstring; \u000D\u000A                                  has_internal_subset: cint) {.cdecl.}"
+    "code": "TStartDoctypeDeclHandler* = proc (userData: pointer; doctypeName: cstring; \u000A                                  sysid: cstring; pubid: cstring; \u000A                                  hasInternalSubset: cint) {.cdecl.}"
   }, 
   {
     "name": "TEndDoctypeDeclHandler", 
@@ -107,22 +107,22 @@
   {
     "name": "TEntityDeclHandler", 
     "type": "skType", 
-    "code": "TEntityDeclHandler* = proc (userData: pointer; entityName: cstring; \u000D\u000A                            is_parameter_entity: cint; value: cstring; \u000D\u000A                            value_length: cint; base: cstring; \u000D\u000A                            systemId: cstring; publicId: cstring; \u000D\u000A                            notationName: cstring) {.cdecl.}"
+    "code": "TEntityDeclHandler* = proc (userData: pointer; entityName: cstring; \u000A                            isParameterEntity: cint; value: cstring; \u000A                            valueLength: cint; base: cstring; systemId: cstring; \u000A                            publicId: cstring; notationName: cstring) {.cdecl.}"
   }, 
   {
-    "name": "SetEntityDeclHandler", 
+    "name": "setEntityDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetEntityDeclHandler*(parser: PParser; handler: TEntityDeclHandler) {.\u000D\u000A    cdecl, importc: \"XML_SetEntityDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setEntityDeclHandler*(parser: PParser; handler: TEntityDeclHandler) {.\u000A    cdecl, importc: \"XML_SetEntityDeclHandler\", dynlib: expatDll.}"
   }, 
   {
     "name": "TUnparsedEntityDeclHandler", 
     "type": "skType", 
-    "code": "TUnparsedEntityDeclHandler* = proc (userData: pointer; entityName: cstring; \u000D\u000A                                    base: cstring; systemId: cstring; \u000D\u000A                                    publicId, notationName: cstring) {.cdecl.}"
+    "code": "TUnparsedEntityDeclHandler* = proc (userData: pointer; entityName: cstring; \u000A                                    base: cstring; systemId: cstring; \u000A                                    publicId, notationName: cstring) {.cdecl.}"
   }, 
   {
     "name": "TNotationDeclHandler", 
     "type": "skType", 
-    "code": "TNotationDeclHandler* = proc (userData: pointer; notationName: cstring; \u000D\u000A                              base: cstring; systemId: cstring; \u000D\u000A                              publicId: cstring) {.cdecl.}"
+    "code": "TNotationDeclHandler* = proc (userData: pointer; notationName: cstring; \u000A                              base: cstring; systemId: cstring; \u000A                              publicId: cstring) {.cdecl.}"
   }, 
   {
     "name": "TEndNamespaceDeclHandler", 
@@ -137,332 +137,332 @@
   {
     "name": "TExternalEntityRefHandler", 
     "type": "skType", 
-    "code": "TExternalEntityRefHandler* = proc (parser: PParser; context: cstring; \u000D\u000A                                   base: cstring; systemId: cstring; \u000D\u000A                                   publicId: cstring): cint {.cdecl.}"
+    "code": "TExternalEntityRefHandler* = proc (parser: PParser; context: cstring; \u000A                                   base: cstring; systemId: cstring; \u000A                                   publicId: cstring): cint {.cdecl.}"
   }, 
   {
     "name": "TSkippedEntityHandler", 
     "type": "skType", 
-    "code": "TSkippedEntityHandler* = proc (userData: pointer; entityName: cstring; \u000D\u000A                               is_parameter_entity: cint) {.cdecl.}"
+    "code": "TSkippedEntityHandler* = proc (userData: pointer; entityName: cstring; \u000A                               isParameterEntity: cint) {.cdecl.}"
   }, 
   {
     "name": "TEncoding", 
     "type": "skType", 
-    "code": "TEncoding* {.pure, final.} = object \u000D\u000A  map*: array[0 .. 256 - 1, cint]\u000D\u000A  data*: pointer\u000D\u000A  convert*: proc (data: pointer; s: cstring): cint {.cdecl.}\u000D\u000A  release*: proc (data: pointer) {.cdecl.}\u000D\u000A"
+    "code": "TEncoding* {.pure, final.} = object \u000A  map*: array[0 .. 256 - 1, cint]\u000A  data*: pointer\u000A  convert*: proc (data: pointer; s: cstring): cint {.cdecl.}\u000A  release*: proc (data: pointer) {.cdecl.}\u000A"
   }, 
   {
     "name": "TUnknownEncodingHandler", 
     "type": "skType", 
-    "code": "TUnknownEncodingHandler* = proc (encodingHandlerData: pointer; name: cstring; \u000D\u000A                                 info: ptr TEncoding): cint {.cdecl.}"
+    "code": "TUnknownEncodingHandler* = proc (encodingHandlerData: pointer; name: cstring; \u000A                                 info: ptr TEncoding): cint {.cdecl.}"
   }, 
   {
-    "name": "SetElementHandler", 
+    "name": "setElementHandler", 
     "type": "skProc", 
-    "code": "proc SetElementHandler*(parser: PParser; start: TStartElementHandler; \u000D\u000A                        endHandler: TEndElementHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetElementHandler\", dynlib: expatDll.}"
+    "code": "proc setElementHandler*(parser: PParser; start: TStartElementHandler; \u000A                        endHandler: TEndElementHandler) {.cdecl, \u000A    importc: \"XML_SetElementHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetStartElementHandler", 
+    "name": "setStartElementHandler", 
     "type": "skProc", 
-    "code": "proc SetStartElementHandler*(parser: PParser; handler: TStartElementHandler) {.\u000D\u000A    cdecl, importc: \"XML_SetStartElementHandler\", dynlib: expatDll.}"
+    "code": "proc setStartElementHandler*(parser: PParser; handler: TStartElementHandler) {.\u000A    cdecl, importc: \"XML_SetStartElementHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetEndElementHandler", 
+    "name": "setEndElementHandler", 
     "type": "skProc", 
-    "code": "proc SetEndElementHandler*(parser: PParser; handler: TEndElementHandler) {.\u000D\u000A    cdecl, importc: \"XML_SetEndElementHandler\", dynlib: expatDll.}"
+    "code": "proc setEndElementHandler*(parser: PParser; handler: TEndElementHandler) {.\u000A    cdecl, importc: \"XML_SetEndElementHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetCharacterDataHandler", 
+    "name": "setCharacterDataHandler", 
     "type": "skProc", 
-    "code": "proc SetCharacterDataHandler*(parser: PParser; handler: TCharacterDataHandler) {.\u000D\u000A    cdecl, importc: \"XML_SetCharacterDataHandler\", dynlib: expatDll.}"
+    "code": "proc setCharacterDataHandler*(parser: PParser; handler: TCharacterDataHandler) {.\u000A    cdecl, importc: \"XML_SetCharacterDataHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetProcessingInstructionHandler", 
+    "name": "setProcessingInstructionHandler", 
     "type": "skProc", 
-    "code": "proc SetProcessingInstructionHandler*(parser: PParser; \u000D\u000A                                      handler: TProcessingInstructionHandler) {.\u000D\u000A    cdecl, importc: \"XML_SetProcessingInstructionHandler\", dynlib: expatDll.}"
+    "code": "proc setProcessingInstructionHandler*(parser: PParser; \u000A                                      handler: TProcessingInstructionHandler) {.\u000A    cdecl, importc: \"XML_SetProcessingInstructionHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetCommentHandler", 
+    "name": "setCommentHandler", 
     "type": "skProc", 
-    "code": "proc SetCommentHandler*(parser: PParser; handler: TCommentHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetCommentHandler\", dynlib: expatDll.}"
+    "code": "proc setCommentHandler*(parser: PParser; handler: TCommentHandler) {.cdecl, \u000A    importc: \"XML_SetCommentHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetCdataSectionHandler", 
+    "name": "setCdataSectionHandler", 
     "type": "skProc", 
-    "code": "proc SetCdataSectionHandler*(parser: PParser; start: TStartCdataSectionHandler; \u000D\u000A                             endHandler: TEndCdataSectionHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetCdataSectionHandler\", dynlib: expatDll.}"
+    "code": "proc setCdataSectionHandler*(parser: PParser; start: TStartCdataSectionHandler; \u000A                             endHandler: TEndCdataSectionHandler) {.cdecl, \u000A    importc: \"XML_SetCdataSectionHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetStartCdataSectionHandler", 
+    "name": "setStartCdataSectionHandler", 
     "type": "skProc", 
-    "code": "proc SetStartCdataSectionHandler*(parser: PParser; \u000D\u000A                                  start: TStartCdataSectionHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetStartCdataSectionHandler\", dynlib: expatDll.}"
+    "code": "proc setStartCdataSectionHandler*(parser: PParser; \u000A                                  start: TStartCdataSectionHandler) {.cdecl, \u000A    importc: \"XML_SetStartCdataSectionHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetEndCdataSectionHandler", 
+    "name": "setEndCdataSectionHandler", 
     "type": "skProc", 
-    "code": "proc SetEndCdataSectionHandler*(parser: PParser; \u000D\u000A                                endHandler: TEndCdataSectionHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetEndCdataSectionHandler\", dynlib: expatDll.}"
+    "code": "proc setEndCdataSectionHandler*(parser: PParser; \u000A                                endHandler: TEndCdataSectionHandler) {.cdecl, \u000A    importc: \"XML_SetEndCdataSectionHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetDefaultHandler", 
+    "name": "setDefaultHandler", 
     "type": "skProc", 
-    "code": "proc SetDefaultHandler*(parser: PParser; handler: TDefaultHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetDefaultHandler\", dynlib: expatDll.}"
+    "code": "proc setDefaultHandler*(parser: PParser; handler: TDefaultHandler) {.cdecl, \u000A    importc: \"XML_SetDefaultHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetDefaultHandlerExpand", 
+    "name": "setDefaultHandlerExpand", 
     "type": "skProc", 
-    "code": "proc SetDefaultHandlerExpand*(parser: PParser; handler: TDefaultHandler) {.\u000D\u000A    cdecl, importc: \"XML_SetDefaultHandlerExpand\", dynlib: expatDll.}"
+    "code": "proc setDefaultHandlerExpand*(parser: PParser; handler: TDefaultHandler) {.\u000A    cdecl, importc: \"XML_SetDefaultHandlerExpand\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetDoctypeDeclHandler", 
+    "name": "setDoctypeDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetDoctypeDeclHandler*(parser: PParser; start: TStartDoctypeDeclHandler; \u000D\u000A                            endHandler: TEndDoctypeDeclHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetDoctypeDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setDoctypeDeclHandler*(parser: PParser; start: TStartDoctypeDeclHandler; \u000A                            endHandler: TEndDoctypeDeclHandler) {.cdecl, \u000A    importc: \"XML_SetDoctypeDeclHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetStartDoctypeDeclHandler", 
+    "name": "setStartDoctypeDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetStartDoctypeDeclHandler*(parser: PParser; \u000D\u000A                                 start: TStartDoctypeDeclHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetStartDoctypeDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setStartDoctypeDeclHandler*(parser: PParser; \u000A                                 start: TStartDoctypeDeclHandler) {.cdecl, \u000A    importc: \"XML_SetStartDoctypeDeclHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetEndDoctypeDeclHandler", 
+    "name": "setEndDoctypeDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetEndDoctypeDeclHandler*(parser: PParser; \u000D\u000A                               endHandler: TEndDoctypeDeclHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetEndDoctypeDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setEndDoctypeDeclHandler*(parser: PParser; \u000A                               endHandler: TEndDoctypeDeclHandler) {.cdecl, \u000A    importc: \"XML_SetEndDoctypeDeclHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetUnparsedEntityDeclHandler", 
+    "name": "setUnparsedEntityDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetUnparsedEntityDeclHandler*(parser: PParser; \u000D\u000A                                   handler: TUnparsedEntityDeclHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetUnparsedEntityDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setUnparsedEntityDeclHandler*(parser: PParser; \u000A                                   handler: TUnparsedEntityDeclHandler) {.cdecl, \u000A    importc: \"XML_SetUnparsedEntityDeclHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetNotationDeclHandler", 
+    "name": "setNotationDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetNotationDeclHandler*(parser: PParser; handler: TNotationDeclHandler) {.\u000D\u000A    cdecl, importc: \"XML_SetNotationDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setNotationDeclHandler*(parser: PParser; handler: TNotationDeclHandler) {.\u000A    cdecl, importc: \"XML_SetNotationDeclHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetNamespaceDeclHandler", 
+    "name": "setNamespaceDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetNamespaceDeclHandler*(parser: PParser; \u000D\u000A                              start: TStartNamespaceDeclHandler; \u000D\u000A                              endHandler: TEndNamespaceDeclHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetNamespaceDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setNamespaceDeclHandler*(parser: PParser; \u000A                              start: TStartNamespaceDeclHandler; \u000A                              endHandler: TEndNamespaceDeclHandler) {.cdecl, \u000A    importc: \"XML_SetNamespaceDeclHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetStartNamespaceDeclHandler", 
+    "name": "setStartNamespaceDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetStartNamespaceDeclHandler*(parser: PParser; \u000D\u000A                                   start: TStartNamespaceDeclHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetStartNamespaceDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setStartNamespaceDeclHandler*(parser: PParser; \u000A                                   start: TStartNamespaceDeclHandler) {.cdecl, \u000A    importc: \"XML_SetStartNamespaceDeclHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetEndNamespaceDeclHandler", 
+    "name": "setEndNamespaceDeclHandler", 
     "type": "skProc", 
-    "code": "proc SetEndNamespaceDeclHandler*(parser: PParser; \u000D\u000A                                 endHandler: TEndNamespaceDeclHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetEndNamespaceDeclHandler\", dynlib: expatDll.}"
+    "code": "proc setEndNamespaceDeclHandler*(parser: PParser; \u000A                                 endHandler: TEndNamespaceDeclHandler) {.cdecl, \u000A    importc: \"XML_SetEndNamespaceDeclHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetNotStandaloneHandler", 
+    "name": "setNotStandaloneHandler", 
     "type": "skProc", 
-    "code": "proc SetNotStandaloneHandler*(parser: PParser; handler: TNotStandaloneHandler) {.\u000D\u000A    cdecl, importc: \"XML_SetNotStandaloneHandler\", dynlib: expatDll.}"
+    "code": "proc setNotStandaloneHandler*(parser: PParser; handler: TNotStandaloneHandler) {.\u000A    cdecl, importc: \"XML_SetNotStandaloneHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetExternalEntityRefHandler", 
+    "name": "setExternalEntityRefHandler", 
     "type": "skProc", 
-    "code": "proc SetExternalEntityRefHandler*(parser: PParser; \u000D\u000A                                  handler: TExternalEntityRefHandler) {.cdecl, \u000D\u000A    importc: \"XML_SetExternalEntityRefHandler\", dynlib: expatDll.}"
+    "code": "proc setExternalEntityRefHandler*(parser: PParser; \u000A                                  handler: TExternalEntityRefHandler) {.cdecl, \u000A    importc: \"XML_SetExternalEntityRefHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetExternalEntityRefHandlerArg", 
+    "name": "setExternalEntityRefHandlerArg", 
     "type": "skProc", 
-    "code": "proc SetExternalEntityRefHandlerArg*(parser: PParser; arg: pointer) {.cdecl, \u000D\u000A    importc: \"XML_SetExternalEntityRefHandlerArg\", dynlib: expatDll.}"
+    "code": "proc setExternalEntityRefHandlerArg*(parser: PParser; arg: pointer) {.cdecl, \u000A    importc: \"XML_SetExternalEntityRefHandlerArg\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetSkippedEntityHandler", 
+    "name": "setSkippedEntityHandler", 
     "type": "skProc", 
-    "code": "proc SetSkippedEntityHandler*(parser: PParser; handler: TSkippedEntityHandler) {.\u000D\u000A    cdecl, importc: \"XML_SetSkippedEntityHandler\", dynlib: expatDll.}"
+    "code": "proc setSkippedEntityHandler*(parser: PParser; handler: TSkippedEntityHandler) {.\u000A    cdecl, importc: \"XML_SetSkippedEntityHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetUnknownEncodingHandler", 
+    "name": "setUnknownEncodingHandler", 
     "type": "skProc", 
-    "code": "proc SetUnknownEncodingHandler*(parser: PParser; \u000D\u000A                                handler: TUnknownEncodingHandler; \u000D\u000A                                encodingHandlerData: pointer) {.cdecl, \u000D\u000A    importc: \"XML_SetUnknownEncodingHandler\", dynlib: expatDll.}"
+    "code": "proc setUnknownEncodingHandler*(parser: PParser; \u000A                                handler: TUnknownEncodingHandler; \u000A                                encodingHandlerData: pointer) {.cdecl, \u000A    importc: \"XML_SetUnknownEncodingHandler\", dynlib: expatDll.}"
   }, 
   {
-    "name": "DefaultCurrent", 
+    "name": "defaultCurrent", 
     "type": "skProc", 
-    "code": "proc DefaultCurrent*(parser: PParser) {.cdecl, importc: \"XML_DefaultCurrent\", \u000D\u000A                                        dynlib: expatDll.}"
+    "code": "proc defaultCurrent*(parser: PParser) {.cdecl, importc: \"XML_DefaultCurrent\", \u000A                                        dynlib: expatDll.}"
   }, 
   {
-    "name": "SetReturnNSTriplet", 
+    "name": "setReturnNSTriplet", 
     "type": "skProc", 
-    "code": "proc SetReturnNSTriplet*(parser: PParser; do_nst: cint) {.cdecl, \u000D\u000A    importc: \"XML_SetReturnNSTriplet\", dynlib: expatDll.}"
+    "code": "proc setReturnNSTriplet*(parser: PParser; doNst: cint) {.cdecl, \u000A    importc: \"XML_SetReturnNSTriplet\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetUserData", 
+    "name": "setUserData", 
     "type": "skProc", 
-    "code": "proc SetUserData*(parser: PParser; userData: pointer) {.cdecl, \u000D\u000A    importc: \"XML_SetUserData\", dynlib: expatDll.}"
+    "code": "proc setUserData*(parser: PParser; userData: pointer) {.cdecl, \u000A    importc: \"XML_SetUserData\", dynlib: expatDll.}"
   }, 
   {
-    "name": "GetUserData", 
+    "name": "getUserData", 
     "type": "skTemplate", 
-    "code": "template GetUserData*(parser: expr): expr"
+    "code": "template getUserData*(parser: expr): expr"
   }, 
   {
-    "name": "SetEncoding", 
+    "name": "setEncoding", 
     "type": "skProc", 
-    "code": "proc SetEncoding*(parser: PParser; encoding: cstring): TStatus {.cdecl, \u000D\u000A    importc: \"XML_SetEncoding\", dynlib: expatDll.}"
+    "code": "proc setEncoding*(parser: PParser; encoding: cstring): TStatus {.cdecl, \u000A    importc: \"XML_SetEncoding\", dynlib: expatDll.}"
   }, 
   {
-    "name": "UseParserAsHandlerArg", 
+    "name": "useParserAsHandlerArg", 
     "type": "skProc", 
-    "code": "proc UseParserAsHandlerArg*(parser: PParser) {.cdecl, \u000D\u000A    importc: \"XML_UseParserAsHandlerArg\", dynlib: expatDll.}"
+    "code": "proc useParserAsHandlerArg*(parser: PParser) {.cdecl, \u000A    importc: \"XML_UseParserAsHandlerArg\", dynlib: expatDll.}"
   }, 
   {
-    "name": "UseForeignDTD", 
+    "name": "useForeignDTD", 
     "type": "skProc", 
-    "code": "proc UseForeignDTD*(parser: PParser; useDTD: Bool): TError {.cdecl, \u000D\u000A    importc: \"XML_UseForeignDTD\", dynlib: expatDll.}"
+    "code": "proc useForeignDTD*(parser: PParser; useDTD: bool): TError {.cdecl, \u000A    importc: \"XML_UseForeignDTD\", dynlib: expatDll.}"
   }, 
   {
-    "name": "SetBase", 
+    "name": "setBase", 
     "type": "skProc", 
-    "code": "proc SetBase*(parser: PParser; base: cstring): TStatus {.cdecl, \u000D\u000A    importc: \"XML_SetBase\", dynlib: expatDll.}"
+    "code": "proc setBase*(parser: PParser; base: cstring): TStatus {.cdecl, \u000A    importc: \"XML_SetBase\", dynlib: expatDll.}"
   }, 
   {
-    "name": "GetBase", 
+    "name": "getBase", 
     "type": "skProc", 
-    "code": "proc GetBase*(parser: PParser): cstring {.cdecl, importc: \"XML_GetBase\", \u000D\u000A    dynlib: expatDll.}"
+    "code": "proc getBase*(parser: PParser): cstring {.cdecl, importc: \"XML_GetBase\", \u000A    dynlib: expatDll.}"
   }, 
   {
-    "name": "GetSpecifiedAttributeCount", 
+    "name": "getSpecifiedAttributeCount", 
     "type": "skProc", 
-    "code": "proc GetSpecifiedAttributeCount*(parser: PParser): cint {.cdecl, \u000D\u000A    importc: \"XML_GetSpecifiedAttributeCount\", dynlib: expatDll.}"
+    "code": "proc getSpecifiedAttributeCount*(parser: PParser): cint {.cdecl, \u000A    importc: \"XML_GetSpecifiedAttributeCount\", dynlib: expatDll.}"
   }, 
   {
-    "name": "GetIdAttributeIndex", 
+    "name": "getIdAttributeIndex", 
     "type": "skProc", 
-    "code": "proc GetIdAttributeIndex*(parser: PParser): cint {.cdecl, \u000D\u000A    importc: \"XML_GetIdAttributeIndex\", dynlib: expatDll.}"
+    "code": "proc getIdAttributeIndex*(parser: PParser): cint {.cdecl, \u000A    importc: \"XML_GetIdAttributeIndex\", dynlib: expatDll.}"
   }, 
   {
-    "name": "Parse", 
+    "name": "parse", 
     "type": "skProc", 
-    "code": "proc Parse*(parser: PParser; s: cstring; len: cint; isFinal: cint): TStatus {.\u000D\u000A    cdecl, importc: \"XML_Parse\", dynlib: expatDll.}"
+    "code": "proc parse*(parser: PParser; s: cstring; len: cint; isFinal: cint): TStatus {.\u000A    cdecl, importc: \"XML_Parse\", dynlib: expatDll.}"
   }, 
   {
-    "name": "GetBuffer", 
+    "name": "getBuffer", 
     "type": "skProc", 
-    "code": "proc GetBuffer*(parser: PParser; len: cint): pointer {.cdecl, \u000D\u000A    importc: \"XML_GetBuffer\", dynlib: expatDll.}"
+    "code": "proc getBuffer*(parser: PParser; len: cint): pointer {.cdecl, \u000A    importc: \"XML_GetBuffer\", dynlib: expatDll.}"
   }, 
   {
-    "name": "ParseBuffer", 
+    "name": "parseBuffer", 
     "type": "skProc", 
-    "code": "proc ParseBuffer*(parser: PParser; len: cint; isFinal: cint): TStatus {.cdecl, \u000D\u000A    importc: \"XML_ParseBuffer\", dynlib: expatDll.}"
+    "code": "proc parseBuffer*(parser: PParser; len: cint; isFinal: cint): TStatus {.cdecl, \u000A    importc: \"XML_ParseBuffer\", dynlib: expatDll.}"
   }, 
   {
-    "name": "StopParser", 
+    "name": "stopParser", 
     "type": "skProc", 
-    "code": "proc StopParser*(parser: PParser; resumable: Bool): TStatus {.cdecl, \u000D\u000A    importc: \"XML_StopParser\", dynlib: expatDll.}"
+    "code": "proc stopParser*(parser: PParser; resumable: bool): TStatus {.cdecl, \u000A    importc: \"XML_StopParser\", dynlib: expatDll.}"
   }, 
   {
-    "name": "ResumeParser", 
+    "name": "resumeParser", 
     "type": "skProc", 
-    "code": "proc ResumeParser*(parser: PParser): TStatus {.cdecl, \u000D\u000A    importc: \"XML_ResumeParser\", dynlib: expatDll.}"
+    "code": "proc resumeParser*(parser: PParser): TStatus {.cdecl, \u000A    importc: \"XML_ResumeParser\", dynlib: expatDll.}"
   }, 
   {
     "name": "TParsingStatus", 
     "type": "skType", 
-    "code": "TParsingStatus* {.pure, final.} = object \u000D\u000A  parsing*: TParsing\u000D\u000A  finalBuffer*: Bool\u000D\u000A"
+    "code": "TParsingStatus* {.pure, final.} = object \u000A  parsing*: TParsing\u000A  finalBuffer*: bool\u000A"
   }, 
   {
-    "name": "GetParsingStatus", 
+    "name": "getParsingStatus", 
     "type": "skProc", 
-    "code": "proc GetParsingStatus*(parser: PParser; status: ptr TParsingStatus) {.cdecl, \u000D\u000A    importc: \"XML_GetParsingStatus\", dynlib: expatDll.}"
+    "code": "proc getParsingStatus*(parser: PParser; status: ptr TParsingStatus) {.cdecl, \u000A    importc: \"XML_GetParsingStatus\", dynlib: expatDll.}"
   }, 
   {
-    "name": "ExternalEntityParserCreate", 
+    "name": "externalEntityParserCreate", 
     "type": "skProc", 
-    "code": "proc ExternalEntityParserCreate*(parser: PParser; context: cstring; \u000D\u000A                                 encoding: cstring): PParser {.cdecl, \u000D\u000A    importc: \"XML_ExternalEntityParserCreate\", dynlib: expatDll.}"
+    "code": "proc externalEntityParserCreate*(parser: PParser; context: cstring; \u000A                                 encoding: cstring): PParser {.cdecl, \u000A    importc: \"XML_ExternalEntityParserCreate\", dynlib: expatDll.}"
   }, 
   {
     "name": "TParamEntityParsing", 
     "type": "skType", 
-    "code": "TParamEntityParsing* = enum \u000D\u000A  PARAM_ENTITY_PARSING_NEVER, PARAM_ENTITY_PARSING_UNLESS_STANDALONE, \u000D\u000A  PARAM_ENTITY_PARSING_ALWAYS"
+    "code": "TParamEntityParsing* = enum \u000A  PARAM_ENTITY_PARSING_NEVER, PARAM_ENTITY_PARSING_UNLESS_STANDALONE, \u000A  PARAM_ENTITY_PARSING_ALWAYS"
   }, 
   {
-    "name": "SetParamEntityParsing", 
+    "name": "setParamEntityParsing", 
     "type": "skProc", 
-    "code": "proc SetParamEntityParsing*(parser: PParser; parsing: TParamEntityParsing): cint {.\u000D\u000A    cdecl, importc: \"XML_SetParamEntityParsing\", dynlib: expatDll.}"
+    "code": "proc setParamEntityParsing*(parser: PParser; parsing: TParamEntityParsing): cint {.\u000A    cdecl, importc: \"XML_SetParamEntityParsing\", dynlib: expatDll.}"
   }, 
   {
-    "name": "GetErrorCode", 
+    "name": "getErrorCode", 
     "type": "skProc", 
-    "code": "proc GetErrorCode*(parser: PParser): TError {.cdecl, \u000D\u000A    importc: \"XML_GetErrorCode\", dynlib: expatDll.}"
+    "code": "proc getErrorCode*(parser: PParser): TError {.cdecl, \u000A    importc: \"XML_GetErrorCode\", dynlib: expatDll.}"
   }, 
   {
-    "name": "GetCurrentLineNumber", 
+    "name": "getCurrentLineNumber", 
     "type": "skProc", 
-    "code": "proc GetCurrentLineNumber*(parser: PParser): int {.cdecl, \u000D\u000A    importc: \"XML_GetCurrentLineNumber\", dynlib: expatDll.}"
+    "code": "proc getCurrentLineNumber*(parser: PParser): int {.cdecl, \u000A    importc: \"XML_GetCurrentLineNumber\", dynlib: expatDll.}"
   }, 
   {
-    "name": "GetCurrentColumnNumber", 
+    "name": "getCurrentColumnNumber", 
     "type": "skProc", 
-    "code": "proc GetCurrentColumnNumber*(parser: PParser): int {.cdecl, \u000D\u000A    importc: \"XML_GetCurrentColumnNumber\", dynlib: expatDll.}"
+    "code": "proc getCurrentColumnNumber*(parser: PParser): int {.cdecl, \u000A    importc: \"XML_GetCurrentColumnNumber\", dynlib: expatDll.}"
   }, 
   {
-    "name": "GetCurrentByteIndex", 
+    "name": "getCurrentByteIndex", 
     "type": "skProc", 
-    "code": "proc GetCurrentByteIndex*(parser: PParser): int {.cdecl, \u000D\u000A    importc: \"XML_GetCurrentByteIndex\", dynlib: expatDll.}"
+    "code": "proc getCurrentByteIndex*(parser: PParser): int {.cdecl, \u000A    importc: \"XML_GetCurrentByteIndex\", dynlib: expatDll.}"
   }, 
   {
-    "name": "GetCurrentByteCount", 
+    "name": "getCurrentByteCount", 
     "type": "skProc", 
-    "code": "proc GetCurrentByteCount*(parser: PParser): cint {.cdecl, \u000D\u000A    importc: \"XML_GetCurrentByteCount\", dynlib: expatDll.}"
+    "code": "proc getCurrentByteCount*(parser: PParser): cint {.cdecl, \u000A    importc: \"XML_GetCurrentByteCount\", dynlib: expatDll.}"
   }, 
   {
-    "name": "GetInputContext", 
+    "name": "getInputContext", 
     "type": "skProc", 
-    "code": "proc GetInputContext*(parser: PParser; offset: ptr cint; size: ptr cint): cstring {.\u000D\u000A    cdecl, importc: \"XML_GetInputContext\", dynlib: expatDll.}"
+    "code": "proc getInputContext*(parser: PParser; offset: ptr cint; size: ptr cint): cstring {.\u000A    cdecl, importc: \"XML_GetInputContext\", dynlib: expatDll.}"
   }, 
   {
-    "name": "FreeContentModel", 
+    "name": "freeContentModel", 
     "type": "skProc", 
-    "code": "proc FreeContentModel*(parser: PParser; model: ptr TContent) {.cdecl, \u000D\u000A    importc: \"XML_FreeContentModel\", dynlib: expatDll.}"
+    "code": "proc freeContentModel*(parser: PParser; model: ptr TContent) {.cdecl, \u000A    importc: \"XML_FreeContentModel\", dynlib: expatDll.}"
   }, 
   {
-    "name": "MemMalloc", 
+    "name": "memMalloc", 
     "type": "skProc", 
-    "code": "proc MemMalloc*(parser: PParser; size: int): pointer {.cdecl, \u000D\u000A    importc: \"XML_MemMalloc\", dynlib: expatDll.}"
+    "code": "proc memMalloc*(parser: PParser; size: int): pointer {.cdecl, \u000A    importc: \"XML_MemMalloc\", dynlib: expatDll.}"
   }, 
   {
-    "name": "MemRealloc", 
+    "name": "memRealloc", 
     "type": "skProc", 
-    "code": "proc MemRealloc*(parser: PParser; p: pointer; size: int): pointer {.cdecl, \u000D\u000A    importc: \"XML_MemRealloc\", dynlib: expatDll.}"
+    "code": "proc memRealloc*(parser: PParser; p: pointer; size: int): pointer {.cdecl, \u000A    importc: \"XML_MemRealloc\", dynlib: expatDll.}"
   }, 
   {
-    "name": "MemFree", 
+    "name": "memFree", 
     "type": "skProc", 
-    "code": "proc MemFree*(parser: PParser; p: pointer) {.cdecl, importc: \"XML_MemFree\", \u000D\u000A    dynlib: expatDll.}"
+    "code": "proc memFree*(parser: PParser; p: pointer) {.cdecl, importc: \"XML_MemFree\", \u000A    dynlib: expatDll.}"
   }, 
   {
-    "name": "ParserFree", 
+    "name": "parserFree", 
     "type": "skProc", 
-    "code": "proc ParserFree*(parser: PParser) {.cdecl, importc: \"XML_ParserFree\", \u000D\u000A                                    dynlib: expatDll.}"
+    "code": "proc parserFree*(parser: PParser) {.cdecl, importc: \"XML_ParserFree\", \u000A                                    dynlib: expatDll.}"
   }, 
   {
-    "name": "ErrorString", 
+    "name": "errorString", 
     "type": "skProc", 
-    "code": "proc ErrorString*(code: TError): cstring {.cdecl, importc: \"XML_ErrorString\", \u000D\u000A    dynlib: expatDll.}"
+    "code": "proc errorString*(code: TError): cstring {.cdecl, importc: \"XML_ErrorString\", \u000A    dynlib: expatDll.}"
   }, 
   {
-    "name": "ExpatVersion", 
+    "name": "expatVersion", 
     "type": "skProc", 
-    "code": "proc ExpatVersion*(): cstring {.cdecl, importc: \"XML_ExpatVersion\", \u000D\u000A                                dynlib: expatDll.}"
+    "code": "proc expatVersion*(): cstring {.cdecl, importc: \"XML_ExpatVersion\", \u000A                                dynlib: expatDll.}"
   }, 
   {
     "name": "TExpat_Version", 
     "type": "skType", 
-    "code": "TExpat_Version* {.pure, final.} = object \u000D\u000A  major*: cint\u000D\u000A  minor*: cint\u000D\u000A  micro*: cint\u000D\u000A"
+    "code": "TExpat_Version* {.pure, final.} = object \u000A  major*: cint\u000A  minor*: cint\u000A  micro*: cint\u000A"
   }, 
   {
-    "name": "ExpatVersionInfo", 
+    "name": "expatVersionInfo", 
     "type": "skProc", 
-    "code": "proc ExpatVersionInfo*(): TExpat_Version {.cdecl, \u000D\u000A    importc: \"XML_ExpatVersionInfo\", dynlib: expatDll.}"
+    "code": "proc expatVersionInfo*(): TExpatVersion {.cdecl, \u000A    importc: \"XML_ExpatVersionInfo\", dynlib: expatDll.}"
   }, 
   {
     "name": "TFeature", 
     "type": "skType", 
-    "code": "TFeature* {.pure, final.} = object \u000D\u000A  feature*: TFeatureEnum\u000D\u000A  name*: cstring\u000D\u000A  value*: int\u000D\u000A"
+    "code": "TFeature* {.pure, final.} = object \u000A  feature*: TFeatureEnum\u000A  name*: cstring\u000A  value*: int\u000A"
   }, 
   {
-    "name": "GetFeatureList", 
+    "name": "getFeatureList", 
     "type": "skProc", 
-    "code": "proc GetFeatureList*(): ptr TFeature {.cdecl, importc: \"XML_GetFeatureList\", \u000D\u000A                                       dynlib: expatDll.}"
+    "code": "proc getFeatureList*(): ptr TFeature {.cdecl, importc: \"XML_GetFeatureList\", \u000A                                       dynlib: expatDll.}"
   }, 
   {
     "name": "MICRO_VERSION", 

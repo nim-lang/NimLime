@@ -1,11 +1,11 @@
 [
   {
-    "comment": "This module implements a simple proc for opening URLs with the user's\u000D\u000A## default browser."
+    "comment": "This module implements a simple proc for opening URLs with the user's\u000A## default browser."
   }, 
   {
     "name": "openDefaultBrowser", 
     "type": "skProc", 
-    "description": "<p>opens <cite>url</cite> with the user's default browser. This does not block.</p>\u000D\u000A<p>Under Windows, <tt class=\"docutils literal\"><span class=\"pre\">ShellExecute</span></tt> is used. Under Mac OS X the <tt class=\"docutils literal\"><span class=\"pre\">open</span></tt> command is used. Under Unix, it is checked if <tt class=\"docutils literal\"><span class=\"pre\">gnome-open</span></tt> exists and used if it does. Next attempt is <tt class=\"docutils literal\"><span class=\"pre\">kde-open</span></tt>, then <tt class=\"docutils literal\"><span class=\"pre\">xdg-open</span></tt>. Otherwise the environment variable <tt class=\"docutils literal\"><span class=\"pre\">BROWSER</span></tt> is used to determine the default browser to use.</p>\u000D\u000A", 
+    "description": "<p>opens <cite>url</cite> with the user's default browser. This does not block.</p>\u000A<p>Under Windows, <tt class=\"docutils literal\"><span class=\"pre\">ShellExecute</span></tt> is used. Under Mac OS X the <tt class=\"docutils literal\"><span class=\"pre\">open</span></tt> command is used. Under Unix, it is checked if <tt class=\"docutils literal\"><span class=\"pre\">gnome-open</span></tt> exists and used if it does. Next attempt is <tt class=\"docutils literal\"><span class=\"pre\">kde-open</span></tt>, then <tt class=\"docutils literal\"><span class=\"pre\">xdg-open</span></tt>. Otherwise the environment variable <tt class=\"docutils literal\"><span class=\"pre\">BROWSER</span></tt> is used to determine the default browser to use.</p>\u000A", 
     "code": "proc openDefaultBrowser*(url: string)"
   }
 ]

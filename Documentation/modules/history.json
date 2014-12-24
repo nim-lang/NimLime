@@ -7,7 +7,7 @@
   {
     "name": "THIST_ENTRY", 
     "type": "skType", 
-    "code": "THIST_ENTRY* {.pure, final.} = object \u000D\u000A  line*: cstring\u000D\u000A  timestamp*: cstring\u000D\u000A  data*: Thistdata\u000D\u000A"
+    "code": "THIST_ENTRY* {.pure, final.} = object \u000A  line*: cstring\u000A  timestamp*: cstring\u000A  data*: Thistdata\u000A"
   }, 
   {
     "name": "HISTENT_BYTES", 
@@ -17,7 +17,7 @@
   {
     "name": "THISTORY_STATE", 
     "type": "skType", 
-    "code": "THISTORY_STATE* {.pure, final.} = object \u000D\u000A  entries*: ptr ptr THIST_ENTRY\u000D\u000A  offset*: cint\u000D\u000A  length*: cint\u000D\u000A  size*: cint\u000D\u000A  flags*: cint\u000D\u000A"
+    "code": "THISTORY_STATE* {.pure, final.} = object \u000A  entries*: ptr ptr THIST_ENTRY\u000A  offset*: cint\u000A  length*: cint\u000A  size*: cint\u000A  flags*: cint\u000A"
   }, 
   {
     "name": "HS_STIFLED", 
@@ -32,37 +32,37 @@
   {
     "name": "history_get_history_state", 
     "type": "skProc", 
-    "code": "proc history_get_history_state*(): ptr THISTORY_STATE {.cdecl, \u000D\u000A    importc: \"history_get_history_state\", dynlib: historyDll.}"
+    "code": "proc history_get_history_state*(): ptr THISTORY_STATE {.cdecl, \u000A    importc: \"history_get_history_state\", dynlib: historyDll.}"
   }, 
   {
     "name": "history_set_history_state", 
     "type": "skProc", 
-    "code": "proc history_set_history_state*(a2: ptr THISTORY_STATE) {.cdecl, \u000D\u000A    importc: \"history_set_history_state\", dynlib: historyDll.}"
+    "code": "proc history_set_history_state*(a2: ptr THISTORY_STATE) {.cdecl, \u000A    importc: \"history_set_history_state\", dynlib: historyDll.}"
   }, 
   {
     "name": "add_history", 
     "type": "skProc", 
-    "code": "proc add_history*(a2: cstring) {.cdecl, importc: \"add_history\", \u000D\u000A                                 dynlib: historyDll.}"
+    "code": "proc add_history*(a2: cstring) {.cdecl, importc: \"add_history\", \u000A                                 dynlib: historyDll.}"
   }, 
   {
     "name": "add_history_time", 
     "type": "skProc", 
-    "code": "proc add_history_time*(a2: cstring) {.cdecl, importc: \"add_history_time\", \u000D\u000A                                      dynlib: historyDll.}"
+    "code": "proc add_history_time*(a2: cstring) {.cdecl, importc: \"add_history_time\", \u000A                                      dynlib: historyDll.}"
   }, 
   {
     "name": "remove_history", 
     "type": "skProc", 
-    "code": "proc remove_history*(a2: cint): ptr THIST_ENTRY {.cdecl, \u000D\u000A    importc: \"remove_history\", dynlib: historyDll.}"
+    "code": "proc remove_history*(a2: cint): ptr THIST_ENTRY {.cdecl, \u000A    importc: \"remove_history\", dynlib: historyDll.}"
   }, 
   {
     "name": "free_history_entry", 
     "type": "skProc", 
-    "code": "proc free_history_entry*(a2: ptr THIST_ENTRY): Thistdata {.cdecl, \u000D\u000A    importc: \"free_history_entry\", dynlib: historyDll.}"
+    "code": "proc free_history_entry*(a2: ptr THIST_ENTRY): Thistdata {.cdecl, \u000A    importc: \"free_history_entry\", dynlib: historyDll.}"
   }, 
   {
     "name": "replace_history_entry", 
     "type": "skProc", 
-    "code": "proc replace_history_entry*(a2: cint; a3: cstring; a4: Thistdata): ptr THIST_ENTRY {.\u000D\u000A    cdecl, importc: \"replace_history_entry\", dynlib: historyDll.}"
+    "code": "proc replace_history_entry*(a2: cint; a3: cstring; a4: Thistdata): ptr THIST_ENTRY {.\u000A    cdecl, importc: \"replace_history_entry\", dynlib: historyDll.}"
   }, 
   {
     "name": "clear_history", 
@@ -72,121 +72,121 @@
   {
     "name": "stifle_history", 
     "type": "skProc", 
-    "code": "proc stifle_history*(a2: cint) {.cdecl, importc: \"stifle_history\", \u000D\u000A                                 dynlib: historyDll.}"
+    "code": "proc stifle_history*(a2: cint) {.cdecl, importc: \"stifle_history\", \u000A                                 dynlib: historyDll.}"
   }, 
   {
     "name": "unstifle_history", 
     "type": "skProc", 
-    "code": "proc unstifle_history*(): cint {.cdecl, importc: \"unstifle_history\", \u000D\u000A                                 dynlib: historyDll.}"
+    "code": "proc unstifle_history*(): cint {.cdecl, importc: \"unstifle_history\", \u000A                                 dynlib: historyDll.}"
   }, 
   {
     "name": "history_is_stifled", 
     "type": "skProc", 
-    "code": "proc history_is_stifled*(): cint {.cdecl, importc: \"history_is_stifled\", \u000D\u000A                                   dynlib: historyDll.}"
+    "code": "proc history_is_stifled*(): cint {.cdecl, importc: \"history_is_stifled\", \u000A                                   dynlib: historyDll.}"
   }, 
   {
     "name": "history_list", 
     "type": "skProc", 
-    "code": "proc history_list*(): ptr ptr THIST_ENTRY {.cdecl, importc: \"history_list\", \u000D\u000A    dynlib: historyDll.}"
+    "code": "proc history_list*(): ptr ptr THIST_ENTRY {.cdecl, importc: \"history_list\", \u000A    dynlib: historyDll.}"
   }, 
   {
     "name": "where_history", 
     "type": "skProc", 
-    "code": "proc where_history*(): cint {.cdecl, importc: \"where_history\", \u000D\u000A                              dynlib: historyDll.}"
+    "code": "proc where_history*(): cint {.cdecl, importc: \"where_history\", \u000A                              dynlib: historyDll.}"
   }, 
   {
     "name": "current_history", 
     "type": "skProc", 
-    "code": "proc current_history*(): ptr THIST_ENTRY {.cdecl, importc: \"current_history\", \u000D\u000A    dynlib: historyDll.}"
+    "code": "proc current_history*(): ptr THIST_ENTRY {.cdecl, importc: \"current_history\", \u000A    dynlib: historyDll.}"
   }, 
   {
     "name": "history_get", 
     "type": "skProc", 
-    "code": "proc history_get*(a2: cint): ptr THIST_ENTRY {.cdecl, importc: \"history_get\", \u000D\u000A    dynlib: historyDll.}"
+    "code": "proc history_get*(a2: cint): ptr THIST_ENTRY {.cdecl, importc: \"history_get\", \u000A    dynlib: historyDll.}"
   }, 
   {
     "name": "history_get_time", 
     "type": "skProc", 
-    "code": "proc history_get_time*(a2: ptr THIST_ENTRY): TTime {.cdecl, \u000D\u000A    importc: \"history_get_time\", dynlib: historyDll.}"
+    "code": "proc history_get_time*(a2: ptr THIST_ENTRY): Time {.cdecl, \u000A    importc: \"history_get_time\", dynlib: historyDll.}"
   }, 
   {
     "name": "history_total_bytes", 
     "type": "skProc", 
-    "code": "proc history_total_bytes*(): cint {.cdecl, importc: \"history_total_bytes\", \u000D\u000A                                    dynlib: historyDll.}"
+    "code": "proc history_total_bytes*(): cint {.cdecl, importc: \"history_total_bytes\", \u000A                                    dynlib: historyDll.}"
   }, 
   {
     "name": "history_set_pos", 
     "type": "skProc", 
-    "code": "proc history_set_pos*(a2: cint): cint {.cdecl, importc: \"history_set_pos\", \u000D\u000A                                        dynlib: historyDll.}"
+    "code": "proc history_set_pos*(a2: cint): cint {.cdecl, importc: \"history_set_pos\", \u000A                                        dynlib: historyDll.}"
   }, 
   {
     "name": "previous_history", 
     "type": "skProc", 
-    "code": "proc previous_history*(): ptr THIST_ENTRY {.cdecl, importc: \"previous_history\", \u000D\u000A    dynlib: historyDll.}"
+    "code": "proc previous_history*(): ptr THIST_ENTRY {.cdecl, importc: \"previous_history\", \u000A    dynlib: historyDll.}"
   }, 
   {
     "name": "next_history", 
     "type": "skProc", 
-    "code": "proc next_history*(): ptr THIST_ENTRY {.cdecl, importc: \"next_history\", \u000D\u000A                                        dynlib: historyDll.}"
+    "code": "proc next_history*(): ptr THIST_ENTRY {.cdecl, importc: \"next_history\", \u000A                                        dynlib: historyDll.}"
   }, 
   {
     "name": "history_search", 
     "type": "skProc", 
-    "code": "proc history_search*(a2: cstring; a3: cint): cint {.cdecl, \u000D\u000A    importc: \"history_search\", dynlib: historyDll.}"
+    "code": "proc history_search*(a2: cstring; a3: cint): cint {.cdecl, \u000A    importc: \"history_search\", dynlib: historyDll.}"
   }, 
   {
     "name": "history_search_prefix", 
     "type": "skProc", 
-    "code": "proc history_search_prefix*(a2: cstring; a3: cint): cint {.cdecl, \u000D\u000A    importc: \"history_search_prefix\", dynlib: historyDll.}"
+    "code": "proc history_search_prefix*(a2: cstring; a3: cint): cint {.cdecl, \u000A    importc: \"history_search_prefix\", dynlib: historyDll.}"
   }, 
   {
     "name": "history_search_pos", 
     "type": "skProc", 
-    "code": "proc history_search_pos*(a2: cstring; a3: cint; a4: cint): cint {.cdecl, \u000D\u000A    importc: \"history_search_pos\", dynlib: historyDll.}"
+    "code": "proc history_search_pos*(a2: cstring; a3: cint; a4: cint): cint {.cdecl, \u000A    importc: \"history_search_pos\", dynlib: historyDll.}"
   }, 
   {
     "name": "read_history", 
     "type": "skProc", 
-    "code": "proc read_history*(a2: cstring): cint {.cdecl, importc: \"read_history\", \u000D\u000A                                        dynlib: historyDll.}"
+    "code": "proc read_history*(a2: cstring): cint {.cdecl, importc: \"read_history\", \u000A                                        dynlib: historyDll.}"
   }, 
   {
     "name": "read_history_range", 
     "type": "skProc", 
-    "code": "proc read_history_range*(a2: cstring; a3: cint; a4: cint): cint {.cdecl, \u000D\u000A    importc: \"read_history_range\", dynlib: historyDll.}"
+    "code": "proc read_history_range*(a2: cstring; a3: cint; a4: cint): cint {.cdecl, \u000A    importc: \"read_history_range\", dynlib: historyDll.}"
   }, 
   {
     "name": "write_history", 
     "type": "skProc", 
-    "code": "proc write_history*(a2: cstring): cint {.cdecl, importc: \"write_history\", \u000D\u000A    dynlib: historyDll.}"
+    "code": "proc write_history*(a2: cstring): cint {.cdecl, importc: \"write_history\", \u000A    dynlib: historyDll.}"
   }, 
   {
     "name": "append_history", 
     "type": "skProc", 
-    "code": "proc append_history*(a2: cint; a3: cstring): cint {.cdecl, \u000D\u000A    importc: \"append_history\", dynlib: historyDll.}"
+    "code": "proc append_history*(a2: cint; a3: cstring): cint {.cdecl, \u000A    importc: \"append_history\", dynlib: historyDll.}"
   }, 
   {
     "name": "history_truncate_file", 
     "type": "skProc", 
-    "code": "proc history_truncate_file*(a2: cstring; a3: cint): cint {.cdecl, \u000D\u000A    importc: \"history_truncate_file\", dynlib: historyDll.}"
+    "code": "proc history_truncate_file*(a2: cstring; a3: cint): cint {.cdecl, \u000A    importc: \"history_truncate_file\", dynlib: historyDll.}"
   }, 
   {
     "name": "history_expand", 
     "type": "skProc", 
-    "code": "proc history_expand*(a2: cstring; a3: cstringArray): cint {.cdecl, \u000D\u000A    importc: \"history_expand\", dynlib: historyDll.}"
+    "code": "proc history_expand*(a2: cstring; a3: cstringArray): cint {.cdecl, \u000A    importc: \"history_expand\", dynlib: historyDll.}"
   }, 
   {
     "name": "history_arg_extract", 
     "type": "skProc", 
-    "code": "proc history_arg_extract*(a2: cint; a3: cint; a4: cstring): cstring {.cdecl, \u000D\u000A    importc: \"history_arg_extract\", dynlib: historyDll.}"
+    "code": "proc history_arg_extract*(a2: cint; a3: cint; a4: cstring): cstring {.cdecl, \u000A    importc: \"history_arg_extract\", dynlib: historyDll.}"
   }, 
   {
     "name": "get_history_event", 
     "type": "skProc", 
-    "code": "proc get_history_event*(a2: cstring; a3: ptr cint; a4: cint): cstring {.cdecl, \u000D\u000A    importc: \"get_history_event\", dynlib: historyDll.}"
+    "code": "proc get_history_event*(a2: cstring; a3: ptr cint; a4: cint): cstring {.cdecl, \u000A    importc: \"get_history_event\", dynlib: historyDll.}"
   }, 
   {
     "name": "history_tokenize", 
     "type": "skProc", 
-    "code": "proc history_tokenize*(a2: cstring): cstringArray {.cdecl, \u000D\u000A    importc: \"history_tokenize\", dynlib: historyDll.}"
+    "code": "proc history_tokenize*(a2: cstring): cstringArray {.cdecl, \u000A    importc: \"history_tokenize\", dynlib: historyDll.}"
   }
 ]

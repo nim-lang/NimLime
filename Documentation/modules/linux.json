@@ -1,0 +1,12 @@
+[
+  {
+    "name": "CLONE_STOPPED", 
+    "type": "skConst", 
+    "code": "CLONE_STOPPED* = 0x02000000"
+  }, 
+  {
+    "name": "clone", 
+    "type": "skProc", 
+    "code": "proc clone*(fn: pointer; child_stack: pointer; flags: cint; arg: pointer; \u000A            ptid: ptr TPid; tls: pointer; ctid: ptr TPid): cint {.importc, \u000A    header: \"<sched.h>\".}"
+  }
+]

@@ -50,157 +50,167 @@
   {
     "name": "SSL_new", 
     "type": "skProc", 
-    "code": "proc SSL_new*(context: PSSL_CTX): PSSL {.cdecl, dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_new*(context: SslCtx): SslPtr {.cdecl, dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_free", 
     "type": "skProc", 
-    "code": "proc SSL_free*(ssl: PSSL) {.cdecl, dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_free*(ssl: SslPtr) {.cdecl, dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_CTX_new", 
     "type": "skProc", 
-    "code": "proc SSL_CTX_new*(meth: PSSL_METHOD): PSSL_CTX {.cdecl, dynlib: DLLSSLName, \u000D\u000A    importc.}"
+    "code": "proc SSL_CTX_new*(meth: PSSL_METHOD): SslCtx {.cdecl, dynlib: DLLSSLName, \u000A    importc.}"
   }, 
   {
     "name": "SSL_CTX_load_verify_locations", 
     "type": "skProc", 
-    "code": "proc SSL_CTX_load_verify_locations*(ctx: PSSL_CTX; CAfile: cstring; \u000D\u000A                                    CApath: cstring): cInt {.cdecl, \u000D\u000A    dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_CTX_load_verify_locations*(ctx: SslCtx; CAfile: cstring; \u000A                                    CApath: cstring): cInt {.cdecl, \u000A    dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_CTX_free", 
     "type": "skProc", 
-    "code": "proc SSL_CTX_free*(arg0: PSSL_CTX) {.cdecl, dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_CTX_free*(arg0: SslCtx) {.cdecl, dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_CTX_set_verify", 
     "type": "skProc", 
-    "code": "proc SSL_CTX_set_verify*(s: PSSL_CTX; mode: int; \u000D\u000A                         cb: proc (a: int; b: pointer): int {.cdecl.}) {.cdecl, \u000D\u000A    dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_CTX_set_verify*(s: SslCtx; mode: int; \u000A                         cb: proc (a: int; b: pointer): int {.cdecl.}) {.cdecl, \u000A    dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_get_verify_result", 
     "type": "skProc", 
-    "code": "proc SSL_get_verify_result*(ssl: PSSL): int {.cdecl, dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_get_verify_result*(ssl: SslPtr): int {.cdecl, dynlib: DLLSSLName, \u000A    importc.}"
   }, 
   {
     "name": "SSL_CTX_set_cipher_list", 
     "type": "skProc", 
-    "code": "proc SSL_CTX_set_cipher_list*(s: PSSLCTX; ciphers: cstring): cint {.cdecl, \u000D\u000A    dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_CTX_set_cipher_list*(s: SslCtx; ciphers: cstring): cint {.cdecl, \u000A    dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_CTX_use_certificate_file", 
     "type": "skProc", 
-    "code": "proc SSL_CTX_use_certificate_file*(ctx: PSSL_CTX; filename: cstring; typ: cInt): cInt {.\u000D\u000A    stdcall, dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_CTX_use_certificate_file*(ctx: SslCtx; filename: cstring; typ: cInt): cInt {.\u000A    stdcall, dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_CTX_use_certificate_chain_file", 
     "type": "skProc", 
-    "code": "proc SSL_CTX_use_certificate_chain_file*(ctx: PSSL_CTX; filename: cstring): cInt {.\u000D\u000A    stdcall, dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_CTX_use_certificate_chain_file*(ctx: SslCtx; filename: cstring): cInt {.\u000A    stdcall, dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_CTX_use_PrivateKey_file", 
     "type": "skProc", 
-    "code": "proc SSL_CTX_use_PrivateKey_file*(ctx: PSSL_CTX; filename: cstring; typ: cInt): cInt {.\u000D\u000A    cdecl, dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_CTX_use_PrivateKey_file*(ctx: SslCtx; filename: cstring; typ: cInt): cInt {.\u000A    cdecl, dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_CTX_check_private_key", 
     "type": "skProc", 
-    "code": "proc SSL_CTX_check_private_key*(ctx: PSSL_CTX): cInt {.cdecl, \u000D\u000A    dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_CTX_check_private_key*(ctx: SslCtx): cInt {.cdecl, dynlib: DLLSSLName, \u000A    importc.}"
   }, 
   {
     "name": "SSL_set_fd", 
     "type": "skProc", 
-    "code": "proc SSL_set_fd*(ssl: PSSL; fd: TSocketHandle): cint {.cdecl, \u000D\u000A    dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_set_fd*(ssl: SslPtr; fd: SocketHandle): cint {.cdecl, \u000A    dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_shutdown", 
     "type": "skProc", 
-    "code": "proc SSL_shutdown*(ssl: PSSL): cInt {.cdecl, dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_shutdown*(ssl: SslPtr): cInt {.cdecl, dynlib: DLLSSLName, importc.}"
+  }, 
+  {
+    "name": "SSL_set_shutdown", 
+    "type": "skProc", 
+    "code": "proc SSL_set_shutdown*(ssl: SslPtr; mode: cint) {.cdecl, dynlib: DLLSSLName, \u000A    importc: \"SSL_set_shutdown\".}"
+  }, 
+  {
+    "name": "SSL_get_shutdown", 
+    "type": "skProc", 
+    "code": "proc SSL_get_shutdown*(ssl: SslPtr): cint {.cdecl, dynlib: DLLSSLName, \u000A    importc: \"SSL_get_shutdown\".}"
   }, 
   {
     "name": "SSL_connect", 
     "type": "skProc", 
-    "code": "proc SSL_connect*(ssl: PSSL): cint {.cdecl, dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_connect*(ssl: SslPtr): cint {.cdecl, dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_read", 
     "type": "skProc", 
-    "code": "proc SSL_read*(ssl: PSSL; buf: pointer; num: int): cint {.cdecl, \u000D\u000A    dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_read*(ssl: SslPtr; buf: pointer; num: int): cint {.cdecl, \u000A    dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_write", 
     "type": "skProc", 
-    "code": "proc SSL_write*(ssl: PSSL; buf: cstring; num: int): cint {.cdecl, \u000D\u000A    dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_write*(ssl: SslPtr; buf: cstring; num: int): cint {.cdecl, \u000A    dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_get_error", 
     "type": "skProc", 
-    "code": "proc SSL_get_error*(s: PSSL; ret_code: cInt): cInt {.cdecl, dynlib: DLLSSLName, \u000D\u000A    importc.}"
+    "code": "proc SSL_get_error*(s: SslPtr; ret_code: cInt): cInt {.cdecl, \u000A    dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_accept", 
     "type": "skProc", 
-    "code": "proc SSL_accept*(ssl: PSSL): cInt {.cdecl, dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_accept*(ssl: SslPtr): cInt {.cdecl, dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "SSL_pending", 
     "type": "skProc", 
-    "code": "proc SSL_pending*(ssl: PSSL): cInt {.cdecl, dynlib: DLLSSLName, importc.}"
+    "code": "proc SSL_pending*(ssl: SslPtr): cInt {.cdecl, dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "BIO_new_ssl_connect", 
     "type": "skProc", 
-    "code": "proc BIO_new_ssl_connect*(ctx: PSSL_CTX): PBIO {.cdecl, dynlib: DLLSSLName, \u000D\u000A    importc.}"
+    "code": "proc BIO_new_ssl_connect*(ctx: SslCtx): BIO {.cdecl, dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "BIO_ctrl", 
     "type": "skProc", 
-    "code": "proc BIO_ctrl*(bio: PBIO; cmd: cint; larg: int; arg: cstring): int {.cdecl, \u000D\u000A    dynlib: DLLSSLName, importc.}"
+    "code": "proc BIO_ctrl*(bio: BIO; cmd: cint; larg: int; arg: cstring): int {.cdecl, \u000A    dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "BIO_get_ssl", 
     "type": "skProc", 
-    "code": "proc BIO_get_ssl*(bio: PBIO; ssl: ptr PSSL): int"
+    "code": "proc BIO_get_ssl*(bio: BIO; ssl: ptr SslPtr): int"
   }, 
   {
     "name": "BIO_set_conn_hostname", 
     "type": "skProc", 
-    "code": "proc BIO_set_conn_hostname*(bio: PBIO; name: cstring): int"
+    "code": "proc BIO_set_conn_hostname*(bio: BIO; name: cstring): int"
   }, 
   {
     "name": "BIO_do_handshake", 
     "type": "skProc", 
-    "code": "proc BIO_do_handshake*(bio: PBIO): int"
+    "code": "proc BIO_do_handshake*(bio: BIO): int"
   }, 
   {
     "name": "BIO_do_connect", 
     "type": "skProc", 
-    "code": "proc BIO_do_connect*(bio: PBIO): int"
+    "code": "proc BIO_do_connect*(bio: BIO): int"
   }, 
   {
     "name": "BIO_read", 
     "type": "skProc", 
-    "code": "proc BIO_read*(b: PBIO; data: cstring; length: cInt): cInt {.cdecl, \u000D\u000A    dynlib: DLLUtilName, importc.}"
+    "code": "proc BIO_read*(b: BIO; data: cstring; length: cInt): cInt {.cdecl, \u000A    dynlib: DLLUtilName, importc.}"
   }, 
   {
     "name": "BIO_write", 
     "type": "skProc", 
-    "code": "proc BIO_write*(b: PBIO; data: cstring; length: cInt): cInt {.cdecl, \u000D\u000A    dynlib: DLLUtilName, importc.}"
+    "code": "proc BIO_write*(b: BIO; data: cstring; length: cInt): cInt {.cdecl, \u000A    dynlib: DLLUtilName, importc.}"
   }, 
   {
     "name": "BIO_free", 
     "type": "skProc", 
-    "code": "proc BIO_free*(b: PBIO): cInt {.cdecl, dynlib: DLLUtilName, importc.}"
+    "code": "proc BIO_free*(b: BIO): cInt {.cdecl, dynlib: DLLUtilName, importc.}"
   }, 
   {
     "name": "ERR_print_errors_fp", 
     "type": "skProc", 
-    "code": "proc ERR_print_errors_fp*(fp: TFile) {.cdecl, dynlib: DLLSSLName, importc.}"
+    "code": "proc ERR_print_errors_fp*(fp: File) {.cdecl, dynlib: DLLSSLName, importc.}"
   }, 
   {
     "name": "ERR_error_string", 
     "type": "skProc", 
-    "code": "proc ERR_error_string*(e: cInt; buf: cstring): cstring {.cdecl, \u000D\u000A    dynlib: DLLUtilName, importc.}"
+    "code": "proc ERR_error_string*(e: cInt; buf: cstring): cstring {.cdecl, \u000A    dynlib: DLLUtilName, importc.}"
   }, 
   {
     "name": "ERR_get_error", 
@@ -215,7 +225,7 @@
   {
     "name": "OpenSSL_add_all_algorithms", 
     "type": "skProc", 
-    "code": "proc OpenSSL_add_all_algorithms*() {.cdecl, dynlib: DLLUtilName, \u000D\u000A                                     importc: \"OPENSSL_add_all_algorithms_conf\".}"
+    "code": "proc OpenSSL_add_all_algorithms*() {.cdecl, dynlib: DLLUtilName, \u000A                                     importc: \"OPENSSL_add_all_algorithms_conf\".}"
   }, 
   {
     "name": "OPENSSL_config", 
@@ -226,5 +236,147 @@
     "name": "CRYPTO_malloc_init", 
     "type": "skProc", 
     "code": "proc CRYPTO_malloc_init*()"
+  }, 
+  {
+    "name": "SSL_CTX_ctrl", 
+    "type": "skProc", 
+    "code": "proc SSL_CTX_ctrl*(ctx: SslCtx; cmd: cInt; larg: int; parg: pointer): int {.\u000A    cdecl, dynlib: DLLSSLName, importc.}"
+  }, 
+  {
+    "name": "SSLCTXSetMode", 
+    "type": "skProc", 
+    "code": "proc SSLCTXSetMode*(ctx: SslCtx; mode: int): int"
+  }, 
+  {
+    "name": "bioNew", 
+    "type": "skProc", 
+    "code": "proc bioNew*(b: PBIO_METHOD): BIO {.cdecl, dynlib: DLLUtilName, \u000A                                    importc: \"BIO_new\".}"
+  }, 
+  {
+    "name": "bioFreeAll", 
+    "type": "skProc", 
+    "code": "proc bioFreeAll*(b: BIO) {.cdecl, dynlib: DLLUtilName, importc: \"BIO_free_all\".}"
+  }, 
+  {
+    "name": "bioSMem", 
+    "type": "skProc", 
+    "code": "proc bioSMem*(): PBIO_METHOD {.cdecl, dynlib: DLLUtilName, importc: \"BIO_s_mem\".}"
+  }, 
+  {
+    "name": "bioCtrlPending", 
+    "type": "skProc", 
+    "code": "proc bioCtrlPending*(b: BIO): cInt {.cdecl, dynlib: DLLUtilName, \u000A                                     importc: \"BIO_ctrl_pending\".}"
+  }, 
+  {
+    "name": "bioRead", 
+    "type": "skProc", 
+    "code": "proc bioRead*(b: BIO; Buf: cstring; length: cInt): cInt {.cdecl, \u000A    dynlib: DLLUtilName, importc: \"BIO_read\".}"
+  }, 
+  {
+    "name": "bioWrite", 
+    "type": "skProc", 
+    "code": "proc bioWrite*(b: BIO; Buf: cstring; length: cInt): cInt {.cdecl, \u000A    dynlib: DLLUtilName, importc: \"BIO_write\".}"
+  }, 
+  {
+    "name": "sslSetConnectState", 
+    "type": "skProc", 
+    "code": "proc sslSetConnectState*(s: SslPtr) {.cdecl, dynlib: DLLSSLName, \u000A                                      importc: \"SSL_set_connect_state\".}"
+  }, 
+  {
+    "name": "sslSetAcceptState", 
+    "type": "skProc", 
+    "code": "proc sslSetAcceptState*(s: SslPtr) {.cdecl, dynlib: DLLSSLName, \u000A                                     importc: \"SSL_set_accept_state\".}"
+  }, 
+  {
+    "name": "sslRead", 
+    "type": "skProc", 
+    "code": "proc sslRead*(ssl: SslPtr; buf: cstring; num: cInt): cInt {.cdecl, \u000A    dynlib: DLLSSLName, importc: \"SSL_read\".}"
+  }, 
+  {
+    "name": "sslPeek", 
+    "type": "skProc", 
+    "code": "proc sslPeek*(ssl: SslPtr; buf: cstring; num: cInt): cInt {.cdecl, \u000A    dynlib: DLLSSLName, importc: \"SSL_peek\".}"
+  }, 
+  {
+    "name": "sslWrite", 
+    "type": "skProc", 
+    "code": "proc sslWrite*(ssl: SslPtr; buf: cstring; num: cInt): cInt {.cdecl, \u000A    dynlib: DLLSSLName, importc: \"SSL_write\".}"
+  }, 
+  {
+    "name": "sslSetBio", 
+    "type": "skProc", 
+    "code": "proc sslSetBio*(ssl: SslPtr; rbio, wbio: BIO) {.cdecl, dynlib: DLLSSLName, \u000A    importc: \"SSL_set_bio\".}"
+  }, 
+  {
+    "name": "sslDoHandshake", 
+    "type": "skProc", 
+    "code": "proc sslDoHandshake*(ssl: SslPtr): cint {.cdecl, dynlib: DLLSSLName, \u000A    importc: \"SSL_do_handshake\".}"
+  }, 
+  {
+    "name": "ErrClearError", 
+    "type": "skProc", 
+    "code": "proc ErrClearError*() {.cdecl, dynlib: DLLUtilName, importc: \"ERR_clear_error\".}"
+  }, 
+  {
+    "name": "ErrFreeStrings", 
+    "type": "skProc", 
+    "code": "proc ErrFreeStrings*() {.cdecl, dynlib: DLLUtilName, importc: \"ERR_free_strings\".}"
+  }, 
+  {
+    "name": "ErrRemoveState", 
+    "type": "skProc", 
+    "code": "proc ErrRemoveState*(pid: cInt) {.cdecl, dynlib: DLLUtilName, \u000A                                  importc: \"ERR_remove_state\".}"
+  }, 
+  {
+    "name": "MD5_LONG", 
+    "type": "skType", 
+    "code": "MD5_LONG* = cuint"
+  }, 
+  {
+    "name": "MD5_DIGEST_LENGTH", 
+    "type": "skConst", 
+    "code": "MD5_DIGEST_LENGTH* = 16"
+  }, 
+  {
+    "name": "MD5_CTX", 
+    "type": "skType", 
+    "code": "MD5_CTX* = object \u000A  A, B, C, D, Nl, Nh: MD5_LONG\u000A  data: array[MD5_LBLOCK, MD5_LONG]\u000A  num: cuint\u000A"
+  }, 
+  {
+    "name": "md5_Init", 
+    "type": "skProc", 
+    "code": "proc md5_Init*(c: var MD5_CTX): cint {.ic.}"
+  }, 
+  {
+    "name": "md5_Update", 
+    "type": "skProc", 
+    "code": "proc md5_Update*(c: var MD5_CTX; data: pointer; len: csize): cint {.ic.}"
+  }, 
+  {
+    "name": "md5_Final", 
+    "type": "skProc", 
+    "code": "proc md5_Final*(md: cstring; c: var MD5_CTX): cint {.ic.}"
+  }, 
+  {
+    "name": "md5", 
+    "type": "skProc", 
+    "code": "proc md5*(d: ptr cuchar; n: csize; md: ptr cuchar): ptr cuchar {.ic.}"
+  }, 
+  {
+    "name": "md5_Transform", 
+    "type": "skProc", 
+    "code": "proc md5_Transform*(c: var MD5_CTX; b: ptr cuchar) {.ic.}"
+  }, 
+  {
+    "name": "md5_File", 
+    "type": "skProc", 
+    "description": "Generate MD5 hash for a file. Result is a 32 character", 
+    "code": "proc md5_File*(file: string): string {.raises: [IOError, Exception].}"
+  }, 
+  {
+    "name": "md5_Str", 
+    "type": "skProc", 
+    "description": "Generate MD5 hash for a string. Result is a 32 character", 
+    "code": "proc md5_Str*(str: string): string {.raises: [IOError].}"
   }
 ]

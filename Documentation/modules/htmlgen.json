@@ -1,6 +1,6 @@
 [
   {
-    "comment": "This module implements a simple `XML`:idx: and `HTML`:idx: code \u000D\u000A## generator. Each commonly used HTML tag has a corresponding macro\u000D\u000A## that generates a string with its HTML representation.\u000D\u000A##\u000D\u000A## Example:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##   var nim = \"Nimrod\"\u000D\u000A##   echo h1(a(href=\"http://nimrod-code.org\", nim))\u000D\u000A##  \u000D\u000A## Writes the string::\u000D\u000A##   \u000D\u000A##   <h1><a href=\"http://nimrod-code.org\">Nimrod</a></h1>\u000D\u000A##"
+    "comment": "**Warning**: This module uses ``immediate`` macros which are known to\u000A## cause problems. Do yourself a favor and import the module\u000A## as ``from htmlgen import nil`` and then fully qualify the macros.\u000A##\u000A##\u000A## This module implements a simple `XML`:idx: and `HTML`:idx: code \u000A## generator. Each commonly used HTML tag has a corresponding macro\u000A## that generates a string with its HTML representation.\u000A##\u000A## Example:\u000A##\u000A## .. code-block:: Nim\u000A##   var nim = \"Nim\"\u000A##   echo h1(a(href=\"http://nim-lang.org\", nim))\u000A##  \u000A## Writes the string::\u000A##   \u000A##   <h1><a href=\"http://nim-lang.org\">Nim</a></h1>\u000A##"
   }, 
   {
     "name": "commonAttr", 
@@ -11,7 +11,7 @@
     "name": "xmlCheckedTag", 
     "type": "skProc", 
     "description": "use this procedure to define a new XML tag", 
-    "code": "proc xmlCheckedTag*(e: PNimrodNode; tag: string; optAttr = \"\"; reqAttr = \"\"; \u000D\u000A                    isLeaf = false): PNimrodNode {.compileTime.}"
+    "code": "proc xmlCheckedTag*(e: PNimrodNode; tag: string; optAttr = \"\"; reqAttr = \"\"; \u000A                    isLeaf = false): PNimrodNode {.compileTime.}"
   }, 
   {
     "name": "a", 
@@ -215,7 +215,7 @@
     "name": "hr", 
     "type": "skMacro", 
     "description": "generates the HTML <tt class=\"docutils literal\"><span class=\"pre\">hr</span></tt> element.", 
-    "code": "macro hr*(e: expr): expr {.immediate.}"
+    "code": "macro hr*(): expr {.immediate.}"
   }, 
   {
     "name": "i", 

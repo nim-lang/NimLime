@@ -1,45 +1,45 @@
 [
   {
-    "comment": "The ``parsesql`` module implements a high performance SQL file \u000D\u000A## parser. It parses PostgreSQL syntax and the SQL ANSI standard."
+    "comment": "The ``parsesql`` module implements a high performance SQL file \u000A## parser. It parses PostgreSQL syntax and the SQL ANSI standard."
   }, 
   {
-    "name": "TSqlLexer", 
+    "name": "SqlLexer", 
     "type": "skType", 
     "description": "the parser object.", 
-    "code": "TSqlLexer* = object of TBaseLexer\u000D\u000A  filename: string\u000D\u000A"
+    "code": "SqlLexer* = object of BaseLexer\u000A  filename: string\u000A"
   }, 
   {
-    "name": "TSqlNodeKind", 
+    "name": "SqlNodeKind", 
     "type": "skType", 
     "description": "kind of SQL abstract syntax tree", 
-    "code": "TSqlNodeKind* = enum \u000D\u000A  nkNone, nkIdent, nkStringLit, nkBitStringLit, nkHexStringLit, nkIntegerLit, \u000D\u000A  nkNumericLit, nkPrimaryKey, nkForeignKey, nkNotNull, nkStmtList, nkDot, \u000D\u000A  nkDotDot, nkPrefix, nkInfix, nkCall, nkColumnReference, nkReferences, \u000D\u000A  nkDefault, nkCheck, nkConstraint, nkUnique, nkIdentity, nkColumnDef, ## name, datatype, constraints\u000D\u000A  nkInsert, nkUpdate, nkDelete, nkSelect, nkSelectDistinct, nkSelectColumns, \u000D\u000A  nkAsgn, nkFrom, nkGroup, nkHaving, nkOrder, nkDesc, nkUnion, nkIntersect, \u000D\u000A  nkExcept, nkColumnList, nkValueList, nkWhere, nkCreateTable, \u000D\u000A  nkCreateTableIfNotExists, nkCreateType, nkCreateTypeIfNotExists, \u000D\u000A  nkCreateIndex, nkCreateIndexIfNotExists, nkEnumDef"
+    "code": "SqlNodeKind* = enum \u000A  nkNone, nkIdent, nkStringLit, nkBitStringLit, nkHexStringLit, nkIntegerLit, \u000A  nkNumericLit, nkPrimaryKey, nkForeignKey, nkNotNull, nkStmtList, nkDot, \u000A  nkDotDot, nkPrefix, nkInfix, nkCall, nkColumnReference, nkReferences, \u000A  nkDefault, nkCheck, nkConstraint, nkUnique, nkIdentity, nkColumnDef, ## name, datatype, constraints\u000A  nkInsert, nkUpdate, nkDelete, nkSelect, nkSelectDistinct, nkSelectColumns, \u000A  nkAsgn, nkFrom, nkGroup, nkHaving, nkOrder, nkDesc, nkUnion, nkIntersect, \u000A  nkExcept, nkColumnList, nkValueList, nkWhere, nkCreateTable, \u000A  nkCreateTableIfNotExists, nkCreateType, nkCreateTypeIfNotExists, \u000A  nkCreateIndex, nkCreateIndexIfNotExists, nkEnumDef"
   }, 
   {
-    "name": "TSqlParser", 
+    "name": "SqlParser", 
     "type": "skType", 
     "description": "SQL parser object", 
-    "code": "TSqlParser* = object of TSqlLexer\u000D\u000A  tok: TToken\u000D\u000A"
+    "code": "SqlParser* = object of SqlLexer\u000A  tok: Token\u000A"
   }, 
   {
     "name": "len", 
     "type": "skProc", 
-    "code": "proc len*(n: PSqlNode): int"
+    "code": "proc len*(n: SqlNode): int"
   }, 
   {
     "name": "add", 
     "type": "skProc", 
-    "code": "proc add*(father, n: PSqlNode)"
+    "code": "proc add*(father, n: SqlNode)"
   }, 
   {
     "name": "parseSQL", 
     "type": "skProc", 
     "description": "parses the SQL from <cite>input</cite> into an AST and returns the AST. <cite>filename</cite> is only used for error messages. Syntax errors raise an <cite>EInvalidSql</cite> exception.", 
-    "code": "proc parseSQL*(input: PStream; filename: string): PSqlNode"
+    "code": "proc parseSQL*(input: Stream; filename: string): SqlNode"
   }, 
   {
     "name": "renderSQL", 
     "type": "skProc", 
     "description": "Converts an SQL abstract syntax tree to its string representation.", 
-    "code": "proc renderSQL*(n: PSqlNode): string"
+    "code": "proc renderSQL*(n: SqlNode): string"
   }
 ]

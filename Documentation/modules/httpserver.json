@@ -1,24 +1,24 @@
 [
   {
-    "comment": "This module implements a simple HTTP-Server.\u000D\u000A##\u000D\u000A## Example:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##  import strutils, sockets, httpserver\u000D\u000A##\u000D\u000A##  var counter = 0\u000D\u000A##  proc handleRequest(client: TSocket, path, query: string): bool {.procvar.} =\u000D\u000A##    inc(counter)\u000D\u000A##    client.send(\"Hello for the $#th time.\" % $counter & wwwNL)\u000D\u000A##    return false # do not stop processing\u000D\u000A##\u000D\u000A##  run(handleRequest, TPort(80))\u000D\u000A##\u000D\u000A## **Warning:** The API of this module is unstable, and therefore is subject\u000D\u000A## to change."
+    "comment": "This module implements a simple HTTP-Server.\u000A##\u000A## Example:\u000A##\u000A## .. code-block:: nim\u000A##  import strutils, sockets, httpserver\u000A##\u000A##  var counter = 0\u000A##  proc handleRequest(client: Socket, path, query: string): bool {.procvar.} =\u000A##    inc(counter)\u000A##    client.send(\"Hello for the $#th time.\" % $counter & wwwNL)\u000A##    return false # do not stop processing\u000A##\u000A##  run(handleRequest, Port(80))\u000A##"
   }, 
   {
     "name": "serveFile", 
     "type": "skProc", 
     "description": "serves a file to the client.", 
-    "code": "proc serveFile*(client: TSocket; filename: string)"
+    "code": "proc serveFile*(client: Socket; filename: string)"
   }, 
   {
     "name": "open", 
     "type": "skProc", 
     "description": "creates a new server at port <cite>port</cite>. If <tt class=\"docutils literal\"><span class=\"pre\">port == 0</span></tt> a free port is acquired that can be accessed later by the <tt class=\"docutils literal\"><span class=\"pre\">port</span></tt> proc.", 
-    "code": "proc open*(s: var TServer; port = TPort(80); reuseAddr = false)"
+    "code": "proc open*(s: var TServer; port = Port(80); reuseAddr = false)"
   }, 
   {
     "name": "port", 
     "type": "skProc", 
     "description": "get the port number the server has acquired.", 
-    "code": "proc port*(s: var TServer): TPort"
+    "code": "proc port*(s: var TServer): Port"
   }, 
   {
     "name": "next", 
@@ -36,19 +36,19 @@
     "name": "run", 
     "type": "skProc", 
     "description": "encapsulates the server object and main loop", 
-    "code": "proc run*(handleRequest: proc (client: TSocket; path, query: string): bool {.\u000D\u000A    closure.}; port = TPort(80))"
+    "code": "proc run*(handleRequest: proc (client: Socket; path, query: string): bool {.\u000A    closure.}; port = Port(80))"
   }, 
   {
     "name": "asyncHTTPServer", 
     "type": "skProc", 
     "description": "Creates an Asynchronous HTTP server at <tt class=\"docutils literal\"><span class=\"pre\">port</span></tt>.", 
-    "code": "proc asyncHTTPServer*(handleRequest: proc (server: PAsyncHTTPServer; \u000D\u000A    client: TSocket; path, query: string): bool {.closure.}; port = TPort(80); \u000D\u000A                      address = \"\"; reuseAddr = false): PAsyncHTTPServer"
+    "code": "proc asyncHTTPServer*(handleRequest: proc (server: PAsyncHTTPServer; \u000A    client: Socket; path, query: string): bool {.closure, gcsafe.}; \u000A                      port = Port(80); address = \"\"; reuseAddr = false): PAsyncHTTPServer"
   }, 
   {
     "name": "register", 
     "type": "skProc", 
-    "description": "Registers a <tt class=\"docutils literal\"><span class=\"pre\">PAsyncHTTPServer</span></tt> with a <tt class=\"docutils literal\"><span class=\"pre\">PDispatcher</span></tt>.", 
-    "code": "proc register*(d: PDispatcher; s: PAsyncHTTPServer)"
+    "description": "Registers a <tt class=\"docutils literal\"><span class=\"pre\">PAsyncHTTPServer</span></tt> with a <tt class=\"docutils literal\"><span class=\"pre\">Dispatcher</span></tt>.", 
+    "code": "proc register*(d: Dispatcher; s: PAsyncHTTPServer)"
   }, 
   {
     "name": "close", 

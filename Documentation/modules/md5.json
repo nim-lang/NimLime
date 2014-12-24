@@ -5,25 +5,25 @@
   {
     "name": "MD5Context", 
     "type": "skType", 
-    "code": "MD5Context* {.final.} = object \u000D\u000A  State: MD5State\u000D\u000A  Count: array[0 .. 1, int32]\u000D\u000A  Buffer: MD5Buffer\u000D\u000A"
+    "code": "MD5Context* {.final.} = object \u000A  state: MD5State\u000A  count: array[0 .. 1, int32]\u000A  buffer: MD5Buffer\u000A"
   }, 
   {
-    "name": "MD5Init", 
+    "name": "md5Init", 
     "type": "skProc", 
     "description": "initializes a MD5Context  ", 
-    "code": "proc MD5Init*(c: var MD5Context)"
+    "code": "proc md5Init*(c: var MD5Context)"
   }, 
   {
-    "name": "MD5Update", 
+    "name": "md5Update", 
     "type": "skProc", 
     "description": "updates the MD5Context with the <cite>input</cite> data of length <cite>len</cite>", 
-    "code": "proc MD5Update*(c: var MD5Context; input: cstring; len: int)"
+    "code": "proc md5Update*(c: var MD5Context; input: cstring; len: int)"
   }, 
   {
-    "name": "MD5Final", 
+    "name": "md5Final", 
     "type": "skProc", 
     "description": "finishes the MD5Context and stores the result in <cite>digest</cite>", 
-    "code": "proc MD5Final*(c: var MD5Context; digest: var MD5Digest)"
+    "code": "proc md5Final*(c: var MD5Context; digest: var MD5Digest)"
   }, 
   {
     "name": "toMD5", 

@@ -1,47 +1,47 @@
 [
   {
-    "comment": "Nimrod support for `substitution expressions`:idx: (`subex`:idx:).\u000D\u000A##\u000D\u000A## .. include:: ../doc/subexes.txt\u000D\u000A##"
+    "comment": "Nim support for `substitution expressions`:idx: (`subex`:idx:).\u000A##\u000A## .. include:: ../doc/subexes.txt\u000A##"
   }, 
   {
-    "name": "EInvalidSubex", 
+    "name": "SubexError", 
     "type": "skType", 
     "description": "exception that is raised for an invalid subex", 
-    "code": "EInvalidSubex* = object of EInvalidValue"
+    "code": "SubexError* = object of ValueError"
   }, 
   {
-    "name": "TSubex", 
+    "name": "Subex", 
     "type": "skType", 
     "description": "string that contains a substitution expression", 
-    "code": "TSubex* = distinct string"
+    "code": "Subex* = distinct string"
   }, 
   {
     "name": "subex", 
     "type": "skProc", 
     "description": "constructs a <em>substitution expression</em> from <cite>s</cite>. Currently this performs no syntax checking but this may change in later versions.", 
-    "code": "proc subex*(s: string): TSubex"
+    "code": "proc subex*(s: string): Subex"
   }, 
   {
     "name": "addf", 
     "type": "skProc", 
     "description": "The same as <tt class=\"docutils literal\"><span class=\"pre\">add(s, formatstr % a)</span></tt>, but more efficient.", 
-    "code": "proc addf*(s: var string; formatstr: TSubex; a: varargs[string, `$`]) {.\u000D\u000A    noSideEffect, rtl, extern: \"nfrmtAddf\".}"
+    "code": "proc addf*(s: var string; formatstr: Subex; a: varargs[string, `$`]) {.\u000A    noSideEffect, rtl, extern: \"nfrmtAddf\".}"
   }, 
   {
     "name": "`%`", 
     "type": "skProc", 
-    "description": "The <span id=\"substitution_260228394\">substitution</span> operator performs string substitutions in <cite>formatstr</cite> and returns a modified <cite>formatstr</cite>. This is often called <span id=\"string-interpolation_1953426395\">string interpolation</span>. ", 
-    "code": "proc `%`*(formatstr: TSubex; a: openarray[string]): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nfrmtFormatOpenArray\".}"
+    "description": "The <span id=\"substitution_1\">substitution</span> operator performs string substitutions in <cite>formatstr</cite> and returns a modified <cite>formatstr</cite>. This is often called <span id=\"string-interpolation_1\">string interpolation</span>. ", 
+    "code": "proc `%`*(formatstr: Subex; a: openarray[string]): string {.noSideEffect, rtl, \u000A    extern: \"nfrmtFormatOpenArray\".}"
   }, 
   {
     "name": "`%`", 
     "type": "skProc", 
     "description": "This is the same as <tt class=\"docutils literal\"><span class=\"pre\">formatstr % [a]</span></tt>.", 
-    "code": "proc `%`*(formatstr: TSubex; a: string): string {.noSideEffect, rtl, \u000D\u000A    extern: \"nfrmtFormatSingleElem\".}"
+    "code": "proc `%`*(formatstr: Subex; a: string): string {.noSideEffect, rtl, \u000A    extern: \"nfrmtFormatSingleElem\".}"
   }, 
   {
     "name": "format", 
     "type": "skProc", 
-    "description": "The <span id=\"substitution_260228394\">substitution</span> operator performs string substitutions in <cite>formatstr</cite> and returns a modified <cite>formatstr</cite>. This is often called <span id=\"string-interpolation_1953426395\">string interpolation</span>. ", 
-    "code": "proc format*(formatstr: TSubex; a: varargs[string, `$`]): string {.noSideEffect, \u000D\u000A    rtl, extern: \"nfrmtFormatVarargs\".}"
+    "description": "The <span id=\"substitution_2\">substitution</span> operator performs string substitutions in <cite>formatstr</cite> and returns a modified <cite>formatstr</cite>. This is often called <span id=\"string-interpolation_2\">string interpolation</span>. ", 
+    "code": "proc format*(formatstr: Subex; a: varargs[string, `$`]): string {.noSideEffect, \u000A    rtl, extern: \"nfrmtFormatVarargs\".}"
   }
 ]

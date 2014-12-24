@@ -3,207 +3,255 @@
     "comment": "This module implements complex numbers."
   }, 
   {
-    "name": "TComplex", 
+    "name": "Complex", 
     "type": "skType", 
     "description": "a complex number, consisting of a real and an imaginary part", 
-    "code": "TComplex* = tuple[re, im: float]"
+    "code": "Complex* = tuple[re, im: float]"
   }, 
   {
     "name": "`==`", 
     "type": "skProc", 
     "description": "Compare two complex numbers <cite>x</cite> and <cite>y</cite> for equality.", 
-    "code": "proc `==`*(x, y: TComplex): bool"
+    "code": "proc `==`*(x, y: Complex): bool"
   }, 
   {
     "name": "`=~`", 
     "type": "skProc", 
     "description": "Compare two complex numbers <cite>x</cite> and <cite>y</cite> approximately.", 
-    "code": "proc `=~`*(x, y: TComplex): bool"
+    "code": "proc `=~`*(x, y: Complex): bool"
   }, 
   {
     "name": "`+`", 
     "type": "skProc", 
     "description": "Add two complex numbers.", 
-    "code": "proc `+`*(x, y: TComplex): TComplex"
+    "code": "proc `+`*(x, y: Complex): Complex"
   }, 
   {
     "name": "`+`", 
     "type": "skProc", 
     "description": "Add complex <cite>x</cite> to float <cite>y</cite>.", 
-    "code": "proc `+`*(x: TComplex; y: float): TComplex"
+    "code": "proc `+`*(x: Complex; y: float): Complex"
   }, 
   {
     "name": "`+`", 
     "type": "skProc", 
     "description": "Add float <cite>x</cite> to complex <cite>y</cite>.", 
-    "code": "proc `+`*(x: float; y: TComplex): TComplex"
+    "code": "proc `+`*(x: float; y: Complex): Complex"
   }, 
   {
     "name": "`-`", 
     "type": "skProc", 
     "description": "Unary minus for complex numbers.", 
-    "code": "proc `-`*(z: TComplex): TComplex"
+    "code": "proc `-`*(z: Complex): Complex"
   }, 
   {
     "name": "`-`", 
     "type": "skProc", 
     "description": "Subtract two complex numbers.", 
-    "code": "proc `-`*(x, y: TComplex): TComplex"
+    "code": "proc `-`*(x, y: Complex): Complex"
   }, 
   {
     "name": "`-`", 
     "type": "skProc", 
     "description": "Subtracts float <cite>y</cite> from complex <cite>x</cite>.", 
-    "code": "proc `-`*(x: TComplex; y: float): TComplex"
+    "code": "proc `-`*(x: Complex; y: float): Complex"
   }, 
   {
     "name": "`-`", 
     "type": "skProc", 
     "description": "Subtracts complex <cite>y</cite> from float <cite>x</cite>.", 
-    "code": "proc `-`*(x: float; y: TComplex): TComplex"
+    "code": "proc `-`*(x: float; y: Complex): Complex"
   }, 
   {
     "name": "`/`", 
     "type": "skProc", 
     "description": "Divide <cite>x</cite> by <cite>y</cite>.", 
-    "code": "proc `/`*(x, y: TComplex): TComplex"
+    "code": "proc `/`*(x, y: Complex): Complex"
   }, 
   {
     "name": "`/`", 
     "type": "skProc", 
     "description": "Divide complex <cite>x</cite> by float <cite>y</cite>.", 
-    "code": "proc `/`*(x: TComplex; y: float): TComplex"
+    "code": "proc `/`*(x: Complex; y: float): Complex"
   }, 
   {
     "name": "`/`", 
     "type": "skProc", 
     "description": "Divide float <cite>x</cite> by complex <cite>y</cite>.", 
-    "code": "proc `/`*(x: float; y: TComplex): TComplex"
+    "code": "proc `/`*(x: float; y: Complex): Complex"
   }, 
   {
     "name": "`*`", 
     "type": "skProc", 
     "description": "Multiply <cite>x</cite> with <cite>y</cite>.", 
-    "code": "proc `*`*(x, y: TComplex): TComplex"
+    "code": "proc `*`*(x, y: Complex): Complex"
   }, 
   {
     "name": "`*`", 
     "type": "skProc", 
     "description": "Multiply float <cite>x</cite> with complex <cite>y</cite>.", 
-    "code": "proc `*`*(x: float; y: TComplex): TComplex"
+    "code": "proc `*`*(x: float; y: Complex): Complex"
   }, 
   {
     "name": "`*`", 
     "type": "skProc", 
     "description": "Multiply complex <cite>x</cite> with float <cite>y</cite>.", 
-    "code": "proc `*`*(x: TComplex; y: float): TComplex"
+    "code": "proc `*`*(x: Complex; y: float): Complex"
+  }, 
+  {
+    "name": "`+=`", 
+    "type": "skProc", 
+    "description": "Add <cite>y</cite> to <cite>x</cite>.", 
+    "code": "proc `+=`*(x: var Complex; y: Complex)"
+  }, 
+  {
+    "name": "`+=`", 
+    "type": "skProc", 
+    "description": "Add <cite>y</cite> to the complex number <cite>x</cite>.", 
+    "code": "proc `+=`*(x: var Complex; y: float)"
+  }, 
+  {
+    "name": "`-=`", 
+    "type": "skProc", 
+    "description": "Subtract <cite>y</cite> from <cite>x</cite>.", 
+    "code": "proc `-=`*(x: var Complex; y: Complex)"
+  }, 
+  {
+    "name": "`-=`", 
+    "type": "skProc", 
+    "description": "Subtract <cite>y</cite> from the complex number <cite>x</cite>.", 
+    "code": "proc `-=`*(x: var Complex; y: float)"
+  }, 
+  {
+    "name": "`*=`", 
+    "type": "skProc", 
+    "description": "Multiply <cite>y</cite> to <cite>x</cite>.", 
+    "code": "proc `*=`*(x: var Complex; y: Complex)"
+  }, 
+  {
+    "name": "`*=`", 
+    "type": "skProc", 
+    "description": "Multiply <cite>y</cite> to the complex number <cite>x</cite>.", 
+    "code": "proc `*=`*(x: var Complex; y: float)"
+  }, 
+  {
+    "name": "`/=`", 
+    "type": "skProc", 
+    "description": "Divide <cite>x</cite> by <cite>y</cite> in place.", 
+    "code": "proc `/=`*(x: var Complex; y: Complex)"
+  }, 
+  {
+    "name": "`/=`", 
+    "type": "skProc", 
+    "description": "Divide complex <cite>x</cite> by float <cite>y</cite> in place.", 
+    "code": "proc `/=`*(x: var Complex; y: float)"
   }, 
   {
     "name": "abs", 
     "type": "skProc", 
     "description": "Return the distance from (0,0) to <cite>z</cite>.", 
-    "code": "proc abs*(z: TComplex): float"
+    "code": "proc abs*(z: Complex): float"
   }, 
   {
     "name": "sqrt", 
     "type": "skProc", 
     "description": "Square root for a complex number <cite>z</cite>.", 
-    "code": "proc sqrt*(z: TComplex): TComplex"
+    "code": "proc sqrt*(z: Complex): Complex"
   }, 
   {
     "name": "exp", 
     "type": "skProc", 
     "description": "e raised to the power <cite>z</cite>.", 
-    "code": "proc exp*(z: TComplex): TComplex"
+    "code": "proc exp*(z: Complex): Complex"
   }, 
   {
     "name": "ln", 
     "type": "skProc", 
     "description": "Returns the natural log of <cite>z</cite>.", 
-    "code": "proc ln*(z: TComplex): TComplex"
+    "code": "proc ln*(z: Complex): Complex"
   }, 
   {
     "name": "log10", 
     "type": "skProc", 
     "description": "Returns the log base 10 of <cite>z</cite>.", 
-    "code": "proc log10*(z: TComplex): TComplex"
+    "code": "proc log10*(z: Complex): Complex"
   }, 
   {
     "name": "log2", 
     "type": "skProc", 
     "description": "Returns the log base 2 of <cite>z</cite>.", 
-    "code": "proc log2*(z: TComplex): TComplex"
+    "code": "proc log2*(z: Complex): Complex"
   }, 
   {
     "name": "pow", 
     "type": "skProc", 
     "description": "<cite>x</cite> raised to the power <cite>y</cite>.", 
-    "code": "proc pow*(x, y: TComplex): TComplex"
+    "code": "proc pow*(x, y: Complex): Complex"
   }, 
   {
     "name": "sin", 
     "type": "skProc", 
     "description": "Returns the sine of <cite>z</cite>.", 
-    "code": "proc sin*(z: TComplex): TComplex"
+    "code": "proc sin*(z: Complex): Complex"
   }, 
   {
     "name": "arcsin", 
     "type": "skProc", 
     "description": "Returns the inverse sine of <cite>z</cite>.", 
-    "code": "proc arcsin*(z: TComplex): TComplex"
+    "code": "proc arcsin*(z: Complex): Complex"
   }, 
   {
     "name": "cos", 
     "type": "skProc", 
     "description": "Returns the cosine of <cite>z</cite>.", 
-    "code": "proc cos*(z: TComplex): TComplex"
+    "code": "proc cos*(z: Complex): Complex"
   }, 
   {
     "name": "arccos", 
     "type": "skProc", 
     "description": "Returns the inverse cosine of <cite>z</cite>.", 
-    "code": "proc arccos*(z: TComplex): TComplex"
+    "code": "proc arccos*(z: Complex): Complex"
   }, 
   {
     "name": "tan", 
     "type": "skProc", 
     "description": "Returns the tangent of <cite>z</cite>.", 
-    "code": "proc tan*(z: TComplex): TComplex"
+    "code": "proc tan*(z: Complex): Complex"
   }, 
   {
     "name": "cot", 
     "type": "skProc", 
     "description": "Returns the cotangent of <cite>z</cite>.", 
-    "code": "proc cot*(z: TComplex): TComplex"
+    "code": "proc cot*(z: Complex): Complex"
   }, 
   {
     "name": "sec", 
     "type": "skProc", 
     "description": "Returns the secant of <cite>z</cite>.", 
-    "code": "proc sec*(z: TComplex): TComplex"
+    "code": "proc sec*(z: Complex): Complex"
   }, 
   {
     "name": "csc", 
     "type": "skProc", 
     "description": "Returns the cosecant of <cite>z</cite>.", 
-    "code": "proc csc*(z: TComplex): TComplex"
+    "code": "proc csc*(z: Complex): Complex"
   }, 
   {
     "name": "sinh", 
     "type": "skProc", 
     "description": "Returns the hyperbolic sine of <cite>z</cite>.", 
-    "code": "proc sinh*(z: TComplex): TComplex"
+    "code": "proc sinh*(z: Complex): Complex"
   }, 
   {
     "name": "cosh", 
     "type": "skProc", 
     "description": "Returns the hyperbolic cosine of <cite>z</cite>.", 
-    "code": "proc cosh*(z: TComplex): TComplex"
+    "code": "proc cosh*(z: Complex): Complex"
   }, 
   {
     "name": "`$`", 
     "type": "skProc", 
     "description": "Returns <cite>z</cite>'s string representation as <tt class=\"docutils literal\"><span class=\"pre\">&quot;(re, im)&quot;</span></tt>.", 
-    "code": "proc `$`*(z: TComplex): string"
+    "code": "proc `$`*(z: Complex): string"
   }
 ]

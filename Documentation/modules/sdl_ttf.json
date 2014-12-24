@@ -5,188 +5,188 @@
     "code": "UNICODE_BOM_SWAPPED* = 0x0000FFFE"
   }, 
   {
-    "name": "Linked_Version", 
+    "name": "linkedVersion", 
     "type": "skProc", 
-    "code": "proc Linked_Version*(): sdl.Pversion {.cdecl, importc: \"TTF_Linked_Version\", \u000D\u000A                                       dynlib: ttfLibName.}"
+    "code": "proc linkedVersion*(): sdl.Pversion {.cdecl, importc: \"TTF_Linked_Version\", \u000A                                      dynlib: ttfLibName.}"
   }, 
   {
-    "name": "ByteSwappedUNICODE", 
+    "name": "byteSwappedUNICODE", 
     "type": "skProc", 
-    "code": "proc ByteSwappedUNICODE*(swapped: cint) {.cdecl, \u000D\u000A    importc: \"TTF_ByteSwappedUNICODE\", dynlib: ttfLibName.}"
+    "code": "proc byteSwappedUNICODE*(swapped: cint) {.cdecl, \u000A    importc: \"TTF_ByteSwappedUNICODE\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "Init", 
+    "name": "init", 
     "type": "skProc", 
-    "code": "proc Init*(): cint {.cdecl, importc: \"TTF_Init\", dynlib: ttfLibName.}"
+    "code": "proc init*(): cint {.cdecl, importc: \"TTF_Init\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "OpenFont", 
+    "name": "openFont", 
     "type": "skProc", 
-    "code": "proc OpenFont*(filename: cstring; ptsize: cint): PFont {.cdecl, \u000D\u000A    importc: \"TTF_OpenFont\", dynlib: ttfLibName.}"
+    "code": "proc openFont*(filename: cstring; ptsize: cint): PFont {.cdecl, \u000A    importc: \"TTF_OpenFont\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "OpenFontIndex", 
+    "name": "openFontIndex", 
     "type": "skProc", 
-    "code": "proc OpenFontIndex*(filename: cstring; ptsize: cint; index: int32): PFont {.\u000D\u000A    cdecl, importc: \"TTF_OpenFontIndex\", dynlib: ttfLibName.}"
+    "code": "proc openFontIndex*(filename: cstring; ptsize: cint; index: int32): PFont {.\u000A    cdecl, importc: \"TTF_OpenFontIndex\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "OpenFontRW", 
+    "name": "openFontRW", 
     "type": "skProc", 
-    "code": "proc OpenFontRW*(src: PRWops; freesrc: cint; ptsize: cint): PFont {.cdecl, \u000D\u000A    importc: \"TTF_OpenFontRW\", dynlib: ttfLibName.}"
+    "code": "proc openFontRW*(src: PRWops; freesrc: cint; ptsize: cint): PFont {.cdecl, \u000A    importc: \"TTF_OpenFontRW\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "OpenFontIndexRW", 
+    "name": "openFontIndexRW", 
     "type": "skProc", 
-    "code": "proc OpenFontIndexRW*(src: PRWops; freesrc: cint; ptsize: cint; index: int32): PFont {.\u000D\u000A    cdecl, importc: \"TTF_OpenFontIndexRW\", dynlib: ttfLibName.}"
+    "code": "proc openFontIndexRW*(src: PRWops; freesrc: cint; ptsize: cint; index: int32): PFont {.\u000A    cdecl, importc: \"TTF_OpenFontIndexRW\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "GetFontStyle", 
+    "name": "getFontStyle", 
     "type": "skProc", 
-    "code": "proc GetFontStyle*(font: PFont): cint {.cdecl, importc: \"TTF_GetFontStyle\", \u000D\u000A                                        dynlib: ttfLibName.}"
+    "code": "proc getFontStyle*(font: PFont): cint {.cdecl, importc: \"TTF_GetFontStyle\", \u000A                                        dynlib: ttfLibName.}"
   }, 
   {
-    "name": "SetFontStyle", 
+    "name": "setFontStyle", 
     "type": "skProc", 
-    "code": "proc SetFontStyle*(font: PFont; style: cint) {.cdecl, \u000D\u000A    importc: \"TTF_SetFontStyle\", dynlib: ttfLibName.}"
+    "code": "proc setFontStyle*(font: PFont; style: cint) {.cdecl, \u000A    importc: \"TTF_SetFontStyle\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "FontHeight", 
+    "name": "fontHeight", 
     "type": "skProc", 
-    "code": "proc FontHeight*(font: PFont): cint {.cdecl, importc: \"TTF_FontHeight\", \u000D\u000A                                      dynlib: ttfLibName.}"
+    "code": "proc fontHeight*(font: PFont): cint {.cdecl, importc: \"TTF_FontHeight\", \u000A                                      dynlib: ttfLibName.}"
   }, 
   {
-    "name": "FontAscent", 
+    "name": "fontAscent", 
     "type": "skProc", 
-    "code": "proc FontAscent*(font: PFont): cint {.cdecl, importc: \"TTF_FontAscent\", \u000D\u000A                                      dynlib: ttfLibName.}"
+    "code": "proc fontAscent*(font: PFont): cint {.cdecl, importc: \"TTF_FontAscent\", \u000A                                      dynlib: ttfLibName.}"
   }, 
   {
-    "name": "FontDescent", 
+    "name": "fontDescent", 
     "type": "skProc", 
-    "code": "proc FontDescent*(font: PFont): cint {.cdecl, importc: \"TTF_FontDescent\", \u000D\u000A                                       dynlib: ttfLibName.}"
+    "code": "proc fontDescent*(font: PFont): cint {.cdecl, importc: \"TTF_FontDescent\", \u000A                                       dynlib: ttfLibName.}"
   }, 
   {
-    "name": "FontLineSkip", 
+    "name": "fontLineSkip", 
     "type": "skProc", 
-    "code": "proc FontLineSkip*(font: PFont): cint {.cdecl, importc: \"TTF_FontLineSkip\", \u000D\u000A                                        dynlib: ttfLibName.}"
+    "code": "proc fontLineSkip*(font: PFont): cint {.cdecl, importc: \"TTF_FontLineSkip\", \u000A                                        dynlib: ttfLibName.}"
   }, 
   {
-    "name": "FontFaces", 
+    "name": "fontFaces", 
     "type": "skProc", 
-    "code": "proc FontFaces*(font: PFont): int32 {.cdecl, importc: \"TTF_FontFaces\", \u000D\u000A                                      dynlib: ttfLibName.}"
+    "code": "proc fontFaces*(font: PFont): int32 {.cdecl, importc: \"TTF_FontFaces\", \u000A                                      dynlib: ttfLibName.}"
   }, 
   {
-    "name": "FontFaceIsFixedWidth", 
+    "name": "fontFaceIsFixedWidth", 
     "type": "skProc", 
-    "code": "proc FontFaceIsFixedWidth*(font: PFont): cint {.cdecl, \u000D\u000A    importc: \"TTF_FontFaceIsFixedWidth\", dynlib: ttfLibName.}"
+    "code": "proc fontFaceIsFixedWidth*(font: PFont): cint {.cdecl, \u000A    importc: \"TTF_FontFaceIsFixedWidth\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "FontFaceFamilyName", 
+    "name": "fontFaceFamilyName", 
     "type": "skProc", 
-    "code": "proc FontFaceFamilyName*(font: PFont): cstring {.cdecl, \u000D\u000A    importc: \"TTF_FontFaceFamilyName\", dynlib: ttfLibName.}"
+    "code": "proc fontFaceFamilyName*(font: PFont): cstring {.cdecl, \u000A    importc: \"TTF_FontFaceFamilyName\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "FontFaceStyleName", 
+    "name": "fontFaceStyleName", 
     "type": "skProc", 
-    "code": "proc FontFaceStyleName*(font: PFont): cstring {.cdecl, \u000D\u000A    importc: \"TTF_FontFaceStyleName\", dynlib: ttfLibName.}"
+    "code": "proc fontFaceStyleName*(font: PFont): cstring {.cdecl, \u000A    importc: \"TTF_FontFaceStyleName\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "GlyphMetrics", 
+    "name": "glyphMetrics", 
     "type": "skProc", 
-    "code": "proc GlyphMetrics*(font: PFont; ch: Uint16; minx: var cint; maxx: var cint; \u000D\u000A                   miny: var cint; maxy: var cint; advance: var cint): cint {.\u000D\u000A    cdecl, importc: \"TTF_GlyphMetrics\", dynlib: ttfLibName.}"
+    "code": "proc glyphMetrics*(font: PFont; ch: uint16; minx: var cint; maxx: var cint; \u000A                   miny: var cint; maxy: var cint; advance: var cint): cint {.\u000A    cdecl, importc: \"TTF_GlyphMetrics\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "SizeText", 
+    "name": "sizeText", 
     "type": "skProc", 
-    "code": "proc SizeText*(font: PFont; text: cstring; w: var cint; y: var cint): cint {.\u000D\u000A    cdecl, importc: \"TTF_SizeText\", dynlib: ttfLibName.}"
+    "code": "proc sizeText*(font: PFont; text: cstring; w: var cint; y: var cint): cint {.\u000A    cdecl, importc: \"TTF_SizeText\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "SizeUTF8", 
+    "name": "sizeUTF8", 
     "type": "skProc", 
-    "code": "proc SizeUTF8*(font: PFont; text: cstring; w: var cint; y: var cint): cint {.\u000D\u000A    cdecl, importc: \"TTF_SizeUTF8\", dynlib: ttfLibName.}"
+    "code": "proc sizeUTF8*(font: PFont; text: cstring; w: var cint; y: var cint): cint {.\u000A    cdecl, importc: \"TTF_SizeUTF8\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "SizeUNICODE", 
+    "name": "sizeUNICODE", 
     "type": "skProc", 
-    "code": "proc SizeUNICODE*(font: PFont; text: PUint16; w: var cint; y: var cint): cint {.\u000D\u000A    cdecl, importc: \"TTF_SizeUNICODE\", dynlib: ttfLibName.}"
+    "code": "proc sizeUNICODE*(font: PFont; text: PUInt16; w: var cint; y: var cint): cint {.\u000A    cdecl, importc: \"TTF_SizeUNICODE\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "RenderUTF8_Solid", 
+    "name": "renderUTF8Solid", 
     "type": "skProc", 
-    "code": "proc RenderUTF8_Solid*(font: PFont; text: cstring; fg: TColor): PSurface {.\u000D\u000A    cdecl, importc: \"TTF_RenderUTF8_Solid\", dynlib: ttfLibName.}"
+    "code": "proc renderUTF8Solid*(font: PFont; text: cstring; fg: TColor): PSurface {.cdecl, \u000A    importc: \"TTF_RenderUTF8_Solid\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "RenderUNICODE_Solid", 
+    "name": "renderUNICODE_Solid", 
     "type": "skProc", 
-    "code": "proc RenderUNICODE_Solid*(font: PFont; text: PUint16; fg: TColor): PSurface {.\u000D\u000A    cdecl, importc: \"TTF_RenderUNICODE_Solid\", dynlib: ttfLibName.}"
+    "code": "proc renderUNICODE_Solid*(font: PFont; text: PUInt16; fg: TColor): PSurface {.\u000A    cdecl, importc: \"TTF_RenderUNICODE_Solid\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "RenderGlyph_Solid", 
+    "name": "renderGlyphSolid", 
     "type": "skProc", 
-    "code": "proc RenderGlyph_Solid*(font: PFont; ch: Uint16; fg: TColor): PSurface {.cdecl, \u000D\u000A    importc: \"TTF_RenderGlyph_Solid\", dynlib: ttfLibName.}"
+    "code": "proc renderGlyphSolid*(font: PFont; ch: uint16; fg: TColor): PSurface {.cdecl, \u000A    importc: \"TTF_RenderGlyph_Solid\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "RenderText_Shaded", 
+    "name": "renderTextShaded", 
     "type": "skProc", 
-    "code": "proc RenderText_Shaded*(font: PFont; text: cstring; fg: TColor; bg: TColor): PSurface {.\u000D\u000A    cdecl, importc: \"TTF_RenderText_Shaded\", dynlib: ttfLibName.}"
+    "code": "proc renderTextShaded*(font: PFont; text: cstring; fg: TColor; bg: TColor): PSurface {.\u000A    cdecl, importc: \"TTF_RenderText_Shaded\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "RenderUTF8_Shaded", 
+    "name": "renderUTF8Shaded", 
     "type": "skProc", 
-    "code": "proc RenderUTF8_Shaded*(font: PFont; text: cstring; fg: TColor; bg: TColor): PSurface {.\u000D\u000A    cdecl, importc: \"TTF_RenderUTF8_Shaded\", dynlib: ttfLibName.}"
+    "code": "proc renderUTF8Shaded*(font: PFont; text: cstring; fg: TColor; bg: TColor): PSurface {.\u000A    cdecl, importc: \"TTF_RenderUTF8_Shaded\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "RenderUNICODE_Shaded", 
+    "name": "renderUNICODE_Shaded", 
     "type": "skProc", 
-    "code": "proc RenderUNICODE_Shaded*(font: PFont; text: PUint16; fg: TColor; bg: TColor): PSurface {.\u000D\u000A    cdecl, importc: \"TTF_RenderUNICODE_Shaded\", dynlib: ttfLibName.}"
+    "code": "proc renderUNICODE_Shaded*(font: PFont; text: PUInt16; fg: TColor; bg: TColor): PSurface {.\u000A    cdecl, importc: \"TTF_RenderUNICODE_Shaded\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "RenderGlyph_Shaded", 
+    "name": "renderGlyphShaded", 
     "type": "skProc", 
-    "code": "proc RenderGlyph_Shaded*(font: PFont; ch: Uint16; fg: TColor; bg: TColor): PSurface {.\u000D\u000A    cdecl, importc: \"TTF_RenderGlyph_Shaded\", dynlib: ttfLibName.}"
+    "code": "proc renderGlyphShaded*(font: PFont; ch: uint16; fg: TColor; bg: TColor): PSurface {.\u000A    cdecl, importc: \"TTF_RenderGlyph_Shaded\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "RenderText_Blended", 
+    "name": "renderTextBlended", 
     "type": "skProc", 
-    "code": "proc RenderText_Blended*(font: PFont; text: cstring; fg: TColor): PSurface {.\u000D\u000A    cdecl, importc: \"TTF_RenderText_Blended\", dynlib: ttfLibName.}"
+    "code": "proc renderTextBlended*(font: PFont; text: cstring; fg: TColor): PSurface {.\u000A    cdecl, importc: \"TTF_RenderText_Blended\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "RenderUTF8_Blended", 
+    "name": "renderUTF8Blended", 
     "type": "skProc", 
-    "code": "proc RenderUTF8_Blended*(font: PFont; text: cstring; fg: TColor): PSurface {.\u000D\u000A    cdecl, importc: \"TTF_RenderUTF8_Blended\", dynlib: ttfLibName.}"
+    "code": "proc renderUTF8Blended*(font: PFont; text: cstring; fg: TColor): PSurface {.\u000A    cdecl, importc: \"TTF_RenderUTF8_Blended\", dynlib: ttfLibName.}"
   }, 
   {
     "name": "RenderUNICODE_Blended", 
     "type": "skProc", 
-    "code": "proc RenderUNICODE_Blended*(font: PFont; text: PUint16; fg: TColor): PSurface {.\u000D\u000A    cdecl, importc: \"TTF_RenderUNICODE_Blended\", dynlib: ttfLibName.}"
+    "code": "proc RenderUNICODE_Blended*(font: PFont; text: PUInt16; fg: TColor): PSurface {.\u000A    cdecl, importc: \"TTF_RenderUNICODE_Blended\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "RenderGlyph_Blended", 
+    "name": "renderGlyphBlended", 
     "type": "skProc", 
-    "code": "proc RenderGlyph_Blended*(font: PFont; ch: Uint16; fg: TColor): PSurface {.\u000D\u000A    cdecl, importc: \"TTF_RenderGlyph_Blended\", dynlib: ttfLibName.}"
+    "code": "proc renderGlyphBlended*(font: PFont; ch: uint16; fg: TColor): PSurface {.cdecl, \u000A    importc: \"TTF_RenderGlyph_Blended\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "CloseFont", 
+    "name": "closeFont", 
     "type": "skProc", 
-    "code": "proc CloseFont*(font: PFont) {.cdecl, importc: \"TTF_CloseFont\", \u000D\u000A                               dynlib: ttfLibName.}"
+    "code": "proc closeFont*(font: PFont) {.cdecl, importc: \"TTF_CloseFont\", \u000A                               dynlib: ttfLibName.}"
   }, 
   {
-    "name": "Quit", 
+    "name": "quit", 
     "type": "skProc", 
-    "code": "proc Quit*() {.cdecl, importc: \"TTF_Quit\", dynlib: ttfLibName.}"
+    "code": "proc quit*() {.cdecl, importc: \"TTF_Quit\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "WasInit", 
+    "name": "wasInit", 
     "type": "skProc", 
-    "code": "proc WasInit*(): cint {.cdecl, importc: \"TTF_WasInit\", dynlib: ttfLibName.}"
+    "code": "proc wasInit*(): cint {.cdecl, importc: \"TTF_WasInit\", dynlib: ttfLibName.}"
   }, 
   {
-    "name": "VERSION", 
+    "name": "version", 
     "type": "skProc", 
-    "code": "proc VERSION*(X: var sdl.Tversion)"
+    "code": "proc version*(x: var sdl.Tversion)"
   }, 
   {
-    "name": "RenderText_Solid", 
+    "name": "renderTextSolid", 
     "type": "skProc", 
-    "code": "proc RenderText_Solid*(font: PFont; text: cstring; fg: TColor): PSurface {.\u000D\u000A    cdecl, importc: \"TTF_RenderText_Solid\", dynlib: ttfLibName.}"
+    "code": "proc renderTextSolid*(font: PFont; text: cstring; fg: TColor): PSurface {.cdecl, \u000A    importc: \"TTF_RenderText_Solid\", dynlib: ttfLibName.}"
   }
 ]

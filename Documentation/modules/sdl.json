@@ -17,7 +17,7 @@
   {
     "name": "TEventKind", 
     "type": "skType", 
-    "code": "TEventKind* = enum \u000D\u000A  NOEVENT = 0, \u000D\u000A  ACTIVEEVENT = 1, \u000D\u000A  KEYDOWN = 2, \u000D\u000A  KEYUP = 3, \u000D\u000A  MOUSEMOTION = 4, \u000D\u000A  MOUSEBUTTONDOWN = 5, \u000D\u000A  MOUSEBUTTONUP = 6, \u000D\u000A  JOYAXISMOTION = 7, \u000D\u000A  JOYBALLMOTION = 8, \u000D\u000A  JOYHATMOTION = 9, \u000D\u000A  JOYBUTTONDOWN = 10, \u000D\u000A  JOYBUTTONUP = 11, \u000D\u000A  QUITEV = 12, \u000D\u000A  SYSWMEVENT = 13, \u000D\u000A  EVENT_RESERVEDA = 14, \u000D\u000A  EVENT_RESERVED = 15, \u000D\u000A  VIDEORESIZE = 16, \u000D\u000A  VIDEOEXPOSE = 17, \u000D\u000A  EVENT_RESERVED2 = 18, \u000D\u000A  EVENT_RESERVED3 = 19, \u000D\u000A  EVENT_RESERVED4 = 20, \u000D\u000A  EVENT_RESERVED5 = 21, \u000D\u000A  EVENT_RESERVED6 = 22, \u000D\u000A  EVENT_RESERVED7 = 23, \u000D\u000A  USEREVENT = 24"
+    "code": "TEventKind* = enum \u000A  NOEVENT = 0, ACTIVEEVENT = 1, KEYDOWN = 2, KEYUP = 3, MOUSEMOTION = 4, \u000A  MOUSEBUTTONDOWN = 5, MOUSEBUTTONUP = 6, JOYAXISMOTION = 7, JOYBALLMOTION = 8, \u000A  JOYHATMOTION = 9, JOYBUTTONDOWN = 10, JOYBUTTONUP = 11, QUITEV = 12, \u000A  SYSWMEVENT = 13, EVENT_RESERVEDA = 14, EVENT_RESERVED = 15, VIDEORESIZE = 16, \u000A  VIDEOEXPOSE = 17, EVENT_RESERVED2 = 18, EVENT_RESERVED3 = 19, \u000A  EVENT_RESERVED4 = 20, EVENT_RESERVED5 = 21, EVENT_RESERVED6 = 22, \u000A  EVENT_RESERVED7 = 23, USEREVENT = 24"
   }, 
   {
     "name": "K_GP2X_CLICK", 
@@ -32,27 +32,27 @@
   {
     "name": "TUserEvent", 
     "type": "skType", 
-    "code": "TUserEvent* {.final.} = object \u000D\u000A  kind*: TEventKind\u000D\u000A  code*: cint\u000D\u000A  data1*: Pointer\u000D\u000A  data2*: Pointer\u000D\u000A"
+    "code": "TUserEvent* {.final.} = object \u000A  kind*: TEventKind\u000A  code*: cint\u000A  data1*: pointer\u000A  data2*: pointer\u000A"
   }, 
   {
     "name": "TSysWm", 
     "type": "skType", 
-    "code": "TSysWm* = enum \u000D\u000A  SYSWM_X11"
+    "code": "TSysWm* = enum \u000A  SYSWM_X11"
   }, 
   {
     "name": "TSysWMmsg", 
     "type": "skType", 
-    "code": "TSysWMmsg* {.final.} = object \u000D\u000A  version*: Tversion\u000D\u000A  hwnd*: THandle\u000D\u000A  msg*: int\u000D\u000A  w_Param*: int32\u000D\u000A  lParam*: int32\u000D\u000A"
+    "code": "TSysWMmsg* {.final.} = object \u000A  version*: Tversion\u000A  hwnd*: THandle\u000A  msg*: int\u000A  wParam*: int32\u000A  lParam*: int32\u000A"
   }, 
   {
     "name": "TSysWMinfo", 
     "type": "skType", 
-    "code": "TSysWMinfo* {.final.} = object \u000D\u000A  version*: Tversion\u000D\u000A  window*: THandle\u000D\u000A"
+    "code": "TSysWMinfo* {.final.} = object \u000A  version*: Tversion\u000A  window*: THandle\u000A"
   }, 
   {
     "name": "TCursor", 
     "type": "skType", 
-    "code": "TCursor* {.final.} = object \u000D\u000A  area*: TRect\u000D\u000A  hot_x*, hot_y*: int16\u000D\u000A  data*: ptr byte\u000D\u000A  mask*: ptr byte\u000D\u000A  save*: array[1 .. 2, ptr byte]\u000D\u000A  wm_cursor*: Pointer\u000D\u000A"
+    "code": "TCursor* {.final.} = object \u000A  area*: TRect\u000A  hotX*, hot_y*: int16\u000A  data*: ptr byte\u000A  mask*: ptr byte\u000A  save*: array[1 .. 2, ptr byte]\u000A  wmCursor*: pointer\u000A"
   }, 
   {
     "name": "TCond", 
@@ -75,983 +75,978 @@
     "code": "TWordArray* = array[0 .. 16383, int16]"
   }, 
   {
-    "name": "Init", 
+    "name": "init", 
     "type": "skProc", 
-    "code": "proc Init*(flags: int32): int {.cdecl, importc: \"SDL_Init\", dynlib: LibName.}"
+    "code": "proc init*(flags: int32): int {.cdecl, importc: \"SDL_Init\", dynlib: LibName.}"
   }, 
   {
-    "name": "InitSubSystem", 
+    "name": "initSubSystem", 
     "type": "skProc", 
-    "code": "proc InitSubSystem*(flags: int32): int {.cdecl, importc: \"SDL_InitSubSystem\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc initSubSystem*(flags: int32): int {.cdecl, importc: \"SDL_InitSubSystem\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "QuitSubSystem", 
+    "name": "quitSubSystem", 
     "type": "skProc", 
-    "code": "proc QuitSubSystem*(flags: int32) {.cdecl, importc: \"SDL_QuitSubSystem\", \u000D\u000A                                    dynlib: LibName.}"
+    "code": "proc quitSubSystem*(flags: int32) {.cdecl, importc: \"SDL_QuitSubSystem\", \u000A                                    dynlib: LibName.}"
   }, 
   {
-    "name": "WasInit", 
+    "name": "wasInit", 
     "type": "skProc", 
-    "code": "proc WasInit*(flags: int32): int32 {.cdecl, importc: \"SDL_WasInit\", \u000D\u000A                                     dynlib: LibName.}"
+    "code": "proc wasInit*(flags: int32): int32 {.cdecl, importc: \"SDL_WasInit\", \u000A                                     dynlib: LibName.}"
   }, 
   {
-    "name": "Quit", 
+    "name": "quit", 
     "type": "skProc", 
-    "code": "proc Quit*() {.cdecl, importc: \"SDL_Quit\", dynlib: LibName.}"
+    "code": "proc quit*() {.cdecl, importc: \"SDL_Quit\", dynlib: LibName.}"
   }, 
   {
-    "name": "RegisterApp", 
+    "name": "registerApp", 
     "type": "skProc", 
-    "code": "proc RegisterApp*(name: cstring; style: int32; h_Inst: Pointer): int {.cdecl, \u000D\u000A    importc: \"SDL_RegisterApp\", dynlib: LibName.}"
+    "code": "proc registerApp*(name: cstring; style: int32; hInst: pointer): int {.cdecl, \u000A    importc: \"SDL_RegisterApp\", dynlib: LibName.}"
   }, 
   {
-    "name": "TableSize", 
+    "name": "tableSize", 
     "type": "skProc", 
-    "code": "proc TableSize*(table: cstring): int"
+    "code": "proc tableSize*(table: cstring): int"
   }, 
   {
-    "name": "GetError", 
+    "name": "getError", 
     "type": "skProc", 
-    "code": "proc GetError*(): cstring {.cdecl, importc: \"SDL_GetError\", dynlib: LibName.}"
+    "code": "proc getError*(): cstring {.cdecl, importc: \"SDL_GetError\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetError", 
+    "name": "setError", 
     "type": "skProc", 
-    "code": "proc SetError*(fmt: cstring) {.cdecl, importc: \"SDL_SetError\", dynlib: LibName.}"
+    "code": "proc setError*(fmt: cstring) {.cdecl, importc: \"SDL_SetError\", dynlib: LibName.}"
   }, 
   {
-    "name": "ClearError", 
+    "name": "clearError", 
     "type": "skProc", 
-    "code": "proc ClearError*() {.cdecl, importc: \"SDL_ClearError\", dynlib: LibName.}"
+    "code": "proc clearError*() {.cdecl, importc: \"SDL_ClearError\", dynlib: LibName.}"
   }, 
   {
-    "name": "Error", 
+    "name": "error", 
     "type": "skProc", 
-    "code": "proc Error*(Code: Terrorcode) {.cdecl, importc: \"SDL_Error\", dynlib: LibName.}"
+    "code": "proc error*(Code: Terrorcode) {.cdecl, importc: \"SDL_Error\", dynlib: LibName.}"
   }, 
   {
-    "name": "OutOfMemory", 
+    "name": "rwFromFile", 
     "type": "skProc", 
-    "code": "proc OutOfMemory*()"
+    "code": "proc rwFromFile*(filename, mode: cstring): PRWops {.cdecl, \u000A    importc: \"SDL_RWFromFile\", dynlib: LibName.}"
   }, 
   {
-    "name": "RWFromFile", 
+    "name": "freeRW", 
     "type": "skProc", 
-    "code": "proc RWFromFile*(filename, mode: cstring): PRWops {.cdecl, \u000D\u000A    importc: \"SDL_RWFromFile\", dynlib: LibName.}"
+    "code": "proc freeRW*(area: PRWops) {.cdecl, importc: \"SDL_FreeRW\", dynlib: LibName.}"
   }, 
   {
-    "name": "FreeRW", 
+    "name": "rwFromFP", 
     "type": "skProc", 
-    "code": "proc FreeRW*(area: PRWops) {.cdecl, importc: \"SDL_FreeRW\", dynlib: LibName.}"
+    "code": "proc rwFromFP*(fp: pointer; autoclose: int): PRWops {.cdecl, \u000A    importc: \"SDL_RWFromFP\", dynlib: LibName.}"
   }, 
   {
-    "name": "RWFromFP", 
+    "name": "rwFromMem", 
     "type": "skProc", 
-    "code": "proc RWFromFP*(fp: Pointer; autoclose: int): PRWops {.cdecl, \u000D\u000A    importc: \"SDL_RWFromFP\", dynlib: LibName.}"
+    "code": "proc rwFromMem*(mem: pointer; size: int): PRWops {.cdecl, \u000A    importc: \"SDL_RWFromMem\", dynlib: LibName.}"
   }, 
   {
-    "name": "RWFromMem", 
+    "name": "rwFromConstMem", 
     "type": "skProc", 
-    "code": "proc RWFromMem*(mem: Pointer; size: int): PRWops {.cdecl, \u000D\u000A    importc: \"SDL_RWFromMem\", dynlib: LibName.}"
+    "code": "proc rwFromConstMem*(mem: pointer; size: int): PRWops {.cdecl, \u000A    importc: \"SDL_RWFromConstMem\", dynlib: LibName.}"
   }, 
   {
-    "name": "RWFromConstMem", 
+    "name": "allocRW", 
     "type": "skProc", 
-    "code": "proc RWFromConstMem*(mem: Pointer; size: int): PRWops {.cdecl, \u000D\u000A    importc: \"SDL_RWFromConstMem\", dynlib: LibName.}"
+    "code": "proc allocRW*(): PRWops {.cdecl, importc: \"SDL_AllocRW\", dynlib: LibName.}"
   }, 
   {
-    "name": "AllocRW", 
+    "name": "rwSeek", 
     "type": "skProc", 
-    "code": "proc AllocRW*(): PRWops {.cdecl, importc: \"SDL_AllocRW\", dynlib: LibName.}"
+    "code": "proc rwSeek*(context: PRWops; offset: int; whence: int): int"
   }, 
   {
-    "name": "RWSeek", 
+    "name": "rwTell", 
     "type": "skProc", 
-    "code": "proc RWSeek*(context: PRWops; offset: int; whence: int): int"
+    "code": "proc rwTell*(context: PRWops): int"
   }, 
   {
-    "name": "RWTell", 
+    "name": "rwRead", 
     "type": "skProc", 
-    "code": "proc RWTell*(context: PRWops): int"
+    "code": "proc rwRead*(context: PRWops; theptr: pointer; size: int; n: int): int"
   }, 
   {
-    "name": "RWRead", 
+    "name": "rwWrite", 
     "type": "skProc", 
-    "code": "proc RWRead*(context: PRWops; theptr: Pointer; size: int; n: int): int"
+    "code": "proc rwWrite*(context: PRWops; theptr: pointer; size: int; n: int): int"
   }, 
   {
-    "name": "RWWrite", 
+    "name": "rwClose", 
     "type": "skProc", 
-    "code": "proc RWWrite*(context: PRWops; theptr: Pointer; size: int; n: int): int"
+    "code": "proc rwClose*(context: PRWops): int"
   }, 
   {
-    "name": "RWClose", 
+    "name": "getTicks", 
     "type": "skProc", 
-    "code": "proc RWClose*(context: PRWops): int"
+    "code": "proc getTicks*(): int32 {.cdecl, importc: \"SDL_GetTicks\", dynlib: LibName.}"
   }, 
   {
-    "name": "GetTicks", 
+    "name": "delay", 
     "type": "skProc", 
-    "code": "proc GetTicks*(): int32 {.cdecl, importc: \"SDL_GetTicks\", dynlib: LibName.}"
+    "code": "proc delay*(msec: int32) {.cdecl, importc: \"SDL_Delay\", dynlib: LibName.}"
   }, 
   {
-    "name": "Delay", 
+    "name": "addTimer", 
     "type": "skProc", 
-    "code": "proc Delay*(msec: int32) {.cdecl, importc: \"SDL_Delay\", dynlib: LibName.}"
+    "code": "proc addTimer*(interval: int32; callback: TNewTimerCallback; param: pointer): PTimerID {.\u000A    cdecl, importc: \"SDL_AddTimer\", dynlib: LibName.}"
   }, 
   {
-    "name": "AddTimer", 
+    "name": "removeTimer", 
     "type": "skProc", 
-    "code": "proc AddTimer*(interval: int32; callback: TNewTimerCallback; param: Pointer): PTimerID {.\u000D\u000A    cdecl, importc: \"SDL_AddTimer\", dynlib: LibName.}"
+    "code": "proc removeTimer*(t: PTimerID): TBool {.cdecl, importc: \"SDL_RemoveTimer\", \u000A                                        dynlib: LibName.}"
   }, 
   {
-    "name": "RemoveTimer", 
+    "name": "setTimer", 
     "type": "skProc", 
-    "code": "proc RemoveTimer*(t: PTimerID): TBool {.cdecl, importc: \"SDL_RemoveTimer\", \u000D\u000A                                        dynlib: LibName.}"
+    "code": "proc setTimer*(interval: int32; callback: TTimerCallback): int {.cdecl, \u000A    importc: \"SDL_SetTimer\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetTimer", 
+    "name": "audioInit", 
     "type": "skProc", 
-    "code": "proc SetTimer*(interval: int32; callback: TTimerCallback): int {.cdecl, \u000D\u000A    importc: \"SDL_SetTimer\", dynlib: LibName.}"
+    "code": "proc audioInit*(driverName: cstring): int {.cdecl, importc: \"SDL_AudioInit\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "AudioInit", 
+    "name": "audioQuit", 
     "type": "skProc", 
-    "code": "proc AudioInit*(driver_name: cstring): int {.cdecl, importc: \"SDL_AudioInit\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc audioQuit*() {.cdecl, importc: \"SDL_AudioQuit\", dynlib: LibName.}"
   }, 
   {
-    "name": "AudioQuit", 
+    "name": "audioDriverName", 
     "type": "skProc", 
-    "code": "proc AudioQuit*() {.cdecl, importc: \"SDL_AudioQuit\", dynlib: LibName.}"
+    "code": "proc audioDriverName*(namebuf: cstring; maxlen: int): cstring {.cdecl, \u000A    importc: \"SDL_AudioDriverName\", dynlib: LibName.}"
   }, 
   {
-    "name": "AudioDriverName", 
+    "name": "openAudio", 
     "type": "skProc", 
-    "code": "proc AudioDriverName*(namebuf: cstring; maxlen: int): cstring {.cdecl, \u000D\u000A    importc: \"SDL_AudioDriverName\", dynlib: LibName.}"
+    "code": "proc openAudio*(desired, obtained: PAudioSpec): int {.cdecl, \u000A    importc: \"SDL_OpenAudio\", dynlib: LibName.}"
   }, 
   {
-    "name": "OpenAudio", 
+    "name": "getAudioStatus", 
     "type": "skProc", 
-    "code": "proc OpenAudio*(desired, obtained: PAudioSpec): int {.cdecl, \u000D\u000A    importc: \"SDL_OpenAudio\", dynlib: LibName.}"
+    "code": "proc getAudioStatus*(): TAudiostatus {.cdecl, importc: \"SDL_GetAudioStatus\", \u000A                                       dynlib: LibName.}"
   }, 
   {
-    "name": "GetAudioStatus", 
+    "name": "pauseAudio", 
     "type": "skProc", 
-    "code": "proc GetAudioStatus*(): TAudiostatus {.cdecl, importc: \"SDL_GetAudioStatus\", \u000D\u000A                                       dynlib: LibName.}"
+    "code": "proc pauseAudio*(pauseOn: int) {.cdecl, importc: \"SDL_PauseAudio\", \u000A                                 dynlib: LibName.}"
   }, 
   {
-    "name": "PauseAudio", 
+    "name": "loadWAV_RW", 
     "type": "skProc", 
-    "code": "proc PauseAudio*(pause_on: int) {.cdecl, importc: \"SDL_PauseAudio\", \u000D\u000A                                  dynlib: LibName.}"
+    "code": "proc loadWAV_RW*(src: PRWops; freesrc: int; spec: PAudioSpec; \u000A                 audioBuf: ptr byte; audiolen: PUInt32): PAudioSpec {.cdecl, \u000A    importc: \"SDL_LoadWAV_RW\", dynlib: LibName.}"
   }, 
   {
-    "name": "LoadWAV_RW", 
+    "name": "loadWAV", 
     "type": "skProc", 
-    "code": "proc LoadWAV_RW*(src: PRWops; freesrc: int; spec: PAudioSpec; \u000D\u000A                 audio_buf: ptr byte; audiolen: PUInt32): PAudioSpec {.cdecl, \u000D\u000A    importc: \"SDL_LoadWAV_RW\", dynlib: LibName.}"
+    "code": "proc loadWAV*(filename: cstring; spec: PAudioSpec; audioBuf: ptr byte; \u000A              audiolen: PUInt32): PAudioSpec"
   }, 
   {
-    "name": "LoadWAV", 
+    "name": "freeWAV", 
     "type": "skProc", 
-    "code": "proc LoadWAV*(filename: cstring; spec: PAudioSpec; audio_buf: ptr byte; \u000D\u000A              audiolen: PUInt32): PAudioSpec"
+    "code": "proc freeWAV*(audioBuf: ptr byte) {.cdecl, importc: \"SDL_FreeWAV\", \u000A                                    dynlib: LibName.}"
   }, 
   {
-    "name": "FreeWAV", 
+    "name": "buildAudioCVT", 
     "type": "skProc", 
-    "code": "proc FreeWAV*(audio_buf: ptr byte) {.cdecl, importc: \"SDL_FreeWAV\", \u000D\u000A                                     dynlib: LibName.}"
+    "code": "proc buildAudioCVT*(cvt: PAudioCVT; srcFormat: uint16; srcChannels: byte; \u000A                    srcRate: int; dstFormat: uint16; dstChannels: byte; \u000A                    dstRate: int): int {.cdecl, importc: \"SDL_BuildAudioCVT\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "BuildAudioCVT", 
+    "name": "convertAudio", 
     "type": "skProc", 
-    "code": "proc BuildAudioCVT*(cvt: PAudioCVT; src_format: UInt16; src_channels: byte; \u000D\u000A                    src_rate: int; dst_format: UInt16; dst_channels: byte; \u000D\u000A                    dst_rate: int): int {.cdecl, importc: \"SDL_BuildAudioCVT\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc convertAudio*(cvt: PAudioCVT): int {.cdecl, importc: \"SDL_ConvertAudio\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "ConvertAudio", 
+    "name": "mixAudio", 
     "type": "skProc", 
-    "code": "proc ConvertAudio*(cvt: PAudioCVT): int {.cdecl, importc: \"SDL_ConvertAudio\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc mixAudio*(dst, src: ptr byte; length: int32; volume: int) {.cdecl, \u000A    importc: \"SDL_MixAudio\", dynlib: LibName.}"
   }, 
   {
-    "name": "MixAudio", 
+    "name": "lockAudio", 
     "type": "skProc", 
-    "code": "proc MixAudio*(dst, src: ptr byte; length: int32; volume: int) {.cdecl, \u000D\u000A    importc: \"SDL_MixAudio\", dynlib: LibName.}"
+    "code": "proc lockAudio*() {.cdecl, importc: \"SDL_LockAudio\", dynlib: LibName.}"
   }, 
   {
-    "name": "LockAudio", 
+    "name": "unlockAudio", 
     "type": "skProc", 
-    "code": "proc LockAudio*() {.cdecl, importc: \"SDL_LockAudio\", dynlib: LibName.}"
+    "code": "proc unlockAudio*() {.cdecl, importc: \"SDL_UnlockAudio\", dynlib: LibName.}"
   }, 
   {
-    "name": "UnlockAudio", 
+    "name": "closeAudio", 
     "type": "skProc", 
-    "code": "proc UnlockAudio*() {.cdecl, importc: \"SDL_UnlockAudio\", dynlib: LibName.}"
+    "code": "proc closeAudio*() {.cdecl, importc: \"SDL_CloseAudio\", dynlib: LibName.}"
   }, 
   {
-    "name": "CloseAudio", 
+    "name": "cdNumDrives", 
     "type": "skProc", 
-    "code": "proc CloseAudio*() {.cdecl, importc: \"SDL_CloseAudio\", dynlib: LibName.}"
+    "code": "proc cdNumDrives*(): int {.cdecl, importc: \"SDL_CDNumDrives\", dynlib: LibName.}"
   }, 
   {
-    "name": "CDNumDrives", 
+    "name": "cdName", 
     "type": "skProc", 
-    "code": "proc CDNumDrives*(): int {.cdecl, importc: \"SDL_CDNumDrives\", dynlib: LibName.}"
+    "code": "proc cdName*(drive: int): cstring {.cdecl, importc: \"SDL_CDName\", \u000A                                    dynlib: LibName.}"
   }, 
   {
-    "name": "CDName", 
+    "name": "cdOpen", 
     "type": "skProc", 
-    "code": "proc CDName*(drive: int): cstring {.cdecl, importc: \"SDL_CDName\", \u000D\u000A                                    dynlib: LibName.}"
+    "code": "proc cdOpen*(drive: int): PCD {.cdecl, importc: \"SDL_CDOpen\", dynlib: LibName.}"
   }, 
   {
-    "name": "CDOpen", 
+    "name": "cdStatus", 
     "type": "skProc", 
-    "code": "proc CDOpen*(drive: int): PCD {.cdecl, importc: \"SDL_CDOpen\", dynlib: LibName.}"
+    "code": "proc cdStatus*(cdrom: PCD): TCDStatus {.cdecl, importc: \"SDL_CDStatus\", \u000A                                        dynlib: LibName.}"
   }, 
   {
-    "name": "CDStatus", 
+    "name": "cdPlayTracks", 
     "type": "skProc", 
-    "code": "proc CDStatus*(cdrom: PCD): TCDStatus {.cdecl, importc: \"SDL_CDStatus\", \u000D\u000A                                        dynlib: LibName.}"
+    "code": "proc cdPlayTracks*(cdrom: PCD; startTrack: int; startFrame: int; ntracks: int; \u000A                   nframes: int): int {.cdecl, importc: \"SDL_CDPlayTracks\", \u000A                                        dynlib: LibName.}"
   }, 
   {
-    "name": "CDPlayTracks", 
+    "name": "cdPlay", 
     "type": "skProc", 
-    "code": "proc CDPlayTracks*(cdrom: PCD; start_track: int; start_frame: int; ntracks: int; \u000D\u000A                   nframes: int): int {.cdecl, importc: \"SDL_CDPlayTracks\", \u000D\u000A                                        dynlib: LibName.}"
+    "code": "proc cdPlay*(cdrom: PCD; start: int; len: int): int {.cdecl, \u000A    importc: \"SDL_CDPlay\", dynlib: LibName.}"
   }, 
   {
-    "name": "CDPlay", 
+    "name": "cdPause", 
     "type": "skProc", 
-    "code": "proc CDPlay*(cdrom: PCD; start: int; len: int): int {.cdecl, \u000D\u000A    importc: \"SDL_CDPlay\", dynlib: LibName.}"
+    "code": "proc cdPause*(cdrom: PCD): int {.cdecl, importc: \"SDL_CDPause\", dynlib: LibName.}"
   }, 
   {
-    "name": "CDPause", 
+    "name": "cdResume", 
     "type": "skProc", 
-    "code": "proc CDPause*(cdrom: PCD): int {.cdecl, importc: \"SDL_CDPause\", dynlib: LibName.}"
+    "code": "proc cdResume*(cdrom: PCD): int {.cdecl, importc: \"SDL_CDResume\", \u000A                                  dynlib: LibName.}"
   }, 
   {
-    "name": "CDResume", 
+    "name": "cdStop", 
     "type": "skProc", 
-    "code": "proc CDResume*(cdrom: PCD): int {.cdecl, importc: \"SDL_CDResume\", \u000D\u000A                                  dynlib: LibName.}"
+    "code": "proc cdStop*(cdrom: PCD): int {.cdecl, importc: \"SDL_CDStop\", dynlib: LibName.}"
   }, 
   {
-    "name": "CDStop", 
+    "name": "cdEject", 
     "type": "skProc", 
-    "code": "proc CDStop*(cdrom: PCD): int {.cdecl, importc: \"SDL_CDStop\", dynlib: LibName.}"
+    "code": "proc cdEject*(cdrom: PCD): int {.cdecl, importc: \"SDL_CDEject\", dynlib: LibName.}"
   }, 
   {
-    "name": "CDEject", 
+    "name": "cdClose", 
     "type": "skProc", 
-    "code": "proc CDEject*(cdrom: PCD): int {.cdecl, importc: \"SDL_CDEject\", dynlib: LibName.}"
+    "code": "proc cdClose*(cdrom: PCD) {.cdecl, importc: \"SDL_CDClose\", dynlib: LibName.}"
   }, 
   {
-    "name": "CDClose", 
+    "name": "cdInDrive", 
     "type": "skProc", 
-    "code": "proc CDClose*(cdrom: PCD) {.cdecl, importc: \"SDL_CDClose\", dynlib: LibName.}"
+    "code": "proc cdInDrive*(status: TCDStatus): bool"
   }, 
   {
-    "name": "CDInDrive", 
+    "name": "numJoysticks", 
     "type": "skProc", 
-    "code": "proc CDInDrive*(status: TCDStatus): bool"
+    "code": "proc numJoysticks*(): int {.cdecl, importc: \"SDL_NumJoysticks\", dynlib: LibName.}"
   }, 
   {
-    "name": "FRAMES_TO_MSF", 
+    "name": "joystickName", 
     "type": "skProc", 
-    "code": "proc FRAMES_TO_MSF*(frames: int; M: var int; S: var int; F: var int)"
+    "code": "proc joystickName*(index: int): cstring {.cdecl, importc: \"SDL_JoystickName\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "MSF_TO_FRAMES", 
+    "name": "joystickOpen", 
     "type": "skProc", 
-    "code": "proc MSF_TO_FRAMES*(M: int; S: int; F: int): int"
+    "code": "proc joystickOpen*(index: int): PJoystick {.cdecl, importc: \"SDL_JoystickOpen\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "NumJoysticks", 
+    "name": "joystickOpened", 
     "type": "skProc", 
-    "code": "proc NumJoysticks*(): int {.cdecl, importc: \"SDL_NumJoysticks\", dynlib: LibName.}"
+    "code": "proc joystickOpened*(index: int): int {.cdecl, importc: \"SDL_JoystickOpened\", \u000A                                        dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickName", 
+    "name": "joystickIndex", 
     "type": "skProc", 
-    "code": "proc JoystickName*(index: int): cstring {.cdecl, importc: \"SDL_JoystickName\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc joystickIndex*(joystick: PJoystick): int {.cdecl, \u000A    importc: \"SDL_JoystickIndex\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickOpen", 
+    "name": "joystickNumAxes", 
     "type": "skProc", 
-    "code": "proc JoystickOpen*(index: int): PJoystick {.cdecl, importc: \"SDL_JoystickOpen\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc joystickNumAxes*(joystick: PJoystick): int {.cdecl, \u000A    importc: \"SDL_JoystickNumAxes\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickOpened", 
+    "name": "joystickNumBalls", 
     "type": "skProc", 
-    "code": "proc JoystickOpened*(index: int): int {.cdecl, importc: \"SDL_JoystickOpened\", \u000D\u000A                                        dynlib: LibName.}"
+    "code": "proc joystickNumBalls*(joystick: PJoystick): int {.cdecl, \u000A    importc: \"SDL_JoystickNumBalls\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickIndex", 
+    "name": "joystickNumHats", 
     "type": "skProc", 
-    "code": "proc JoystickIndex*(joystick: PJoystick): int {.cdecl, \u000D\u000A    importc: \"SDL_JoystickIndex\", dynlib: LibName.}"
+    "code": "proc joystickNumHats*(joystick: PJoystick): int {.cdecl, \u000A    importc: \"SDL_JoystickNumHats\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickNumAxes", 
+    "name": "joystickNumButtons", 
     "type": "skProc", 
-    "code": "proc JoystickNumAxes*(joystick: PJoystick): int {.cdecl, \u000D\u000A    importc: \"SDL_JoystickNumAxes\", dynlib: LibName.}"
+    "code": "proc joystickNumButtons*(joystick: PJoystick): int {.cdecl, \u000A    importc: \"SDL_JoystickNumButtons\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickNumBalls", 
+    "name": "joystickUpdate", 
     "type": "skProc", 
-    "code": "proc JoystickNumBalls*(joystick: PJoystick): int {.cdecl, \u000D\u000A    importc: \"SDL_JoystickNumBalls\", dynlib: LibName.}"
+    "code": "proc joystickUpdate*() {.cdecl, importc: \"SDL_JoystickUpdate\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickNumHats", 
+    "name": "joystickEventState", 
     "type": "skProc", 
-    "code": "proc JoystickNumHats*(joystick: PJoystick): int {.cdecl, \u000D\u000A    importc: \"SDL_JoystickNumHats\", dynlib: LibName.}"
+    "code": "proc joystickEventState*(state: int): int {.cdecl, \u000A    importc: \"SDL_JoystickEventState\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickNumButtons", 
+    "name": "joystickGetAxis", 
     "type": "skProc", 
-    "code": "proc JoystickNumButtons*(joystick: PJoystick): int {.cdecl, \u000D\u000A    importc: \"SDL_JoystickNumButtons\", dynlib: LibName.}"
+    "code": "proc joystickGetAxis*(joystick: PJoystick; axis: int): int16 {.cdecl, \u000A    importc: \"SDL_JoystickGetAxis\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickUpdate", 
+    "name": "joystickGetHat", 
     "type": "skProc", 
-    "code": "proc JoystickUpdate*() {.cdecl, importc: \"SDL_JoystickUpdate\", dynlib: LibName.}"
+    "code": "proc joystickGetHat*(joystick: PJoystick; hat: int): byte {.cdecl, \u000A    importc: \"SDL_JoystickGetHat\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickEventState", 
+    "name": "joystickGetBall", 
     "type": "skProc", 
-    "code": "proc JoystickEventState*(state: int): int {.cdecl, \u000D\u000A    importc: \"SDL_JoystickEventState\", dynlib: LibName.}"
+    "code": "proc joystickGetBall*(joystick: PJoystick; ball: int; dx: var int; dy: var int): int {.\u000A    cdecl, importc: \"SDL_JoystickGetBall\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickGetAxis", 
+    "name": "joystickGetButton", 
     "type": "skProc", 
-    "code": "proc JoystickGetAxis*(joystick: PJoystick; axis: int): int16 {.cdecl, \u000D\u000A    importc: \"SDL_JoystickGetAxis\", dynlib: LibName.}"
+    "code": "proc joystickGetButton*(joystick: PJoystick; button: int): byte {.cdecl, \u000A    importc: \"SDL_JoystickGetButton\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickGetHat", 
+    "name": "joystickClose", 
     "type": "skProc", 
-    "code": "proc JoystickGetHat*(joystick: PJoystick; hat: int): byte {.cdecl, \u000D\u000A    importc: \"SDL_JoystickGetHat\", dynlib: LibName.}"
+    "code": "proc joystickClose*(joystick: PJoystick) {.cdecl, importc: \"SDL_JoystickClose\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickGetBall", 
+    "name": "pumpEvents", 
     "type": "skProc", 
-    "code": "proc JoystickGetBall*(joystick: PJoystick; ball: int; dx: var int; dy: var int): int {.\u000D\u000A    cdecl, importc: \"SDL_JoystickGetBall\", dynlib: LibName.}"
+    "code": "proc pumpEvents*() {.cdecl, importc: \"SDL_PumpEvents\", dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickGetButton", 
+    "name": "peepEvents", 
     "type": "skProc", 
-    "code": "proc JoystickGetButton*(joystick: PJoystick; Button: int): byte {.cdecl, \u000D\u000A    importc: \"SDL_JoystickGetButton\", dynlib: LibName.}"
+    "code": "proc peepEvents*(events: PEvent; numevents: int; action: TEventAction; \u000A                 mask: int32): int {.cdecl, importc: \"SDL_PeepEvents\", \u000A                                     dynlib: LibName.}"
   }, 
   {
-    "name": "JoystickClose", 
+    "name": "pollEvent", 
     "type": "skProc", 
-    "code": "proc JoystickClose*(joystick: PJoystick) {.cdecl, importc: \"SDL_JoystickClose\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc pollEvent*(event: PEvent): int {.cdecl, importc: \"SDL_PollEvent\", \u000A                                      dynlib: LibName.}"
   }, 
   {
-    "name": "PumpEvents", 
+    "name": "waitEvent", 
     "type": "skProc", 
-    "code": "proc PumpEvents*() {.cdecl, importc: \"SDL_PumpEvents\", dynlib: LibName.}"
+    "code": "proc waitEvent*(event: PEvent): int {.cdecl, importc: \"SDL_WaitEvent\", \u000A                                      dynlib: LibName.}"
   }, 
   {
-    "name": "PeepEvents", 
+    "name": "pushEvent", 
     "type": "skProc", 
-    "code": "proc PeepEvents*(events: PEvent; numevents: int; action: Teventaction; \u000D\u000A                 mask: int32): int {.cdecl, importc: \"SDL_PeepEvents\", \u000D\u000A                                     dynlib: LibName.}"
+    "code": "proc pushEvent*(event: PEvent): int {.cdecl, importc: \"SDL_PushEvent\", \u000A                                      dynlib: LibName.}"
   }, 
   {
-    "name": "PollEvent", 
+    "name": "setEventFilter", 
     "type": "skProc", 
-    "code": "proc PollEvent*(event: PEvent): int {.cdecl, importc: \"SDL_PollEvent\", \u000D\u000A                                      dynlib: LibName.}"
+    "code": "proc setEventFilter*(filter: TEventFilter) {.cdecl, \u000A    importc: \"SDL_SetEventFilter\", dynlib: LibName.}"
   }, 
   {
-    "name": "WaitEvent", 
+    "name": "getEventFilter", 
     "type": "skProc", 
-    "code": "proc WaitEvent*(event: PEvent): int {.cdecl, importc: \"SDL_WaitEvent\", \u000D\u000A                                      dynlib: LibName.}"
+    "code": "proc getEventFilter*(): TEventFilter {.cdecl, importc: \"SDL_GetEventFilter\", \u000A                                       dynlib: LibName.}"
   }, 
   {
-    "name": "PushEvent", 
+    "name": "eventState", 
     "type": "skProc", 
-    "code": "proc PushEvent*(event: PEvent): int {.cdecl, importc: \"SDL_PushEvent\", \u000D\u000A                                      dynlib: LibName.}"
+    "code": "proc eventState*(theType: byte; state: int): byte {.cdecl, \u000A    importc: \"SDL_EventState\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetEventFilter", 
+    "name": "version", 
     "type": "skProc", 
-    "code": "proc SetEventFilter*(filter: TEventFilter) {.cdecl, \u000D\u000A    importc: \"SDL_SetEventFilter\", dynlib: LibName.}"
+    "code": "proc version*(x: var Tversion)"
   }, 
   {
-    "name": "GetEventFilter", 
+    "name": "versionnum", 
     "type": "skProc", 
-    "code": "proc GetEventFilter*(): TEventFilter {.cdecl, importc: \"SDL_GetEventFilter\", \u000D\u000A                                       dynlib: LibName.}"
+    "code": "proc versionnum*(x, y, z: int): int"
   }, 
   {
-    "name": "EventState", 
+    "name": "compiledversion", 
     "type": "skProc", 
-    "code": "proc EventState*(theType: byte; state: int): byte {.cdecl, \u000D\u000A    importc: \"SDL_EventState\", dynlib: LibName.}"
+    "code": "proc compiledversion*(): int"
   }, 
   {
-    "name": "VERSION", 
+    "name": "versionAtleast", 
     "type": "skProc", 
-    "code": "proc VERSION*(X: var TVersion)"
+    "code": "proc versionAtleast*(x, y, z: int): bool"
   }, 
   {
-    "name": "VERSIONNUM", 
+    "name": "linkedVersion", 
     "type": "skProc", 
-    "code": "proc VERSIONNUM*(X, Y, Z: int): int"
+    "code": "proc linkedVersion*(): PVersion {.cdecl, importc: \"SDL_Linked_Version\", \u000A                                  dynlib: LibName.}"
   }, 
   {
-    "name": "COMPILEDVERSION", 
+    "name": "videoInit", 
     "type": "skProc", 
-    "code": "proc COMPILEDVERSION*(): int"
+    "code": "proc videoInit*(driverName: cstring; flags: int32): int {.cdecl, \u000A    importc: \"SDL_VideoInit\", dynlib: LibName.}"
   }, 
   {
-    "name": "VERSION_ATLEAST", 
+    "name": "videoQuit", 
     "type": "skProc", 
-    "code": "proc VERSION_ATLEAST*(X: int; Y: int; Z: int): bool"
+    "code": "proc videoQuit*() {.cdecl, importc: \"SDL_VideoQuit\", dynlib: LibName.}"
   }, 
   {
-    "name": "Linked_Version", 
+    "name": "videoDriverName", 
     "type": "skProc", 
-    "code": "proc Linked_Version*(): Pversion {.cdecl, importc: \"SDL_Linked_Version\", \u000D\u000A                                   dynlib: LibName.}"
+    "code": "proc videoDriverName*(namebuf: cstring; maxlen: int): cstring {.cdecl, \u000A    importc: \"SDL_VideoDriverName\", dynlib: LibName.}"
   }, 
   {
-    "name": "VideoInit", 
+    "name": "getVideoSurface", 
     "type": "skProc", 
-    "code": "proc VideoInit*(driver_name: cstring; flags: int32): int {.cdecl, \u000D\u000A    importc: \"SDL_VideoInit\", dynlib: LibName.}"
+    "code": "proc getVideoSurface*(): PSurface {.cdecl, importc: \"SDL_GetVideoSurface\", \u000A                                    dynlib: LibName.}"
   }, 
   {
-    "name": "VideoQuit", 
+    "name": "getVideoInfo", 
     "type": "skProc", 
-    "code": "proc VideoQuit*() {.cdecl, importc: \"SDL_VideoQuit\", dynlib: LibName.}"
+    "code": "proc getVideoInfo*(): PVideoInfo {.cdecl, importc: \"SDL_GetVideoInfo\", \u000A                                   dynlib: LibName.}"
   }, 
   {
-    "name": "VideoDriverName", 
+    "name": "videoModeOK", 
     "type": "skProc", 
-    "code": "proc VideoDriverName*(namebuf: cstring; maxlen: int): cstring {.cdecl, \u000D\u000A    importc: \"SDL_VideoDriverName\", dynlib: LibName.}"
+    "code": "proc videoModeOK*(width, height, bpp: int; flags: int32): int {.cdecl, \u000A    importc: \"SDL_VideoModeOK\", importc: \"SDL_VideoModeOK\", dynlib: LibName.}"
   }, 
   {
-    "name": "GetVideoSurface", 
+    "name": "listModes", 
     "type": "skProc", 
-    "code": "proc GetVideoSurface*(): PSurface {.cdecl, importc: \"SDL_GetVideoSurface\", \u000D\u000A                                    dynlib: LibName.}"
+    "code": "proc listModes*(format: PPixelFormat; flags: int32): PPSDL_Rect {.cdecl, \u000A    importc: \"SDL_ListModes\", dynlib: LibName.}"
   }, 
   {
-    "name": "GetVideoInfo", 
+    "name": "setVideoMode", 
     "type": "skProc", 
-    "code": "proc GetVideoInfo*(): PVideoInfo {.cdecl, importc: \"SDL_GetVideoInfo\", \u000D\u000A                                   dynlib: LibName.}"
+    "code": "proc setVideoMode*(width, height, bpp: int; flags: uint32): PSurface {.cdecl, \u000A    importc: \"SDL_SetVideoMode\", dynlib: LibName.}"
   }, 
   {
-    "name": "VideoModeOK", 
+    "name": "updateRects", 
     "type": "skProc", 
-    "code": "proc VideoModeOK*(width, height, bpp: int; flags: int32): int {.cdecl, \u000D\u000A    importc: \"SDL_VideoModeOK\", importc: \"SDL_VideoModeOK\", dynlib: LibName.}"
+    "code": "proc updateRects*(screen: PSurface; numrects: int; rects: PRect) {.cdecl, \u000A    importc: \"SDL_UpdateRects\", dynlib: LibName.}"
   }, 
   {
-    "name": "ListModes", 
+    "name": "updateRect", 
     "type": "skProc", 
-    "code": "proc ListModes*(format: PPixelFormat; flags: int32): PPSDL_Rect {.cdecl, \u000D\u000A    importc: \"SDL_ListModes\", dynlib: LibName.}"
+    "code": "proc updateRect*(screen: PSurface; x, y: int32; w, h: int32) {.cdecl, \u000A    importc: \"SDL_UpdateRect\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetVideoMode", 
+    "name": "flip", 
     "type": "skProc", 
-    "code": "proc SetVideoMode*(width, height, bpp: int; flags: uint32): PSurface {.cdecl, \u000D\u000A    importc: \"SDL_SetVideoMode\", dynlib: LibName.}"
+    "code": "proc flip*(screen: PSurface): int {.cdecl, importc: \"SDL_Flip\", dynlib: LibName.}"
   }, 
   {
-    "name": "UpdateRects", 
+    "name": "setGamma", 
     "type": "skProc", 
-    "code": "proc UpdateRects*(screen: PSurface; numrects: int; rects: PRect) {.cdecl, \u000D\u000A    importc: \"SDL_UpdateRects\", dynlib: LibName.}"
+    "code": "proc setGamma*(redgamma: float32; greengamma: float32; bluegamma: float32): int {.\u000A    cdecl, importc: \"SDL_SetGamma\", dynlib: LibName.}"
   }, 
   {
-    "name": "UpdateRect", 
+    "name": "setGammaRamp", 
     "type": "skProc", 
-    "code": "proc UpdateRect*(screen: PSurface; x, y: int32; w, h: int32) {.cdecl, \u000D\u000A    importc: \"SDL_UpdateRect\", dynlib: LibName.}"
+    "code": "proc setGammaRamp*(redtable: PUInt16; greentable: PUInt16; bluetable: PUInt16): int {.\u000A    cdecl, importc: \"SDL_SetGammaRamp\", dynlib: LibName.}"
   }, 
   {
-    "name": "Flip", 
+    "name": "getGammaRamp", 
     "type": "skProc", 
-    "code": "proc Flip*(screen: PSurface): int {.cdecl, importc: \"SDL_Flip\", dynlib: LibName.}"
+    "code": "proc getGammaRamp*(redtable: PUInt16; greentable: PUInt16; bluetable: PUInt16): int {.\u000A    cdecl, importc: \"SDL_GetGammaRamp\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetGamma", 
+    "name": "setColors", 
     "type": "skProc", 
-    "code": "proc SetGamma*(redgamma: float32; greengamma: float32; bluegamma: float32): int {.\u000D\u000A    cdecl, importc: \"SDL_SetGamma\", dynlib: LibName.}"
+    "code": "proc setColors*(surface: PSurface; colors: PColor; firstcolor: int; ncolors: int): int {.\u000A    cdecl, importc: \"SDL_SetColors\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetGammaRamp", 
+    "name": "setPalette", 
     "type": "skProc", 
-    "code": "proc SetGammaRamp*(redtable: PUInt16; greentable: PUInt16; bluetable: PUInt16): int {.\u000D\u000A    cdecl, importc: \"SDL_SetGammaRamp\", dynlib: LibName.}"
+    "code": "proc setPalette*(surface: PSurface; flags: int; colors: PColor; firstcolor: int; \u000A                 ncolors: int): int {.cdecl, importc: \"SDL_SetPalette\", \u000A                                      dynlib: LibName.}"
   }, 
   {
-    "name": "GetGammaRamp", 
+    "name": "mapRGB", 
     "type": "skProc", 
-    "code": "proc GetGammaRamp*(redtable: PUInt16; greentable: PUInt16; bluetable: PUInt16): int {.\u000D\u000A    cdecl, importc: \"SDL_GetGammaRamp\", dynlib: LibName.}"
+    "code": "proc mapRGB*(format: PPixelFormat; r: byte; g: byte; b: byte): int32 {.cdecl, \u000A    importc: \"SDL_MapRGB\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetColors", 
+    "name": "mapRGBA", 
     "type": "skProc", 
-    "code": "proc SetColors*(surface: PSurface; colors: PColor; firstcolor: int; ncolors: int): int {.\u000D\u000A    cdecl, importc: \"SDL_SetColors\", dynlib: LibName.}"
+    "code": "proc mapRGBA*(format: PPixelFormat; r: byte; g: byte; b: byte; a: byte): int32 {.\u000A    cdecl, importc: \"SDL_MapRGBA\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetPalette", 
+    "name": "getRGB", 
     "type": "skProc", 
-    "code": "proc SetPalette*(surface: PSurface; flags: int; colors: PColor; firstcolor: int; \u000D\u000A                 ncolors: int): int {.cdecl, importc: \"SDL_SetPalette\", \u000D\u000A                                      dynlib: LibName.}"
+    "code": "proc getRGB*(pixel: int32; fmt: PPixelFormat; r: ptr byte; g: ptr byte; \u000A             b: ptr byte) {.cdecl, importc: \"SDL_GetRGB\", dynlib: LibName.}"
   }, 
   {
-    "name": "MapRGB", 
+    "name": "getRGBA", 
     "type": "skProc", 
-    "code": "proc MapRGB*(format: PPixelFormat; r: byte; g: byte; b: byte): int32 {.cdecl, \u000D\u000A    importc: \"SDL_MapRGB\", dynlib: LibName.}"
+    "code": "proc getRGBA*(pixel: int32; fmt: PPixelFormat; r: ptr byte; g: ptr byte; \u000A              b: ptr byte; a: ptr byte) {.cdecl, importc: \"SDL_GetRGBA\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "MapRGBA", 
+    "name": "allocSurface", 
     "type": "skProc", 
-    "code": "proc MapRGBA*(format: PPixelFormat; r: byte; g: byte; b: byte; a: byte): int32 {.\u000D\u000A    cdecl, importc: \"SDL_MapRGBA\", dynlib: LibName.}"
+    "code": "proc allocSurface*(flags: int32; width, height, depth: int; \u000A                   rMask, gMask, bMask, aMask: int32): PSurface"
   }, 
   {
-    "name": "GetRGB", 
+    "name": "createRGBSurface", 
     "type": "skProc", 
-    "code": "proc GetRGB*(pixel: int32; fmt: PPixelFormat; r: ptr byte; g: ptr byte; \u000D\u000A             b: ptr byte) {.cdecl, importc: \"SDL_GetRGB\", dynlib: LibName.}"
+    "code": "proc createRGBSurface*(flags: int32; width, height, depth: int; \u000A                       rMask, gMask, bMask, aMask: int32): PSurface {.cdecl, \u000A    importc: \"SDL_CreateRGBSurface\", dynlib: LibName.}"
   }, 
   {
-    "name": "GetRGBA", 
+    "name": "createRGBSurfaceFrom", 
     "type": "skProc", 
-    "code": "proc GetRGBA*(pixel: int32; fmt: PPixelFormat; r: ptr byte; g: ptr byte; \u000D\u000A              b: ptr byte; a: ptr byte) {.cdecl, importc: \"SDL_GetRGBA\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc createRGBSurfaceFrom*(pixels: pointer; width, height, depth, pitch: int; \u000A                           rMask, gMask, bMask, aMask: int32): PSurface {.cdecl, \u000A    importc: \"SDL_CreateRGBSurfaceFrom\", dynlib: LibName.}"
   }, 
   {
-    "name": "AllocSurface", 
+    "name": "freeSurface", 
     "type": "skProc", 
-    "code": "proc AllocSurface*(flags: int32; width, height, depth: int; \u000D\u000A                   RMask, GMask, BMask, AMask: int32): PSurface"
+    "code": "proc freeSurface*(surface: PSurface) {.cdecl, importc: \"SDL_FreeSurface\", \u000A                                       dynlib: LibName.}"
   }, 
   {
-    "name": "CreateRGBSurface", 
+    "name": "mustLock", 
     "type": "skProc", 
-    "code": "proc CreateRGBSurface*(flags: int32; width, height, depth: int; \u000D\u000A                       RMask, GMask, BMask, AMask: int32): PSurface {.cdecl, \u000D\u000A    importc: \"SDL_CreateRGBSurface\", dynlib: LibName.}"
+    "code": "proc mustLock*(surface: PSurface): bool"
   }, 
   {
-    "name": "CreateRGBSurfaceFrom", 
+    "name": "lockSurface", 
     "type": "skProc", 
-    "code": "proc CreateRGBSurfaceFrom*(pixels: Pointer; width, height, depth, pitch: int; \u000D\u000A                           RMask, GMask, BMask, AMask: int32): PSurface {.cdecl, \u000D\u000A    importc: \"SDL_CreateRGBSurfaceFrom\", dynlib: LibName.}"
+    "code": "proc lockSurface*(surface: PSurface): int {.cdecl, importc: \"SDL_LockSurface\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "FreeSurface", 
+    "name": "unlockSurface", 
     "type": "skProc", 
-    "code": "proc FreeSurface*(surface: PSurface) {.cdecl, importc: \"SDL_FreeSurface\", \u000D\u000A                                       dynlib: LibName.}"
+    "code": "proc unlockSurface*(surface: PSurface) {.cdecl, importc: \"SDL_UnlockSurface\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "MustLock", 
+    "name": "loadBMP_RW", 
     "type": "skProc", 
-    "code": "proc MustLock*(Surface: PSurface): bool"
+    "code": "proc loadBMP_RW*(src: PRWops; freesrc: int): PSurface {.cdecl, \u000A    importc: \"SDL_LoadBMP_RW\", dynlib: LibName.}"
   }, 
   {
-    "name": "LockSurface", 
+    "name": "loadBMP", 
     "type": "skProc", 
-    "code": "proc LockSurface*(surface: PSurface): int {.cdecl, importc: \"SDL_LockSurface\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc loadBMP*(filename: cstring): PSurface"
   }, 
   {
-    "name": "UnlockSurface", 
+    "name": "saveBMP_RW", 
     "type": "skProc", 
-    "code": "proc UnlockSurface*(surface: PSurface) {.cdecl, importc: \"SDL_UnlockSurface\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc saveBMP_RW*(surface: PSurface; dst: PRWops; freedst: int): int {.cdecl, \u000A    importc: \"SDL_SaveBMP_RW\", dynlib: LibName.}"
   }, 
   {
-    "name": "LoadBMP_RW", 
+    "name": "saveBMP", 
     "type": "skProc", 
-    "code": "proc LoadBMP_RW*(src: PRWops; freesrc: int): PSurface {.cdecl, \u000D\u000A    importc: \"SDL_LoadBMP_RW\", dynlib: LibName.}"
+    "code": "proc saveBMP*(surface: PSurface; filename: cstring): int"
   }, 
   {
-    "name": "LoadBMP", 
+    "name": "setColorKey", 
     "type": "skProc", 
-    "code": "proc LoadBMP*(filename: cstring): PSurface"
+    "code": "proc setColorKey*(surface: PSurface; flag, key: int32): int {.cdecl, \u000A    importc: \"SDL_SetColorKey\", dynlib: LibName.}"
   }, 
   {
-    "name": "SaveBMP_RW", 
+    "name": "setAlpha", 
     "type": "skProc", 
-    "code": "proc SaveBMP_RW*(surface: PSurface; dst: PRWops; freedst: int): int {.cdecl, \u000D\u000A    importc: \"SDL_SaveBMP_RW\", dynlib: LibName.}"
+    "code": "proc setAlpha*(surface: PSurface; flag: int32; alpha: byte): int {.cdecl, \u000A    importc: \"SDL_SetAlpha\", dynlib: LibName.}"
   }, 
   {
-    "name": "SaveBMP", 
+    "name": "setClipRect", 
     "type": "skProc", 
-    "code": "proc SaveBMP*(surface: PSurface; filename: cstring): int"
+    "code": "proc setClipRect*(surface: PSurface; rect: PRect) {.cdecl, \u000A    importc: \"SDL_SetClipRect\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetColorKey", 
+    "name": "getClipRect", 
     "type": "skProc", 
-    "code": "proc SetColorKey*(surface: PSurface; flag, key: int32): int {.cdecl, \u000D\u000A    importc: \"SDL_SetColorKey\", dynlib: LibName.}"
+    "code": "proc getClipRect*(surface: PSurface; rect: PRect) {.cdecl, \u000A    importc: \"SDL_GetClipRect\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetAlpha", 
+    "name": "convertSurface", 
     "type": "skProc", 
-    "code": "proc SetAlpha*(surface: PSurface; flag: int32; alpha: byte): int {.cdecl, \u000D\u000A    importc: \"SDL_SetAlpha\", dynlib: LibName.}"
+    "code": "proc convertSurface*(src: PSurface; fmt: PPixelFormat; flags: int32): PSurface {.\u000A    cdecl, importc: \"SDL_ConvertSurface\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetClipRect", 
+    "name": "blitSurface", 
     "type": "skProc", 
-    "code": "proc SetClipRect*(surface: PSurface; rect: PRect) {.cdecl, \u000D\u000A    importc: \"SDL_SetClipRect\", dynlib: LibName.}"
+    "code": "proc blitSurface*(src: PSurface; srcrect: PRect; dst: PSurface; dstrect: PRect): int"
   }, 
   {
-    "name": "GetClipRect", 
+    "name": "upperBlit", 
     "type": "skProc", 
-    "code": "proc GetClipRect*(surface: PSurface; rect: PRect) {.cdecl, \u000D\u000A    importc: \"SDL_GetClipRect\", dynlib: LibName.}"
+    "code": "proc upperBlit*(src: PSurface; srcrect: PRect; dst: PSurface; dstrect: PRect): int {.\u000A    cdecl, importc: \"SDL_UpperBlit\", dynlib: LibName.}"
   }, 
   {
-    "name": "ConvertSurface", 
+    "name": "lowerBlit", 
     "type": "skProc", 
-    "code": "proc ConvertSurface*(src: PSurface; fmt: PPixelFormat; flags: int32): PSurface {.\u000D\u000A    cdecl, importc: \"SDL_ConvertSurface\", dynlib: LibName.}"
+    "code": "proc lowerBlit*(src: PSurface; srcrect: PRect; dst: PSurface; dstrect: PRect): int {.\u000A    cdecl, importc: \"SDL_LowerBlit\", dynlib: LibName.}"
   }, 
   {
-    "name": "BlitSurface", 
+    "name": "fillRect", 
     "type": "skProc", 
-    "code": "proc BlitSurface*(src: PSurface; srcrect: PRect; dst: PSurface; dstrect: PRect): int"
+    "code": "proc fillRect*(dst: PSurface; dstrect: PRect; color: int32): int {.cdecl, \u000A    importc: \"SDL_FillRect\", dynlib: LibName.}"
   }, 
   {
-    "name": "UpperBlit", 
+    "name": "displayFormat", 
     "type": "skProc", 
-    "code": "proc UpperBlit*(src: PSurface; srcrect: PRect; dst: PSurface; dstrect: PRect): int {.\u000D\u000A    cdecl, importc: \"SDL_UpperBlit\", dynlib: LibName.}"
+    "code": "proc displayFormat*(surface: PSurface): PSurface {.cdecl, \u000A    importc: \"SDL_DisplayFormat\", dynlib: LibName.}"
   }, 
   {
-    "name": "LowerBlit", 
+    "name": "displayFormatAlpha", 
     "type": "skProc", 
-    "code": "proc LowerBlit*(src: PSurface; srcrect: PRect; dst: PSurface; dstrect: PRect): int {.\u000D\u000A    cdecl, importc: \"SDL_LowerBlit\", dynlib: LibName.}"
+    "code": "proc displayFormatAlpha*(surface: PSurface): PSurface {.cdecl, \u000A    importc: \"SDL_DisplayFormatAlpha\", dynlib: LibName.}"
   }, 
   {
-    "name": "FillRect", 
+    "name": "createYUVOverlay", 
     "type": "skProc", 
-    "code": "proc FillRect*(dst: PSurface; dstrect: PRect; color: int32): int {.cdecl, \u000D\u000A    importc: \"SDL_FillRect\", dynlib: LibName.}"
+    "code": "proc createYUVOverlay*(width: int; height: int; format: int32; display: PSurface): POverlay {.\u000A    cdecl, importc: \"SDL_CreateYUVOverlay\", dynlib: LibName.}"
   }, 
   {
-    "name": "DisplayFormat", 
+    "name": "lockYUVOverlay", 
     "type": "skProc", 
-    "code": "proc DisplayFormat*(surface: PSurface): PSurface {.cdecl, \u000D\u000A    importc: \"SDL_DisplayFormat\", dynlib: LibName.}"
+    "code": "proc lockYUVOverlay*(overlay: POverlay): int {.cdecl, \u000A    importc: \"SDL_LockYUVOverlay\", dynlib: LibName.}"
   }, 
   {
-    "name": "DisplayFormatAlpha", 
+    "name": "unlockYUVOverlay", 
     "type": "skProc", 
-    "code": "proc DisplayFormatAlpha*(surface: PSurface): PSurface {.cdecl, \u000D\u000A    importc: \"SDL_DisplayFormatAlpha\", dynlib: LibName.}"
+    "code": "proc unlockYUVOverlay*(overlay: POverlay) {.cdecl, \u000A    importc: \"SDL_UnlockYUVOverlay\", dynlib: LibName.}"
   }, 
   {
-    "name": "CreateYUVOverlay", 
+    "name": "displayYUVOverlay", 
     "type": "skProc", 
-    "code": "proc CreateYUVOverlay*(width: int; height: int; format: int32; display: PSurface): POverlay {.\u000D\u000A    cdecl, importc: \"SDL_CreateYUVOverlay\", dynlib: LibName.}"
+    "code": "proc displayYUVOverlay*(overlay: POverlay; dstrect: PRect): int {.cdecl, \u000A    importc: \"SDL_DisplayYUVOverlay\", dynlib: LibName.}"
   }, 
   {
-    "name": "LockYUVOverlay", 
+    "name": "freeYUVOverlay", 
     "type": "skProc", 
-    "code": "proc LockYUVOverlay*(Overlay: POverlay): int {.cdecl, \u000D\u000A    importc: \"SDL_LockYUVOverlay\", dynlib: LibName.}"
+    "code": "proc freeYUVOverlay*(overlay: POverlay) {.cdecl, importc: \"SDL_FreeYUVOverlay\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "UnlockYUVOverlay", 
+    "name": "glLoadLibrary", 
     "type": "skProc", 
-    "code": "proc UnlockYUVOverlay*(Overlay: POverlay) {.cdecl, \u000D\u000A    importc: \"SDL_UnlockYUVOverlay\", dynlib: LibName.}"
+    "code": "proc glLoadLibrary*(filename: cstring): int {.cdecl, \u000A    importc: \"SDL_GL_LoadLibrary\", dynlib: LibName.}"
   }, 
   {
-    "name": "DisplayYUVOverlay", 
+    "name": "glGetProcAddress", 
     "type": "skProc", 
-    "code": "proc DisplayYUVOverlay*(Overlay: POverlay; dstrect: PRect): int {.cdecl, \u000D\u000A    importc: \"SDL_DisplayYUVOverlay\", dynlib: LibName.}"
+    "code": "proc glGetProcAddress*(procname: cstring): pointer {.cdecl, \u000A    importc: \"SDL_GL_GetProcAddress\", dynlib: LibName.}"
   }, 
   {
-    "name": "FreeYUVOverlay", 
+    "name": "glSetAttribute", 
     "type": "skProc", 
-    "code": "proc FreeYUVOverlay*(Overlay: POverlay) {.cdecl, importc: \"SDL_FreeYUVOverlay\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc glSetAttribute*(attr: TGLAttr; value: int): int {.cdecl, \u000A    importc: \"SDL_GL_SetAttribute\", dynlib: LibName.}"
   }, 
   {
-    "name": "GL_LoadLibrary", 
+    "name": "glGetAttribute", 
     "type": "skProc", 
-    "code": "proc GL_LoadLibrary*(filename: cstring): int {.cdecl, \u000D\u000A    importc: \"SDL_GL_LoadLibrary\", dynlib: LibName.}"
+    "code": "proc glGetAttribute*(attr: TGLAttr; value: var int): int {.cdecl, \u000A    importc: \"SDL_GL_GetAttribute\", dynlib: LibName.}"
   }, 
   {
-    "name": "GL_GetProcAddress", 
+    "name": "glSwapBuffers", 
     "type": "skProc", 
-    "code": "proc GL_GetProcAddress*(procname: cstring): Pointer {.cdecl, \u000D\u000A    importc: \"SDL_GL_GetProcAddress\", dynlib: LibName.}"
+    "code": "proc glSwapBuffers*() {.cdecl, importc: \"SDL_GL_SwapBuffers\", dynlib: LibName.}"
   }, 
   {
-    "name": "GL_SetAttribute", 
+    "name": "glUpdateRects", 
     "type": "skProc", 
-    "code": "proc GL_SetAttribute*(attr: TGLAttr; value: int): int {.cdecl, \u000D\u000A    importc: \"SDL_GL_SetAttribute\", dynlib: LibName.}"
+    "code": "proc glUpdateRects*(numrects: int; rects: PRect) {.cdecl, \u000A    importc: \"SDL_GL_UpdateRects\", dynlib: LibName.}"
   }, 
   {
-    "name": "GL_GetAttribute", 
+    "name": "glLock", 
     "type": "skProc", 
-    "code": "proc GL_GetAttribute*(attr: TGLAttr; value: var int): int {.cdecl, \u000D\u000A    importc: \"SDL_GL_GetAttribute\", dynlib: LibName.}"
+    "code": "proc glLock*() {.cdecl, importc: \"SDL_GL_Lock\", dynlib: LibName.}"
   }, 
   {
-    "name": "GL_SwapBuffers", 
+    "name": "glUnlock", 
     "type": "skProc", 
-    "code": "proc GL_SwapBuffers*() {.cdecl, importc: \"SDL_GL_SwapBuffers\", dynlib: LibName.}"
+    "code": "proc glUnlock*() {.cdecl, importc: \"SDL_GL_Unlock\", dynlib: LibName.}"
   }, 
   {
-    "name": "GL_UpdateRects", 
+    "name": "wmGetCaption", 
     "type": "skProc", 
-    "code": "proc GL_UpdateRects*(numrects: int; rects: PRect) {.cdecl, \u000D\u000A    importc: \"SDL_GL_UpdateRects\", dynlib: LibName.}"
+    "code": "proc wmGetCaption*(title: var cstring; icon: var cstring) {.cdecl, \u000A    importc: \"SDL_WM_GetCaption\", dynlib: LibName.}"
   }, 
   {
-    "name": "GL_Lock", 
+    "name": "wmSetCaption", 
     "type": "skProc", 
-    "code": "proc GL_Lock*() {.cdecl, importc: \"SDL_GL_Lock\", dynlib: LibName.}"
+    "code": "proc wmSetCaption*(title: cstring; icon: cstring) {.cdecl, \u000A    importc: \"SDL_WM_SetCaption\", dynlib: LibName.}"
   }, 
   {
-    "name": "GL_Unlock", 
+    "name": "wmSetIcon", 
     "type": "skProc", 
-    "code": "proc GL_Unlock*() {.cdecl, importc: \"SDL_GL_Unlock\", dynlib: LibName.}"
+    "code": "proc wmSetIcon*(icon: PSurface; mask: byte) {.cdecl, importc: \"SDL_WM_SetIcon\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "WM_GetCaption", 
+    "name": "wmIconifyWindow", 
     "type": "skProc", 
-    "code": "proc WM_GetCaption*(title: var cstring; icon: var cstring) {.cdecl, \u000D\u000A    importc: \"SDL_WM_GetCaption\", dynlib: LibName.}"
+    "code": "proc wmIconifyWindow*(): int {.cdecl, importc: \"SDL_WM_IconifyWindow\", \u000A                               dynlib: LibName.}"
   }, 
   {
-    "name": "WM_SetCaption", 
+    "name": "wmToggleFullScreen", 
     "type": "skProc", 
-    "code": "proc WM_SetCaption*(title: cstring; icon: cstring) {.cdecl, \u000D\u000A    importc: \"SDL_WM_SetCaption\", dynlib: LibName.}"
+    "code": "proc wmToggleFullScreen*(surface: PSurface): int {.cdecl, \u000A    importc: \"SDL_WM_ToggleFullScreen\", dynlib: LibName.}"
   }, 
   {
-    "name": "WM_SetIcon", 
+    "name": "wmGrabInput", 
     "type": "skProc", 
-    "code": "proc WM_SetIcon*(icon: PSurface; mask: byte) {.cdecl, importc: \"SDL_WM_SetIcon\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc wmGrabInput*(mode: TGrabMode): TGrabMode {.cdecl, \u000A    importc: \"SDL_WM_GrabInput\", dynlib: LibName.}"
   }, 
   {
-    "name": "WM_IconifyWindow", 
+    "name": "getMouseState", 
     "type": "skProc", 
-    "code": "proc WM_IconifyWindow*(): int {.cdecl, importc: \"SDL_WM_IconifyWindow\", \u000D\u000A                                dynlib: LibName.}"
+    "code": "proc getMouseState*(x: var int; y: var int): byte {.cdecl, \u000A    importc: \"SDL_GetMouseState\", dynlib: LibName.}"
   }, 
   {
-    "name": "WM_ToggleFullScreen", 
+    "name": "getRelativeMouseState", 
     "type": "skProc", 
-    "code": "proc WM_ToggleFullScreen*(surface: PSurface): int {.cdecl, \u000D\u000A    importc: \"SDL_WM_ToggleFullScreen\", dynlib: LibName.}"
+    "code": "proc getRelativeMouseState*(x: var int; y: var int): byte {.cdecl, \u000A    importc: \"SDL_GetRelativeMouseState\", dynlib: LibName.}"
   }, 
   {
-    "name": "WM_GrabInput", 
+    "name": "warpMouse", 
     "type": "skProc", 
-    "code": "proc WM_GrabInput*(mode: TGrabMode): TGrabMode {.cdecl, \u000D\u000A    importc: \"SDL_WM_GrabInput\", dynlib: LibName.}"
+    "code": "proc warpMouse*(x, y: uint16) {.cdecl, importc: \"SDL_WarpMouse\", dynlib: LibName.}"
   }, 
   {
-    "name": "GetMouseState", 
+    "name": "createCursor", 
     "type": "skProc", 
-    "code": "proc GetMouseState*(x: var int; y: var int): byte {.cdecl, \u000D\u000A    importc: \"SDL_GetMouseState\", dynlib: LibName.}"
+    "code": "proc createCursor*(data, mask: ptr byte; w, h, hotX, hotY: int): PCursor {.\u000A    cdecl, importc: \"SDL_CreateCursor\", dynlib: LibName.}"
   }, 
   {
-    "name": "GetRelativeMouseState", 
+    "name": "setCursor", 
     "type": "skProc", 
-    "code": "proc GetRelativeMouseState*(x: var int; y: var int): byte {.cdecl, \u000D\u000A    importc: \"SDL_GetRelativeMouseState\", dynlib: LibName.}"
+    "code": "proc setCursor*(cursor: PCursor) {.cdecl, importc: \"SDL_SetCursor\", \u000A                                   dynlib: LibName.}"
   }, 
   {
-    "name": "WarpMouse", 
+    "name": "getCursor", 
     "type": "skProc", 
-    "code": "proc WarpMouse*(x, y: UInt16) {.cdecl, importc: \"SDL_WarpMouse\", dynlib: LibName.}"
+    "code": "proc getCursor*(): PCursor {.cdecl, importc: \"SDL_GetCursor\", dynlib: LibName.}"
   }, 
   {
-    "name": "CreateCursor", 
+    "name": "freeCursor", 
     "type": "skProc", 
-    "code": "proc CreateCursor*(data, mask: ptr byte; w, h, hot_x, hot_y: int): PCursor {.\u000D\u000A    cdecl, importc: \"SDL_CreateCursor\", dynlib: LibName.}"
+    "code": "proc freeCursor*(cursor: PCursor) {.cdecl, importc: \"SDL_FreeCursor\", \u000A                                    dynlib: LibName.}"
   }, 
   {
-    "name": "SetCursor", 
+    "name": "showCursor", 
     "type": "skProc", 
-    "code": "proc SetCursor*(cursor: PCursor) {.cdecl, importc: \"SDL_SetCursor\", \u000D\u000A                                   dynlib: LibName.}"
+    "code": "proc showCursor*(toggle: int): int {.cdecl, importc: \"SDL_ShowCursor\", \u000A                                     dynlib: LibName.}"
   }, 
   {
-    "name": "GetCursor", 
+    "name": "button", 
     "type": "skProc", 
-    "code": "proc GetCursor*(): PCursor {.cdecl, importc: \"SDL_GetCursor\", dynlib: LibName.}"
+    "code": "proc button*(b: int): int"
   }, 
   {
-    "name": "FreeCursor", 
+    "name": "enableUNICODE", 
     "type": "skProc", 
-    "code": "proc FreeCursor*(cursor: PCursor) {.cdecl, importc: \"SDL_FreeCursor\", \u000D\u000A                                    dynlib: LibName.}"
+    "code": "proc enableUNICODE*(enable: int): int {.cdecl, importc: \"SDL_EnableUNICODE\", \u000A                                        dynlib: LibName.}"
   }, 
   {
-    "name": "ShowCursor", 
+    "name": "enableKeyRepeat", 
     "type": "skProc", 
-    "code": "proc ShowCursor*(toggle: int): int {.cdecl, importc: \"SDL_ShowCursor\", \u000D\u000A                                     dynlib: LibName.}"
+    "code": "proc enableKeyRepeat*(delay: int; interval: int): int {.cdecl, \u000A    importc: \"SDL_EnableKeyRepeat\", dynlib: LibName.}"
   }, 
   {
-    "name": "BUTTON", 
+    "name": "getKeyRepeat", 
     "type": "skProc", 
-    "code": "proc BUTTON*(Button: int): int"
+    "code": "proc getKeyRepeat*(delay: PInteger; interval: PInteger) {.cdecl, \u000A    importc: \"SDL_GetKeyRepeat\", dynlib: LibName.}"
   }, 
   {
-    "name": "EnableUNICODE", 
+    "name": "getKeyState", 
     "type": "skProc", 
-    "code": "proc EnableUNICODE*(enable: int): int {.cdecl, importc: \"SDL_EnableUNICODE\", \u000D\u000A                                        dynlib: LibName.}"
+    "code": "proc getKeyState*(numkeys: pointer): ptr byte {.cdecl, \u000A    importc: \"SDL_GetKeyState\", dynlib: LibName.}"
   }, 
   {
-    "name": "EnableKeyRepeat", 
+    "name": "getModState", 
     "type": "skProc", 
-    "code": "proc EnableKeyRepeat*(delay: int; interval: int): int {.cdecl, \u000D\u000A    importc: \"SDL_EnableKeyRepeat\", dynlib: LibName.}"
+    "code": "proc getModState*(): TMod {.cdecl, importc: \"SDL_GetModState\", dynlib: LibName.}"
   }, 
   {
-    "name": "GetKeyRepeat", 
+    "name": "setModState", 
     "type": "skProc", 
-    "code": "proc GetKeyRepeat*(delay: PInteger; interval: PInteger) {.cdecl, \u000D\u000A    importc: \"SDL_GetKeyRepeat\", dynlib: LibName.}"
+    "code": "proc setModState*(modstate: TMod) {.cdecl, importc: \"SDL_SetModState\", \u000A                                    dynlib: LibName.}"
   }, 
   {
-    "name": "GetKeyState", 
+    "name": "getKeyName", 
     "type": "skProc", 
-    "code": "proc GetKeyState*(numkeys: pointer): ptr byte {.cdecl, \u000D\u000A    importc: \"SDL_GetKeyState\", dynlib: LibName.}"
+    "code": "proc getKeyName*(key: TKey): cstring {.cdecl, importc: \"SDL_GetKeyName\", \u000A                                       dynlib: LibName.}"
   }, 
   {
-    "name": "GetModState", 
+    "name": "getAppState", 
     "type": "skProc", 
-    "code": "proc GetModState*(): TMod {.cdecl, importc: \"SDL_GetModState\", dynlib: LibName.}"
+    "code": "proc getAppState*(): byte {.cdecl, importc: \"SDL_GetAppState\", dynlib: LibName.}"
   }, 
   {
-    "name": "SetModState", 
+    "name": "createMutex", 
     "type": "skProc", 
-    "code": "proc SetModState*(modstate: TMod) {.cdecl, importc: \"SDL_SetModState\", \u000D\u000A                                    dynlib: LibName.}"
-  }, 
-  {
-    "name": "GetKeyName", 
-    "type": "skProc", 
-    "code": "proc GetKeyName*(key: TKey): cstring {.cdecl, importc: \"SDL_GetKeyName\", \u000D\u000A                                       dynlib: LibName.}"
-  }, 
-  {
-    "name": "GetAppState", 
-    "type": "skProc", 
-    "code": "proc GetAppState*(): byte {.cdecl, importc: \"SDL_GetAppState\", dynlib: LibName.}"
-  }, 
-  {
-    "name": "CreateMutex", 
-    "type": "skProc", 
-    "code": "proc CreateMutex*(): PMutex {.cdecl, importc: \"SDL_CreateMutex\", dynlib: LibName.}"
+    "code": "proc createMutex*(): PMutex {.cdecl, importc: \"SDL_CreateMutex\", dynlib: LibName.}"
   }, 
   {
     "name": "mutexP", 
     "type": "skProc", 
-    "code": "proc mutexP*(mutex: Pmutex): int {.cdecl, importc: \"SDL_mutexP\", dynlib: LibName.}"
+    "code": "proc mutexP*(mutex: PMutex): int {.cdecl, importc: \"SDL_mutexP\", dynlib: LibName.}"
   }, 
   {
-    "name": "LockMutex", 
+    "name": "lockMutex", 
     "type": "skProc", 
-    "code": "proc LockMutex*(mutex: Pmutex): int"
+    "code": "proc lockMutex*(mutex: PMutex): int"
   }, 
   {
     "name": "mutexV", 
     "type": "skProc", 
-    "code": "proc mutexV*(mutex: Pmutex): int {.cdecl, importc: \"SDL_mutexV\", dynlib: LibName.}"
+    "code": "proc mutexV*(mutex: PMutex): int {.cdecl, importc: \"SDL_mutexV\", dynlib: LibName.}"
   }, 
   {
-    "name": "UnlockMutex", 
+    "name": "unlockMutex", 
     "type": "skProc", 
-    "code": "proc UnlockMutex*(mutex: Pmutex): int"
+    "code": "proc unlockMutex*(mutex: PMutex): int"
   }, 
   {
-    "name": "DestroyMutex", 
+    "name": "destroyMutex", 
     "type": "skProc", 
-    "code": "proc DestroyMutex*(mutex: Pmutex) {.cdecl, importc: \"SDL_DestroyMutex\", \u000D\u000A                                    dynlib: LibName.}"
+    "code": "proc destroyMutex*(mutex: PMutex) {.cdecl, importc: \"SDL_DestroyMutex\", \u000A                                    dynlib: LibName.}"
   }, 
   {
-    "name": "CreateSemaphore", 
+    "name": "createSemaphore", 
     "type": "skProc", 
-    "code": "proc CreateSemaphore*(initial_value: int32): PSem {.cdecl, \u000D\u000A    importc: \"SDL_CreateSemaphore\", dynlib: LibName.}"
+    "code": "proc createSemaphore*(initialValue: int32): PSem {.cdecl, \u000A    importc: \"SDL_CreateSemaphore\", dynlib: LibName.}"
   }, 
   {
-    "name": "DestroySemaphore", 
+    "name": "destroySemaphore", 
     "type": "skProc", 
-    "code": "proc DestroySemaphore*(sem: Psem) {.cdecl, importc: \"SDL_DestroySemaphore\", \u000D\u000A                                    dynlib: LibName.}"
+    "code": "proc destroySemaphore*(sem: PSem) {.cdecl, importc: \"SDL_DestroySemaphore\", \u000A                                    dynlib: LibName.}"
   }, 
   {
-    "name": "SemWait", 
+    "name": "semWait", 
     "type": "skProc", 
-    "code": "proc SemWait*(sem: Psem): int {.cdecl, importc: \"SDL_SemWait\", dynlib: LibName.}"
+    "code": "proc semWait*(sem: PSem): int {.cdecl, importc: \"SDL_SemWait\", dynlib: LibName.}"
   }, 
   {
-    "name": "SemTryWait", 
+    "name": "semTryWait", 
     "type": "skProc", 
-    "code": "proc SemTryWait*(sem: Psem): int {.cdecl, importc: \"SDL_SemTryWait\", \u000D\u000A                                   dynlib: LibName.}"
+    "code": "proc semTryWait*(sem: PSem): int {.cdecl, importc: \"SDL_SemTryWait\", \u000A                                   dynlib: LibName.}"
   }, 
   {
-    "name": "SemWaitTimeout", 
+    "name": "semWaitTimeout", 
     "type": "skProc", 
-    "code": "proc SemWaitTimeout*(sem: Psem; ms: int32): int {.cdecl, \u000D\u000A    importc: \"SDL_SemWaitTimeout\", dynlib: LibName.}"
+    "code": "proc semWaitTimeout*(sem: PSem; ms: int32): int {.cdecl, \u000A    importc: \"SDL_SemWaitTimeout\", dynlib: LibName.}"
   }, 
   {
-    "name": "SemPost", 
+    "name": "semPost", 
     "type": "skProc", 
-    "code": "proc SemPost*(sem: Psem): int {.cdecl, importc: \"SDL_SemPost\", dynlib: LibName.}"
+    "code": "proc semPost*(sem: PSem): int {.cdecl, importc: \"SDL_SemPost\", dynlib: LibName.}"
   }, 
   {
-    "name": "SemValue", 
+    "name": "semValue", 
     "type": "skProc", 
-    "code": "proc SemValue*(sem: Psem): int32 {.cdecl, importc: \"SDL_SemValue\", \u000D\u000A                                   dynlib: LibName.}"
+    "code": "proc semValue*(sem: PSem): int32 {.cdecl, importc: \"SDL_SemValue\", \u000A                                   dynlib: LibName.}"
   }, 
   {
-    "name": "CreateCond", 
+    "name": "createCond", 
     "type": "skProc", 
-    "code": "proc CreateCond*(): PCond {.cdecl, importc: \"SDL_CreateCond\", dynlib: LibName.}"
+    "code": "proc createCond*(): PCond {.cdecl, importc: \"SDL_CreateCond\", dynlib: LibName.}"
   }, 
   {
-    "name": "DestroyCond", 
+    "name": "destroyCond", 
     "type": "skProc", 
-    "code": "proc DestroyCond*(cond: PCond) {.cdecl, importc: \"SDL_DestroyCond\", \u000D\u000A                                 dynlib: LibName.}"
+    "code": "proc destroyCond*(cond: PCond) {.cdecl, importc: \"SDL_DestroyCond\", \u000A                                 dynlib: LibName.}"
   }, 
   {
-    "name": "CondSignal", 
+    "name": "condSignal", 
     "type": "skProc", 
-    "code": "proc CondSignal*(cond: Pcond): int {.cdecl, importc: \"SDL_CondSignal\", \u000D\u000A                                     dynlib: LibName.}"
+    "code": "proc condSignal*(cond: PCond): int {.cdecl, importc: \"SDL_CondSignal\", \u000A                                     dynlib: LibName.}"
   }, 
   {
-    "name": "CondBroadcast", 
+    "name": "condBroadcast", 
     "type": "skProc", 
-    "code": "proc CondBroadcast*(cond: Pcond): int {.cdecl, importc: \"SDL_CondBroadcast\", \u000D\u000A                                        dynlib: LibName.}"
+    "code": "proc condBroadcast*(cond: PCond): int {.cdecl, importc: \"SDL_CondBroadcast\", \u000A                                        dynlib: LibName.}"
   }, 
   {
-    "name": "CondWait", 
+    "name": "condWait", 
     "type": "skProc", 
-    "code": "proc CondWait*(cond: Pcond; mut: Pmutex): int {.cdecl, importc: \"SDL_CondWait\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc condWait*(cond: PCond; mut: PMutex): int {.cdecl, importc: \"SDL_CondWait\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "CondWaitTimeout", 
+    "name": "condWaitTimeout", 
     "type": "skProc", 
-    "code": "proc CondWaitTimeout*(cond: Pcond; mut: Pmutex; ms: int32): int {.cdecl, \u000D\u000A    importc: \"SDL_CondWaitTimeout\", dynlib: LibName.}"
+    "code": "proc condWaitTimeout*(cond: PCond; mut: PMutex; ms: int32): int {.cdecl, \u000A    importc: \"SDL_CondWaitTimeout\", dynlib: LibName.}"
   }, 
   {
-    "name": "CreateThread", 
+    "name": "createThread", 
     "type": "skProc", 
-    "code": "proc CreateThread*(fn, data: Pointer): PThread {.cdecl, \u000D\u000A    importc: \"SDL_CreateThread\", dynlib: LibName.}"
+    "code": "proc createThread*(fn, data: pointer): PThread {.cdecl, \u000A    importc: \"SDL_CreateThread\", dynlib: LibName.}"
   }, 
   {
-    "name": "ThreadID", 
+    "name": "threadID", 
     "type": "skProc", 
-    "code": "proc ThreadID*(): int32 {.cdecl, importc: \"SDL_ThreadID\", dynlib: LibName.}"
+    "code": "proc threadID*(): int32 {.cdecl, importc: \"SDL_ThreadID\", dynlib: LibName.}"
   }, 
   {
-    "name": "GetThreadID", 
+    "name": "getThreadID", 
     "type": "skProc", 
-    "code": "proc GetThreadID*(thread: PThread): int32 {.cdecl, importc: \"SDL_GetThreadID\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc getThreadID*(thread: PThread): int32 {.cdecl, importc: \"SDL_GetThreadID\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "WaitThread", 
+    "name": "waitThread", 
     "type": "skProc", 
-    "code": "proc WaitThread*(thread: PThread; status: var int) {.cdecl, \u000D\u000A    importc: \"SDL_WaitThread\", dynlib: LibName.}"
+    "code": "proc waitThread*(thread: PThread; status: var int) {.cdecl, \u000A    importc: \"SDL_WaitThread\", dynlib: LibName.}"
   }, 
   {
-    "name": "KillThread", 
+    "name": "killThread", 
     "type": "skProc", 
-    "code": "proc KillThread*(thread: PThread) {.cdecl, importc: \"SDL_KillThread\", \u000D\u000A                                    dynlib: LibName.}"
+    "code": "proc killThread*(thread: PThread) {.cdecl, importc: \"SDL_KillThread\", \u000A                                    dynlib: LibName.}"
   }, 
   {
-    "name": "GetWMInfo", 
+    "name": "getWMInfo", 
     "type": "skProc", 
-    "code": "proc GetWMInfo*(info: PSysWMinfo): int {.cdecl, importc: \"SDL_GetWMInfo\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc getWMInfo*(info: PSysWMinfo): int {.cdecl, importc: \"SDL_GetWMInfo\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "LoadObject", 
+    "name": "loadObject", 
     "type": "skProc", 
-    "code": "proc LoadObject*(sofile: cstring): Pointer {.cdecl, importc: \"SDL_LoadObject\", \u000D\u000A    dynlib: LibName.}"
+    "code": "proc loadObject*(sofile: cstring): pointer {.cdecl, importc: \"SDL_LoadObject\", \u000A    dynlib: LibName.}"
   }, 
   {
-    "name": "LoadFunction", 
+    "name": "loadFunction", 
     "type": "skProc", 
-    "code": "proc LoadFunction*(handle: Pointer; name: cstring): Pointer {.cdecl, \u000D\u000A    importc: \"SDL_LoadFunction\", dynlib: LibName.}"
+    "code": "proc loadFunction*(handle: pointer; name: cstring): pointer {.cdecl, \u000A    importc: \"SDL_LoadFunction\", dynlib: LibName.}"
   }, 
   {
-    "name": "UnloadObject", 
+    "name": "unloadObject", 
     "type": "skProc", 
-    "code": "proc UnloadObject*(handle: Pointer) {.cdecl, importc: \"SDL_UnloadObject\", \u000D\u000A                                      dynlib: LibName.}"
+    "code": "proc unloadObject*(handle: pointer) {.cdecl, importc: \"SDL_UnloadObject\", \u000A                                      dynlib: LibName.}"
   }, 
   {
-    "name": "Swap32", 
+    "name": "swap32", 
     "type": "skProc", 
-    "code": "proc Swap32*(D: int32): int32"
+    "code": "proc swap32*(d: int32): int32"
   }, 
   {
-    "name": "IsBitOn", 
+    "name": "isBitOn", 
     "type": "skProc", 
-    "code": "proc IsBitOn*(value: int; bit: int8): bool"
+    "code": "proc isBitOn*(value: int; bit: int8): bool"
   }, 
   {
-    "name": "TurnBitOn", 
+    "name": "turnBitOn", 
     "type": "skProc", 
-    "code": "proc TurnBitOn*(value: int; bit: int8): int"
+    "code": "proc turnBitOn*(value: int; bit: int8): int"
   }, 
   {
-    "name": "TurnBitOff", 
+    "name": "turnBitOff", 
     "type": "skProc", 
-    "code": "proc TurnBitOff*(value: int; bit: int8): int"
+    "code": "proc turnBitOff*(value: int; bit: int8): int"
+  }, 
+  {
+    "name": "framesToMsf", 
+    "type": "skProc", 
+    "code": "proc framesToMsf*(frames: int; m, s, f: var int)"
+  }, 
+  {
+    "name": "msfToFrames", 
+    "type": "skProc", 
+    "code": "proc msfToFrames*(m, s, f: int): int"
   }
 ]

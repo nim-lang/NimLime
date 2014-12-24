@@ -1,18 +1,18 @@
 [
   {
-    "comment": "Converts between different character encodings. On UNIX, this uses \u000D\u000A## the `iconv`:idx: library, on Windows the Windows API."
+    "comment": "Converts between different character encodings. On UNIX, this uses \u000A## the `iconv`:idx: library, on Windows the Windows API."
   }, 
   {
-    "name": "PConverter", 
+    "name": "EncodingConverter", 
     "type": "skType", 
     "description": "can convert between two character sets", 
-    "code": "PConverter* = ptr TConverter"
+    "code": "EncodingConverter* = ptr ConverterObj"
   }, 
   {
-    "name": "EInvalidEncoding", 
+    "name": "EncodingError", 
     "type": "skType", 
     "description": "exception that is raised for encoding errors", 
-    "code": "EInvalidEncoding* = object of EInvalidValue"
+    "code": "EncodingError* = object of ValueError"
   }, 
   {
     "name": "getCurrentEncoding", 
@@ -24,19 +24,19 @@
     "name": "open", 
     "type": "skProc", 
     "description": "opens a converter that can convert from <cite>srcEncoding</cite> to <cite>destEncoding</cite>. Raises <cite>EIO</cite> if it cannot fullfill the request.", 
-    "code": "proc open*(destEncoding = \"UTF-8\"; srcEncoding = \"CP1252\"): PConverter"
+    "code": "proc open*(destEncoding = \"UTF-8\"; srcEncoding = \"CP1252\"): EncodingConverter"
   }, 
   {
     "name": "close", 
     "type": "skProc", 
     "description": "frees the resources the converter <cite>c</cite> holds.", 
-    "code": "proc close*(c: PConverter)"
+    "code": "proc close*(c: EncodingConverter)"
   }, 
   {
     "name": "convert", 
     "type": "skProc", 
     "description": "converts <cite>s</cite> to <cite>destEncoding</cite> that was given to the converter <cite>c</cite>. It assumed that <cite>s</cite> is in <cite>srcEncoding</cite>.", 
-    "code": "proc convert*(c: PConverter; s: string): string"
+    "code": "proc convert*(c: EncodingConverter; s: string): string"
   }, 
   {
     "name": "convert", 

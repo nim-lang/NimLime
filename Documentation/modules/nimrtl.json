@@ -1,5 +1,5 @@
 [
   {
-    "comment": "Main file to generate a DLL from the standard library. \u000D\u000A## The default Nimrtl does not only contain the ``system`` module, but these \u000D\u000A## too:\u000D\u000A##\u000D\u000A## * parseutils\u000D\u000A## * strutils\u000D\u000A## * parseopt\u000D\u000A## * parsecfg\u000D\u000A## * strtabs\u000D\u000A## * times\u000D\u000A## * os\u000D\u000A## * osproc\u000D\u000A## * unicode\u000D\u000A## * pegs\u000D\u000A## * ropes\u000D\u000A##"
+    "comment": "Main file to generate a DLL from the standard library. \u000A## The default Nimrtl does not only contain the ``system`` module, but these \u000A## too:\u000A##\u000A## * parseutils\u000A## * strutils\u000A## * parseopt\u000A## * parsecfg\u000A## * strtabs\u000A## * times\u000A## * os\u000A## * osproc\u000A## * unicode\u000A## * pegs\u000A## * ropes\u000A##"
   }
 ]

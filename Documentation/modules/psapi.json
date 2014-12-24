@@ -2,42 +2,42 @@
   {
     "name": "EnumProcesses", 
     "type": "skProc", 
-    "code": "proc EnumProcesses*(lpidProcess: ptr DWORD; cb: DWORD; cbNeeded: ptr DWORD): WINBOOL {.\u000D\u000A    stdcall, dynlib: psapiDll, importc: \"EnumProcesses\".}"
+    "code": "proc EnumProcesses*(lpidProcess: ptr DWORD; cb: DWORD; cbNeeded: ptr DWORD): WINBOOL {.\u000A    stdcall, dynlib: psapiDll, importc: \"EnumProcesses\".}"
   }, 
   {
     "name": "EnumProcessModules", 
     "type": "skProc", 
-    "code": "proc EnumProcessModules*(hProcess: HANDLE; lphModule: ptr HMODULE; cb: DWORD; \u000D\u000A                         lpcbNeeded: LPDWORD): WINBOOL {.stdcall, \u000D\u000A    dynlib: psapiDll, importc: \"EnumProcessModules\".}"
+    "code": "proc EnumProcessModules*(hProcess: HANDLE; lphModule: ptr HMODULE; cb: DWORD; \u000A                         lpcbNeeded: LPDWORD): WINBOOL {.stdcall, \u000A    dynlib: psapiDll, importc: \"EnumProcessModules\".}"
   }, 
   {
     "name": "GetModuleBaseNameA", 
     "type": "skProc", 
-    "code": "proc GetModuleBaseNameA*(hProcess: HANDLE; hModule: HMODULE; lpBaseName: LPSTR; \u000D\u000A                         nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetModuleBaseNameA\".}"
+    "code": "proc GetModuleBaseNameA*(hProcess: HANDLE; hModule: HMODULE; lpBaseName: LPSTR; \u000A                         nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetModuleBaseNameA\".}"
   }, 
   {
     "name": "GetModuleBaseNameW", 
     "type": "skProc", 
-    "code": "proc GetModuleBaseNameW*(hProcess: HANDLE; hModule: HMODULE; lpBaseName: LPWSTR; \u000D\u000A                         nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetModuleBaseNameW\".}"
+    "code": "proc GetModuleBaseNameW*(hProcess: HANDLE; hModule: HMODULE; lpBaseName: LPWSTR; \u000A                         nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetModuleBaseNameW\".}"
   }, 
   {
     "name": "GetModuleBaseName", 
     "type": "skProc", 
-    "code": "proc GetModuleBaseName*(hProcess: HANDLE; hModule: HMODULE; lpBaseName: LPWSTR; \u000D\u000A                        nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetModuleBaseNameW\".}"
+    "code": "proc GetModuleBaseName*(hProcess: HANDLE; hModule: HMODULE; lpBaseName: LPWSTR; \u000A                        nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetModuleBaseNameW\".}"
   }, 
   {
     "name": "GetModuleFileNameExA", 
     "type": "skProc", 
-    "code": "proc GetModuleFileNameExA*(hProcess: HANDLE; hModule: HMODULE; \u000D\u000A                           lpFileNameEx: LPSTR; nSize: DWORD): DWORD {.stdcall, \u000D\u000A    dynlib: psapiDll, importc: \"GetModuleFileNameExA\".}"
+    "code": "proc GetModuleFileNameExA*(hProcess: HANDLE; hModule: HMODULE; \u000A                           lpFileNameEx: LPSTR; nSize: DWORD): DWORD {.stdcall, \u000A    dynlib: psapiDll, importc: \"GetModuleFileNameExA\".}"
   }, 
   {
     "name": "GetModuleFileNameExW", 
     "type": "skProc", 
-    "code": "proc GetModuleFileNameExW*(hProcess: HANDLE; hModule: HMODULE; \u000D\u000A                           lpFileNameEx: LPWSTR; nSize: DWORD): DWORD {.stdcall, \u000D\u000A    dynlib: psapiDll, importc: \"GetModuleFileNameExW\".}"
+    "code": "proc GetModuleFileNameExW*(hProcess: HANDLE; hModule: HMODULE; \u000A                           lpFileNameEx: LPWSTR; nSize: DWORD): DWORD {.stdcall, \u000A    dynlib: psapiDll, importc: \"GetModuleFileNameExW\".}"
   }, 
   {
     "name": "GetModuleFileNameEx", 
     "type": "skProc", 
-    "code": "proc GetModuleFileNameEx*(hProcess: HANDLE; hModule: HMODULE; \u000D\u000A                          lpFileNameEx: LPWSTR; nSize: DWORD): DWORD {.stdcall, \u000D\u000A    dynlib: psapiDll, importc: \"GetModuleFileNameExW\".}"
+    "code": "proc GetModuleFileNameEx*(hProcess: HANDLE; hModule: HMODULE; \u000A                          lpFileNameEx: LPWSTR; nSize: DWORD): DWORD {.stdcall, \u000A    dynlib: psapiDll, importc: \"GetModuleFileNameExW\".}"
   }, 
   {
     "name": "LPMODULEINFO", 
@@ -47,27 +47,27 @@
   {
     "name": "GetModuleInformation", 
     "type": "skProc", 
-    "code": "proc GetModuleInformation*(hProcess: HANDLE; hModule: HMODULE; \u000D\u000A                           lpmodinfo: LPMODULEINFO; cb: DWORD): WINBOOL {.\u000D\u000A    stdcall, dynlib: psapiDll, importc: \"GetModuleInformation\".}"
+    "code": "proc GetModuleInformation*(hProcess: HANDLE; hModule: HMODULE; \u000A                           lpmodinfo: LPMODULEINFO; cb: DWORD): WINBOOL {.\u000A    stdcall, dynlib: psapiDll, importc: \"GetModuleInformation\".}"
   }, 
   {
     "name": "EmptyWorkingSet", 
     "type": "skProc", 
-    "code": "proc EmptyWorkingSet*(hProcess: HANDLE): WINBOOL {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"EmptyWorkingSet\".}"
+    "code": "proc EmptyWorkingSet*(hProcess: HANDLE): WINBOOL {.stdcall, dynlib: psapiDll, \u000A    importc: \"EmptyWorkingSet\".}"
   }, 
   {
     "name": "QueryWorkingSet", 
     "type": "skProc", 
-    "code": "proc QueryWorkingSet*(hProcess: HANDLE; pv: PVOID; cb: DWORD): WINBOOL {.\u000D\u000A    stdcall, dynlib: psapiDll, importc: \"QueryWorkingSet\".}"
+    "code": "proc QueryWorkingSet*(hProcess: HANDLE; pv: PVOID; cb: DWORD): WINBOOL {.\u000A    stdcall, dynlib: psapiDll, importc: \"QueryWorkingSet\".}"
   }, 
   {
     "name": "QueryWorkingSetEx", 
     "type": "skProc", 
-    "code": "proc QueryWorkingSetEx*(hProcess: HANDLE; pv: PVOID; cb: DWORD): WINBOOL {.\u000D\u000A    stdcall, dynlib: psapiDll, importc: \"QueryWorkingSetEx\".}"
+    "code": "proc QueryWorkingSetEx*(hProcess: HANDLE; pv: PVOID; cb: DWORD): WINBOOL {.\u000A    stdcall, dynlib: psapiDll, importc: \"QueryWorkingSetEx\".}"
   }, 
   {
     "name": "InitializeProcessForWsWatch", 
     "type": "skProc", 
-    "code": "proc InitializeProcessForWsWatch*(hProcess: HANDLE): WINBOOL {.stdcall, \u000D\u000A    dynlib: psapiDll, importc: \"InitializeProcessForWsWatch\".}"
+    "code": "proc InitializeProcessForWsWatch*(hProcess: HANDLE): WINBOOL {.stdcall, \u000A    dynlib: psapiDll, importc: \"InitializeProcessForWsWatch\".}"
   }, 
   {
     "name": "PPSAPI_WS_WATCH_INFORMATION", 
@@ -77,57 +77,57 @@
   {
     "name": "GetWsChanges", 
     "type": "skProc", 
-    "code": "proc GetWsChanges*(hProcess: HANDLE; lpWatchInfo: PPSAPI_WS_WATCH_INFORMATION; \u000D\u000A                   cb: DWORD): WINBOOL {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetWsChanges\".}"
+    "code": "proc GetWsChanges*(hProcess: HANDLE; lpWatchInfo: PPSAPI_WS_WATCH_INFORMATION; \u000A                   cb: DWORD): WINBOOL {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetWsChanges\".}"
   }, 
   {
     "name": "GetMappedFileNameA", 
     "type": "skProc", 
-    "code": "proc GetMappedFileNameA*(hProcess: HANDLE; lpv: LPVOID; lpFilename: LPSTR; \u000D\u000A                         nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetMappedFileNameA\".}"
+    "code": "proc GetMappedFileNameA*(hProcess: HANDLE; lpv: LPVOID; lpFilename: LPSTR; \u000A                         nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetMappedFileNameA\".}"
   }, 
   {
     "name": "GetMappedFileNameW", 
     "type": "skProc", 
-    "code": "proc GetMappedFileNameW*(hProcess: HANDLE; lpv: LPVOID; lpFilename: LPWSTR; \u000D\u000A                         nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetMappedFileNameW\".}"
+    "code": "proc GetMappedFileNameW*(hProcess: HANDLE; lpv: LPVOID; lpFilename: LPWSTR; \u000A                         nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetMappedFileNameW\".}"
   }, 
   {
     "name": "GetMappedFileName", 
     "type": "skProc", 
-    "code": "proc GetMappedFileName*(hProcess: HANDLE; lpv: LPVOID; lpFilename: LPWSTR; \u000D\u000A                        nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetMappedFileNameW\".}"
+    "code": "proc GetMappedFileName*(hProcess: HANDLE; lpv: LPVOID; lpFilename: LPWSTR; \u000A                        nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetMappedFileNameW\".}"
   }, 
   {
     "name": "EnumDeviceDrivers", 
     "type": "skProc", 
-    "code": "proc EnumDeviceDrivers*(lpImageBase: LPVOID; cb: DWORD; lpcbNeeded: LPDWORD): WINBOOL {.\u000D\u000A    stdcall, dynlib: psapiDll, importc: \"EnumDeviceDrivers\".}"
+    "code": "proc EnumDeviceDrivers*(lpImageBase: LPVOID; cb: DWORD; lpcbNeeded: LPDWORD): WINBOOL {.\u000A    stdcall, dynlib: psapiDll, importc: \"EnumDeviceDrivers\".}"
   }, 
   {
     "name": "GetDeviceDriverBaseNameA", 
     "type": "skProc", 
-    "code": "proc GetDeviceDriverBaseNameA*(ImageBase: LPVOID; lpBaseName: LPSTR; \u000D\u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetDeviceDriverBaseNameA\".}"
+    "code": "proc GetDeviceDriverBaseNameA*(ImageBase: LPVOID; lpBaseName: LPSTR; \u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetDeviceDriverBaseNameA\".}"
   }, 
   {
     "name": "GetDeviceDriverBaseNameW", 
     "type": "skProc", 
-    "code": "proc GetDeviceDriverBaseNameW*(ImageBase: LPVOID; lpBaseName: LPWSTR; \u000D\u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetDeviceDriverBaseNameW\".}"
+    "code": "proc GetDeviceDriverBaseNameW*(ImageBase: LPVOID; lpBaseName: LPWSTR; \u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetDeviceDriverBaseNameW\".}"
   }, 
   {
     "name": "GetDeviceDriverBaseName", 
     "type": "skProc", 
-    "code": "proc GetDeviceDriverBaseName*(ImageBase: LPVOID; lpBaseName: LPWSTR; \u000D\u000A                              nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetDeviceDriverBaseNameW\".}"
+    "code": "proc GetDeviceDriverBaseName*(ImageBase: LPVOID; lpBaseName: LPWSTR; \u000A                              nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetDeviceDriverBaseNameW\".}"
   }, 
   {
     "name": "GetDeviceDriverFileNameA", 
     "type": "skProc", 
-    "code": "proc GetDeviceDriverFileNameA*(ImageBase: LPVOID; lpFileName: LPSTR; \u000D\u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetDeviceDriverFileNameA\".}"
+    "code": "proc GetDeviceDriverFileNameA*(ImageBase: LPVOID; lpFileName: LPSTR; \u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetDeviceDriverFileNameA\".}"
   }, 
   {
     "name": "GetDeviceDriverFileNameW", 
     "type": "skProc", 
-    "code": "proc GetDeviceDriverFileNameW*(ImageBase: LPVOID; lpFileName: LPWSTR; \u000D\u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetDeviceDriverFileNameW\".}"
+    "code": "proc GetDeviceDriverFileNameW*(ImageBase: LPVOID; lpFileName: LPWSTR; \u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetDeviceDriverFileNameW\".}"
   }, 
   {
     "name": "GetDeviceDriverFileName", 
     "type": "skProc", 
-    "code": "proc GetDeviceDriverFileName*(ImageBase: LPVOID; lpFileName: LPWSTR; \u000D\u000A                              nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetDeviceDriverFileNameW\".}"
+    "code": "proc GetDeviceDriverFileName*(ImageBase: LPVOID; lpFileName: LPWSTR; \u000A                              nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetDeviceDriverFileNameW\".}"
   }, 
   {
     "name": "PPROCESS_MEMORY_COUNTERS", 
@@ -142,7 +142,7 @@
   {
     "name": "GetProcessMemoryInfo", 
     "type": "skProc", 
-    "code": "proc GetProcessMemoryInfo*(hProcess: HANDLE; \u000D\u000A                           ppsmemCounters: PPROCESS_MEMORY_COUNTERS; cb: DWORD): WINBOOL {.\u000D\u000A    stdcall, dynlib: psapiDll, importc: \"GetProcessMemoryInfo\".}"
+    "code": "proc GetProcessMemoryInfo*(hProcess: HANDLE; \u000A                           ppsmemCounters: PPROCESS_MEMORY_COUNTERS; cb: DWORD): WINBOOL {.\u000A    stdcall, dynlib: psapiDll, importc: \"GetProcessMemoryInfo\".}"
   }, 
   {
     "name": "PPERFORMANCE_INFORMATION", 
@@ -152,7 +152,7 @@
   {
     "name": "GetPerformanceInfo", 
     "type": "skProc", 
-    "code": "proc GetPerformanceInfo*(pPerformanceInformation: PPERFORMANCE_INFORMATION; \u000D\u000A                         cb: DWORD): WINBOOL {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetPerformanceInfo\".}"
+    "code": "proc GetPerformanceInfo*(pPerformanceInformation: PPERFORMANCE_INFORMATION; \u000A                         cb: DWORD): WINBOOL {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetPerformanceInfo\".}"
   }, 
   {
     "name": "PENUM_PAGE_FILE_INFORMATION", 
@@ -162,41 +162,41 @@
   {
     "name": "PENUM_PAGE_FILE_CALLBACKA", 
     "type": "skType", 
-    "code": "PENUM_PAGE_FILE_CALLBACKA* = proc (pContext: LPVOID; \u000D\u000A                                   pPageFileInfo: PENUM_PAGE_FILE_INFORMATION; \u000D\u000A                                   lpFilename: LPCSTR): WINBOOL {.stdcall.}"
+    "code": "PENUM_PAGE_FILE_CALLBACKA* = proc (pContext: LPVOID; \u000A                                   pPageFileInfo: PENUM_PAGE_FILE_INFORMATION; \u000A                                   lpFilename: LPCSTR): WINBOOL {.stdcall.}"
   }, 
   {
     "name": "EnumPageFilesA", 
     "type": "skProc", 
-    "code": "proc EnumPageFilesA*(pCallBackRoutine: PENUM_PAGE_FILE_CALLBACKA; \u000D\u000A                     pContext: LPVOID): WINBOOL {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"EnumPageFilesA\".}"
+    "code": "proc EnumPageFilesA*(pCallBackRoutine: PENUM_PAGE_FILE_CALLBACKA; \u000A                     pContext: LPVOID): WINBOOL {.stdcall, dynlib: psapiDll, \u000A    importc: \"EnumPageFilesA\".}"
   }, 
   {
     "name": "EnumPageFilesW", 
     "type": "skProc", 
-    "code": "proc EnumPageFilesW*(pCallBackRoutine: PENUM_PAGE_FILE_CALLBACKW; \u000D\u000A                     pContext: LPVOID): WINBOOL {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"EnumPageFilesW\".}"
+    "code": "proc EnumPageFilesW*(pCallBackRoutine: PENUM_PAGE_FILE_CALLBACKW; \u000A                     pContext: LPVOID): WINBOOL {.stdcall, dynlib: psapiDll, \u000A    importc: \"EnumPageFilesW\".}"
   }, 
   {
     "name": "EnumPageFiles", 
     "type": "skProc", 
-    "code": "proc EnumPageFiles*(pCallBackRoutine: PENUM_PAGE_FILE_CALLBACKW; \u000D\u000A                    pContext: LPVOID): WINBOOL {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"EnumPageFilesW\".}"
+    "code": "proc EnumPageFiles*(pCallBackRoutine: PENUM_PAGE_FILE_CALLBACKW; \u000A                    pContext: LPVOID): WINBOOL {.stdcall, dynlib: psapiDll, \u000A    importc: \"EnumPageFilesW\".}"
   }, 
   {
     "name": "PENUM_PAGE_FILE_CALLBACK", 
     "type": "skType", 
-    "code": "PENUM_PAGE_FILE_CALLBACK* = proc (pContext: LPVOID; \u000D\u000A                                  pPageFileInfo: PENUM_PAGE_FILE_INFORMATION; \u000D\u000A                                  lpFilename: LPCWSTR): WINBOOL {.stdcall.}"
+    "code": "PENUM_PAGE_FILE_CALLBACK* = proc (pContext: LPVOID; \u000A                                  pPageFileInfo: PENUM_PAGE_FILE_INFORMATION; \u000A                                  lpFilename: LPCWSTR): WINBOOL {.stdcall.}"
   }, 
   {
     "name": "GetProcessImageFileNameA", 
     "type": "skProc", 
-    "code": "proc GetProcessImageFileNameA*(hProcess: HANDLE; lpImageFileName: LPSTR; \u000D\u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetProcessImageFileNameA\".}"
+    "code": "proc GetProcessImageFileNameA*(hProcess: HANDLE; lpImageFileName: LPSTR; \u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetProcessImageFileNameA\".}"
   }, 
   {
     "name": "GetProcessImageFileNameW", 
     "type": "skProc", 
-    "code": "proc GetProcessImageFileNameW*(hProcess: HANDLE; lpImageFileName: LPWSTR; \u000D\u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetProcessImageFileNameW\".}"
+    "code": "proc GetProcessImageFileNameW*(hProcess: HANDLE; lpImageFileName: LPWSTR; \u000A                               nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetProcessImageFileNameW\".}"
   }, 
   {
     "name": "GetProcessImageFileName", 
     "type": "skProc", 
-    "code": "proc GetProcessImageFileName*(hProcess: HANDLE; lpImageFileName: LPWSTR; \u000D\u000A                              nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000D\u000A    importc: \"GetProcessImageFileNameW\".}"
+    "code": "proc GetProcessImageFileName*(hProcess: HANDLE; lpImageFileName: LPWSTR; \u000A                              nSize: DWORD): DWORD {.stdcall, dynlib: psapiDll, \u000A    importc: \"GetProcessImageFileNameW\".}"
   }
 ]

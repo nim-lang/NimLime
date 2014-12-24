@@ -6,7 +6,7 @@
     "name": "loadXMLStream", 
     "type": "skProc", 
     "description": "Loads and parses XML from a stream specified by <tt class=\"docutils literal\"><span class=\"pre\">stream</span></tt>, and returns a <tt class=\"docutils literal\"><span class=\"pre\">PDocument</span></tt>", 
-    "code": "proc loadXMLStream*(stream: PStream): PDocument"
+    "code": "proc loadXMLStream*(stream: Stream): PDocument"
   }, 
   {
     "name": "loadXML", 

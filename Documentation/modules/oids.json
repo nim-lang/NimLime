@@ -1,12 +1,12 @@
 [
   {
-    "comment": "Nimrod OID support. An OID is a global ID that consists of a timestamp,\u000D\u000A## a unique counter and a random value. This combination should suffice to \u000D\u000A## produce a globally distributed unique ID. This implementation was extracted\u000D\u000A## from the Mongodb interface and it thus binary compatible with a Mongo OID.\u000D\u000A##\u000D\u000A## This implementation calls ``math.randomize()`` for the first call of\u000D\u000A## ``genOid``."
+    "comment": "Nim OID support. An OID is a global ID that consists of a timestamp,\u000A## a unique counter and a random value. This combination should suffice to \u000A## produce a globally distributed unique ID. This implementation was extracted\u000A## from the Mongodb interface and it thus binary compatible with a Mongo OID.\u000A##\u000A## This implementation calls ``math.randomize()`` for the first call of\u000A## ``genOid``."
   }, 
   {
-    "name": "Toid", 
+    "name": "Oid", 
     "type": "skType", 
     "description": "an OID", 
-    "code": "Toid* {.pure, final.} = object \u000D\u000A  time: int32                 ## \u000D\u000A  fuzz: int32                 ## \u000D\u000A  count: int32                ## \u000D\u000A  "
+    "code": "Oid* = object \u000A  time: int32                 ## \u000A  fuzz: int32                 ## \u000A  count: int32                ## \u000A  "
   }, 
   {
     "name": "hexbyte", 
@@ -17,28 +17,28 @@
     "name": "parseOid", 
     "type": "skProc", 
     "description": "parses an OID.", 
-    "code": "proc parseOid*(str: cstring): TOid"
+    "code": "proc parseOid*(str: cstring): Oid"
   }, 
   {
     "name": "oidToString", 
     "type": "skProc", 
-    "code": "proc oidToString*(oid: TOid; str: cstring)"
+    "code": "proc oidToString*(oid: Oid; str: cstring)"
   }, 
   {
     "name": "`$`", 
     "type": "skProc", 
-    "code": "proc `$`*(oid: TOid): string"
+    "code": "proc `$`*(oid: Oid): string"
   }, 
   {
     "name": "genOid", 
     "type": "skProc", 
     "description": "generates a new OID.", 
-    "code": "proc genOid*(): TOid"
+    "code": "proc genOid*(): Oid"
   }, 
   {
     "name": "generatedTime", 
     "type": "skProc", 
     "description": "returns the generated timestamp of the OID.", 
-    "code": "proc generatedTime*(oid: TOid): TTime"
+    "code": "proc generatedTime*(oid: Oid): Time"
   }
 ]

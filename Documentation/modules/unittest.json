@@ -1,21 +1,21 @@
 [
   {
-    "comment": ":Author: Zahary Karadjov\u000D\u000A##\u000D\u000A## This module implements the standard unit testing facilities such as\u000D\u000A## suites, fixtures and test cases as well as facilities for combinatorial \u000D\u000A## and randomzied test case generation (not yet available) \u000D\u000A## and object mocking (not yet available)\u000D\u000A##\u000D\u000A## It is loosely based on C++'s boost.test and Haskell's QuickTest"
+    "comment": ":Author: Zahary Karadjov\u000A##\u000A## This module implements the standard unit testing facilities such as\u000A## suites, fixtures and test cases as well as facilities for combinatorial \u000A## and randomzied test case generation (not yet available) \u000A## and object mocking (not yet available)\u000A##\u000A## It is loosely based on C++'s boost.test and Haskell's QuickTest"
   }, 
   {
-    "name": "TOutputLevel", 
+    "name": "OutputLevel", 
     "type": "skType", 
-    "code": "TOutputLevel* = enum \u000D\u000A  PRINT_ALL, PRINT_FAILURES, PRINT_NONE"
+    "code": "OutputLevel* = enum \u000A  PRINT_ALL, PRINT_FAILURES, PRINT_NONE"
   }, 
   {
-    "name": "TestSetupIMPL", 
+    "name": "testSetupIMPL", 
     "type": "skTemplate", 
-    "code": "template TestSetupIMPL*(): stmt {.immediate, dirty.}"
+    "code": "template testSetupIMPL*(): stmt {.immediate, dirty.}"
   }, 
   {
-    "name": "TestTeardownIMPL", 
+    "name": "testTeardownIMPL", 
     "type": "skTemplate", 
-    "code": "template TestTeardownIMPL*(): stmt {.immediate, dirty.}"
+    "code": "template testTeardownIMPL*(): stmt {.immediate, dirty.}"
   }, 
   {
     "name": "suite", 

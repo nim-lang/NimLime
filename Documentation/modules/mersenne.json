@@ -1,17 +1,17 @@
 [
   {
-    "name": "TMersenneTwister", 
+    "name": "MersenneTwister", 
     "type": "skType", 
-    "code": "TMersenneTwister* = object \u000D\u000A  mt: array[0 .. 623, uint32]\u000D\u000A  index: int\u000D\u000A"
+    "code": "MersenneTwister* = object \u000A  mt: array[0 .. 623, uint32]\u000A  index: int\u000A"
   }, 
   {
     "name": "newMersenneTwister", 
     "type": "skProc", 
-    "code": "proc newMersenneTwister*(seed: int): TMersenneTwister"
+    "code": "proc newMersenneTwister*(seed: int): MersenneTwister"
   }, 
   {
     "name": "getNum", 
     "type": "skProc", 
-    "code": "proc getNum*(m: var TMersenneTwister): int"
+    "code": "proc getNum*(m: var MersenneTwister): int"
   }
 ]

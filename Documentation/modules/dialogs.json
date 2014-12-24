@@ -1,6 +1,6 @@
 [
   {
-    "comment": "This module implements portable dialogs for Nimrod; the implementation\u000D\u000A## builds on the GTK interface. On Windows, native dialogs are shown instead."
+    "comment": "This module implements portable dialogs for Nim; the implementation\u000A## builds on the GTK interface. On Windows, native dialogs are shown instead."
   }, 
   {
     "name": "info", 
@@ -21,27 +21,27 @@
     "code": "proc error*(window: PWindow; msg: string)"
   }, 
   {
-    "name": "ChooseFileToOpen", 
+    "name": "chooseFileToOpen", 
     "type": "skProc", 
     "description": "Opens a dialog that requests a filename from the user. Returns &quot;&quot; if the user closed the dialog without selecting a file. On Windows, the native dialog is used, else the GTK dialog is used.", 
-    "code": "proc ChooseFileToOpen*(window: PWindow; root: string = \"\"): string"
+    "code": "proc chooseFileToOpen*(window: PWindow; root: string = \"\"): string"
   }, 
   {
-    "name": "ChooseFilesToOpen", 
+    "name": "chooseFilesToOpen", 
     "type": "skProc", 
     "description": "Opens a dialog that requests filenames from the user. Returns <tt class=\"docutils literal\"><span class=\"pre\">@[]</span></tt> if the user closed the dialog without selecting a file. On Windows, the native dialog is used, else the GTK dialog is used.", 
-    "code": "proc ChooseFilesToOpen*(window: PWindow; root: string = \"\"): seq[string]"
+    "code": "proc chooseFilesToOpen*(window: PWindow; root: string = \"\"): seq[string]"
   }, 
   {
-    "name": "ChooseFileToSave", 
+    "name": "chooseFileToSave", 
     "type": "skProc", 
     "description": "Opens a dialog that requests a filename to save to from the user. Returns &quot;&quot; if the user closed the dialog without selecting a file. On Windows, the native dialog is used, else the GTK dialog is used.", 
-    "code": "proc ChooseFileToSave*(window: PWindow; root: string = \"\"): string"
+    "code": "proc chooseFileToSave*(window: PWindow; root: string = \"\"): string"
   }, 
   {
-    "name": "ChooseDir", 
+    "name": "chooseDir", 
     "type": "skProc", 
     "description": "Opens a dialog that requests a directory from the user. Returns &quot;&quot; if the user closed the dialog without selecting a directory. On Windows, the native dialog is used, else the GTK dialog is used.", 
-    "code": "proc ChooseDir*(window: PWindow; root: string = \"\"): string"
+    "code": "proc chooseDir*(window: PWindow; root: string = \"\"): string"
   }
 ]

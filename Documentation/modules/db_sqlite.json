@@ -1,17 +1,17 @@
 [
   {
-    "comment": "A higher level `SQLite`:idx: database wrapper. This interface \u000D\u000A## is implemented for other databases too."
+    "comment": "A higher level `SQLite`:idx: database wrapper. This interface \u000A## is implemented for other databases too."
   }, 
   {
     "name": "FWriteDb", 
     "type": "skType", 
     "description": "effect that denotes a write operation", 
-    "code": "FWriteDb* = object of FDB"
+    "code": "FWriteDb* = object of FDb"
   }, 
   {
     "name": "sql", 
     "type": "skProc", 
-    "description": "<p>constructs a TSqlQuery from the string <cite>query</cite>. This is supposed to be used as a raw-string-literal modifier: <tt class=\"docutils literal\"><span class=\"pre\">sql&quot;update user set counter = counter + 1&quot;</span></tt></p>\u000D\u000A<p>If assertions are turned off, it does nothing. If assertions are turned on, later versions will check the string for valid syntax.</p>\u000D\u000A", 
+    "description": "<p>constructs a TSqlQuery from the string <cite>query</cite>. This is supposed to be used as a raw-string-literal modifier: <tt class=\"docutils literal\"><span class=\"pre\">sql&quot;update user set counter = counter + 1&quot;</span></tt></p>\u000A<p>If assertions are turned off, it does nothing. If assertions are turned on, later versions will check the string for valid syntax.</p>\u000A", 
     "code": "proc sql*(query: string): TSqlQuery {.noSideEffect, inline.}"
   }, 
   {
@@ -21,75 +21,75 @@
     "code": "proc dbError*(msg: string) {.noreturn.}"
   }, 
   {
-    "name": "TryExec", 
+    "name": "tryExec", 
     "type": "skProc", 
     "description": "tries to execute the query and returns true if successful, false otherwise.", 
-    "code": "proc TryExec*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): bool {.\u000D\u000A    tags: [FReadDB, FWriteDb].}"
+    "code": "proc tryExec*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): bool {.\u000A    tags: [FReadDb, FWriteDb].}"
   }, 
   {
-    "name": "Exec", 
+    "name": "exec", 
     "type": "skProc", 
     "description": "executes the query and raises EDB if not successful.", 
-    "code": "proc Exec*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]) {.\u000D\u000A    tags: [FReadDB, FWriteDb].}"
+    "code": "proc exec*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]) {.\u000A    tags: [FReadDb, FWriteDb].}"
   }, 
   {
-    "name": "FastRows", 
+    "name": "fastRows", 
     "type": "skIterator", 
     "description": "executes the query and iterates over the result dataset. This is very fast, but potenially dangerous: If the for-loop-body executes another query, the results can be undefined. For Sqlite it is safe though.", 
-    "code": "iterator FastRows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): TRow {.\u000D\u000A    tags: [FReadDB].}"
+    "code": "iterator fastRows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): TRow {.\u000A    tags: [FReadDb].}"
   }, 
   {
     "name": "getRow", 
     "type": "skProc", 
     "description": "retrieves a single row. If the query doesn't return any rows, this proc will return a TRow with empty strings for each column.", 
-    "code": "proc getRow*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): TRow {.\u000D\u000A    tags: [FReadDB].}"
+    "code": "proc getRow*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): TRow {.\u000A    tags: [FReadDb].}"
   }, 
   {
-    "name": "GetAllRows", 
+    "name": "getAllRows", 
     "type": "skProc", 
     "description": "executes the query and returns the whole result dataset.", 
-    "code": "proc GetAllRows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): seq[\u000D\u000A    TRow] {.tags: [FReadDB].}"
+    "code": "proc getAllRows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): seq[\u000A    TRow] {.tags: [FReadDb].}"
   }, 
   {
-    "name": "Rows", 
+    "name": "rows", 
     "type": "skIterator", 
     "description": "same as <cite>FastRows</cite>, but slower and safe.", 
-    "code": "iterator Rows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): TRow {.\u000D\u000A    tags: [FReadDB].}"
+    "code": "iterator rows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): TRow {.\u000A    tags: [FReadDb].}"
   }, 
   {
-    "name": "GetValue", 
+    "name": "getValue", 
     "type": "skProc", 
     "description": "executes the query and returns the first column of the first row of the result dataset. Returns &quot;&quot; if the dataset contains no rows or the database value is NULL.", 
-    "code": "proc GetValue*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): string {.\u000D\u000A    tags: [FReadDB].}"
+    "code": "proc getValue*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): string {.\u000A    tags: [FReadDb].}"
   }, 
   {
-    "name": "TryInsertID", 
+    "name": "tryInsertID", 
     "type": "skProc", 
     "description": "executes the query (typically &quot;INSERT&quot;) and returns the generated ID for the row or -1 in case of an error. ", 
-    "code": "proc TryInsertID*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): int64 {.\u000D\u000A    tags: [FWriteDb].}"
+    "code": "proc tryInsertID*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): int64 {.\u000A    tags: [FWriteDb], raises: [].}"
   }, 
   {
-    "name": "InsertID", 
+    "name": "insertID", 
     "type": "skProc", 
     "description": "executes the query (typically &quot;INSERT&quot;) and returns the generated ID for the row. For Postgre this adds <tt class=\"docutils literal\"><span class=\"pre\">RETURNING id</span></tt> to the query, so it only works if your primary key is named <tt class=\"docutils literal\"><span class=\"pre\">id</span></tt>. ", 
-    "code": "proc InsertID*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): int64 {.\u000D\u000A    tags: [FWriteDb].}"
+    "code": "proc insertID*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): int64 {.\u000A    tags: [FWriteDb].}"
   }, 
   {
-    "name": "ExecAffectedRows", 
+    "name": "execAffectedRows", 
     "type": "skProc", 
     "description": "executes the query (typically &quot;UPDATE&quot;) and returns the number of affected rows.", 
-    "code": "proc ExecAffectedRows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): int64 {.\u000D\u000A    tags: [FReadDB, FWriteDb].}"
+    "code": "proc execAffectedRows*(db: TDbConn; query: TSqlQuery; args: varargs[string, `$`]): int64 {.\u000A    tags: [FReadDb, FWriteDb].}"
   }, 
   {
-    "name": "Close", 
+    "name": "close", 
     "type": "skProc", 
     "description": "closes the database connection.", 
-    "code": "proc Close*(db: TDbConn) {.tags: [FDB].}"
+    "code": "proc close*(db: TDbConn) {.tags: [FDb].}"
   }, 
   {
-    "name": "Open", 
+    "name": "open", 
     "type": "skProc", 
     "description": "opens a database connection. Raises <cite>EDb</cite> if the connection could not be established. Only the <tt class=\"docutils literal\"><span class=\"pre\">connection</span></tt> parameter is used for <tt class=\"docutils literal\"><span class=\"pre\">sqlite</span></tt>.", 
-    "code": "proc Open*(connection, user, password, database: string): TDbConn {.tags: [FDB].}"
+    "code": "proc open*(connection, user, password, database: string): TDbConn {.tags: [FDb].}"
   }
 ]

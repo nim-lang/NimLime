@@ -6,12 +6,12 @@
     "name": "validEmailAddress", 
     "type": "skProc", 
     "description": "returns true if <cite>s</cite> seems to be a valid e-mail address. The checking also uses a domain list.", 
-    "code": "proc validEmailAddress*(s: string): bool {.noSideEffect, rtl, \u000D\u000A    extern: \"nsuValidEmailAddress\".}"
+    "code": "proc validEmailAddress*(s: string): bool {.noSideEffect, rtl, \u000A    extern: \"nsuValidEmailAddress\".}"
   }, 
   {
     "name": "parseInt", 
     "type": "skProc", 
     "description": "parses <cite>s</cite> into an integer in the range <cite>validRange</cite>. If successful, <cite>value</cite> is modified to contain the result. Otherwise no exception is raised and <cite>value</cite> is not touched; this way a reasonable default value won't be overwritten.", 
-    "code": "proc parseInt*(s: string; value: var int; validRange: TSlice[int]) {.\u000D\u000A    noSideEffect, rtl, extern: \"nmatchParseInt\".}"
+    "code": "proc parseInt*(s: string; value: var int; validRange: Slice[int]) {.\u000A    noSideEffect, rtl, extern: \"nmatchParseInt\".}"
   }
 ]

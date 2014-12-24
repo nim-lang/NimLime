@@ -1,0 +1,41 @@
+[
+  {
+    "name": "EPOLLET", 
+    "type": "skConst", 
+    "code": "EPOLLET* = 1 shl 31"
+  }, 
+  {
+    "name": "EPOLL_CTL_MOD", 
+    "type": "skConst", 
+    "code": "EPOLL_CTL_MOD* = 3"
+  }, 
+  {
+    "name": "epoll_event", 
+    "type": "skType", 
+    "code": "epoll_event* {.importc: \"struct epoll_event\", header: \"<sys/epoll.h>\", pure, \u000A               final.} = object \u000A  events*: uint32\u000A  data*: epoll_data\u000A"
+  }, 
+  {
+    "name": "epoll_create", 
+    "type": "skProc", 
+    "description": "<dl class=\"docutils\"><dt>Creates an epoll instance.  Returns an fd for the new instance.</dt>\u000A<dd>The &quot;size&quot; parameter is a hint specifying the number of file descriptors to be associated with the new instance.  The fd returned by epoll_create() should be closed with close().  </dd>\u000A</dl>\u000A", 
+    "code": "proc epoll_create*(size: cint): cint {.importc: \"epoll_create\", \u000A                                       header: \"<sys/epoll.h>\".}"
+  }, 
+  {
+    "name": "epoll_create1", 
+    "type": "skProc", 
+    "description": "<dl class=\"docutils\"><dt>Same as epoll_create but with an FLAGS parameter.  The unused SIZE</dt>\u000A<dd>parameter has been dropped.  </dd>\u000A</dl>\u000A", 
+    "code": "proc epoll_create1*(flags: cint): cint {.importc: \"epoll_create1\", \u000A    header: \"<sys/epoll.h>\".}"
+  }, 
+  {
+    "name": "epoll_ctl", 
+    "type": "skProc", 
+    "description": "<dl class=\"docutils\"><dt>Manipulate an epoll instance &quot;epfd&quot;. Returns 0 in case of success,</dt>\u000A<dd><table frame=\"void\"><tr><th align=\"left\">-1 in case of error ( the &quot;errno&quot; variable will contain the</th><td align=\"left\"></td>\u000A</tr>\u000A</table><p>specific error code ) The &quot;op&quot; parameter is one of the EPOLL_CTL_* constants defined above. The &quot;fd&quot; parameter is the target of the operation. The &quot;event&quot; parameter describes which events the caller is interested in and any associated user data.  </p>\u000A</dd>\u000A</dl>\u000A", 
+    "code": "proc epoll_ctl*(epfd: cint; op: cint; fd: cint | SocketHandle; \u000A                event: ptr epoll_event): cint {.importc: \"epoll_ctl\", \u000A    header: \"<sys/epoll.h>\".}"
+  }, 
+  {
+    "name": "epoll_wait", 
+    "type": "skProc", 
+    "description": "<dl class=\"docutils\"><dt>Wait for events on an epoll instance &quot;epfd&quot;. Returns the number of</dt>\u000A<dd><p>triggered events returned in &quot;events&quot; buffer. Or -1 in case of error with the &quot;errno&quot; variable set to the specific error code. The &quot;events&quot; parameter is a buffer that will contain triggered events. The &quot;maxevents&quot; is the maximum number of events to be returned ( usually size of &quot;events&quot; ). The &quot;timeout&quot; parameter specifies the maximum wait time in milliseconds (-1 == infinite).</p>\u000A<p>This function is a cancellation point and therefore not marked with __THROW.</p>\u000A</dd>\u000A</dl>\u000A", 
+    "code": "proc epoll_wait*(epfd: cint; events: ptr epoll_event; maxevents: cint; \u000A                 timeout: cint): cint {.importc: \"epoll_wait\", \u000A                                        header: \"<sys/epoll.h>\".}"
+  }
+]

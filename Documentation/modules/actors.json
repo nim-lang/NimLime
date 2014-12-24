@@ -1,6 +1,6 @@
 [
   {
-    "comment": "`Actor`:idx: support for Nimrod. An actor is implemented as a thread with\u000D\u000A## a channel as its inbox. This module requires the ``--threads:on``\u000D\u000A## command line switch.\u000D\u000A##\u000D\u000A## Example:\u000D\u000A##\u000D\u000A## .. code-block:: nimrod\u000D\u000A##\u000D\u000A##      var\u000D\u000A##        a: TActorPool[int, void]\u000D\u000A##      createActorPool(a)\u000D\u000A##      for i in 0 .. < 300:\u000D\u000A##        a.spawn(i, proc (x: int) {.thread.} = echo x)\u000D\u000A##      a.join()"
+    "comment": "`Actor`:idx: support for Nim. An actor is implemented as a thread with\u000A## a channel as its inbox. This module requires the ``--threads:on``\u000A## command line switch.\u000A##\u000A## Example:\u000A##\u000A## .. code-block:: nim\u000A##\u000A##      var\u000A##        a: TActorPool[int, void]\u000A##      createActorPool(a)\u000A##      for i in 0 .. < 300:\u000A##        a.spawn(i, proc (x: int) {.thread.} = echo x)\u000A##      a.join()\u000A##\u000A## **Note**: This whole module is deprecated. Use `threadpool` and ``spawn``\u000A## instead."
   }, 
   {
     "name": "PActor", 
@@ -12,7 +12,7 @@
     "name": "spawn", 
     "type": "skProc", 
     "description": "creates an actor; that is a thread with an inbox. The caller MUST call <tt class=\"docutils literal\"><span class=\"pre\">join</span></tt> because that also frees the actor's associated resources.", 
-    "code": "proc spawn*[TIn, TOut](action: proc (self: PActor[TIn, TOut]) {.thread.}): PActor[\u000D\u000A    TIn, TOut]"
+    "code": "proc spawn*[TIn, TOut](action: proc (self: PActor[TIn, TOut]) {.thread.}): PActor[\u000A    TIn, TOut]"
   }, 
   {
     "name": "inbox", 
@@ -48,13 +48,13 @@
     "name": "send", 
     "type": "skProc", 
     "description": "sends a message to <cite>a</cite>'s inbox.", 
-    "code": "proc send*[TIn, TOut, X, Y](receiver: PActor[TIn, TOut]; msg: TIn; \u000D\u000A                            sender: PActor[X, Y])"
+    "code": "proc send*[TIn, TOut, X, Y](receiver: PActor[TIn, TOut]; msg: TIn; \u000A                            sender: PActor[X, Y])"
   }, 
   {
     "name": "send", 
     "type": "skProc", 
     "description": "sends a message to <cite>receiver</cite>'s inbox.", 
-    "code": "proc send*[TIn, TOut](receiver: PActor[TIn, TOut]; msg: TIn; \u000D\u000A                      sender: ptr TChannel[TOut] = nil)"
+    "code": "proc send*[TIn, TOut](receiver: PActor[TIn, TOut]; msg: TIn; \u000A                      sender: ptr TChannel[TOut] = nil)"
   }, 
   {
     "name": "sendShutdown", 
@@ -72,7 +72,7 @@
     "name": "TActorPool", 
     "type": "skType", 
     "description": "an actor pool", 
-    "code": "TActorPool*[TIn, TOut] = object  {.pure, final.}\u000D\u000A  actors: seq[PActor[TIn, TOut]]\u000D\u000A  when TOut isnot void: \u000D\u000A      outputs: TChannel[TOut]\u000D\u000A\u000D\u000A  "
+    "code": "TActorPool*[TIn, TOut] = object  {.pure, final.}\u000A  actors: seq[PActor[TIn, TOut]]\u000A  when TOut isnot void: \u000A      outputs: TChannel[TOut]\u000A\u000A  "
   }, 
   {
     "name": "`^`", 
@@ -108,12 +108,12 @@
     "name": "spawn", 
     "type": "skProc", 
     "description": "uses the actor pool to run <tt class=\"docutils literal\"><span class=\"pre\">action(input)</span></tt> concurrently. <cite>spawn</cite> is guaranteed to not block.", 
-    "code": "proc spawn*[TIn, TOut](p: var TActorPool[TIn, TOut]; input: TIn; \u000D\u000A                       action: proc (input: TIn): TOut {.thread.}): ptr TChannel[\u000D\u000A    TOut]"
+    "code": "proc spawn*[TIn, TOut](p: var TActorPool[TIn, TOut]; input: TIn; \u000A                       action: proc (input: TIn): TOut {.thread.}): ptr TChannel[\u000A    TOut]"
   }, 
   {
     "name": "spawn", 
     "type": "skProc", 
     "description": "uses the actor pool to run <tt class=\"docutils literal\"><span class=\"pre\">action(input)</span></tt> concurrently. <cite>spawn</cite> is guaranteed to not block.", 
-    "code": "proc spawn*[TIn](p: var TActorPool[TIn, void]; input: TIn; \u000D\u000A                 action: proc (input: TIn) {.thread.})"
+    "code": "proc spawn*[TIn](p: var TActorPool[TIn, void]; input: TIn; \u000A                 action: proc (input: TIn) {.thread.})"
   }
 ]

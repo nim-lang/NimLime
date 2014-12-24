@@ -1,0 +1,20 @@
+[
+  {
+    "comment": "Module that implements a fixed length array whose size\u000A## is determined at runtime. Note: This is not ready for other people to use!"
+  }, 
+  {
+    "name": "UncheckedArray", 
+    "type": "skType", 
+    "code": "UncheckedArray* {.unchecked.}[T] = array[0 .. 100000000, T]"
+  }, 
+  {
+    "name": "initRtArray", 
+    "type": "skProc", 
+    "code": "proc initRtArray*[T](len: Natural): RtArray[T]"
+  }, 
+  {
+    "name": "getRawData", 
+    "type": "skProc", 
+    "code": "proc getRawData*[T](x: var RtArray[T]): ptr UncheckedArray[T]"
+  }
+]

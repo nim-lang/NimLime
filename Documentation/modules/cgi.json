@@ -1,30 +1,30 @@
 [
   {
-    "comment": "This module implements helper procs for CGI applications. Example:\u000D\u000A##\u000D\u000A## .. code-block:: Nimrod\u000D\u000A##\u000D\u000A##    import strtabs, cgi\u000D\u000A##\u000D\u000A##    # Fill the values when debugging:\u000D\u000A##    when debug:\u000D\u000A##      setTestData(\"name\", \"Klaus\", \"password\", \"123456\")\u000D\u000A##    # read the data into `myData`\u000D\u000A##    var myData = readData()\u000D\u000A##    # check that the data's variable names are \"name\" or \"password\"\u000D\u000A##    validateData(myData, \"name\", \"password\")\u000D\u000A##    # start generating content:\u000D\u000A##    writeContentType()\u000D\u000A##    # generate content:\u000D\u000A##    write(stdout, \"<!DOCTYPE HTML PUBLIC \\\"-//W3C//DTD HTML 4.01//EN\\\">\\n\")\u000D\u000A##    write(stdout, \"<html><head><title>Test</title></head><body>\\n\")\u000D\u000A##    writeln(stdout, \"your name: \" & myData[\"name\"])\u000D\u000A##    writeln(stdout, \"your password: \" & myData[\"password\"])\u000D\u000A##    writeln(stdout, \"</body></html>\")"
+    "comment": "This module implements helper procs for CGI applications. Example:\u000A##\u000A## .. code-block:: Nim\u000A##\u000A##    import strtabs, cgi\u000A##\u000A##    # Fill the values when debugging:\u000A##    when debug:\u000A##      setTestData(\"name\", \"Klaus\", \"password\", \"123456\")\u000A##    # read the data into `myData`\u000A##    var myData = readData()\u000A##    # check that the data's variable names are \"name\" or \"password\"\u000A##    validateData(myData, \"name\", \"password\")\u000A##    # start generating content:\u000A##    writeContentType()\u000A##    # generate content:\u000A##    write(stdout, \"<!DOCTYPE HTML PUBLIC \\\"-//W3C//DTD HTML 4.01//EN\\\">\\n\")\u000A##    write(stdout, \"<html><head><title>Test</title></head><body>\\n\")\u000A##    writeln(stdout, \"your name: \" & myData[\"name\"])\u000A##    writeln(stdout, \"your password: \" & myData[\"password\"])\u000A##    writeln(stdout, \"</body></html>\")"
   }, 
   {
-    "name": "URLencode", 
+    "name": "encodeUrl", 
     "type": "skProc", 
     "description": "Encodes a value to be HTTP safe: This means that characters in the set <tt class=\"docutils literal\"><span class=\"pre\">{'A'..'Z', 'a'..'z', '0'..'9', '_'}</span></tt> are carried over to the result, a space is converted to <tt class=\"docutils literal\"><span class=\"pre\">'+'</span></tt> and every other character is encoded as <tt class=\"docutils literal\"><span class=\"pre\">'%xx'</span></tt> where <tt class=\"docutils literal\"><span class=\"pre\">xx</span></tt> denotes its hexadecimal value.", 
-    "code": "proc URLencode*(s: string): string"
+    "code": "proc encodeUrl*(s: string): string"
   }, 
   {
-    "name": "URLdecode", 
+    "name": "decodeUrl", 
     "type": "skProc", 
     "description": "Decodes a value from its HTTP representation: This means that a <tt class=\"docutils literal\"><span class=\"pre\">'+'</span></tt> is converted to a space, <tt class=\"docutils literal\"><span class=\"pre\">'%xx'</span></tt> (where <tt class=\"docutils literal\"><span class=\"pre\">xx</span></tt> denotes a hexadecimal value) is converted to the character with ordinal number <tt class=\"docutils literal\"><span class=\"pre\">xx</span></tt>, and and every other character is carried over.", 
-    "code": "proc URLdecode*(s: string): string"
+    "code": "proc decodeUrl*(s: string): string"
   }, 
   {
-    "name": "XMLencode", 
+    "name": "xmlEncode", 
     "type": "skProc", 
-    "description": "Encodes a value to be XML safe:<ul class=\"simple\"><li><tt class=\"docutils literal\"><span class=\"pre\">&quot;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;quot;</span></tt></li>\u000D\u000A<li><tt class=\"docutils literal\"><span class=\"pre\">&lt;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;lt;</span></tt></li>\u000D\u000A<li><tt class=\"docutils literal\"><span class=\"pre\">&gt;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;gt;</span></tt></li>\u000D\u000A<li><tt class=\"docutils literal\"><span class=\"pre\">&amp;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;amp;</span></tt></li>\u000D\u000A<li>every other character is carried over.</li>\u000D\u000A</ul>\u000D\u000A", 
-    "code": "proc XMLencode*(s: string): string"
+    "description": "Encodes a value to be XML safe:<ul class=\"simple\"><li><tt class=\"docutils literal\"><span class=\"pre\">&quot;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;quot;</span></tt></li>\u000A<li><tt class=\"docutils literal\"><span class=\"pre\">&lt;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;lt;</span></tt></li>\u000A<li><tt class=\"docutils literal\"><span class=\"pre\">&gt;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;gt;</span></tt></li>\u000A<li><tt class=\"docutils literal\"><span class=\"pre\">&amp;</span></tt> is replaced by <tt class=\"docutils literal\"><span class=\"pre\">&amp;amp;</span></tt></li>\u000A<li>every other character is carried over.</li>\u000A</ul>\u000A", 
+    "code": "proc xmlEncode*(s: string): string"
   }, 
   {
-    "name": "TRequestMethod", 
+    "name": "RequestMethod", 
     "type": "skType", 
     "description": "the used request method", 
-    "code": "TRequestMethod* = enum \u000D\u000A  methodNone,                 ## no REQUEST_METHOD environment variable\u000D\u000A  methodPost,                 ## query uses the POST method\u000D\u000A  methodGet                   ## query uses the GET method"
+    "code": "RequestMethod* = enum \u000A  methodNone,                 ## no REQUEST_METHOD environment variable\u000A  methodPost,                 ## query uses the POST method\u000A  methodGet                   ## query uses the GET method"
   }, 
   {
     "name": "cgiError", 
@@ -42,19 +42,19 @@
     "name": "decodeData", 
     "type": "skIterator", 
     "description": "Reads and decodes CGI data and yields the (name, value) pairs the data consists of. If the client does not use a method listed in the <cite>allowedMethods</cite> set, an <cite>ECgi</cite> exception is raised.", 
-    "code": "iterator decodeData*(allowedMethods: set[TRequestMethod] = {methodNone, \u000D\u000A    methodPost, methodGet}): tuple[key, value: TaintedString]"
+    "code": "iterator decodeData*(allowedMethods: set[RequestMethod] = {methodNone, \u000A    methodPost, methodGet}): tuple[key, value: TaintedString]"
   }, 
   {
     "name": "readData", 
     "type": "skProc", 
     "description": "Read CGI data. If the client does not use a method listed in the <cite>allowedMethods</cite> set, an <cite>ECgi</cite> exception is raised.", 
-    "code": "proc readData*(allowedMethods: set[TRequestMethod] = {methodNone, methodPost, \u000D\u000A    methodGet}): PStringTable"
+    "code": "proc readData*(allowedMethods: set[RequestMethod] = {methodNone, methodPost, \u000A    methodGet}): StringTableRef"
   }, 
   {
     "name": "validateData", 
     "type": "skProc", 
     "description": "validates data; raises <cite>ECgi</cite> if this fails. This checks that each variable name of the CGI <cite>data</cite> occurs in the <cite>validKeys</cite> array.", 
-    "code": "proc validateData*(data: PStringTable; validKeys: varargs[string])"
+    "code": "proc validateData*(data: StringTableRef; validKeys: varargs[string])"
   }, 
   {
     "name": "getContentLength", 
@@ -251,20 +251,32 @@
   {
     "name": "setTestData", 
     "type": "skProc", 
-    "description": "fills the appropriate environment variables to test your CGI application. This can only simulate the 'GET' request method. <cite>keysvalues</cite> should provide embedded (name, value)-pairs. Example:<pre><span class=\"Identifier\">setTestData</span><span class=\"Punctation\">(</span><span class=\"StringLit\">&quot;name&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;Hanz&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;password&quot;</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;12345&quot;</span><span class=\"Punctation\">)</span></pre>", 
+    "description": "fills the appropriate environment variables to test your CGI application. This can only simulate the 'GET' request method. <cite>keysvalues</cite> should provide embedded (name, value)-pairs. Example:<pre><span class=\"Identifier\">setTestData</span><span class=\"Punctuation\">(</span><span class=\"StringLit\">&quot;name&quot;</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;Hanz&quot;</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;password&quot;</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;12345&quot;</span><span class=\"Punctuation\">)</span></pre>", 
     "code": "proc setTestData*(keysvalues: varargs[string])"
   }, 
   {
     "name": "writeContentType", 
     "type": "skProc", 
-    "description": "call this before starting to send your HTML data to <cite>stdout</cite>. This implements this part of the CGI protocol:<pre><span class=\"Identifier\">write</span><span class=\"Punctation\">(</span><span class=\"Identifier\">stdout</span><span class=\"Punctation\">,</span> <span class=\"StringLit\">&quot;Content-type: text/html</span><span class=\"EscapeSequence\">\\n</span><span class=\"EscapeSequence\">\\n</span><span class=\"StringLit\">&quot;</span><span class=\"Punctation\">)</span></pre><p>It also modifies the debug stack traces so that they contain <tt class=\"docutils literal\"><span class=\"pre\">&lt;br /&gt;</span></tt> and are easily readable in a browser.</p>\u000D\u000A", 
+    "description": "call this before starting to send your HTML data to <cite>stdout</cite>. This implements this part of the CGI protocol:<pre><span class=\"Identifier\">write</span><span class=\"Punctuation\">(</span><span class=\"Identifier\">stdout</span><span class=\"Punctuation\">,</span> <span class=\"StringLit\">&quot;Content-type: text/html</span><span class=\"EscapeSequence\">\\n</span><span class=\"EscapeSequence\">\\n</span><span class=\"StringLit\">&quot;</span><span class=\"Punctuation\">)</span></pre>", 
     "code": "proc writeContentType*()"
+  }, 
+  {
+    "name": "writeErrorMessage", 
+    "type": "skProc", 
+    "description": "Tries to reset browser state and writes <cite>data</cite> to stdout in &lt;plaintext&gt; tag.", 
+    "code": "proc writeErrorMessage*(data: string)"
+  }, 
+  {
+    "name": "setStackTraceStdout", 
+    "type": "skProc", 
+    "description": "Makes Nim output stacktraces to stdout, instead of server log.", 
+    "code": "proc setStackTraceStdout*()"
   }, 
   {
     "name": "setStackTraceNewLine", 
     "type": "skProc", 
-    "description": "Modifies the debug stack traces so that they contain <tt class=\"docutils literal\"><span class=\"pre\">&lt;br /&gt;</span></tt> and are easily readable in a browser.", 
-    "code": "proc setStackTraceNewLine*()"
+    "description": "Makes Nim output stacktraces to stdout, instead of server log. Depracated alias for setStackTraceStdout.", 
+    "code": "proc setStackTraceNewLine*() {.deprecated.}"
   }, 
   {
     "name": "setCookie", 

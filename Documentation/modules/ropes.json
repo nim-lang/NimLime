@@ -1,30 +1,30 @@
 [
   {
-    "comment": "This module contains support for a `rope`:idx: data type.\u000D\u000A## Ropes can represent very long strings efficiently; especially concatenation\u000D\u000A## is done in O(1) instead of O(n). They are essentially concatenation\u000D\u000A## trees that are only flattened when converting to a native Nimrod\u000D\u000A## string. The empty string is represented by ``nil``. Ropes are immutable and\u000D\u000A## subtrees can be shared without copying.\u000D\u000A## Leaves can be cached for better memory efficiency at the cost of\u000D\u000A## runtime efficiency."
+    "comment": "This module contains support for a `rope`:idx: data type.\u000A## Ropes can represent very long strings efficiently; especially concatenation\u000A## is done in O(1) instead of O(n). They are essentially concatenation\u000A## trees that are only flattened when converting to a native Nim\u000A## string. The empty string is represented by ``nil``. Ropes are immutable and\u000A## subtrees can be shared without copying.\u000A## Leaves can be cached for better memory efficiency at the cost of\u000A## runtime efficiency."
   }, 
   {
     "name": "len", 
     "type": "skProc", 
     "description": "the rope's length", 
-    "code": "proc len*(a: PRope): int {.rtl, extern: \"nro$1\".}"
+    "code": "proc len*(a: Rope): int {.rtl, extern: \"nro$1\".}"
   }, 
   {
     "name": "rope", 
     "type": "skProc", 
     "description": "Converts a string to a rope. ", 
-    "code": "proc rope*(s: string): PRope {.rtl, extern: \"nro$1Str\".}"
+    "code": "proc rope*(s: string): Rope {.rtl, extern: \"nro$1Str\".}"
   }, 
   {
     "name": "rope", 
     "type": "skProc", 
     "description": "Converts an int to a rope. ", 
-    "code": "proc rope*(i: BiggestInt): PRope {.rtl, extern: \"nro$1BiggestInt\".}"
+    "code": "proc rope*(i: BiggestInt): Rope {.rtl, extern: \"nro$1BiggestInt\".}"
   }, 
   {
     "name": "rope", 
     "type": "skProc", 
     "description": "Converts a float to a rope. ", 
-    "code": "proc rope*(f: BiggestFloat): PRope {.rtl, extern: \"nro$1BiggestFloat\".}"
+    "code": "proc rope*(f: BiggestFloat): Rope {.rtl, extern: \"nro$1BiggestFloat\".}"
   }, 
   {
     "name": "enableCache", 
@@ -42,90 +42,90 @@
     "name": "`&amp;`", 
     "type": "skProc", 
     "description": "the concatenation operator for ropes.", 
-    "code": "proc `&`*(a, b: PRope): PRope {.rtl, extern: \"nroConcRopeRope\".}"
+    "code": "proc `&`*(a, b: Rope): Rope {.rtl, extern: \"nroConcRopeRope\".}"
   }, 
   {
     "name": "`&amp;`", 
     "type": "skProc", 
     "description": "the concatenation operator for ropes.", 
-    "code": "proc `&`*(a: PRope; b: string): PRope {.rtl, extern: \"nroConcRopeStr\".}"
+    "code": "proc `&`*(a: Rope; b: string): Rope {.rtl, extern: \"nroConcRopeStr\".}"
   }, 
   {
     "name": "`&amp;`", 
     "type": "skProc", 
     "description": "the concatenation operator for ropes.", 
-    "code": "proc `&`*(a: string; b: PRope): PRope {.rtl, extern: \"nroConcStrRope\".}"
+    "code": "proc `&`*(a: string; b: Rope): Rope {.rtl, extern: \"nroConcStrRope\".}"
   }, 
   {
     "name": "`&amp;`", 
     "type": "skProc", 
     "description": "the concatenation operator for an openarray of ropes.", 
-    "code": "proc `&`*(a: openarray[PRope]): PRope {.rtl, extern: \"nroConcOpenArray\".}"
+    "code": "proc `&`*(a: openArray[Rope]): Rope {.rtl, extern: \"nroConcOpenArray\".}"
   }, 
   {
     "name": "add", 
     "type": "skProc", 
     "description": "adds <cite>b</cite> to the rope <cite>a</cite>.", 
-    "code": "proc add*(a: var PRope; b: PRope) {.rtl, extern: \"nro$1Rope\".}"
+    "code": "proc add*(a: var Rope; b: Rope) {.rtl, extern: \"nro$1Rope\".}"
   }, 
   {
     "name": "add", 
     "type": "skProc", 
     "description": "adds <cite>b</cite> to the rope <cite>a</cite>.", 
-    "code": "proc add*(a: var PRope; b: string) {.rtl, extern: \"nro$1Str\".}"
+    "code": "proc add*(a: var Rope; b: string) {.rtl, extern: \"nro$1Str\".}"
   }, 
   {
     "name": "`[]`", 
     "type": "skProc", 
     "description": "returns the character at position <cite>i</cite> in the rope <cite>r</cite>. This is quite expensive! Worst-case: O(n). If <tt class=\"docutils literal\"><span class=\"pre\">i &gt;= r.len</span></tt>, <tt class=\"docutils literal\"><span class=\"pre\">\\0</span></tt> is returned.", 
-    "code": "proc `[]`*(r: PRope; i: int): char {.rtl, extern: \"nroCharAt\".}"
+    "code": "proc `[]`*(r: Rope; i: int): char {.rtl, extern: \"nroCharAt\".}"
   }, 
   {
     "name": "leaves", 
     "type": "skIterator", 
     "description": "iterates over any leaf string in the rope <cite>r</cite>.", 
-    "code": "iterator leaves*(r: PRope): string"
+    "code": "iterator leaves*(r: Rope): string"
   }, 
   {
     "name": "items", 
     "type": "skIterator", 
     "description": "iterates over any character in the rope <cite>r</cite>.", 
-    "code": "iterator items*(r: PRope): char"
+    "code": "iterator items*(r: Rope): char"
   }, 
   {
     "name": "write", 
     "type": "skProc", 
     "description": "writes a rope to a file.", 
-    "code": "proc write*(f: TFile; r: PRope) {.rtl, extern: \"nro$1\".}"
+    "code": "proc write*(f: File; r: Rope) {.rtl, extern: \"nro$1\".}"
   }, 
   {
     "name": "`$`", 
     "type": "skProc", 
     "description": "converts a rope back to a string.", 
-    "code": "proc `$`*(r: PRope): string {.rtl, extern: \"nroToString\".}"
+    "code": "proc `$`*(r: Rope): string {.rtl, extern: \"nroToString\".}"
   }, 
   {
     "name": "`%`", 
     "type": "skProc", 
     "description": "<cite>%</cite> substitution operator for ropes. Does not support the <tt class=\"docutils literal\"><span class=\"pre\">$identifier</span></tt> nor <tt class=\"docutils literal\"><span class=\"pre\">${identifier}</span></tt> notations.", 
-    "code": "proc `%`*(frmt: string; args: openarray[PRope]): PRope {.rtl, \u000D\u000A    extern: \"nroFormat\".}"
+    "code": "proc `%`*(frmt: string; args: openArray[Rope]): Rope {.rtl, extern: \"nroFormat\".}"
   }, 
   {
     "name": "addf", 
     "type": "skProc", 
     "description": "shortcut for <tt class=\"docutils literal\"><span class=\"pre\">add(c, frmt % args)</span></tt>.", 
-    "code": "proc addf*(c: var PRope; frmt: string; args: openarray[PRope]) {.rtl, \u000D\u000A    extern: \"nro$1\".}"
+    "code": "proc addf*(c: var Rope; frmt: string; args: openArray[Rope]) {.rtl, \u000A    extern: \"nro$1\".}"
   }, 
   {
     "name": "equalsFile", 
     "type": "skProc", 
     "description": "returns true if the contents of the file <cite>f</cite> equal <cite>r</cite>.", 
-    "code": "proc equalsFile*(r: PRope; f: TFile): bool {.rtl, extern: \"nro$1File\".}"
+    "code": "proc equalsFile*(r: Rope; f: File): bool {.rtl, extern: \"nro$1File\".}"
   }, 
   {
     "name": "equalsFile", 
     "type": "skProc", 
     "description": "returns true if the contents of the file <cite>f</cite> equal <cite>r</cite>. If <cite>f</cite> does not exist, false is returned.", 
-    "code": "proc equalsFile*(r: PRope; f: string): bool {.rtl, extern: \"nro$1Str\".}"
+    "code": "proc equalsFile*(r: Rope; f: string): bool {.rtl, extern: \"nro$1Str\".}"
   }
 ]

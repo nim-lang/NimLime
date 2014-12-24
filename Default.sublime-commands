@@ -1,39 +1,39 @@
 [
     {
-        "caption": "Nimrod: Update Babel Package List",
-        "command": "babel_update"
+        "caption": "Nim: Update Nimble Package List",
+        "command": "nimble_update"
     },
     {
-        "caption": "Nimrod: Install Babel Package",
-        "command": "babel_list"
+        "caption": "Nim: Install Nimble Package",
+        "command": "nimble_list"
     },
     {
-    	   "caption": "Nimrod: Go To Definition",
+    	   "caption": "Nim: Go To Definition",
     	   "command": "lookup"
     },
 
     {
-        "caption": "Nimrod: Modules",
+        "caption": "Nim: Modules",
         "command": "list_modules"
     },
     {
-        "caption": "Nimrod: Index",
+        "caption": "Nim: Index",
         "command": "list_all"
     },
     {
-        "caption": "Nimrod: Set Project File",
+        "caption": "Nim: Set Project File",
         "command": "set_project"
     },
     {
-        "caption": "Nimrod: Check External File",
+        "caption": "Nim: Check External File",
         "command": "nim_check_file"
     },
     {
-        "caption": "Nimrod: Check Current File",
+        "caption": "Nim: Check Current File",
         "command": "nim_check_current_view"
     },
     {
-        "caption": "Nimrod: Clear Errors & Warnings",
+        "caption": "Nim: Clear Errors & Warnings",
         "command": "nim_clear_errors"
     }
 ]

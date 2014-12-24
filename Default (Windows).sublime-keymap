@@ -1,18 +1,18 @@
 [
-    {"keys": ["f12"], "command": "lookup", "context": 
+    {"keys": ["f12"], "command": "lookup", "context":
     	[
-    		{ "key": "selector", "operator": "equal", "operand": "source.nimrod" }
+    		{ "key": "selector", "operator": "equal", "operand": "source.nim" }
     	]
 	},
     {"keys": ["ctrl+alt+]"], "command": "align_assignments", "context":
         [
-            { "key": "selector", "operator": "equal", "operand": "source.nimrod" }
+            { "key": "selector", "operator": "equal", "operand": "source.nim" }
         ]
     },
-    { "keys": ["ctrl+space"], "command": "nimrod_update_completions", "context":
+    { "keys": ["ctrl+space"], "command": "nim_update_completions", "context":
         [
             { "key": "auto_complete_visible" },
-            { "key": "selector", "operator": "equal", "operand": "source.nimrod" }
+            { "key": "selector", "operator": "equal", "operand": "source.nim" }
         ]
     }
 ]

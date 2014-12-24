@@ -18,10 +18,10 @@ def update_settings():
     global give_suggestions
     global provide_immediate_completions
 
-    do_suggestions = settings.get("enable_nimrod_completions")
+    do_suggestions = settings.get("enable_nim_completions")
     if do_suggestions == None:
         do_suggestions = False
-    provide_immediate_completions = settings.get("provide_immediate_nimrod_completions")
+    provide_immediate_completions = settings.get("provide_immediate_nim_completions")
     if provide_immediate_completions == None:
         provide_immediate_completions = False
 
@@ -37,17 +37,17 @@ give_suggestions = False
 def plugin_loaded():
     # Load all settings relevant for autocomplete
     global settings
-    settings = sublime.load_settings("nimrod.sublime-settings")
+    settings = sublime.load_settings("nim.sublime-settings")
     update_settings()
-    settings.add_on_change("enable_nimrod_completions", update_settings)
-    settings.add_on_change("provide_immediate_nimrod_completions", update_settings)
+    settings.add_on_change("enable_nim_completions", update_settings)
+    settings.add_on_change("provide_immediate_nim_completions", update_settings)
 
 # Hack to lazily initialize ST2 settings
 if int(sublime.version()) < 3000:
     sublime.set_timeout(plugin_loaded, 1000)
 
 def position_str(filename, line, col):
-    return "{0}:{1}:{2}".format(filename, line, col)    
+    return "{0}:{1}:{2}".format(filename, line, col)
 
 class SuggestItem:
 
@@ -61,7 +61,7 @@ class SuggestItem:
 
             self.signature = self.signature.replace("proc", fn_name)
 
-class NimrodUpdateCompletions(sublime_plugin.TextCommand):
+class NimUpdateCompletions(sublime_plugin.TextCommand):
 
     def run(self, edit):
         if had_suggestions: # Only run when there were already suggestions for this position
@@ -71,14 +71,14 @@ class NimrodUpdateCompletions(sublime_plugin.TextCommand):
         give_suggestions = True
         self.view.window().run_command("hide_auto_complete")
         reload = lambda: self.view.window().run_command("auto_complete");
-        sublime.set_timeout(reload, 0)        
+        sublime.set_timeout(reload, 0)
 
-class NimrodCompleter(sublime_plugin.EventListener):
+class NimCompleter(sublime_plugin.EventListener):
 
     def on_query_completions(self, view, prefix, locations):
         filename = view.file_name()
         if filename == None or not filename.endswith(".nim") or not do_suggestions:
-            return []        
+            return []
 
         projFile = Utility.get_nimproject(view.window())
         if projFile is None:
@@ -107,7 +107,7 @@ class NimrodCompleter(sublime_plugin.EventListener):
         if (not give_suggestions and suggestion_pos != last_suggestion_pos): # Reset logic
             had_suggestions = False
             give_suggestions = False
-        
+
         provide_suggestions = provide_immediate_completions or give_suggestions
 
         if not provide_suggestions:
@@ -116,10 +116,10 @@ class NimrodCompleter(sublime_plugin.EventListener):
         last_suggestion_pos = suggestion_pos
         had_suggestions = True
         give_suggestions = False
-        
+
         dirtyFileName = ""
         dirtyFile = None
-        compiler = settings.get("nimrod_compiler_executable")
+        compiler = settings.get("nim_compiler_executable")
         if compiler == None or compiler == "": return []
         pargs = compiler + " --verbosity:0 idetools "
 
@@ -134,7 +134,7 @@ class NimrodCompleter(sublime_plugin.EventListener):
             dirtyFile.file.close()
             pargs = pargs + "--trackDirty:" + dirtyFileName + ","
         else:
-            pargs = pargs + "--track:"      
+            pargs = pargs + "--track:"
 
         pargs = pargs + filename \
          + "," + str(line) + "," + str(col) \

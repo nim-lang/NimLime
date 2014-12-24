@@ -18,19 +18,19 @@
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/NimLime/nimrod.sublime-settings"
+                                    "file": "${packages}/NimLime/nim.sublime-settings"
                                 },
                                 "caption": "Settings – Default"
                             },
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/User/nimrod.sublime-settings"
+                                    "file": "${packages}/User/nim.sublime-settings"
                                 },
                                 "caption": "Settings – User"
                             },
                             { "caption": "-" },
-                            
+
 
                             {
                                 "command": "open_file", "args":
@@ -64,7 +64,7 @@
                                     "platform": "OSX"
                                 },
                                 "caption": "Key Bindings – User"
-                            },                            
+                            },
                             {
                                 "command": "open_file", "args":
                                 {

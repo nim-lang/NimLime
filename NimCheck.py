@@ -21,12 +21,12 @@ ERROR_REGION_STYLE = sublime.DRAW_OUTLINED
 
 settings = {}
 check_on_save = False  # Whether to check on save
-compiler = "nimrod"
+compiler = "nim"
 
 
 def update_nimcheck_settings():
     global check_on_save
-    check_on_save = settings.get("check_nimrod_on_save")
+    check_on_save = settings.get("check_nim_on_save")
     if check_on_save is None:
         check_on_save = False
     print("check_on_save: " + str(check_on_save))
@@ -35,9 +35,9 @@ def update_nimcheck_settings():
 def plugin_loaded():
     # Load all settings relevant for autocomplete
     global settings
-    settings = sublime.load_settings("nimrod.sublime-settings")
+    settings = sublime.load_settings("nim.sublime-settings")
     update_nimcheck_settings()
-    settings.add_on_change("check_nimrod_on_save", update_nimcheck_settings)
+    settings.add_on_change("check_nim_on_save", update_nimcheck_settings)
 
 # Hack to lazily initialize ST2 settings
 if int(sublime.version()) < 3000:
@@ -57,7 +57,7 @@ class NimClearErrors(TextCommand):
 
     def is_enabled(self):
         nim_syntax = self.view.settings().get('syntax', "")
-        return ("nimrod" in nim_syntax.lower())
+        return ("nim" in nim_syntax.lower())
 
     def is_visible(self):
         return self.is_enabled()
@@ -67,12 +67,12 @@ class NimCheckCurrentView(TextCommand):
 
     def run(self, edit, show_error_list=True):
         """
-        Runs the text in the currentview through nimrod's `check` tool,
+        Runs the text in the currentview through nim's `check` tool,
         highlighting and displaying the errors within the view's text buffer
         and the quick panel.
         """
         global compiler
-        compiler = settings.get("nimrod_compiler_executable")
+        compiler = settings.get("nim_compiler_executable")
         debug("Compiler is " + compiler)
         self.show_error_list = show_error_list
         view = self.view
@@ -131,18 +131,18 @@ class NimCheckCurrentView(TextCommand):
 
     def is_enabled(self):
         nim_syntax = self.view.settings().get('syntax', "")
-        return ("nimrod" in nim_syntax.lower())
+        return ("nim" in nim_syntax.lower())
 
     def is_visible(self):
         nim_syntax = self.view.settings().get('syntax', "")
-        return ("nimrod" in nim_syntax.lower())
+        return ("nim" in nim_syntax.lower())
 
 
 class NimCheckFile(WindowCommand):
 
     def run(self):
         """
-        Prompts the user to select a file, runs the file through nimrod's
+        Prompts the user to select a file, runs the file through nim's
         'check' tool, and outputs the errors in a new view.
         """
         # Retrieve user input
@@ -206,7 +206,7 @@ def trim_region(view, region):
 
 def run_nimcheck(file_path, output_callback):
     """
-    Runs 'nimrod check' on the file specified by 'file_path', and returns
+    Runs 'nim check' on the file specified by 'file_path', and returns
     a list of errors found to the output_callback.
     It's highly advised to run this in a thread!
     """
@@ -221,8 +221,8 @@ def run_nimcheck(file_path, output_callback):
     debug("Escaped file name: " + file_name)
     debug("Error Regex: " + error_regex.pattern)
 
-    # Run nimrod check
-    debug("Running 'nimrod check' process")
+    # Run nim check
+    debug("Running 'nim check' process")
 
     if compiler is None or compiler == "":
         return []
@@ -239,7 +239,7 @@ def run_nimcheck(file_path, output_callback):
     raw_output, err = nimcheck_process.communicate()
     output_buffer = raw_output.decode("UTF-8")
     debug("Output: " + output_buffer)
-    debug("'nimrod check' is done.")
+    debug("'nim check' is done.")
     debug("Return code: " + str(nimcheck_process.returncode))
 
     # Retrieve and convert the matches

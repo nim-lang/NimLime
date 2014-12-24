@@ -11,7 +11,7 @@ import sublime
 #  - To check that previous line is empty
 #  - To check that current line is an empty line after a doc-comment
 
-COMMENT_SCOPE = "comment.line.number-sign.doc-comment.nimrod"
+COMMENT_SCOPE = "comment.line.number-sign.doc-comment.nim"
 RECURSION_LEVEL = 0
 # DEBUG = False
 
@@ -61,7 +61,7 @@ class CommentListener(EventListener):
     def on_activated(self, view):
         nim_syntax = view.settings().get('syntax', None)
         if not self.active:
-            if nim_syntax is not None and "nimrod" in nim_syntax:
+            if nim_syntax is not None and "nim" in nim_syntax:
                 self.active = True
 
     def on_deactivated(self, view):

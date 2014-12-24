@@ -5,7 +5,7 @@
 	<key>name</key>
 	<string>Miscellaneous</string>
 	<key>scope</key>
-	<string>source.nimrod</string>
+	<string>source.nim</string>
 	<key>settings</key>
 	<dict>
 	</dict>

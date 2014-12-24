@@ -29,7 +29,7 @@ class Idetools:
         if Idetools.service is not None and not Idetools.service.poll():
             return
 
-        compiler = sublime.load_settings("nimrod.sublime-settings").get("nimrod_compiler_executable")
+        compiler = sublime.load_settings("nim.sublime-settings").get("nim_compiler_executable")
         if compiler == None or compiler == "": return
 
         Idetools.service = subprocess.Popen(
@@ -40,7 +40,7 @@ class Idetools:
             stderr=subprocess.PIPE,
             shell=True)
 
-        print("Nimrod CaaS now running")
+        print("Nim CaaS now running")
 
     @staticmethod
     def idetool(win, cmd, filename, line, col, dirtyFile="", extra=""):
@@ -58,7 +58,7 @@ class Idetools:
             trackType = " --trackDirty:"
             filePath = dirtyFile + "," + filePath
 
-        if False:  # TODO - use this when it's not broken in nimrod
+        if False:  # TODO - use this when it's not broken in nim
             # Ensure IDE Tools service is running
             Idetools.ensure_service()
 
@@ -72,7 +72,7 @@ class Idetools:
             return Idetools.service.communicate(args + "\r\n")
 
         else:
-            compiler = sublime.load_settings("nimrod.sublime-settings").get("nimrod_compiler_executable")
+            compiler = sublime.load_settings("nim.sublime-settings").get("nim_compiler_executable")
             if compiler == None or compiler == "": return ""
 
             args = compiler + " --verbosity:0 idetools " \

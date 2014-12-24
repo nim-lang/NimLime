@@ -1,159 +1,159 @@
 # [PackageDev] target_format: plist, ext: tmLanguage
 ---
-name: Nimrod
-scopeName: source.nimrod
+name: Nim
+scopeName: source.nim
 fileTypes: ["nim"]
 uuid: fa6f2c1c-dd3f-4bcd-b2be-d05312be4080
 
 patterns:
 - comment: A documentation comment.
-  name: comment.line.number-sign.doc-comment.nimrod
+  name: comment.line.number-sign.doc-comment.nim
   match: (##\s*(TODO|todo)?).*$\n?
   captures:
-    '1': {name: punctuation.definition.comment.nimrod}
-    '2': {name: invalid.illegal.TODO.nimrod}
+    '1': {name: punctuation.definition.comment.nim}
+    '2': {name: invalid.illegal.TODO.nim}
 
 - comment: A regular comment
-  name: comment.line.number-sign.comment.nimrod
+  name: comment.line.number-sign.comment.nim
   match: (#\s*(TODO|todo)?).*$\n?
   captures:
-    '1': {name: punctuation.definition.comment.nimrod}
-    '2': {name: invalid.illegal.TODO.nimrod}
+    '1': {name: punctuation.definition.comment.nim}
+    '2': {name: invalid.illegal.TODO.nim}
 
-- comment: A nimrod procedure or method
-  name: meta.proc.nimrod
+- comment: A nim procedure or method
+  name: meta.proc.nim
   patterns:
   - begin: \b(proc|method|template|macro|iterator|converter)\s+\`?([^\:\{\s\`\*\(]*)\`?(\s*\*)?\s*(\(|\=|:|\[|\n|\{)
     end: \)
     captures:
-      '1': {name: storage.type.proc.nimrod}
-      '2': {name: entity.name.function.nimrod}
+      '1': {name: storage.type.proc.nim}
+      '2': {name: entity.name.function.nim}
     patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
 
 - comment: A discarded triple string literal comment
-  name: comment.line.discarded.nimrod
+  name: comment.line.discarded.nim
   begin: discard \"\"\"
   end: \"\"\"
 
 - comment: A float literal
-  name: constant.numeric.float.decimal.nimrod
+  name: constant.numeric.float.decimal.nim
   match: \b((\d[_\d]*\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*))('[fF](32|64))?
 
 - comment: A hexadecimal literal
-  name: constant.numeric.integer.hexadecimal.nimrod
+  name: constant.numeric.integer.hexadecimal.nim
   match: \b(0[xX]\h[_\h]*)('[iIuU](8|16|32|64))?
 
 - comment: A base-8 integer literal
-  name: constant.numeric.integer.octal.nimrod
+  name: constant.numeric.integer.octal.nim
   match: \b(0o[0-7][_0-7]*)('[iIuUfF](8|16|32|64))?
 
 - comment: A base-2 integer literal
-  name: constant.numeric.integer.binary.nimrod
+  name: constant.numeric.integer.binary.nim
   match: \b(0(b|B)[01][_01]*)('[iIuUfF](8|16|32|64))?
 
 - comment: A base-10 integer literal
-  name: constant.numeric.integer.decimal.nimrod
+  name: constant.numeric.integer.decimal.nim
   match: \b(\d[_\d]*)('[iIuUfF](8|16|32|64))?
 
 - comment: Language Constants.
-  name: constant.language.nimrod
+  name: constant.language.nim
   match: \b(true|false|inf|nil)\b
 
 - comment: Keywords that affect program control flow or scope.
-  name: keyword.control.nimrod
+  name: keyword.control.nim
   match: \b(block|break|case|continue|do|elif|else|end|except|finally|for|if|raise|return|try|when|while|yield)\b
 
 - comment: Keyword boolean operators for expressions.
-  name: keyword.operator.boolean.nimrod
+  name: keyword.operator.boolean.nim
   match: (\b(and|in|is|isnot|not|notin|or|xor)\b)
 
 - comment: Generic operators for expressions.
-  name: keyword.operator.nimrod
+  name: keyword.operator.nim
   match: (\b()\b|(=|\+|-|\*|/|<|>|@|\$|~|&|%|!|\?|\^|\.|:|\\)+)
 
 - comment: Other keywords.
-  name: keyword.other.nimrod
+  name: keyword.other.nim
   match: (\b(addr|as|atomic|bind|cast|const|converter|discard|distinct|div|enum|export|from|import|include|let|mod|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)
 
 - comment: Invalid and unused keywords.
-  name: keyword.invalid.nimrod
+  name: keyword.invalid.nim
   match: (\b(generic|interface|lambda|out|shared|with|without)\b)
 
 - comment: Common functions
-  name: keyword.common.function.nimrod
+  name: keyword.common.function.nim
   match: \b(new|await|assert|echo|defined|declared|newException|countup|countdown|high|low)\b
 
 - comment: Built-in, concrete types.
-  name: storage.type.concrete.nimrod
+  name: storage.type.concrete.nim
   match: \b(((uint|int|float)(8|16|32|64)?)|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr)\b
 
 - comment: Built-in, generic types.
-  name: storage.type.generic.nimrod
+  name: storage.type.generic.nim
   match: \b(range|array|seq|tuple|natural|set|ref|ptr)\b
 
 - comment: Function types
-  name: storage.type.function.nimrod
+  name: storage.type.function.nim
   match: \b(proc|iterator|method|template|macro)\b
 
 - comment: Special types.
-  name: storage.type.generic.nimrod
+  name: storage.type.generic.nim
   match: \b(openarray|varargs|void)\b
 
 - comment: (Raw) Triple Quoted String
-  name: string.quoted.triple.nimrod
+  name: string.quoted.triple.nim
   begin: \"\"\"
   end: \"\"\"
 
 - comment: Raw Double Quoted String
-  name: string.quoted.double.raw.nimrod
+  name: string.quoted.double.raw.nim
   begin: r\"
   end: \"
   patterns:
   - match: \"\"
 
 - comment: Double Quoted String
-  name: string.quoted.double.nimrod
+  name: string.quoted.double.nim
   begin: \"
   end: \"
   captures:
-    '1': { name: storage.type.function.nimrod }
+    '1': { name: storage.type.function.nim }
   patterns:
   - match: (\\([abenrclftv\\]|["']|[0-9])|x\h\h)
 
 - comment: Single quoted character literal
-  name: string.quoted.single.nimrod
+  name: string.quoted.single.nim
   match: \'(\\\d{1,3}|\\?[^\n]?)\'
 
 # Sub-Syntax selectors
 - comment: C
-  name: source.c.embedded.nimrod
+  name: source.c.embedded.nim
   patterns:
   - begin: \{\.(emit:) ?(\"\"\")
     end: (\"\"\")\.?
     captures:
-      '1': {name: keyword.other.nimrod}
-      '2': {name: comment.syntax.nimrod}
+      '1': {name: keyword.other.nim}
+      '2': {name: comment.syntax.nim}
     endCaptures:
-      '1': {name: comment.syntax.nimrod}
+      '1': {name: comment.syntax.nim}
     patterns:
-    - name: keyword.operator.nimrod
+    - name: keyword.operator.nim
       begin: \`
       end: \`
     - {include: source.c}
 
 - comment: assembly
-  name: source.asm.embedded.nimrod
+  name: source.asm.embedded.nim
   patterns:
   - begin: (asm )(\"\"\")
     end: \"\"\"
     captures:
-      '1': {name: keyword.other.nimrod}
-      '2': {name: comment.syntax.nimrod}
+      '1': {name: keyword.other.nim}
+      '2': {name: comment.syntax.nim}
     endCaptures:
-      '0': {name: comment.syntax.nimrod}
+      '0': {name: comment.syntax.nim}
     patterns:
-    - name: keyword.operator.nimrod
+    - name: keyword.operator.nim
       begin: \`
       end: \`
     - {include: source.asm}
@@ -161,222 +161,222 @@ patterns:
 - comment: tmpl specifier
   match: (tmpl(i)?)(?=( (html|xml|js|css|glsl|md))?\"\"\")
   captures:
-    '1': {name: storage.type.function.nimrod}
-    '2': {name: keyword.operator.nimrod}
+    '1': {name: storage.type.function.nim}
+    '2': {name: keyword.operator.nim}
 
-- name: source.html.embedded.nimrod
+- name: source.html.embedded.nim
   patterns:
   - begin: (html)(\"\"\")
     end: \"\"\"
     captures:
-      '1': {name: storage.type.function.nimrod}
-      '2': {name: comment.syntax.nimrod}
+      '1': {name: storage.type.function.nim}
+      '2': {name: comment.syntax.nim}
     endCaptures:
-      '0': {name: comment.syntax.nimrod}
+      '0': {name: comment.syntax.nim}
     patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.operator.nimrod
+      name: keyword.operator.nim
     - {include: text.xml}
 
-- name: source.xml.embedded.nimrod
+- name: source.xml.embedded.nim
   patterns:
   - begin: (xml)(\"\"\")
     end: \"\"\"
     captures:
-      '1': {name: storage.type.function.nimrod}
-      '2': {name: comment.syntax.nimrod}
+      '1': {name: storage.type.function.nim}
+      '2': {name: comment.syntax.nim}
     endCaptures:
-      '0': {name: comment.syntax.nimrod}
+      '0': {name: comment.syntax.nim}
     patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.operator.nimrod
+      name: keyword.operator.nim
     - {include: text.xml}
 
-- name: source.js.embedded.nimrod
+- name: source.js.embedded.nim
   patterns:
   - begin: (js)(\"\"\")
     end: \"\"\"
     captures:
-      '1': {name: storage.type.function.nimrod}
-      '2': {name: comment.syntax.nimrod}
+      '1': {name: storage.type.function.nim}
+      '2': {name: comment.syntax.nim}
     endCaptures:
-      '0': {name: comment.syntax.nimrod}
+      '0': {name: comment.syntax.nim}
     patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.operator.nimrod
+      name: keyword.operator.nim
     - {include: source.js}
 
-- name: source.css.embedded.nimrod
+- name: source.css.embedded.nim
   patterns:
   - begin: (css)(\"\"\")
     end: \"\"\"
     captures:
-      '1': {name: storage.type.function.nimrod}
-      '2': {name: comment.syntax.nimrod}
+      '1': {name: storage.type.function.nim}
+      '2': {name: comment.syntax.nim}
     endCaptures:
-      '0': {name: comment.syntax.nimrod}
+      '0': {name: comment.syntax.nim}
     patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.operator.nimrod
+      name: keyword.operator.nim
     - {include: source.css}
 
-- name: source.glsl.embedded.nimrod
+- name: source.glsl.embedded.nim
   patterns:
   - begin: (glsl)(\"\"\")
     end: \"\"\"
     captures:
-      '1': {name: storage.type.function.nimrod}
-      '2': {name: comment.syntax.nimrod}
+      '1': {name: storage.type.function.nim}
+      '2': {name: comment.syntax.nim}
     endCaptures:
-      '0': {name: comment.syntax.nimrod}
+      '0': {name: comment.syntax.nim}
     patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.operator.nimrod
+      name: keyword.operator.nim
     - {include: source.glsl}
 
-- name: source.markdown.embedded.nimrod
+- name: source.markdown.embedded.nim
   patterns:
   - begin: (md)(\"\"\")
     end: \"\"\"
     captures:
-      '1': {name: storage.type.function.nimrod}
-      '2': {name: comment.syntax.nimrod}
+      '1': {name: storage.type.function.nim}
+      '2': {name: comment.syntax.nim}
     endCaptures:
-      '0': {name: comment.syntax.nimrod}
+      '0': {name: comment.syntax.nim}
     patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.operator.nimrod}
-        '2': {name: keyword.operator.nimrod}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
-      - {include: source.nimrod}
+      - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.operator.nimrod
+      name: keyword.operator.nim
     - {include: text.html.markdown.multimarkdown}
 ...

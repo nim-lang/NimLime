@@ -7,7 +7,7 @@
 		<string>cfg</string>
 	</array>
 	<key>name</key>
-	<string>Nimrod Config</string>
+	<string>Nim Config</string>
 	<key>patterns</key>
 	<array>
 		<dict>
@@ -16,18 +16,18 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>punctuation.definition.comment.nimrodcfg</string>
+					<string>punctuation.definition.comment.nimcfg</string>
 				</dict>
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>invalid.illegal.TODO.nimrodcfg</string>
+					<string>invalid.illegal.TODO.nimcfg</string>
 				</dict>
 			</dict>
 			<key>match</key>
 			<string>(#\s*(TODO|todo)?).*$\n?</string>
 			<key>name</key>
-			<string>comment.line.number-sign.nimrodcfg</string>
+			<string>comment.line.number-sign.nimcfg</string>
 		</dict>
 		<dict>
 			<key>comment</key>
@@ -35,7 +35,7 @@
 			<key>match</key>
 			<string>\[.+\]</string>
 			<key>name</key>
-			<string>support.type.nimrodcfg</string>
+			<string>support.type.nimcfg</string>
 		</dict>
 		<dict>
 			<key>begin</key>
@@ -45,7 +45,7 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>variable.parameter.nimrodcfg</string>
+					<string>variable.parameter.nimcfg</string>
 				</dict>
 			</dict>
 			<key>comment</key>
@@ -58,13 +58,13 @@
 					<key>match</key>
 					<string>\b((\d[_\d]*\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*))('[fF](32|64))?</string>
 					<key>name</key>
-					<string>constant.numeric.float.decimal.nimrodcfg</string>
+					<string>constant.numeric.float.decimal.nimcfg</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(0[xX]\h[_\h]*)('[iIuU](8|16|32|64))?</string>
 					<key>name</key>
-					<string>constant.numeric.integer.hexadecimal.nimrodcfg</string>
+					<string>constant.numeric.integer.hexadecimal.nimcfg</string>
 				</dict>
 				<dict>
 					<key>comment</key>
@@ -72,19 +72,19 @@
 					<key>match</key>
 					<string>\b(0o[0-7][_0-7]*)</string>
 					<key>name</key>
-					<string>constant.numeric.integer.octal.nimrodcfg</string>
+					<string>constant.numeric.integer.octal.nimcfg</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(0(b|B)[01][_01]*)</string>
 					<key>name</key>
-					<string>constant.numeric.integer.binary.nimrodcfg</string>
+					<string>constant.numeric.integer.binary.nimcfg</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(\d[_\d]*)</string>
 					<key>name</key>
-					<string>constant.numeric.integer.decimal.nimrodcfg</string>
+					<string>constant.numeric.integer.decimal.nimcfg</string>
 				</dict>
 				<dict>
 					<key>comment</key>
@@ -92,7 +92,7 @@
 					<key>match</key>
 					<string>\b(true|false)\b</string>
 					<key>name</key>
-					<string>constant.language.nimrodcfg</string>
+					<string>constant.language.nimcfg</string>
 				</dict>
 				<dict>
 					<key>begin</key>
@@ -102,7 +102,7 @@
 					<key>end</key>
 					<string>\"</string>
 					<key>name</key>
-					<string>string.quoted.double.raw.nimrodcfg</string>
+					<string>string.quoted.double.raw.nimcfg</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -119,7 +119,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.function.nimrodcfg</string>
+							<string>storage.type.function.nimcfg</string>
 						</dict>
 					</dict>
 					<key>comment</key>
@@ -127,7 +127,7 @@
 					<key>end</key>
 					<string>\"</string>
 					<key>name</key>
-					<string>string.quoted.double.nimrodcfg</string>
+					<string>string.quoted.double.nimcfg</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -142,7 +142,7 @@
 					<key>match</key>
 					<string>\'(\\\d{1,3}|\\?[^\n]?)\'</string>
 					<key>name</key>
-					<string>string.quoted.single.nimrodcfg</string>
+					<string>string.quoted.single.nimcfg</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -150,7 +150,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>string.raw.nimrodcfg</string>
+							<string>string.raw.nimcfg</string>
 						</dict>
 					</dict>
 					<key>comment</key>
@@ -162,7 +162,7 @@
 		</dict>
 	</array>
 	<key>scopeName</key>
-	<string>source.nimrodcfg</string>
+	<string>source.nimcfg</string>
 	<key>uuid</key>
 	<string>8fb54f5c-6f67-4d13-9dcc-52650ea4cb3e</string>
 </dict>

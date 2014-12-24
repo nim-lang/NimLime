@@ -5,7 +5,7 @@
   <key>name</key>
   <string>comments</string>
   <key>scope</key>
-  <string>source.nimrod, source.nimrodcfg</string>
+  <string>source.nim, source.nimcfg</string>
   <key>settings</key>
   <dict>
     <key>decreaseIndentPattern</key>

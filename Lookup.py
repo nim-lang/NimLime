@@ -2,9 +2,9 @@ import sublime, sublime_plugin
 import os, tempfile
 
 try:  # Python 3
-    from NimLime.Nimrod import Idetools
+    from NimLime.Nim import Idetools
 except ImportError:  # Python 2:
-    from Nimrod import Idetools
+    from Nim import Idetools
 
 # Resources
 # http://sublimetext.info/docs/en/extensibility/plugins.html

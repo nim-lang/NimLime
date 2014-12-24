@@ -1,11 +1,11 @@
 {
     "cmd": ["nim", "c", "--parallelBuild:1", "$file"],
-    "selector": "source.nimrod",
+    "selector": "source.nim",
 
     "variants": [
         {
             "cmd": ["nim", "c", "-r", "--verbosity:0", "--hints:off", "$file"],
-            "selector": "source.nimrod",
+            "selector": "source.nim",
             "name": "Run"
         }
     ]

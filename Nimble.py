@@ -9,9 +9,9 @@ import functools
 # https://github.com/wbond/sublime_package_control/blob/6a8b91ca58d66cb495b383d9572bb801316bcec5/package_control/commands/install_package_command.py
 
 
-def run_babel(cmd):
-    # TODO - in babel does not exist, display error
-    output = subprocess.Popen("babel " + cmd,
+def run_nimble(cmd):
+    # TODO - in nimble does not exist, display error
+    output = subprocess.Popen("nimble " + cmd,
                               stdout=subprocess.PIPE,
                               shell=True)
     return output.stdout
@@ -21,15 +21,15 @@ class Package(object):
     pass
 
 
-class BabelListCommand(sublime_plugin.WindowCommand):
+class NimbleListCommand(sublime_plugin.WindowCommand):
 
     """
-    Present a list of available babel packages and allow
+    Present a list of available nimble packages and allow
     the user to pick a package to install.
     """
 
     def list(self):
-        items = run_babel("list")
+        items = run_nimble("list")
         pkg = None
 
         for row in items:
@@ -59,7 +59,7 @@ class BabelListCommand(sublime_plugin.WindowCommand):
 
         item = self.items[picked]
 
-        self.window.run_command("babel_install", {'name': item[0]})
+        self.window.run_command("nimble_install", {'name': item[0]})
 
     def run(self):
         # Display list of packages to install
@@ -74,36 +74,36 @@ class BabelListCommand(sublime_plugin.WindowCommand):
         self.window.show_quick_panel(self.items, self.on_done)
 
 
-class BabelUpdateCommand(sublime_plugin.WindowCommand):
+class NimbleUpdateCommand(sublime_plugin.WindowCommand):
 
     """
-    Update the Babel package list
+    Update the Nimble package list
     """
 
     @staticmethod
     def update():
-        run_babel("update")
+        run_nimble("update")
 
         def show_status():
-            sublime.status_message("Babel package list updated")
+            sublime.status_message("Nimble package list updated")
 
         sublime.set_timeout(show_status, 10)
 
     def run(self):
-        sublime.status_message("Updating Babel package list...")
+        sublime.status_message("Updating Nimble package list...")
         threading.Thread(
-            target=functools.partial(BabelUpdateCommand.update)
+            target=functools.partial(NimbleUpdateCommand.update)
         ).start()
 
 
-class BabelInstallThread(threading.Thread):
+class NimbleInstallThread(threading.Thread):
 
     def __init__(self, pkgName=""):
         self.pkgName = pkgName
         threading.Thread.__init__(self)
 
     def run(self):
-        run_babel("install -y " + self.pkgName)
+        run_nimble("install -y " + self.pkgName)
         msg = self.pkgName + " installed."
 
         def show_status():
@@ -112,11 +112,11 @@ class BabelInstallThread(threading.Thread):
         sublime.set_timeout(show_status, 10)
 
 
-class BabelInstallCommand(sublime_plugin.WindowCommand):
+class NimbleInstallCommand(sublime_plugin.WindowCommand):
 
     """
-    Install the specified babel package
+    Install the specified Nimble package
     """
 
     def run(self, name):
-        BabelInstallThread(name).start()
+        NimbleInstallThread(name).start()

@@ -20,15 +20,33 @@ patterns:
     '1': {name: punctuation.definition.comment.nim}
     '2': {name: invalid.illegal.TODO.nim}
 
-- comment: A nim procedure or method
+- comment: A nim procedure or method declaration
   name: meta.proc.nim
   patterns:
-  - begin: \b(proc|method|template|macro|iterator|converter)\s+\`?([^\:\{\s\`\*\(]*)\`?(\s*\*)?\s*(\(|\=|:|\[|\n|\{)
-    end: \)
+  - begin: \b(proc|method|template|macro|iterator|converter)\s+(\`(\w+)\`|(\w+))(\*)?
+    end: \=
     captures:
       '1': {name: storage.type.proc.nim}
       '2': {name: entity.name.function.nim}
     patterns:
+      - comment: Generic
+        match: \[\w+\]
+      - comment: Pattern
+        name: support.function.pattern.nim
+        begin: \{[^\.]
+        end: \}
+      - comment: Parameters
+        begin: \(
+        end: \)
+        patterns:
+        - comment: Pattern
+          name: support.function.pattern.nim
+          begin: \{[^\.]
+          end: \}
+        - {include: source.nim}
+      - comment: Pragma
+        begin: \{\.
+        end: \.\}
       - {include: source.nim}
 
 - comment: A discarded triple string literal comment
@@ -75,6 +93,12 @@ patterns:
 - comment: Other keywords.
   name: keyword.other.nim
   match: (\b(addr|as|atomic|bind|cast|const|converter|discard|distinct|div|enum|export|from|import|include|let|mod|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)
+
+- comment: Destructure syntax
+  begin: (var|let)\s*\(
+  end: \)
+  captures:
+    '1': { name: keyword.other.nim }
 
 - comment: Invalid and unused keywords.
   name: keyword.invalid.nim
@@ -124,6 +148,14 @@ patterns:
 - comment: Single quoted character literal
   name: string.quoted.single.nim
   match: \'(\\\d{1,3}|\\?[^\n]?)\'
+
+- comment: Call syntax
+  begin: (\w+)\s*(\[\w+\]\s*)?\(
+  end: \)
+  captures:
+    '1': { name: support.function.any-method.nim }
+  patterns:
+    - {include: source.nim}
 
 # Sub-Syntax selectors
 - comment: C

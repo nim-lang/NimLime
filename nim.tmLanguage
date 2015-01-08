@@ -61,7 +61,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>\b(proc|method|template|macro|iterator|converter)\s+(\`(\w+)\`|(\w+))(\*)?</string>
+					<string>\b(proc|method|template|macro|iterator|converter)\s+(\`([^\w]+)\`|(\s+))(\*)?</string>
 					<key>captures</key>
 					<dict>
 						<key>1</key>
@@ -254,7 +254,7 @@
 			<key>comment</key>
 			<string>Common functions</string>
 			<key>match</key>
-			<string>\b(new|await|assert|echo|defined|declared|newException|countup|countdown|high|low)\b</string>
+			<string>\b(await|assert|echo|defined|declared|newException|countup|countdown|high|low)\b</string>
 			<key>name</key>
 			<string>keyword.common.function.nim</string>
 		</dict>

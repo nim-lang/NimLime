@@ -23,7 +23,7 @@ patterns:
 - comment: A nim procedure or method declaration
   name: meta.proc.nim
   patterns:
-  - begin: \b(proc|method|template|macro|iterator|converter)\s+(\`(\w+)\`|(\w+))(\*)?
+  - begin: \b(proc|method|template|macro|iterator|converter)\s+(\`([^\w]+)\`|(\s+))(\*)?
     end: \=
     captures:
       '1': {name: storage.type.proc.nim}
@@ -106,7 +106,7 @@ patterns:
 
 - comment: Common functions
   name: keyword.common.function.nim
-  match: \b(new|await|assert|echo|defined|declared|newException|countup|countdown|high|low)\b
+  match: \b(await|assert|echo|defined|declared|newException|countup|countdown|high|low)\b
 
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nim

@@ -23,7 +23,7 @@ patterns:
 - comment: A nim procedure or method declaration
   name: meta.proc.nim
   patterns:
-  - begin: \b(proc|method|template|macro|iterator|converter)\s+(\`([^\w]+)\`|(\s+))(\*)?
+  - begin: \b(proc|method|template|macro|iterator|converter)\s+(\`([^\w]+)\`|([a-zA-Z0-9\_]+))(\*)?
     end: \=
     captures:
       '1': {name: storage.type.proc.nim}

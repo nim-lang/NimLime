@@ -383,7 +383,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>(\w+)\s*(\[\w+\]\s*)?\(</string>
+			<string>(\w+)\s*(?=\(|\[.+?\]\s*\()</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>

@@ -161,7 +161,7 @@ patterns:
   match: \'(\\\d{1,3}|\\?[^\n]?)\'
 
 - comment: Call syntax
-  begin: (\w+)\s*(\[\w+\]\s*)?\(
+  begin: (\w+)\s*(?=\(|\[.+?\]\s*\()
   end: \)
   captures:
     '1': { name: support.function.any-method.nim }

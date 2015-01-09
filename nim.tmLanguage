@@ -87,13 +87,20 @@
 						</dict>
 						<dict>
 							<key>begin</key>
-							<string>\{[^\.]</string>
+							<string>\{</string>
 							<key>comment</key>
 							<string>Pattern</string>
 							<key>end</key>
 							<string>\}</string>
-							<key>name</key>
-							<string>support.function.pattern.nim</string>
+							<key>patterns</key>
+							<array>
+								<dict>
+									<key>match</key>
+									<string>\w+</string>
+									<key>name</key>
+									<string>entity.other.attribute-name.pattern.nim</string>
+								</dict>
+							</array>
 						</dict>
 						<dict>
 							<key>begin</key>
@@ -106,13 +113,20 @@
 							<array>
 								<dict>
 									<key>begin</key>
-									<string>\{[^\.]</string>
+									<string>\{</string>
 									<key>comment</key>
 									<string>Pattern</string>
 									<key>end</key>
 									<string>\}</string>
-									<key>name</key>
-									<string>support.function.pattern.nim</string>
+									<key>patterns</key>
+									<array>
+										<dict>
+											<key>match</key>
+											<string>\w+</string>
+											<key>name</key>
+											<string>entity.other.attribute-name.pattern.nim</string>
+										</dict>
+									</array>
 								</dict>
 								<dict>
 									<key>include</key>
@@ -124,15 +138,41 @@
 							<key>begin</key>
 							<string>\{\.</string>
 							<key>comment</key>
-							<string>Pragma</string>
+							<string>Pragmas</string>
 							<key>end</key>
-							<string>\.\}</string>
+							<string>\.?\}</string>
+							<key>patterns</key>
+							<array>
+								<dict>
+									<key>match</key>
+									<string>\w+</string>
+									<key>name</key>
+									<string>entity.other.attribute-name.pragma.nim</string>
+								</dict>
+							</array>
 						</dict>
 						<dict>
 							<key>include</key>
 							<string>source.nim</string>
 						</dict>
 					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>\{\.</string>
+			<key>comment</key>
+			<string>Pragmas</string>
+			<key>end</key>
+			<string>\.?\}</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\w+</string>
+					<key>name</key>
+					<string>entity.other.attribute-name.pragma.nim</string>
 				</dict>
 			</array>
 		</dict>

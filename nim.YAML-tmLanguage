@@ -32,22 +32,36 @@ patterns:
       - comment: Generic
         match: \[\w+\]
       - comment: Pattern
-        name: support.function.pattern.nim
-        begin: \{[^\.]
+        begin: \{
         end: \}
+        patterns:
+        - name: entity.other.attribute-name.pattern.nim
+          match: \w+
       - comment: Parameters
         begin: \(
         end: \)
         patterns:
         - comment: Pattern
-          name: support.function.pattern.nim
-          begin: \{[^\.]
+          begin: \{
           end: \}
+          patterns:
+          - name: entity.other.attribute-name.pattern.nim
+            match: \w+
         - {include: source.nim}
-      - comment: Pragma
+      - comment: Pragmas
         begin: \{\.
-        end: \.\}
+        end: \.?\}
+        patterns:
+        - name: entity.other.attribute-name.pragma.nim
+          match: \w+
       - {include: source.nim}
+
+- comment: Pragmas
+  begin: \{\.
+  end: \.?\}
+  patterns:
+  - name: entity.other.attribute-name.pragma.nim
+    match: \w+
 
 - comment: A discarded triple string literal comment
   name: comment.line.discarded.nim

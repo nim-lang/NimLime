@@ -48,18 +48,15 @@ patterns:
           - name: entity.other.attribute-name.pattern.nim
             match: \w+
         - {include: source.nim}
-      - comment: Pragmas
-        begin: \{\.
-        end: \.?\}
-        patterns:
-        - name: entity.other.attribute-name.pragma.nim
-          match: \w+
       - {include: source.nim}
 
 - comment: Pragmas
   begin: \{\.
   end: \.?\}
   patterns:
+  - begin: \"
+    end: \"
+    name: string.something.nim
   - name: entity.other.attribute-name.pragma.nim
     match: \w+
 

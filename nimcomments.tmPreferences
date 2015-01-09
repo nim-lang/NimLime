@@ -25,7 +25,7 @@
         |case\b.*
 
         # Handle type/proc/method
-        |(type|proc|method|iterator)\b.*
+        |(type|proc|method|template|macro|iterator|converter)\b.*
 
       )\s*$</string>
     <key>disableIndentNextLinePattern</key>

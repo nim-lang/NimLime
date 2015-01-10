@@ -229,7 +229,7 @@
 			<key>comment</key>
 			<string>Keywords that affect program control flow or scope.</string>
 			<key>match</key>
-			<string>\b(block|break|case|continue|do|elif|else|end|except|finally|for|if|raise|return|try|when|while|yield)\b</string>
+			<string>\b(block|break|case|continue|do|elif|else|end|except|finally|if|raise|return|try|when|while|yield)\b</string>
 			<key>name</key>
 			<string>keyword.control.nim</string>
 		</dict>
@@ -248,6 +248,43 @@
 			<string>(\b()\b|(=|\+|-|\*|/|&lt;|&gt;|@|\$|~|&amp;|%|!|\?|\^|\.|:|\\)+)</string>
 			<key>name</key>
 			<string>keyword.operator.nim</string>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>(for)\s+</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.nim</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>in keyword in a 'for' loop</string>
+			<key>end</key>
+			<string>\:()</string>
+			<key>name</key>
+			<string>meta.forloop.nim</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.control.nim</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>\s+(in)\s+</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>source.nim</string>
+				</dict>
+			</array>
 		</dict>
 		<dict>
 			<key>comment</key>

@@ -91,7 +91,7 @@ patterns:
 
 - comment: Keywords that affect program control flow or scope.
   name: keyword.control.nim
-  match: \b(block|break|case|continue|do|elif|else|end|except|finally|for|if|raise|return|try|when|while|yield)\b
+  match: \b(block|break|case|continue|do|elif|else|end|except|finally|if|raise|return|try|when|while|yield)\b
 
 - comment: Keyword boolean operators for expressions.
   name: keyword.operator.boolean.nim
@@ -100,6 +100,18 @@ patterns:
 - comment: Generic operators for expressions.
   name: keyword.operator.nim
   match: (\b()\b|(=|\+|-|\*|/|<|>|@|\$|~|&|%|!|\?|\^|\.|:|\\)+)
+
+- comment: in keyword in a 'for' loop
+  begin: (for)\s+
+  end: \:()
+  name: meta.forloop.nim
+  captures:
+    '1': { name: keyword.control.nim }
+  patterns:
+  - match: \s+(in)\s+
+    captures:
+      '1': { name: keyword.control.nim }
+  - {include: source.nim}
 
 - comment: Other keywords.
   name: keyword.other.nim

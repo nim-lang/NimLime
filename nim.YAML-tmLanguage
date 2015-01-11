@@ -108,7 +108,7 @@ patterns:
   captures:
     '1': { name: keyword.control.nim }
   patterns:
-  - match: \s+(in)\s+
+  - match: \w+\s+(in)\s+
     captures:
       '1': { name: keyword.control.nim }
   - {include: source.nim}
@@ -129,7 +129,7 @@ patterns:
 
 - comment: Common functions
   name: keyword.common.function.nim
-  match: \b(await|assert|echo|defined|declared|newException|countup|countdown|high|low)\b
+  match: \b(defined|declared|newException|countup|countdown|high|low)\b
 
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nim
@@ -175,6 +175,14 @@ patterns:
 - comment: Call syntax
   begin: (\w+)\s*(?=\(|\[.+?\]\s*\()
   end: \)
+  captures:
+    '1': { name: support.function.any-method.nim }
+  patterns:
+    - {include: source.nim}
+
+- comment: Command syntax
+  begin: (\w+)(?=\s+\w+)
+  end: \s+
   captures:
     '1': { name: support.function.any-method.nim }
   patterns:

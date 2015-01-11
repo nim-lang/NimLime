@@ -278,7 +278,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>\s+(in)\s+</string>
+					<string>\w+\s+(in)\s+</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -322,7 +322,7 @@
 			<key>comment</key>
 			<string>Common functions</string>
 			<key>match</key>
-			<string>\b(await|assert|echo|defined|declared|newException|countup|countdown|high|low)\b</string>
+			<string>\b(defined|declared|newException|countup|countdown|high|low)\b</string>
 			<key>name</key>
 			<string>keyword.common.function.nim</string>
 		</dict>
@@ -433,6 +433,29 @@
 			<string>Call syntax</string>
 			<key>end</key>
 			<string>\)</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.nim</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>(\w+)(?=\s+\w+)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>support.function.any-method.nim</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>Command syntax</string>
+			<key>end</key>
+			<string>\s+</string>
 			<key>patterns</key>
 			<array>
 				<dict>

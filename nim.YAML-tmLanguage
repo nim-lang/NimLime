@@ -128,8 +128,8 @@ patterns:
   match: (\b(generic|interface|lambda|out|shared|with|without)\b)
 
 - comment: Common functions
-  name: keyword.common.function.nim
-  match: \b(defined|declared|newException|countup|countdown|high|low)\b
+  name: support.function.any-method.nim
+  match: \b(len|high|low)\b
 
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nim

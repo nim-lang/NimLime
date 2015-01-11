@@ -322,9 +322,9 @@
 			<key>comment</key>
 			<string>Common functions</string>
 			<key>match</key>
-			<string>\b(defined|declared|newException|countup|countdown|high|low)\b</string>
+			<string>\b(len|high|low)\b</string>
 			<key>name</key>
-			<string>keyword.common.function.nim</string>
+			<string>support.function.any-method.nim</string>
 		</dict>
 		<dict>
 			<key>comment</key>

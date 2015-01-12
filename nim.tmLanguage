@@ -54,6 +54,108 @@
 		</dict>
 		<dict>
 			<key>comment</key>
+			<string>C</string>
+			<key>name</key>
+			<string>source.c.embedded.nim</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>\{\.(emit:) ?(\"\"\")</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.other.nim</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nim</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>(\"\"\")\.?</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nim</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>begin</key>
+							<string>\`</string>
+							<key>end</key>
+							<string>\`</string>
+							<key>name</key>
+							<string>keyword.operator.nim</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>source.c</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>assembly</string>
+			<key>name</key>
+			<string>source.asm.embedded.nim</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(asm )(\"\"\")</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.other.nim</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nim</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\"\"\"</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>comment.syntax.nim</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>begin</key>
+							<string>\`</string>
+							<key>end</key>
+							<string>\`</string>
+							<key>name</key>
+							<string>keyword.operator.nim</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>source.asm</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>comment</key>
 			<string>A nim procedure or method declaration</string>
 			<key>name</key>
 			<string>meta.proc.nim</string>
@@ -420,29 +522,6 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>([^\s\(\)\.\"]+)(?=\")</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>support.function.any-method.nim</string>
-				</dict>
-			</dict>
-			<key>comment</key>
-			<string>String prefix</string>
-			<key>end</key>
-			<string>(?=\")</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>source.nim</string>
-				</dict>
-			</array>
-		</dict>
-		<dict>
-			<key>begin</key>
 			<string>(\w+)\s*(?=\(|\[.+?\]\s*\()</string>
 			<key>captures</key>
 			<dict>
@@ -482,108 +561,6 @@
 				<dict>
 					<key>include</key>
 					<string>source.nim</string>
-				</dict>
-			</array>
-		</dict>
-		<dict>
-			<key>comment</key>
-			<string>C</string>
-			<key>name</key>
-			<string>source.c.embedded.nim</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>\{\.(emit:) ?(\"\"\")</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.other.nim</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>comment.syntax.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(\"\"\")\.?</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>comment.syntax.nim</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>begin</key>
-							<string>\`</string>
-							<key>end</key>
-							<string>\`</string>
-							<key>name</key>
-							<string>keyword.operator.nim</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>source.c</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		<dict>
-			<key>comment</key>
-			<string>assembly</string>
-			<key>name</key>
-			<string>source.asm.embedded.nim</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>(asm )(\"\"\")</string>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.other.nim</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>comment.syntax.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>\"\"\"</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>comment.syntax.nim</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>begin</key>
-							<string>\`</string>
-							<key>end</key>
-							<string>\`</string>
-							<key>name</key>
-							<string>keyword.operator.nim</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>source.asm</string>
-						</dict>
-					</array>
 				</dict>
 			</array>
 		</dict>

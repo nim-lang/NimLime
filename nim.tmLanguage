@@ -389,10 +389,36 @@
 			</array>
 		</dict>
 		<dict>
+			<key>captures</key>
+			<dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.nim</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>import syntax</string>
+			<key>match</key>
+			<string>((import)\s+[\/\w]+,?)</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.nim</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(from)\s+[\/\w]+\s+(?=import)</string>
+		</dict>
+		<dict>
 			<key>comment</key>
 			<string>Other keywords.</string>
 			<key>match</key>
-			<string>(\b(addr|as|atomic|bind|cast|const|converter|discard|distinct|div|enum|export|from|import|include|let|mod|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)</string>
+			<string>(\b(addr|as|atomic|bind|cast|const|converter|discard|distinct|div|enum|export|include|let|mod|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)</string>
 			<key>name</key>
 			<string>keyword.other.nim</string>
 		</dict>
@@ -555,7 +581,7 @@
 			<key>comment</key>
 			<string>Command syntax</string>
 			<key>match</key>
-			<string>(\w+)(?=\s+[\w\"\'])</string>
+			<string>(?&lt;=\s)(\w+)(?=\s+[\w\"\'])</string>
 			<key>patterns</key>
 			<array>
 				<dict>

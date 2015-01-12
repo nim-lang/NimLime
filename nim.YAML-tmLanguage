@@ -148,9 +148,17 @@ patterns:
       '1': { name: keyword.control.nim }
   - {include: source.nim}
 
+- comment: Import syntax
+  match: ((import)\s+[\/\w]+,?)
+  captures:
+    '2': { name: keyword.control.nim }
+- match: (from)\s+[\/\w]+\s+(?=import)
+  captures:
+    '1': { name: keyword.control.nim }
+
 - comment: Other keywords.
   name: keyword.other.nim
-  match: (\b(addr|as|atomic|bind|cast|const|converter|discard|distinct|div|enum|export|from|import|include|let|mod|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)
+  match: (\b(addr|as|atomic|bind|cast|const|converter|discard|distinct|div|enum|export|include|let|mod|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)
 
 - comment: Destructure syntax
   begin: (var|let)\s*\(
@@ -216,7 +224,7 @@ patterns:
     - {include: source.nim}
 
 - comment: Command syntax
-  match: (\w+)(?=\s+[\w\"\'])
+  match: (?<=\s)(\w+)(?=\s+[\w\"\'])
   captures:
     '1': { name: support.function.any-method.nim }
   patterns:

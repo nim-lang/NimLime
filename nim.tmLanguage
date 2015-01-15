@@ -398,7 +398,7 @@
 				</dict>
 			</dict>
 			<key>comment</key>
-			<string>import syntax</string>
+			<string>Import syntax</string>
 			<key>match</key>
 			<string>((import)\s+[\/\w]+,?)</string>
 		</dict>
@@ -418,7 +418,7 @@
 			<key>comment</key>
 			<string>Other keywords.</string>
 			<key>match</key>
-			<string>(\b(addr|as|atomic|bind|cast|const|converter|discard|distinct|div|enum|export|include|let|mod|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)</string>
+			<string>(\b(addr|as|atomic|bind|cast|const|converter|discard|distinct|div|enum|export|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)</string>
 			<key>name</key>
 			<string>keyword.other.nim</string>
 		</dict>
@@ -548,7 +548,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>(\w+)\s*(?=\(|\[.+?\]\s*\()</string>
+			<string>([\w\`]+)\s*(?=\(|\[.+?\]\s*\()</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -581,7 +581,26 @@
 			<key>comment</key>
 			<string>Command syntax</string>
 			<key>match</key>
-			<string>(?&lt;=\s)(\w+)(?=\s+[\w\"\'])</string>
+			<string>(\w+)(?=\s+[\w](?!\w+((?!\n)\s)+))</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.nim</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>support.function.any-method.nim</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(\w+)(?=\s+[\"\'\`])</string>
 			<key>patterns</key>
 			<array>
 				<dict>

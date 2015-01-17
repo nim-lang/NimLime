@@ -70,6 +70,9 @@ patterns:
         begin: \{
         end: \}
         patterns:
+        - name: string.something.nim
+          begin: \"
+          end: \"
         - name: entity.other.attribute-name.pattern.nim
           match: \w+
       - comment: Parameters
@@ -80,6 +83,9 @@ patterns:
           begin: \{
           end: \}
           patterns:
+          - name: string.something.nim
+            begin: \"
+            end: \"
           - name: entity.other.attribute-name.pattern.nim
             match: \w+
         - {include: source.nim}

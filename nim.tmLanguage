@@ -197,6 +197,14 @@
 							<key>patterns</key>
 							<array>
 								<dict>
+									<key>begin</key>
+									<string>\"</string>
+									<key>end</key>
+									<string>\"</string>
+									<key>name</key>
+									<string>string.something.nim</string>
+								</dict>
+								<dict>
 									<key>match</key>
 									<string>\w+</string>
 									<key>name</key>
@@ -222,6 +230,14 @@
 									<string>\}</string>
 									<key>patterns</key>
 									<array>
+										<dict>
+											<key>begin</key>
+											<string>\"</string>
+											<key>end</key>
+											<string>\"</string>
+											<key>name</key>
+											<string>string.something.nim</string>
+										</dict>
 										<dict>
 											<key>match</key>
 											<string>\w+</string>

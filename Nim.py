@@ -26,8 +26,8 @@ class Idetools:
     @staticmethod
     def ensure_service(proj=""):
         # If service is running, do nothing
-        if Idetools.service is not None and Idetools.service.poll():
-            return
+        if Idetools.service is not None and Idetools.service.poll() is None:
+            return Idetools.service
 
         compiler = sublime.load_settings("nim.sublime-settings").get("nim_compiler_executable")
         if compiler == None or compiler == "": return
@@ -38,10 +38,10 @@ class Idetools:
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            universal_newlines=True,
             shell=True)
 
         print("Nim CaaS now running")
+        return Idetools.service
 
     @staticmethod
     def idetool(win, cmd, filename, line, col, dirtyFile="", extra=""):
@@ -61,19 +61,19 @@ class Idetools:
 
         if True:  # TODO - use this when it's not broken in nim
             # Ensure IDE Tools service is running
-            Idetools.ensure_service(projFile)
+            proc = Idetools.ensure_service(projFile)
 
             # Call the service
             args = "idetools" \
                 + trackType \
-                + "\"" + filePath + "," + str(line) + "," + str(col) + "\" " \
+                + '"' + filePath + "," + str(line) + "," + str(col) + '" ' \
                 + cmd + extra
 
             print(args)
 
-            Idetools.service.stdin.write(args + "\r\n")
-            data = Idetools.service.stdout.readline()
-            return data.decode('utf-8')
+            proc.stdin.write(args)
+            proc.stdin.write("\r\n")
+            return proc.stdout.readline()
 
         else:
             compiler = sublime.load_settings("nim.sublime-settings").get("nim_compiler_executable")

@@ -9,6 +9,7 @@ try:  # Python 3
 except ImportError:  # Python 2:
     from Project import Utility
 
+useService = True
 
 class Idetools:
 
@@ -29,12 +30,8 @@ class Idetools:
         if Idetools.service is not None and Idetools.service.poll() is None:
             return Idetools.service
 
-        compiler = sublime.load_settings("nim.sublime-settings").get("nim_compiler_executable")
-        if compiler == None or compiler == "": return
-
         Idetools.service = subprocess.Popen(
-            compiler + " --verbosity:0 serve " +
-            "--server.type:stdin " + proj,
+            "nimsuggest --stdin " + proj,
             bufsize=1,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
@@ -49,8 +46,8 @@ class Idetools:
     def idetool(win, cmd, filename, line, col, dirtyFile="", extra=""):
 
         trackType = " --track:"
-        filePath = filename
-        projFile = Utility.get_nimproject(win)
+        filePath  = filename
+        projFile  = Utility.get_nimproject(win)
 
         if projFile is None:
             projFile = filename
@@ -61,20 +58,25 @@ class Idetools:
             trackType = " --trackDirty:"
             filePath = dirtyFile + "," + filePath
 
-        if True:  # TODO - use this when it's not broken in nim
+        if useService:  # TODO - use this when it's not broken in nim
             # Ensure IDE Tools service is running
             proc = Idetools.ensure_service(projFile)
 
             # Call the service
-            args = "idetools" \
-                + trackType \
-                + '"' + filePath + "," + str(line) + "," + str(col) + '" ' \
-                + cmd + extra
+            filePath, file = os.path.split(filePath)
+            args = 'def ' + file + ':' + str(line) + ":" + str(col)
+
+            # args = "idetools" \
+            #     + trackType \
+            #     + '"' + filePath + "," + str(line) + "," + str(col) + '" ' \
+            #     + cmd + extra
 
             print(args)
 
             proc.stdin.write(args + '\r\n')
             result = proc.stdout.readline()
+
+            print(result)
             return result
 
         else:
@@ -107,17 +109,31 @@ class Idetools:
 
     @staticmethod
     def parse(result):
-        m = Idetools.pattern.match(result)
+        if useService:
+            m = Idetools.pattern.match(result)
 
-        if m is not None:
-            cmd = m.group("cmd")
+            if m is not None:
+                cmd = m.group("cmd")
 
-            if cmd == "def":
-                return (m.group("symbol"), m.group("type"),
-                        m.group("path"), m.group("line"),
-                        m.group("col"), m.group("description"))
+                if cmd == "def":
+                    return (m.group("symbol"), m.group("type"),
+                            m.group("path"), m.group("line"),
+                            m.group("col"), m.group("description"))
 
+            else:
+                None
         else:
-            None
+            m = Idetools.pattern.match(result)
+
+            if m is not None:
+                cmd = m.group("cmd")
+
+                if cmd == "def":
+                    return (m.group("symbol"), m.group("type"),
+                            m.group("path"), m.group("line"),
+                            m.group("col"), m.group("description"))
+
+            else:
+                None
 
         return None

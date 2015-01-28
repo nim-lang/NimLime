@@ -35,9 +35,11 @@ class Idetools:
         Idetools.service = subprocess.Popen(
             compiler + " --verbosity:0 serve " +
             "--server.type:stdin " + proj,
+            bufsize=1,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            universal_newlines=True,
             shell=True)
 
         print("Nim CaaS now running")
@@ -71,9 +73,9 @@ class Idetools:
 
             print(args)
 
-            proc.stdin.write(args)
-            proc.stdin.write("\r\n")
-            return proc.stdout.readline()
+            proc.stdin.write(args + '\r\n')
+            result = proc.stdout.readline()
+            return result
 
         else:
             compiler = sublime.load_settings("nim.sublime-settings").get("nim_compiler_executable")
@@ -81,8 +83,8 @@ class Idetools:
 
             args = compiler + " --verbosity:0 idetools " \
                 + trackType \
-                + "\"" + filePath + "," + str(line) + "," + str(col) \
-                + "\" " + cmd + " \"" + projFile + "\"" + extra
+                + '"' + filePath + "," + str(line) + "," + str(col) \
+                + '" ' + cmd + ' "' + projFile + '"' + extra
             print(args)
 
             output = subprocess.Popen(args,

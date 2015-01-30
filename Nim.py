@@ -1,8 +1,14 @@
 import sublime
 import sublime_plugin
+import sys
 import re
 import subprocess
 import os
+import imp
+
+st_version = 2
+if int(sublime.version()) > 3000:
+    st_version = 3
 
 try:  # Python 3
     from NimLime.Project import Utility
@@ -137,3 +143,31 @@ class Idetools:
                 None
 
         return None
+
+
+# Retrieve modules to reload
+reload_mods = []
+for mod in sys.modules:
+    if mod[0:7] == 'NimLime' and sys.modules[mod] != None:
+        reload_mods.append(mod)
+
+# Reload modules
+mods_load_order = [
+    'NimLime',
+    'NimLime.Project',
+    'NimLime.Nim',
+    'NimLime.Lookup',
+    'NimLime.Documentation',
+    'NimLime.Nimble',
+    'NimLime.AutoComplete'
+]
+
+mod_load_prefix = ''
+if st_version == 3:
+    mod_load_prefix = 'NimLime.'
+    from imp import reload
+
+for mod in mods_load_order:
+    if mod in reload_mods:
+        reload(sys.modules[mod])
+        print("reloading " + mod)

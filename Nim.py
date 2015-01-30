@@ -3,12 +3,16 @@ import sublime_plugin
 import sys
 import re
 import subprocess
+from threading import Thread
 import os
 import imp
 
 st_version = 2
 if int(sublime.version()) > 3000:
     st_version = 3
+    from queue import Queue
+else:
+    from Queue import Queue
 
 try:  # Python 3
     from NimLime.Project import Utility
@@ -19,9 +23,11 @@ useService = True
 
 class Idetools:
 
-    service = None
-
     # Fields
+    service = None
+    outThread = None
+    stdout_queue = None
+
     pattern = re.compile(
         '^(?P<cmd>\S+)\s(?P<ast>\S+)\s' +
         '(?P<symbol>\S+)( (?P<instance>\S+))?\s' +
@@ -31,12 +37,37 @@ class Idetools:
 
     # Methods
     @staticmethod
+    def enqueue_output(out, queue):
+        for line in iter(out.readline, b''):
+            queue.put(line)
+        out.close()
+
+    @staticmethod
+    def dump_output():
+        result = ''
+        try:
+            while True:
+                result += Idetools.stdout_queue.get_nowait()
+        except:
+            return result
+
+    def get_line():
+        result = ''
+        try:
+            while True:
+                result += Idetools.stdout_queue.get(True, 1)
+                if result.endswith('\n'):
+                    return result
+        except:
+            return result
+
+    @staticmethod
     def ensure_service(proj=""):
         # If service is running, do nothing
         if Idetools.service is not None and Idetools.service.poll() is None:
             return Idetools.service
 
-        Idetools.service = subprocess.Popen(
+        proc = subprocess.Popen(
             "nimsuggest --stdin " + proj,
             bufsize=1,
             stdout=subprocess.PIPE,
@@ -45,7 +76,13 @@ class Idetools:
             universal_newlines=True,
             shell=True)
 
-        print("Nim CaaS now running")
+        Idetools.stdout_queue = Queue()
+        Idetools.service   = proc
+        Idetools.outThread = Thread(target=Idetools.enqueue_output, args=(proc.stdout, Idetools.stdout_queue))
+        Idetools.outThread.daemon = True
+        Idetools.outThread.start()
+
+        print("nimsuggest running: nimsuggest --stdin " + proj)
         return Idetools.service
 
     @staticmethod
@@ -60,32 +97,32 @@ class Idetools:
 
         workingDir = os.path.dirname(projFile)
 
-        if dirtyFile != "":
-            trackType = " --trackDirty:"
-            filePath = dirtyFile + "," + filePath
+        if useService:
+            if dirtyFile != "":
+                filePath = filePath + '";"' + dirtyFile
 
-        if useService:  # TODO - use this when it's not broken in nim
             # Ensure IDE Tools service is running
             proc = Idetools.ensure_service(projFile)
 
             # Call the service
-            filePath, file = os.path.split(filePath)
-            args = 'def ' + file + ':' + str(line) + ":" + str(col)
-
-            # args = "idetools" \
-            #     + trackType \
-            #     + '"' + filePath + "," + str(line) + "," + str(col) + '" ' \
-            #     + cmd + extra
-
+            args = 'def "' + filePath + '":' + str(line) + ":" + str(col)
             print(args)
 
-            proc.stdin.write(args + '\r\n')
-            result = proc.stdout.readline()
+            # Dump queued info & write to stdin
+            Idetools.dump_output()
+            proc.stdin.write(args + '\n')
+
+            # Read result
+            result = Idetools.get_line()
 
             print(result)
             return result
 
         else:
+            if dirtyFile != "":
+                trackType = " --trackDirty:"
+                filePath = dirtyFile + "," + filePath
+
             compiler = sublime.load_settings("nim.sublime-settings").get("nim_compiler_executable")
             if compiler == None or compiler == "": return ""
 

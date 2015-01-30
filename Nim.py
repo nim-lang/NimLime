@@ -39,7 +39,8 @@ class Idetools:
     @staticmethod
     def enqueue_output(out, queue):
         for line in iter(out.readline, b''):
-            queue.put(line)
+            if line.startswith('>'):
+                queue.put(line)
         out.close()
 
     @staticmethod
@@ -78,7 +79,8 @@ class Idetools:
 
         Idetools.stdout_queue = Queue()
         Idetools.service   = proc
-        Idetools.outThread = Thread(target=Idetools.enqueue_output, args=(proc.stdout, Idetools.stdout_queue))
+        Idetools.outThread = Thread(target=Idetools.enqueue_output,
+            args=(proc.stdout, Idetools.stdout_queue))
         Idetools.outThread.daemon = True
         Idetools.outThread.start()
 

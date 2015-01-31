@@ -23,7 +23,6 @@ class Idetools:
     service      = None
     outThread    = None
     stdout_queue = None
-    lastFile     = None
 
     pattern = re.compile(
         '^(?P<cmd>\S+)\s(?P<ast>\S+)\s' +
@@ -36,8 +35,8 @@ class Idetools:
     @staticmethod
     def enqueue_output(out, queue):
         for line in iter(out.readline, b''):
-            if line != "" and line[0] == '>':
-                queue.put(line[2:])
+            if line[0:3] == 'def':
+                queue.put(line)
 
     @staticmethod
     def dump_output():
@@ -46,7 +45,7 @@ class Idetools:
     @staticmethod
     def get_line():
         try:
-            return Idetools.stdout_queue.get(True, 4)
+            return Idetools.stdout_queue.get(True, 1)
         except:
             return ""
 
@@ -54,17 +53,8 @@ class Idetools:
     def ensure_service(proj=""):
         # If service is running, do nothing
         if Idetools.service is not None and Idetools.service.poll() is None:
-
-            if Idetools.lastFile != proj:
-            # Switch to new file
-                print('use "' + proj + '"\r\n')
-                Idetools.service.stdin.write('use "' + proj + '"\r\n')
-                Idetools.lastFile = proj
-                pass
-
             return Idetools.service
 
-        Idetools.lastFile = proj
         proc = subprocess.Popen(
             'nimsuggest --stdin "' + proj + '"',
             bufsize=0,
@@ -94,8 +84,6 @@ class Idetools:
         if projFile is None:
             projFile = filename
 
-        workingDir = os.path.dirname(projFile)
-
         if dirtyFile != "":
             filePath = filePath + '";"' + dirtyFile
 
@@ -108,7 +96,7 @@ class Idetools:
         print(args)
 
         # Dump queued info & write to stdin & return
-        proc.stdin.write(args + '\r\n')
+        proc.stdin.write(args + '\n')
         return Idetools.get_line()
 
     @staticmethod
@@ -125,7 +113,7 @@ class Idetools:
 
         return None
 
-auto_reload = True
+auto_reload = False
 if auto_reload:
     # Perform auto-reload
     reload_mods = []

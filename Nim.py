@@ -39,28 +39,19 @@ class Idetools:
     @staticmethod
     def enqueue_output(out, queue):
         for line in iter(out.readline, b''):
-            if line.startswith('>'):
-                queue.put(line)
-        out.close()
+            if line != "" and line[0] == '>':
+                queue.put(line[2:])
 
     @staticmethod
     def dump_output():
-        result = ''
-        try:
-            while True:
-                result += Idetools.stdout_queue.get_nowait()
-        except:
-            return result
+        Idetools.stdout_queue.queue.clear()
 
+    @staticmethod
     def get_line():
-        result = ''
         try:
-            while True:
-                result += Idetools.stdout_queue.get(True, 1)
-                if result.endswith('\n'):
-                    return result
+            return Idetools.stdout_queue.get(True, 4)
         except:
-            return result
+            return ""
 
     @staticmethod
     def ensure_service(proj=""):
@@ -70,7 +61,7 @@ class Idetools:
 
         proc = subprocess.Popen(
             "nimsuggest --stdin " + proj,
-            bufsize=1,
+            bufsize=0,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -80,7 +71,7 @@ class Idetools:
         Idetools.stdout_queue = Queue()
         Idetools.service   = proc
         Idetools.outThread = Thread(target=Idetools.enqueue_output,
-            args=(proc.stdout, Idetools.stdout_queue))
+                                    args=(proc.stdout, Idetools.stdout_queue))
         Idetools.outThread.daemon = True
         Idetools.outThread.start()
 
@@ -89,7 +80,6 @@ class Idetools:
 
     @staticmethod
     def idetool(win, cmd, filename, line, col, dirtyFile="", extra=""):
-
         trackType = " --track:"
         filePath  = filename
         projFile  = Utility.get_nimproject(win)
@@ -105,27 +95,25 @@ class Idetools:
 
             # Ensure IDE Tools service is running
             proc = Idetools.ensure_service(projFile)
+            Idetools.dump_output()
 
             # Call the service
             args = 'def "' + filePath + '":' + str(line) + ":" + str(col)
             print(args)
 
             # Dump queued info & write to stdin
-            Idetools.dump_output()
-            proc.stdin.write(args + '\n')
+            proc.stdin.write(args + '\r\n')
 
             # Read result
-            result = Idetools.get_line()
-
-            print(result)
-            return result
+            return Idetools.get_line()
 
         else:
             if dirtyFile != "":
                 trackType = " --trackDirty:"
                 filePath = dirtyFile + "," + filePath
 
-            compiler = sublime.load_settings("nim.sublime-settings").get("nim_compiler_executable")
+            compiler = sublime.load_settings("nim.sublime-settings")\
+                              .get("nim_compiler_executable")
             if compiler == None or compiler == "": return ""
 
             args = compiler + " --verbosity:0 idetools " \
@@ -134,52 +122,32 @@ class Idetools:
                 + '" ' + cmd + ' "' + projFile + '"' + extra
             print(args)
 
-            output = subprocess.Popen(args,
-                                      stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE,
-                                      shell=True,
-                                      cwd=workingDir)
-
-            result = ""
+            output = subprocess.Popen(
+                args,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                shell=True,
+                cwd=workingDir)
 
             temp = output.stdout.read()
 
             # Convert bytes to string
-            result = temp.decode('utf-8')
-
-            # print(output.stderr.read())
             output.wait()
-
-        return result
+            return temp.decode('utf-8')
 
     @staticmethod
     def parse(result):
-        if useService:
-            m = Idetools.pattern.match(result)
+        m = Idetools.pattern.match(result)
 
-            if m is not None:
-                cmd = m.group("cmd")
+        if m is not None:
+            cmd = m.group("cmd")
 
-                if cmd == "def":
-                    return (m.group("symbol"), m.group("type"),
-                            m.group("path"), m.group("line"),
-                            m.group("col"), m.group("description"))
-
-            else:
-                None
+            if cmd == "def":
+                return (m.group("symbol"), m.group("type"),
+                        m.group("path"), m.group("line"),
+                        m.group("col"), m.group("description"))
         else:
-            m = Idetools.pattern.match(result)
-
-            if m is not None:
-                cmd = m.group("cmd")
-
-                if cmd == "def":
-                    return (m.group("symbol"), m.group("type"),
-                            m.group("path"), m.group("line"),
-                            m.group("col"), m.group("description"))
-
-            else:
-                None
+            None
 
         return None
 

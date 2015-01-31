@@ -23,6 +23,7 @@ class Idetools:
     service      = None
     outThread    = None
     stdout_queue = None
+    lastFile     = None
 
     pattern = re.compile(
         '^(?P<cmd>\S+)\s(?P<ast>\S+)\s' +
@@ -53,10 +54,19 @@ class Idetools:
     def ensure_service(proj=""):
         # If service is running, do nothing
         if Idetools.service is not None and Idetools.service.poll() is None:
+
+            if Idetools.lastFile != proj:
+            # Switch to new file
+                print('use "' + proj + '"\r\n')
+                Idetools.service.stdin.write('use "' + proj + '"\r\n')
+                Idetools.lastFile = proj
+                pass
+
             return Idetools.service
 
+        Idetools.lastFile = proj
         proc = subprocess.Popen(
-            "nimsuggest --stdin " + proj,
+            'nimsuggest --stdin "' + proj + '"',
             bufsize=0,
             stdout=subprocess.PIPE,
             stdin=subprocess.PIPE,
@@ -73,7 +83,7 @@ class Idetools:
         Idetools.outThread.daemon = True
         Idetools.outThread.start()
 
-        print("nimsuggest running: nimsuggest --stdin " + proj)
+        print('nimsuggest running: nimsuggest --stdin "' + proj + '"')
         return Idetools.service
 
     @staticmethod
@@ -115,7 +125,7 @@ class Idetools:
 
         return None
 
-auto_reload = False
+auto_reload = True
 if auto_reload:
     # Perform auto-reload
     reload_mods = []

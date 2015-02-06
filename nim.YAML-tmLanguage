@@ -59,10 +59,13 @@ patterns:
   name: meta.proc.nim
   patterns:
   - begin: \b(proc|method|template|macro|iterator|converter)\s+(\`([^\s\`]+)\`|(\w+))(\*)?
-    end: \=
-    captures:
+    end: (\=)
+    beginCaptures:
       '1': {name: storage.type.proc.nim}
       '2': {name: entity.name.function.nim}
+      '5': {name: keyword.operator.nim}
+    endCaptures:
+      '1': {name: keyword.operator.nim}
     patterns:
       - comment: Generic
         match: \[\w+\]

@@ -106,6 +106,7 @@ class Idetools:
         while sock is None:
             try:
                 sock = Idetools.opensock()
+                sock.close()
             except:
                 sock = None
 
@@ -148,7 +149,7 @@ class Idetools:
 
         return None
 
-auto_reload = True
+auto_reload = False
 if auto_reload:
     # Perform auto-reload
     reload_mods = []

@@ -4,8 +4,11 @@ import sys
 import re
 import subprocess
 import socket
+from time import sleep
 from threading import Thread
 import os
+
+auto_reload = False
 
 st_version = 2
 if int(sublime.version()) > 3000:
@@ -103,11 +106,19 @@ class Idetools:
         Idetools.outThread.start()
 
         sock = None
+        secs = 2 # Allow 2 seconds
         while sock is None:
             try:
                 sock = Idetools.opensock()
                 sock.close()
             except:
+                secs -= .2
+                if secs <= 0:
+                    print('nimsuggest failed to respond')
+                    return
+                else:
+                    print('nimsuggest did not respond, trying again')
+                sleep(.2)
                 sock = None
 
         print('nimsuggest running on "' + proj + '"')
@@ -149,7 +160,6 @@ class Idetools:
 
         return None
 
-auto_reload = False
 if auto_reload:
     # Perform auto-reload
     reload_mods = []

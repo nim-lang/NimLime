@@ -3,6 +3,7 @@ import sublime_plugin
 import sys
 import re
 import subprocess
+import socket
 from threading import Thread
 import os
 
@@ -10,19 +11,17 @@ st_version = 2
 if int(sublime.version()) > 3000:
     st_version = 3
 
-try:  # Python 3
-    from queue import Queue
+if st_version == 3:
     from NimLime.Project import Utility
-except ImportError:  # Python 2:
-    from Queue import Queue
+else:
     from Project import Utility
 
 class Idetools:
 
     # Fields
-    service      = None
-    outThread    = None
-    stdout_queue = None
+    service   = None
+    running   = False
+    outThread = None
 
     pattern = re.compile(
         '^(?P<cmd>\S+)\s(?P<ast>\S+)\s' +
@@ -33,48 +32,84 @@ class Idetools:
 
     # Methods
     @staticmethod
-    def enqueue_output(out, queue):
+    def print_output(out):
         for line in iter(out.readline, b''):
-            if line[0:3] == 'def':
-                queue.put(line)
+            print(line.rstrip())
 
     @staticmethod
-    def dump_output():
-        Idetools.stdout_queue.queue.clear()
+    def linesplit(socket):
+        buffer = socket.recv(4096)
+        buffering = True
+        while buffering:
+            if "\n" in buffer:
+                (line, buffer) = buffer.split("\n", 1)
+                yield line + "\n"
+            else:
+                more = socket.recv(4096)
+                if not more:
+                    buffering = False
+                else:
+                    buffer += more
+        if buffer:
+            yield buffer
 
     @staticmethod
-    def get_line():
+    def opensock():
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(("localhost", 8088))
+        return s
+
+    @staticmethod
+    def sendrsv(args, getresp = True):
+        sock = None
         try:
-            return Idetools.stdout_queue.get(True, 1)
-        except:
-            return ""
+            sock = Idetools.opensock()
+            sock.send(args + "\r\n")
+            if getresp:
+                for line in Idetools.linesplit(sock):
+                    print(line)
+                    return line
+                return ""
+        except Exception as e:
+            print(e)
+        finally:
+            if sock is not None:
+                sock.close()
 
     @staticmethod
-    def ensure_service(proj=""):
-        # If service is running, do nothing
-        if Idetools.service is not None and Idetools.service.poll() is None:
-            return Idetools.service
+    def ensure_service(proj = ""):
+        if Idetools.running:
+            return
+        Idetools.running = True
 
+        # If server is running, do nothing
+        if Idetools.service is not None and Idetools.service.poll() is None:
+            return
+
+        # Start the server
         proc = subprocess.Popen(
-            'nimsuggest --stdin "' + proj + '"',
+            'nimsuggest --port:8088 "' + proj + '"',
             bufsize=0,
             stdout=subprocess.PIPE,
-            stdin=subprocess.PIPE,
-            stderr=subprocess.PIPE,
             universal_newlines=True,
             shell=True)
 
-        Idetools.service      = proc
-        Idetools.stdout_queue = Queue()
-        Idetools.outThread    = Thread(
-            target=Idetools.enqueue_output,
-            args=(proc.stdout, Idetools.stdout_queue))
+        Idetools.service   = proc
+        Idetools.outThread = Thread(
+            target=Idetools.print_output,
+            args=(proc.stdout,))
 
         Idetools.outThread.daemon = True
         Idetools.outThread.start()
 
-        print('nimsuggest running: nimsuggest --stdin "' + proj + '"')
-        return Idetools.service
+        sock = None
+        while sock is None:
+            try:
+                sock = Idetools.opensock()
+            except:
+                sock = None
+
+        print('nimsuggest running on "' + proj + '"')
 
     @staticmethod
     def idetool(win, cmd, filename, line, col, dirtyFile=""):
@@ -87,17 +122,17 @@ class Idetools:
         if dirtyFile != "":
             filePath = filePath + '";"' + dirtyFile
 
-        # Ensure IDE Tools service is running
-        proc = Idetools.ensure_service(projFile)
-        Idetools.dump_output()
+        # Ensure IDE Tools server is running
+        Idetools.ensure_service(projFile)
 
-        # Call the service
+        # Call the server
         args = 'def "' + filePath + '":' + str(line) + ":" + str(col)
         print(args)
 
-        # Dump queued info & write to stdin & return
-        proc.stdin.write(args + '\n')
-        return Idetools.get_line()
+        # Write to service & read result
+        result = Idetools.sendrsv(args)
+        if result is not None:
+            return result
 
     @staticmethod
     def parse(result):
@@ -113,7 +148,7 @@ class Idetools:
 
         return None
 
-auto_reload = False
+auto_reload = True
 if auto_reload:
     # Perform auto-reload
     reload_mods = []
@@ -123,13 +158,12 @@ if auto_reload:
 
     # Reload modules
     mods_load_order = [
-        'NimLime',
-        'NimLime.Project',
-        'NimLime.Nim',
-        'NimLime.Lookup',
-        'NimLime.Documentation',
-        'NimLime.Nimble',
-        'NimLime.AutoComplete'
+        'Project',
+        'Nim',
+        'Lookup',
+        'Documentation',
+        'Nimble',
+        'AutoComplete'
     ]
 
     mod_load_prefix = ''

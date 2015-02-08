@@ -63,7 +63,7 @@ class Idetools:
         return s
 
     @staticmethod
-    def sendrsv(args, getresp = True):
+    def sendrecv(args, getresp = True):
         sock = None
         try:
             sock = Idetools.opensock()
@@ -80,10 +80,27 @@ class Idetools:
                 sock.close()
 
     @staticmethod
+    def ensure_socket(secs=2, wait=.2):
+        while True:
+            sock = None
+            try:
+                sock = Idetools.opensock()
+                sock.close()
+                return True
+            except:
+                secs -= wait
+                if secs <= 0:
+                    print('nimsuggest failed to respond')
+                    Idetools.service = None
+                    return False
+                sleep(wait)
+                sock = None
+
+    @staticmethod
     def ensure_service(proj = ""):
-        if Idetools.running:
+        # Ensure there is a listening socket
+        if Idetools.ensure_socket(secs = 0):
             return
-        Idetools.running = True
 
         # If server is running, do nothing
         if Idetools.service is not None and Idetools.service.poll() is None:
@@ -105,21 +122,8 @@ class Idetools:
         Idetools.outThread.daemon = True
         Idetools.outThread.start()
 
-        sock = None
-        secs = 2 # Allow 2 seconds
-        while sock is None:
-            try:
-                sock = Idetools.opensock()
-                sock.close()
-            except:
-                secs -= .2
-                if secs <= 0:
-                    print('nimsuggest failed to respond')
-                    return
-                else:
-                    print('nimsuggest did not respond, trying again')
-                sleep(.2)
-                sock = None
+        # Ensure the socket is available
+        Idetools.ensure_socket()
 
         print('nimsuggest running on "' + proj + '"')
 
@@ -142,7 +146,7 @@ class Idetools:
         print(args)
 
         # Write to service & read result
-        result = Idetools.sendrsv(args)
+        result = Idetools.sendrecv(args)
         if result is not None:
             return result
 

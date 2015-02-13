@@ -15,7 +15,16 @@ Features
 Installation
 ------------
 
-Clone the repository in your Sublime package directory
+###Latest
+
+* Summon the command palette and select `Package Control: Add repository`
+* Enter the project's URL (no .git extension!)
+* Install `NimLime` through Package Control
+
+###Stable
+
+* Install `NimLime` through Package Control (this version is usually older than the one here)
+
 
 Settings
 --------
@@ -33,3 +42,17 @@ Checking the current file automatically on-save can be enabled through the setti
 
 The path to the compiler can be configured through the setting `nim_compiler_executable`.
 Per default it is set to `nim`, which means that the compiler must be in your `PATH` for the plugin to work.
+
+
+Contributing
+------------
+
+Pull requests are welcome!
+
+Clone the repository in your Sublime package directory.
+
+Install the [AAAPackageDev](https://github.com/SublimeText/AAAPackageDev).
+
+Modify the `.YAML-tmLanguage` files and regenerate the `.tmLanguage` files
+by summoning the command palette and selecting the `Convert (YAML, JSON, PLIST) to...`
+command. Don't modify the `.tmLanguage` files, they will be overwritten!

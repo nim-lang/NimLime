@@ -320,7 +320,7 @@
 			<key>comment</key>
 			<string>A hexadecimal literal</string>
 			<key>match</key>
-			<string>\b(0[xX]\h[_\h]*)('[iIuU](8|16|32|64))?</string>
+			<string>\b(0[xX]\h[_\h]*)('(([iIuUfF](8|16|32|64))|[uU]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.hexadecimal.nim</string>
 		</dict>
@@ -328,7 +328,7 @@
 			<key>comment</key>
 			<string>A base-8 integer literal</string>
 			<key>match</key>
-			<string>\b(0o[0-7][_0-7]*)('[iIuUfF](8|16|32|64))?</string>
+			<string>\b(0o[0-7][_0-7]*)('(([iIuUfF](8|16|32|64))|[uU]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.octal.nim</string>
 		</dict>
@@ -336,7 +336,7 @@
 			<key>comment</key>
 			<string>A base-2 integer literal</string>
 			<key>match</key>
-			<string>\b(0(b|B)[01][_01]*)('[iIuUfF](8|16|32|64))?</string>
+			<string>\b(0(b|B)[01][_01]*)('(([iIuUfF](8|16|32|64))|[uU]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.binary.nim</string>
 		</dict>
@@ -344,7 +344,7 @@
 			<key>comment</key>
 			<string>A base-10 integer literal</string>
 			<key>match</key>
-			<string>\b(\d[_\d]*)('[iIuUfF](8|16|32|64))?</string>
+			<string>\b(\d[_\d]*)('(([iIuUfF](8|16|32|64))|[uU]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.decimal.nim</string>
 		</dict>
@@ -517,11 +517,11 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>\"\"\"</string>
+			<string>r?\"\"\"</string>
 			<key>comment</key>
 			<string>(Raw) Triple Quoted String</string>
 			<key>end</key>
-			<string>\"\"\"</string>
+			<string>\"\"\"[^\"]</string>
 			<key>name</key>
 			<string>string.quoted.triple.nim</string>
 		</dict>
@@ -545,14 +545,6 @@
 		<dict>
 			<key>begin</key>
 			<string>\"</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>storage.type.function.nim</string>
-				</dict>
-			</dict>
 			<key>comment</key>
 			<string>Double Quoted String</string>
 			<key>end</key>
@@ -562,18 +554,39 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key>
-					<string>(\\([abenrclftv\\]|["']|[0-9])|x\h\h)</string>
+					<key>include</key>
+					<string>#escaped_char</string>
 				</dict>
 			</array>
 		</dict>
 		<dict>
+			<key>begin</key>
+			<string>\'</string>
 			<key>comment</key>
 			<string>Single quoted character literal</string>
-			<key>match</key>
-			<string>\'(\\\d{1,3}|\\?[^\n]?)\'</string>
+			<key>end</key>
+			<string>\'</string>
 			<key>name</key>
 			<string>string.quoted.single.nim</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\\n</string>
+					<key>name</key>
+					<string>invalid.illegal.character.nim</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#escaped_char</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>([^\']{2,}?)</string>
+					<key>name</key>
+					<string>invalid.illegal.character.nim</string>
+				</dict>
+			</array>
 		</dict>
 		<dict>
 			<key>begin</key>
@@ -1554,6 +1567,99 @@
 			</array>
 		</dict>
 	</array>
+	<key>repository</key>
+	<dict>
+		<key>escaped_char</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\\[nN]</string>
+					<key>name</key>
+					<string>constant.character.escape.newline.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\[cC]|\\[rR]</string>
+					<key>name</key>
+					<string>constant.character.escape.carriagereturn.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\[lL]</string>
+					<key>name</key>
+					<string>constant.character.escape.linefeed.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\[fF]</string>
+					<key>name</key>
+					<string>constant.character.escape.formfeed.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\[tT]</string>
+					<key>name</key>
+					<string>constant.character.escape.tabulator.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\[vV]</string>
+					<key>name</key>
+					<string>constant.character.escape.verticaltabulator.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\\"</string>
+					<key>name</key>
+					<string>constant.character.escape.double-quote.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\'</string>
+					<key>name</key>
+					<string>constant.character.escape.single-quote.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\[0-9]+</string>
+					<key>name</key>
+					<string>constant.character.escape.chardecimalvalue.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\[aA]</string>
+					<key>name</key>
+					<string>constant.character.escape.alert.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\[bB]</string>
+					<key>name</key>
+					<string>constant.character.escape.backspace.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\[eE]</string>
+					<key>name</key>
+					<string>constant.character.escape.escape.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\[xX]\h\h</string>
+					<key>name</key>
+					<string>constant.character.escape.hex.nim</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\\\\</string>
+					<key>name</key>
+					<string>constant.character.escape.backslash.nim</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>scopeName</key>
 	<string>source.nim</string>
 	<key>uuid</key>

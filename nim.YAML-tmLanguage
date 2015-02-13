@@ -115,19 +115,19 @@ patterns:
 
 - comment: A hexadecimal literal
   name: constant.numeric.integer.hexadecimal.nim
-  match: \b(0[xX]\h[_\h]*)('[iIuU](8|16|32|64))?
+  match: \b(0[xX]\h[_\h]*)('(([iIuUfF](8|16|32|64))|[uU]))?
 
 - comment: A base-8 integer literal
   name: constant.numeric.integer.octal.nim
-  match: \b(0o[0-7][_0-7]*)('[iIuUfF](8|16|32|64))?
+  match: \b(0o[0-7][_0-7]*)('(([iIuUfF](8|16|32|64))|[uU]))?
 
 - comment: A base-2 integer literal
   name: constant.numeric.integer.binary.nim
-  match: \b(0(b|B)[01][_01]*)('[iIuUfF](8|16|32|64))?
+  match: \b(0(b|B)[01][_01]*)('(([iIuUfF](8|16|32|64))|[uU]))?
 
 - comment: A base-10 integer literal
   name: constant.numeric.integer.decimal.nim
-  match: \b(\d[_\d]*)('[iIuUfF](8|16|32|64))?
+  match: \b(\d[_\d]*)('(([iIuUfF](8|16|32|64))|[uU]))?
 
 - comment: Language Constants.
   name: constant.language.nim
@@ -201,8 +201,8 @@ patterns:
 
 - comment: (Raw) Triple Quoted String
   name: string.quoted.triple.nim
-  begin: \"\"\"
-  end: \"\"\"
+  begin: r?\"\"\"
+  end: \"\"\"[^\"]
 
 - comment: Raw Double Quoted String
   name: string.quoted.double.raw.nim
@@ -215,14 +215,19 @@ patterns:
   name: string.quoted.double.nim
   begin: \"
   end: \"
-  captures:
-    '1': { name: storage.type.function.nim }
   patterns:
-  - match: (\\([abenrclftv\\]|["']|[0-9])|x\h\h)
+    - include: '#escaped_char'
 
 - comment: Single quoted character literal
   name: string.quoted.single.nim
-  match: \'(\\\d{1,3}|\\?[^\n]?)\'
+  begin: \'
+  end: \'
+  patterns:
+    - name: invalid.illegal.character.nim
+      match: \\n
+    - include: '#escaped_char'
+    - name: invalid.illegal.character.nim
+      match: ([^\']{2,}?)
 
 - comment: Call syntax
   begin: ([\w\`]+)\s*(?=\(|\[.+?\]\s*\()
@@ -501,4 +506,37 @@ patterns:
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
       name: keyword.operator.nim
     - {include: text.html.markdown.multimarkdown}
+
+
+repository:
+  escaped_char:
+    patterns:
+    - name: constant.character.escape.newline.nim
+      match: \\[nN]
+    - name: constant.character.escape.carriagereturn.nim
+      match: \\[cC]|\\[rR]
+    - name: constant.character.escape.linefeed.nim
+      match: \\[lL]
+    - name: constant.character.escape.formfeed.nim
+      match: \\[fF]
+    - name: constant.character.escape.tabulator.nim
+      match: \\[tT]
+    - name: constant.character.escape.verticaltabulator.nim
+      match: \\[vV]
+    - name: constant.character.escape.double-quote.nim
+      match: \\\"
+    - name: constant.character.escape.single-quote.nim
+      match: \\'
+    - name: constant.character.escape.chardecimalvalue.nim
+      match: \\[0-9]+
+    - name: constant.character.escape.alert.nim
+      match: \\[aA]
+    - name: constant.character.escape.backspace.nim
+      match: \\[bB]
+    - name: constant.character.escape.escape.nim
+      match: \\[eE]
+    - name: constant.character.escape.hex.nim
+      match: \\[xX]\h\h
+    - name: constant.character.escape.backslash.nim
+      match: \\\\
 ...

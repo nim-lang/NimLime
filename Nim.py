@@ -41,7 +41,13 @@ class Idetools:
 
     @staticmethod
     def linesplit(socket):
-        buffer = socket.recv(4096)
+        buffer = None
+
+        if st_version == 2:
+            buffer = socket.recv(4096)
+        else:
+            buffer = socket.recv(4096).decode('UTF-8')
+
         buffering = True
         while buffering:
             if "\n" in buffer:
@@ -67,7 +73,12 @@ class Idetools:
         sock = None
         try:
             sock = Idetools.opensock()
-            sock.send(args + "\r\n")
+
+            if st_version == 2:
+                sock.send(args + "\r\n")
+            else:
+                sock.send(bytes(args + "\r\n", 'UTF-8'))
+
             if getresp:
                 for line in Idetools.linesplit(sock):
                     print(line)
@@ -153,7 +164,6 @@ class Idetools:
     @staticmethod
     def parse(result):
         m = Idetools.pattern.match(result)
-
         if m is not None:
             cmd = m.group("cmd")
 

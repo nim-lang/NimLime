@@ -2,196 +2,237 @@ import os.path
 import re
 import subprocess
 import sublime
-from sublime_plugin import TextCommand, WindowCommand, EventListener
+from sublime_plugin import ApplicationCommand, EventListener
 from threading import Thread
-# from time import sleep
 
+"""
+Contains commands related to checking Nim files for errors.
+TODO:
+ - Add syntax highlighting to NimCheckFile output (with option)
+ - Add 'remember last file' option to NimCheckFile
+ - Deduplicate code in NimCheckOnSaveListener?
+ - Add option to send NimCheckFile output to output panel or new view or shared
+   view.
+ - Simplify implementation (somehow)
+"""
 # Constants
-# TODO - Shift some of these to user settings
-# TODO - Show input errors through status bar
-# TODO - Optionally warn if the file doesn't end in '.nim'
 error_regex_template = r"{0}\((\d+),\s*(\d+)\)\s*(\w*):\s*(.*)"
-message_template = "({0}, {1}) {2}: {3}"
+message_template = '({0}, {1}) {2}: {3}'.format
 error_msg_format = '({0},{1}): {2}: {3}'.format
-DEBUG = False
-ERROR_REGION_TAG = "NimCheckError"
-WARN_REGION_TAG = "NimCheckWarn"
-ERROR_REGION_MARK = "dot"
+
+ERROR_REGION_TAG = 'NimCheckError'
+WARN_REGION_TAG = 'NimCheckWarn'
+ERROR_REGION_MARK = 'dot'
 ERROR_REGION_STYLE = sublime.DRAW_OUTLINED
-
-settings = {}
-check_on_save = False  # Whether to check on save
-compiler = "nim"
-
-
-def update_nimcheck_settings():
-    global check_on_save
-    check_on_save = settings.get("check_nim_on_save")
-    if check_on_save is None:
-        check_on_save = False
-    print("check_on_save: " + str(check_on_save))
-
-
-def plugin_loaded():
-    # Load all settings relevant for autocomplete
-    global settings
-    settings = sublime.load_settings("nim.sublime-settings")
-    update_nimcheck_settings()
-    settings.add_on_change("check_nim_on_save", update_nimcheck_settings)
-
-# Hack to lazily initialize ST2 settings
-if int(sublime.version()) < 3000:
-    sublime.set_timeout(plugin_loaded, 1000)
 
 
 def debug(string):
-    if DEBUG:
+    if False:
         print(string)
 
 
-class NimClearErrors(TextCommand):
+# Settings handlers
+settings = None
 
-    def run(self, edit):
-        self.view.erase_regions(ERROR_REGION_TAG)
-        self.view.erase_regions(WARN_REGION_TAG)
+check_on_save_enabled = None
+check_on_save_highlight_errors = None
+check_on_save_highlight_warnings = None
+check_on_save_list_errors = None
+check_on_save_list_warnings = None
 
-    def is_enabled(self):
-        nim_syntax = self.view.settings().get('syntax', "")
-        return ("nim" in nim_syntax.lower())
+# Settings for the 'check current file' command
+check_current_file_enabled = None
+check_current_file_highlight_errors = None
+check_current_file_highlight_warnings = None
+check_current_file_list_errors = None
+check_current_file_list_warnings = None
 
-    def is_visible(self):
-        return self.is_enabled()
+# Settings for the 'check external file' command
+check_external_file_enabled = None
 
-
-class NimCheckCurrentView(TextCommand):
-
-    def run(self, edit, show_error_list=True):
-        """
-        Runs the text in the currentview through nim's `check` tool,
-        highlighting and displaying the errors within the view's text buffer
-        and the quick panel.
-        """
-        global compiler
-        compiler = settings.get("nim_compiler_executable")
-        debug("Compiler is " + compiler)
-        self.show_error_list = show_error_list
-        view = self.view
-        # Save view text
-        debug("Checking if the view is dirty")
-        if view.is_dirty():
-            debug("View is dirty - Saving")
-            view.run_command('save')
-        run_thread = Thread(
-            target=run_nimcheck,
-            args=(view.file_name(), self.display_errors)
-        )
-        run_thread.start()
-
-    def display_errors(self, error_list):
-        view = self.view
-        warn_region_list = []
-        error_region_list = []
-        message_list = []
-        point_list = []
-
-        for row, column, kind, message in error_list:
-            # Prepare the error region for display
-            error_point = view.text_point(row, column)
-            error_region = trim_region(view, view.line(error_point))
-            if kind == "Error":
-                error_region_list.append(error_region)
-            else:
-                warn_region_list.append(error_region)
-
-            # Prepare the error message for the quickbox
-            quick_message = [
-                message_template.format(row + 1, column, kind, message),
-                view.substr(error_region)
-            ]
-            message_list.append(quick_message)
-            point_list.append(error_point)
-
-        view.add_regions(
-            ERROR_REGION_TAG,
-            error_region_list,
-            "invalid.illegal",
-            ERROR_REGION_MARK,
-            ERROR_REGION_STYLE
-        )
-        view.add_regions(
-            WARN_REGION_TAG,
-            warn_region_list,
-            "invalid.deprecated",
-            ERROR_REGION_MARK,
-            ERROR_REGION_STYLE
-        )
-        callback = lambda choice: goto_error(view, point_list, choice)
-        if self.show_error_list:
-            sublime.active_window().show_quick_panel(message_list, callback)
-
-    def is_enabled(self):
-        nim_syntax = self.view.settings().get('syntax', "")
-        return ("nim" in nim_syntax.lower())
-
-    def is_visible(self):
-        nim_syntax = self.view.settings().get('syntax', "")
-        return ("nim" in nim_syntax.lower())
+compiler_executable = None
 
 
-class NimCheckFile(WindowCommand):
+def update_settings():
+    """ Update the currently loaded settings.
+    Runs as a callback when settings are modified, and manually on startup.
+    All settings variables should be initialized/modified here
+    """
+    debug('Entered update_settings')
+
+    def load_key(key):
+        globals()[key.replace('.', '_')] = settings.get(key)
+
+    # Settings for checking a file on saving it
+    load_key('check.on_save.enabled')
+    load_key('check.on_save.highlight_errors')
+    load_key('check.on_save.highlight_warnings')
+    load_key('check.on_save.list_errors')
+    load_key('check.on_save.list_warnings')
+
+    # Settings for the 'check current file' command
+    load_key('check.current_file.enabled')
+    load_key('check.current_file.highlight_errors')
+    load_key('check.current_file.highlight_warnings')
+    load_key('check.current_file.list_errors')
+    load_key('check.current_file.list_warnings')
+
+    # Settings for the 'check external file' command
+    load_key('check.external_file.enabled')
+
+    load_key('compiler.executable')
+    debug('Exiting update_settings')
+
+
+def load_settings():
+    """ Load initial settings object, and manually run update_settings """
+    global settings
+    debug('Entered load_settings')
+    settings = sublime.load_settings('NimLime.sublime-settings')
+    settings.clear_on_change('reload')
+    settings.add_on_change('reload', update_settings)
+    update_settings()
+    debug('Exiting load_settings')
+
+
+# Hack to lazily initialize ST2 settings
+if int(sublime.version()) < 3000:
+    sublime.set_timeout(load_settings, 1000)
+
+
+class NimClearErrors(ApplicationCommand):
+
+    """ Clears error and warning marks generated by the Nim checker. """
 
     def run(self):
-        """
-        Prompts the user to select a file, runs the file through nim's
-        'check' tool, and outputs the errors in a new view.
-        """
+        debug('Entered NimClearErrors.run')
+        current_view = sublime.active_window().active_view()
+        current_view.erase_regions(ERROR_REGION_TAG)
+        current_view.erase_regions(WARN_REGION_TAG)
+        debug('Exited NimClearErrors.run')
+
+    def is_enabled(self):
+        return True
+
+    def is_visible(self):
+        settings = sublime.active_window().active_view().settings()
+        return ((check_current_file_enabled or check_on_save_enabled) and
+                'nim' in settings.get('syntax', '').lower())
+
+    def description(self):
+        return self.__doc__
+
+
+class NimCheckCurrentView(ApplicationCommand):
+
+    """ Checks the current Nim file for errors. """
+
+    def run(self, show_error_list=True):
+        debug('Entered NimCheckCurrentView.run')
+        current_view = sublime.active_window().active_view()
+
+        def callback(error_list):
+            display_errors_inline(
+                current_view,
+                error_list,
+                check_current_file_highlight_errors,
+                check_current_file_list_errors,
+                check_current_file_highlight_warnings,
+                check_current_file_list_warnings,
+            )
+
+        # Save view text
+        if current_view.is_dirty():
+            current_view.run_command('save')
+
+        Thread(
+            target=run_nimcheck,
+            args=(
+                current_view.file_name(),
+                callback
+            )
+        ).start()
+        debug('Exiting NimCheckCurrentView.run')
+
+    def is_enabled(self):
+        return True
+
+    def is_visible(self):
+        settings = sublime.active_window().active_view().settings()
+        return (check_current_file_enabled and
+                'nim' in settings.get('syntax', '').lower())
+
+    def description(self):
+        return self.__doc__
+
+
+class NimCheckOnSaveListener(EventListener):
+
+    def on_post_save(self, view):
+        debug('Entered NimCheckOnSaveListener.on_post_save')
+        if (check_current_file_enabled and
+                'nim' in view.settings().get('syntax', '').lower()):
+
+            def callback(error_list):
+                display_errors_inline(
+                    view,
+                    error_list,
+                    check_on_save_highlight_errors,
+                    check_on_save_list_errors,
+                    check_on_save_highlight_warnings,
+                    check_on_save_list_warnings,
+                )
+
+            Thread(
+                target=run_nimcheck,
+                args=(
+                    view.file_name(),
+                    callback
+                )
+            ).start()
+        debug('Exiting NimCheckOnSaveListener.on_post_save')
+
+
+class NimCheckFile(ApplicationCommand):
+
+    """ Check an external nim file """
+
+    def run(self):
+        debug('Entered NimCheckExternalFile.run')
         # Retrieve user input
-        self.window.show_input_panel(
+        sublime.active_window().show_input_panel(
             "File to check?",
             "",
             self.check_external_file,
             None,
             None
         )
+        debug('Exiting NimCheckExternalFile.run')
 
     def check_external_file(self, path):
         if os.path.isfile(path):
-            run_nimcheck(path, self.display_errors)
-
-    def display_errors(self, error_list):
-        # Open or retrieve display view
-        output_view = None
-        for view in self.window.views():
-            if view.settings().get("nimcheck_error_output", False):
-                output_view = view
-                break
+            Thread(
+                target=run_nimcheck,
+                args=(
+                    path,
+                    display_errors_in_new_view
+                )
+            ).start()
         else:
-            output_view = self.window.new_file()
-            output_view.set_name("NimCheck Output")
-            output_view.set_scratch(True)
-            output_view.settings().set("nimcheck_error_output", True)
+            sublime.error_message(
+                "File '{0}' does not exist, or isn't a file.".format(path)
+            )
 
-        # Write errors to view
-        output_view.set_read_only(False)
-        output = '\n'.join(
-            [error_msg_format(*error) for error in error_list]
-        )
-
-        edit = output_view.begin_edit()
-        output_view.insert(edit, 0, output)
-        output_view.end_edit(edit)
-        output_view.set_read_only(False)
+    def description(self):
+        return self.__doc__
 
 
 def goto_error(view, point_list, choice):
-    """
-    Goto the line in 'view' specified by the entry in 'point_list' with the
-    index 'choice'.
-    Used by the show_quick_panel procedure in poll_nimcheck
-    """
+    debug('Entered goto_error')
     if choice != -1:
         chosen_point = point_list[choice]
         view.show(chosen_point)
+    debug('Exiting goto_error')
 
 
 def trim_region(view, region):
@@ -224,11 +265,8 @@ def run_nimcheck(file_path, output_callback):
     # Run nim check
     debug("Running 'nim check' process")
 
-    if compiler is None or compiler == "":
-        return []
-
     nimcheck_process = subprocess.Popen(
-        compiler + " check \"{0}\"".format(file_path),
+        compiler_executable + " check \"{0}\"".format(file_path),
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         shell=True,
@@ -257,14 +295,83 @@ def run_nimcheck(file_path, output_callback):
     callback = lambda: output_callback(error_list)
     sublime.set_timeout(callback, 0)
 
-# Eventlistener that runs the current file trough NimCheck on saves
+
+def display_errors_in_new_view(error_list,
+                               show_errors=True, show_warnings=True):
+    debug('In display_errors_in_new_view')
+    # Open or retrieve display view
+    output_view = None
+    window = sublime.active_window()
+
+    for view in window.views():
+        if view.settings().get("nimcheck_error_output", False):
+            output_view = view
+            break
+    else:
+        output_view = window.new_file()
+        output_view.set_name("NimCheck Output")
+        output_view.set_scratch(True)
+        output_view.settings().set("nimcheck_error_output", True)
+
+    # Write errors to view
+
+    output = '\n'.join(
+        [error_msg_format(*error) for error in error_list]
+    )
+
+    edit = output_view.begin_edit()
+    output_view.insert(edit, 0, output)
+    output_view.end_edit(edit)
 
 
-class NimCheckOnSaveListener(EventListener):
+def display_errors_inline(view, error_list,
+                          highlight_errors=True, list_errors=True,
+                          highlight_warnings=True, list_warnings=True):
+    debug('In display_errors_inline')
+    warn_region_list = []
+    error_region_list = []
+    message_list = []
+    point_list = []
 
-    def on_post_save(self, view):
-        filename = view.file_name()
-        if filename is None or not filename.endswith(".nim") or not check_on_save:
-            return
-        view.window().run_command(
-            "nim_check_current_view", {"show_error_list": False})
+    for row, column, kind, message in error_list:
+        # Prepare the error region for display
+        debug("Error kind: " + kind)
+        error_point = view.text_point(row, column)
+        error_region = trim_region(view, view.line(error_point))
+        if kind == 'Error':
+            error_region_list.append(error_region)
+        else:
+            warn_region_list.append(error_region)
+
+        # Prepare the error message for the quickbox
+        quick_message = [
+            message_template(row + 1, column, kind, message),
+            view.substr(error_region)
+        ]
+
+        if ((kind == 'Error' and list_errors) or
+                (kind != 'Error' and list_warnings)):
+            message_list.append(quick_message)
+            point_list.append(error_point)
+
+    if highlight_errors:
+        view.add_regions(
+            ERROR_REGION_TAG,
+            error_region_list,
+            'invalid.illegal',
+            ERROR_REGION_MARK,
+            ERROR_REGION_STYLE
+        )
+
+    if highlight_warnings:
+        view.add_regions(
+            WARN_REGION_TAG,
+            warn_region_list,
+            'invalid.deprecated',
+            ERROR_REGION_MARK,
+            ERROR_REGION_STYLE
+        )
+
+    callback = lambda choice: goto_error(view, point_list, choice)
+    if list_errors:
+        sublime.active_window().show_quick_panel(message_list, callback)

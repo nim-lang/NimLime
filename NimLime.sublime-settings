@@ -1,0 +1,81 @@
+{
+    "compiler.executable": "nim",
+    "translate_tabs_to_spaces": true,
+    "enable_nim_completions": true,
+    "provide_immediate_nim_completions": false,
+    "auto_complete_triggers": [ {"selector": "source.nim", "characters": "."} ],
+    "doccontinue.enabled": true,
+
+    // General Nimble settings
+    // The below settings influence individual commands
+    //
+    // 'enabled': Toggles command visibility in the action pane.
+    //
+    // 'output.send': Toggles sending command output to an output view
+    //
+    // 'output.clear': Toggles clearing previous output when writing the
+    //                 command's output to the output view. Has no effect when
+    //                 'output.send' is false.
+    //
+    // 'output.open': Toggles switching focus/opening the output view when the
+    //                command is finished. Has no effect when 'output.send'
+    //                is false.
+    //
+    // 'output.via_console': Toggles writing output to Sublime Text's output
+    //                       console, rather than a dedicated output view.
+    //
+    // 'output.via_quickpanel': Toggles displaying list results via
+    //                          Sublime Text's quick panel. Overrides
+    //                          'output.via_console'
+    "nimble.update.enabled": true,
+    "nimble.update.output.send": true,
+    "nimble.update.output.clear": true,
+    "nimble.update.output.open": true,
+    "nimble.update.output.via_console": true,
+
+    "nimble.list.enabled": true,
+    "nimble.list.output.send": true,
+    "nimble.list.output.clear": true,
+    "nimble.list.output.open": true,
+    "nimble.list.output.via_console": true,
+    "nimble.list.output.via_quickpanel": true,
+
+    "nimble.uninstall.enabled": true,
+    "nimble.search.enabled": true,
+    "nimble.list.enabled": true,
+    "nimble.enabled": true,
+    
+    // General 'nim check' settings
+    // The below settings influence individual commands.
+    //
+    // 'enabled': Toggles command visibility in the action pane.
+    //
+    // 'highlight_errors': Toggles highlighting of errors when the
+    //                     command is run.
+    //
+    // 'highlight_warnings': Toggles highlighting of warnings when the
+    //                       command is run.
+    //
+    // 'list_errors':
+    //    Toggles listing of errors when the command is run.
+    //
+    // 'list_warnings':
+    //    Toggles listing of warnings when the command is run.
+
+    // Settings for checking a file on saving it
+    "check.on_save.enabled": true,
+    "check.on_save.highlight_errors": true,
+    "check.on_save.highlight_warnings": true,
+    "check.on_save.list_errors": true,
+    "check.on_save.list_warnings": true,
+
+    // Settings for the 'check current file' command
+    "check.current_file.enabled": true,
+    "check.current_file.highlight_errors": true,
+    "check.current_file.highlight_warnings": true,
+    "check.current_file.list_errors": true,
+    "check.current_file.list_warnings": true,
+
+    // Settings for the 'check external file' command
+    "check.external_file.enabled": true
+}

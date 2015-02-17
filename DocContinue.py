@@ -5,7 +5,6 @@ import sublime
 # Add double line erasure option
 
 # TODO - Optimizations
-# Inline recursion checking
 # Reduce rowcol/textpoint conversions
 # Add and use scope selectors for checking?
 #  - To check that previous line is empty
@@ -13,30 +12,45 @@ import sublime
 
 COMMENT_SCOPE = "comment.line.number-sign.doc-comment.nim"
 RECURSION_LEVEL = 0
-# DEBUG = False
 
 
-# def debug(string):
-#     if DEBUG:
-#         print(string)
+def debug(string):
+    if False:
+        print(string)
+
+settings = None
+doccontinue_enabled = None
 
 
-def recursion_limit(func):
-    def aux_recursion_limit(*args, **kwargs):
-        global RECURSION_LEVEL
-        # debug("Pre-start recursion level - " + str(RECURSION_LEVEL))
-        RECURSION_LEVEL += 1
-        # debug("Post-start recursion level - " + str(RECURSION_LEVEL))
+def update_settings():
+    """ Update the currently loaded settings.
+    Runs as a callback when settings are modified, and manually on startup.
+    All settings variables should be initialized/modified here
+    """
+    debug('Entered update_settings')
 
-        if RECURSION_LEVEL <= 1:
-            func(*args, **kwargs)
-        # else:
-            # debug("Recursion limited at level " + str(RECURSION_LEVEL))
+    def load_key(key):
+        globals()[key.replace('.', '_')] = settings.get(key)
 
-        # debug("Pre-end recursion level - " + str(RECURSION_LEVEL))
-        RECURSION_LEVEL -= 1
-        # debug("Post-end recursion level - " + str(RECURSION_LEVEL))
-    return aux_recursion_limit
+    # Settings for checking a file on saving it
+    load_key('doccontinue.enabled')
+    debug('Exiting update_settings')
+
+
+def load_settings():
+    """ Load initial settings object, and manually run update_settings """
+    global settings
+    debug('Entered load_settings')
+    settings = sublime.load_settings('NimLime.sublime-settings')
+    settings.clear_on_change('reload')
+    settings.add_on_change('reload', update_settings)
+    update_settings()
+    debug('Exiting load_settings')
+
+
+# Hack to lazily initialize ST2 settings
+if int(sublime.version()) < 3000:
+    sublime.set_timeout(load_settings, 1000)
 
 
 class CommentListener(EventListener):
@@ -44,76 +58,74 @@ class CommentListener(EventListener):
     """
     Continues docComment lines.
     """
-
-    def __init__(self):
-        # debug("CommentListener active.")
-        def activation_change():
-            nim_settings = sublime.load_settings("NimLime")
-            active = nim_settings.get("enable_continuation", "true")
-            if active.lower == "true":
-                self.active = True
-            else:
-                self.active = False
-        nim_settings = sublime.load_settings("NimLime")
-        nim_settings.add_on_change("enable_continuation", activation_change)
-        activation_change()
+    active = True
+    already_running = True
 
     def on_activated(self, view):
+        debug('Entered CommentListener.on_activated')
         nim_syntax = view.settings().get('syntax', None)
-        if not self.active:
+        if doccontinue_enabled and not self.active:
             if nim_syntax is not None and "nim" in nim_syntax:
                 self.active = True
 
     def on_deactivated(self, view):
+        debug('Entered CommentListener.on_deactivated')
         self.active = False
 
-    @recursion_limit
     def on_modified(self, view):
-
         # Pre-process stage
         if not self.active:
-            # debug("Pre-process failure - Inactive")
+            debug("Pre-process failure - Inactive")
             return
 
+        if self.already_running:
+            self.already_running = False
+            return
+
+        self.already_running = True
         rowcol_set = [view.rowcol(s.a) for s in view.sel() if s.empty()]
         for row, col in rowcol_set:
             # Stage 1 Checks
             # Checks if the last history action was a newline insertion.
             command, args, repeats = view.command_history(0, False)
             if (command == "insert" and args["characters"] == '\n'):
-                # debug("Stage 1 success - A")
+                debug("Stage 1 success - A")
                 pass
             elif (command == "paste"):
-                # debug("Stage 1 success - B")
+                debug("Stage 1 success - B")
                 pass
             else:
-                # debug("Stage 1 failure - 1")
+                debug("Stage 1 failure - 1")
+                self.already_running = False
                 return
 
             # Used to determine if the user is undoing the insertion.
             command, args, repeats = view.command_history(1, False)
             if command == "continueComment":
-                # debug("Stage 1 failure - 2")
+                debug("Stage 1 failure - 2")
+                self.already_running = False
                 return
 
             current_point = view.text_point(row, col)
             current_line = view.line(current_point)
             if (col == 0) or (view.substr(current_line).isspace()):
-                # debug("Stage 2 success")
+                debug("Stage 2 success")
                 pass
             else:
-                # debug("Stage 2 failure")
+                debug("Stage 2 failure")
+                self.already_running = False
                 return
 
             # Stage 3 Checks
             # Checks that the previous line had a doc-comment.
             last_line = view.line(view.text_point(row - 1, 0))
-            # debug(view.scope_name(last_line.b))
+            debug(view.scope_name(last_line.b))
             if COMMENT_SCOPE in view.scope_name(last_line.b):
-                # debug("Stage 3 success")
+                debug("Stage 3 success")
                 pass
             else:
-                # debug("Stage 3 failure")
+                debug("Stage 3 failure")
+                self.already_running = False
                 return
 
             # Stage 4 Checks (Optional)
@@ -125,3 +137,4 @@ class CommentListener(EventListener):
             insertion_edit = view.begin_edit("continueComment")
             view.insert(insertion_edit, current_point, "## ")
             view.end_edit(insertion_edit)
+            self.already_running = False

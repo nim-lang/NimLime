@@ -58,7 +58,7 @@ class Idetools:
                 if not more:
                     buffering = False
                 else:
-                    buffer += more
+                    buffer += more.decode('UTF-8')
         if buffer:
             yield buffer
 
@@ -84,8 +84,6 @@ class Idetools:
                     print(line)
                     return line
                 return ""
-        except Exception as e:
-            print(e)
         finally:
             if sock is not None:
                 sock.close()

@@ -6,12 +6,12 @@
     "auto_complete_triggers": [ {"selector": "source.nim", "characters": "."} ],
     "doccontinue.enabled": true,
 
-    // General Nimble settings
+    // Nimble settings
     // The below settings influence individual commands
     //
     // 'enabled': Toggles command visibility in the action pane.
     //
-    // 'output.send': Toggles sending command output to an output view
+    // 'output.send': Toggles sending command output to an output view.
     //
     // 'output.clear': Toggles clearing previous output when writing the
     //                 command's output to the output view. Has no effect when
@@ -21,29 +21,31 @@
     //                command is finished. Has no effect when 'output.send'
     //                is false.
     //
-    // 'output.via_console': Toggles writing output to Sublime Text's output
-    //                       console, rather than a dedicated output view.
+    // 'output.method': Controls how output is displayed. Can be 'console',
+    //                  'shared', 'grouped' or 'separate'.
     //
-    // 'output.via_quickpanel': Toggles displaying list results via
-    //                          Sublime Text's quick panel. Overrides
-    //                          'output.via_console'
+    "nimble.executable": "nimble",
+    
     "nimble.update.enabled": true,
     "nimble.update.output.send": true,
-    "nimble.update.output.clear": true,
-    "nimble.update.output.open": true,
-    "nimble.update.output.via_console": true,
+    "nimble.update.output.clear": false,
+    "nimble.update.output.show": true,
+    "nimble.update.output.method": true,
+    "nimble.update.output.tag": "nimble",
 
     "nimble.list.enabled": true,
     "nimble.list.output.send": true,
     "nimble.list.output.clear": true,
-    "nimble.list.output.open": true,
-    "nimble.list.output.via_console": true,
-    "nimble.list.output.via_quickpanel": true,
+    "nimble.list.output.show": true,
+    "nimble.list.output.method": true,
+    "nimble.list.output.tag": "nimble",
 
-    "nimble.uninstall.enabled": true,
     "nimble.search.enabled": true,
-    "nimble.list.enabled": true,
-    "nimble.enabled": true,
+    "nimble.search.output.send": true,
+    "nimble.search.output.clear": true,
+    "nimble.search.output.show": true,
+    "nimble.search.output.method": true,
+    "nimble.search.output.tag": "nimble",
     
 
     // 'nim check' settings

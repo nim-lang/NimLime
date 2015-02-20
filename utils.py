@@ -1,10 +1,8 @@
-from weakref import proxy
+from weakref import proxy, WeakKeyDictionary
 import sublime
 
-busy_frames = [
-    '[=     ]', '[ =    ]', '[  =   ]', '[   =  ]', '[    = ]',
-    '[     =]', '[    = ]', '[   =  ]', '[  =   ]', '[ =    ]'
-]
+busy_frames = ['.', '..', '...']
+output_handle_mappings = WeakKeyDictionary()
 
 
 def send_self(arg):
@@ -44,6 +42,10 @@ def send_self(arg):
 
 
 class FlagObject(object):
+
+    """
+    Used with loop_status_msg to signal when a status message loop should end.
+    """
     break_status_loop = False
 
     def __init__(self):
@@ -82,33 +84,102 @@ def loop_status_msg(frames, speed, flag_obj, view=None, key=''):
     sublime.set_timeout(loop_status_generator, 0)
 
 
-def write_to_output(window, output, tag, via_console=True, clear=False,
-                    show_panel=True):
+def get_output_view(tag, strategy, window, views=None):
     """
-    Writes a string to an output view
+    Retrieves an output using the given strategy, window, and views.
     """
-    if via_console:
-        output_view = window.get_output_panel(tag)
+    if views is None:
+        views = all_views()
+
+    # Console Strategy
+    if strategy == 'console':
+        return window.get_output_panel(tag)
+
+    # Grouped strategy
+    if strategy == 'grouped':
+        for view in views:
+            if view.settings().get('output_tag', False) is not False:
+                return view
+
+    if (strategy == 'separate') or (strategy == 'grouped'):
+        result = window.new_file()
+        result.set_name(tag + " Output")
+        result.set_scratch(True)
+        result.settings().set('output_tag', tag)
+        return result
+
+
+def write_output_view(view, content, clear):
+    """
+    Writes to an output view.
+    """
+    edit = view.begin_edit()
+    if clear or view.size() == 0:
+        view.erase(edit, sublime.Region(0, view.size()))
     else:
-        for view in window.views():
-            if view.settings().get(tag + "_output", False):
-                output_view = view
-                break
-        output_view = window.new_file()
-        output_view.set_name(tag + " Output")
-        output_view.set_scratch(True)
-        output_view.settings().set(tag + "_output", True)
+        view.insert(edit, view.size(), "\n\n")
+    view.insert(edit, view.size(), content)
+    view.end_edit(edit)
 
-    if clear:
-        edit = output_view.begin_edit()
-        output_view.erase(edit, sublime.Region(1, output_view.size()))
-        output_view.end_edit(edit)
 
-    edit = output_view.begin_edit()
-    output_view.insert(edit, output_view.size(), "\n")
-    output_view.insert(edit, output_view.size(), output)
-    output_view.end_edit(edit)
-    if via_console:
+def show_output_view(view, is_console=False):
+    """
+    Shows an output view.
+    """
+    window = view.window()
+    if is_console:
+        tag = view.settings().get('output_tag')
         window.run_command("show_panel", {"panel": "output." + tag})
     else:
-        window.focus_view(output_view)
+        window.focus_view(view)
+
+
+def view_has_nim_syntax(view=None):
+    """
+    Tests whether the given view (or the active view) currently has 'Nim' as
+    the selected syntax.
+    """
+    if view is None:
+        view = sublime.active_window().active_view()
+    return 'nim' in view.settings().get('syntax', '').lower()
+
+
+def format_tag(tag, window=None, view=None):
+    view_id = ''
+    buffer_id = ''
+    file_name = ''
+    view_name = ''
+    window_id = ''
+
+    if view is not None:
+        view_id = view.id()
+        buffer_id = view.id()
+        file_name = view.file_name()
+        view_name = view.name()
+
+    if window is not None:
+        window_id = window.id()
+
+    return tag.format(
+        view_id=view_id,
+        buffer_id=buffer_id,
+        file_name=file_name,
+        view_name=view_name,
+        window_id=window_id
+    )
+
+
+def all_views():
+    for window in sublime.windows():
+        for view in window.views():
+            yield view
+
+
+def trim_region(view, region):
+    """
+    Trim a region of whitespace.
+    """
+    text = view.substr(region)
+    start = region.a + ((len(text) - 1) - (len(text.strip()) - 1))
+    end = region.b - ((len(text) - 1) - (len(text.rstrip()) - 1))
+    return sublime.Region(start, end)

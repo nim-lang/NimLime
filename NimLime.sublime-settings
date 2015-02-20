@@ -45,7 +45,8 @@
     "nimble.list.enabled": true,
     "nimble.enabled": true,
     
-    // General 'nim check' settings
+
+    // 'nim check' settings
     // The below settings influence individual commands.
     //
     // 'enabled': Toggles command visibility in the action pane.
@@ -56,11 +57,31 @@
     // 'highlight_warnings': Toggles highlighting of warnings when the
     //                       command is run.
     //
-    // 'list_errors':
-    //    Toggles listing of errors when the command is run.
+    // 'list_errors': Toggles listing of errors when the command is run.
     //
-    // 'list_warnings':
-    //    Toggles listing of warnings when the command is run.
+    // 'list_warnings': Toggles listing of warnings when the command is run.
+    //
+    // 'remember_last_file': Remember the last file entered.
+    //
+    // 'output.clear': Toggles clearing previous output when writing the
+    //                 command's output to the output view.
+    //
+    // 'output.show': Toggles switching focus/opening the output view when the
+    //                command is finished.
+    //
+    // 'output.method': Controls how output is displayed. Can be 'console',
+    //                  'grouped' or 'separate'.
+    //
+    // 'output.tag': Controls which view the command's output is sent to. Only
+    //               applies when 'output.method' is 'shared'.
+    //               When sending output, the command will retrieve/create an
+    //               output view with the value specified by 'output.tag'.
+    //               Current modifiers:
+    //                 - 'view_id'
+    //                 - 'buffer_id'
+    //                 - 'window_id'
+    //                 - 'file_name'
+    //                 - 'view_name'
 
     // Settings for checking a file on saving it
     "check.on_save.enabled": true,
@@ -77,5 +98,10 @@
     "check.current_file.list_warnings": true,
 
     // Settings for the 'check external file' command
-    "check.external_file.enabled": true
+    "check.external_file.enabled": true,
+    "check.external_file.remember": true,
+    "check.external_file.output.clear": false,
+    "check.external_file.output.show": true,
+    "check.external_file.output.method": "grouped",
+    "check.external_file.output.tag": "Nim Check"
 }

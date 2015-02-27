@@ -125,7 +125,7 @@ class Idetools:
 
         return None
 
-auto_reload = True
+auto_reload = False
 if auto_reload:
     # Perform auto-reload
     reload_mods = []

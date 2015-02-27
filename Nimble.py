@@ -2,7 +2,8 @@ import sublime
 import subprocess
 from sublime_plugin import ApplicationCommand
 from utils import (
-    FlagObject, send_self, loop_status_msg, busy_frames, write_output_view)
+    FlagObject, send_self, loop_status_msg, busy_frames, format_tag,
+    get_output_view, write_to_view, show_view)
 from threading import Thread
 from time import sleep
 
@@ -33,31 +34,35 @@ nimble_install_output_open = None
 nimble_update_enabled = None
 nimble_update_output_send = None
 nimble_update_output_clear = None
-nimble_update_output_open = None
-nimble_update_output_via_console = None
+nimble_update_output_show = None
+nimble_update_output_method = None
+nimble_update_output_tag = None
 
 # Nimble list command settings
 nimble_list_enabled = None
 nimble_list_output_send = None
 nimble_list_output_clear = None
-nimble_list_output_open = None
-nimble_list_output_via_console = None
-nimble_list_output_via_quickpanel = None
+nimble_list_output_show = None
+nimble_list_output_method = None
+nimble_list_output_tag = None
+nimble_list_quickpanel_send = None
 
 # Nimble search command settings
 nimble_search_enabled = None
 nimble_search_output_send = None
 nimble_search_output_clear = None
-nimble_search_output_open = None
-nimble_search_output_via_console = None
-nimble_search_output_via_quickpanel = None
+nimble_search_output_show = None
+nimble_search_output_method = None
+nimble_search_output_tag = None
+nimble_search_quickpanel_send = None
 
 # Nimble update command settings
 nimble_uninstall_enabled = None
 nimble_uninstall_output_send = None
 nimble_uninstall_output_clear = None
-nimble_uninstall_output_open = None
-nimble_uninstall_output_via_console = None
+nimble_uninstall_output_show = None
+nimble_uninstall_output_method = None
+nimble_uninstall_output_tag = None
 
 
 def update_settings():
@@ -76,28 +81,32 @@ def update_settings():
     load_key("nimble.update.enabled")
     load_key("nimble.update.output.send")
     load_key("nimble.update.output.clear")
-    load_key("nimble.update.output.open")
-    load_key("nimble.update.output.via_console")
+    load_key("nimble.update.output.show")
+    load_key("nimble.update.output.method")
+    load_key("nimble.update.output.tag")
 
     load_key("nimble.list.enabled")
     load_key("nimble.list.output.send")
     load_key("nimble.list.output.clear")
-    load_key("nimble.list.output.open")
-    load_key("nimble.list.output.via_console")
-    load_key("nimble.list.output.via_quickpanel")
+    load_key("nimble.list.output.show")
+    load_key("nimble.list.output.method")
+    load_key("nimble.list.output.tag")
+    load_key("nimble.list.quickpanel.send")
 
     load_key("nimble.search.enabled")
     load_key("nimble.search.output.send")
     load_key("nimble.search.output.clear")
-    load_key("nimble.search.output.open")
-    load_key("nimble.search.output.via_console")
-    load_key("nimble.search.output.via_quickpanel")
+    load_key("nimble.search.output.show")
+    load_key("nimble.search.output.method")
+    load_key("nimble.search.output.tag")
+    load_key("nimble.search.quickpanel.send")
 
     load_key("nimble.uninstall.enabled")
     load_key("nimble.uninstall.output.send")
     load_key("nimble.uninstall.output.clear")
-    load_key("nimble.uninstall.output.open")
-    load_key("nimble.uninstall.output.via_console")
+    load_key("nimble.uninstall.output.show")
+    load_key("nimble.uninstall.output.method")
+    load_key("nimble.uninstall.output.tag")
 
     debug('Exiting update_settings')
 
@@ -107,7 +116,6 @@ def load_settings():
     global settings
     debug('Entered load_settings')
     settings = sublime.load_settings('NimLime.sublime-settings')
-    settings.clear_on_change('reload')
     settings.add_on_change('reload', update_settings)
     update_settings()
     debug('Exiting load_settings')
@@ -119,7 +127,7 @@ if int(sublime.version()) < 3000:
 
 
 def run_nimble(cmd, callback=None):
-    # TODO - in nimble does not exist, display error
+    # TODO - if nimble does not exist, display error
     sleep(5)
     nimble_process = subprocess.Popen(
         nimble_executable + ' ' + cmd,
@@ -175,7 +183,7 @@ class NimbleUpdateCommand(ApplicationCommand):
 
             # Setup the loading notice
             flag = FlagObject()
-            frames = ['Updating package list: ' + f for f in busy_frames]
+            frames = ['Updating package list' + f for f in busy_frames]
             loop_status_msg(frames, 0.15, flag)
 
             # Run the main command
@@ -184,18 +192,25 @@ class NimbleUpdateCommand(ApplicationCommand):
                 args=('update -y', this.send)
             ).start()
 
-            # Show output
-
             # Set the status to show we've finished
             yield setattr(flag, 'break_status_loop', this.next)
 
+            # Show output
             if nimble_update_output_send:
-                write_output_view(
-                    window, output, 'Nimble',
-                    nimble_update_output_via_console,
-                    nimble_update_output_clear,
-                    nimble_update_output_open
+                formatted_tag = format_tag(nimble_update_output_tag, window)
+                output_view = get_output_view(
+                    formatted_tag,
+                    nimble_update_output_method,
+                    window
                 )
+                write_to_view(
+                    output_view, output,
+                    nimble_update_output_clear
+                )
+                if nimble_update_output_show:
+                    is_console = nimble_update_output_method == 'console'
+                    show_view(output_view, is_console)
+
             if returncode == 0:
                 sublime.status_message("Nimble Package List Updated")
             else:
@@ -241,26 +256,32 @@ class NimbleListCommand(ApplicationCommand):
             # Set the status to show we've finished
             yield setattr(flag, 'break_status_loop', this.next)
 
+            if nimble_list_quickpanel_send:
+                items = []
+                packages = parse_package_descriptions(output)
+                for package in packages:
+                    items.append([
+                        package['name'],
+                        package.get('description', ''),
+                        package.get('url', '')
+                    ])
+                window.show_quick_panel(items, None)
+
             # Show output
             if nimble_list_output_send:
-                if nimble_list_output_via_quickpanel:
-                    items = []
-                    packages = parse_package_descriptions(output)
-                    for package in packages:
-                        items.append([
-                            package['name'],
-                            package.get('description', ''),
-                            package.get('url', '')
-                        ])
-                    yield window.show_quick_panel(items, None)
-
-                else:
-                    write_output_view(
-                        window, output, 'Nimble',
-                        nimble_list_output_via_console,
-                        nimble_list_output_clear,
-                        nimble_list_output_open
-                    )
+                formatted_tag = format_tag(nimble_list_output_tag, window)
+                output_view = get_output_view(
+                    formatted_tag,
+                    nimble_list_output_method,
+                    window
+                )
+                write_to_view(
+                    output_view, output,
+                    nimble_list_output_clear
+                )
+                if nimble_update_output_show:
+                    is_console = nimble_list_output_method == 'console'
+                    show_view(output_view, is_console)
 
             if returncode == 0:
                 sublime.status_message("Listing Nimble Packages")
@@ -312,26 +333,33 @@ class NimbleSearchCommand(ApplicationCommand):
             # Set the status to show we've finished
             yield setattr(flag, 'break_status_loop', this.next)
 
+            # List output
+            if nimble_search_quickpanel_send:
+                items = []
+                packages = parse_package_descriptions(output)
+                for package in packages:
+                    items.append([
+                        package['name'],
+                        package.get('description', ''),
+                        package.get('url', '')
+                    ])
+                window.show_quick_panel(items, None)
+
             # Show output
             if nimble_search_output_send:
-                if nimble_search_output_via_quickpanel:
-                    items = []
-                    packages = parse_package_descriptions(output)
-                    for package in packages:
-                        items.append([
-                            package['name'],
-                            package.get('description', ''),
-                            package.get('url', '')
-                        ])
-                    yield window.show_quick_panel(items, None)
-
-                else:
-                    write_output_view(
-                        window, output, 'Nimble',
-                        nimble_search_output_via_console,
-                        nimble_search_output_clear,
-                        nimble_search_output_open
-                    )
+                formatted_tag = format_tag(nimble_search_output_tag, window)
+                output_view = get_output_view(
+                    formatted_tag,
+                    nimble_search_output_method,
+                    window
+                )
+                write_to_view(
+                    output_view, output,
+                    nimble_search_output_clear
+                )
+                if nimble_update_output_show:
+                    is_console = nimble_search_output_method == 'console'
+                    show_view(output_view, is_console)
 
             if returncode == 0:
                 sublime.status_message("Listing Nimble Packages")
@@ -379,14 +407,20 @@ class NimbleUninstallCommand(ApplicationCommand):
             yield setattr(flag, 'break_status_loop', this.next)
 
             # Show output
-            if nimble_uninstall_output_send:
-                write_output_view(
-                    window, output, 'Nimble',
-                    nimble_uninstall_output_via_console,
-                    nimble_uninstall_output_clear,
-                    nimble_uninstall_output_open
+            if nimble_search_output_send:
+                formatted_tag = format_tag(nimble_search_output_tag, window)
+                output_view = get_output_view(
+                    formatted_tag,
+                    nimble_search_output_method,
+                    window
                 )
-
+                write_to_view(
+                    output_view, output,
+                    nimble_search_output_clear
+                )
+                if nimble_search_output_show:
+                    is_console = nimble_search_output_method == 'console'
+                    show_view(output_view, is_console)
             if returncode == 0:
                 sublime.status_message("Nimble Package Uninstalled")
             else:

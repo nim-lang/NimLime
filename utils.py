@@ -1,8 +1,14 @@
 from weakref import proxy, WeakKeyDictionary
+import subprocess
 import sublime
 
 busy_frames = ['.', '..', '...']
 output_handle_mappings = WeakKeyDictionary()
+
+
+def debug(string):
+    if False:
+        print(string)
 
 
 def send_self(arg):
@@ -12,7 +18,7 @@ def send_self(arg):
     in a linear style, by passing their 'send' or 'next' methods as callbacks.
 
     Note that by default, the generator reference sent is a weak reference.
-    To override this behavior, pass 'True' as the first argument to the
+    To override this behavior, pass 'False' as the first argument to the
     decorator.
     """
     use_proxy = True
@@ -37,7 +43,7 @@ def send_self(arg):
     else:
         # Someone has used @send_self(True), and thus we need to return
         # _send_self to be called indirectly.
-        use_proxy = False
+        use_proxy = arg
         return _send_self
 
 
@@ -84,34 +90,35 @@ def loop_status_msg(frames, speed, flag_obj, view=None, key=''):
     sublime.set_timeout(loop_status_generator, 0)
 
 
-def get_output_view(tag, strategy, window, views=None):
+def get_output_view(tag, strategy, name, fallback_window):
     """
     Retrieves an output using the given strategy, window, and views.
     """
-    if views is None:
-        views = all_views()
+    window_list = sublime.windows()
 
     # Console Strategy
     if strategy == 'console':
-        return window.get_output_panel(tag)
+        return fallback_window.get_output_panel(tag)
 
     # Grouped strategy
     if strategy == 'grouped':
-        for view in views:
-            if view.settings().get('output_tag', False) is not False:
-                return view
+        for window in window_list:
+            view_list = window.views()
+            for view in view_list:
+                if view.settings().get('output_tag') == tag:
+                    return window, view
 
     if (strategy == 'separate') or (strategy == 'grouped'):
-        result = window.new_file()
-        result.set_name(tag + " Output")
+        result = fallback_window.new_file()
+        result.set_name(name)
         result.set_scratch(True)
         result.settings().set('output_tag', tag)
-        return result
+        return fallback_window, result
 
 
-def write_output_view(view, content, clear):
+def write_to_view(view, content, clear):
     """
-    Writes to an output view.
+    Writes to a view.
     """
     edit = view.begin_edit()
     if clear or view.size() == 0:
@@ -122,26 +129,18 @@ def write_output_view(view, content, clear):
     view.end_edit(edit)
 
 
-def show_output_view(view, is_console=False):
+def show_view(window, view, is_console=False):
     """
     Shows an output view.
     """
-    window = view.window()
+
+    # Workaround for ST2 bug
+
     if is_console:
         tag = view.settings().get('output_tag')
         window.run_command("show_panel", {"panel": "output." + tag})
     else:
         window.focus_view(view)
-
-
-def view_has_nim_syntax(view=None):
-    """
-    Tests whether the given view (or the active view) currently has 'Nim' as
-    the selected syntax.
-    """
-    if view is None:
-        view = sublime.active_window().active_view()
-    return 'nim' in view.settings().get('syntax', '').lower()
 
 
 def format_tag(tag, window=None, view=None):
@@ -169,10 +168,14 @@ def format_tag(tag, window=None, view=None):
     )
 
 
-def all_views():
-    for window in sublime.windows():
-        for view in window.views():
-            yield view
+def view_has_nim_syntax(view=None):
+    """
+    Tests whether the given view (or the active view) currently has 'Nim' as
+    the selected syntax.
+    """
+    if view is None:
+        view = sublime.active_window().active_view()
+    return 'nim' in view.settings().get('syntax', '').lower()
 
 
 def trim_region(view, region):
@@ -183,3 +186,47 @@ def trim_region(view, region):
     start = region.a + ((len(text) - 1) - (len(text.strip()) - 1))
     end = region.b - ((len(text) - 1) - (len(text.rstrip()) - 1))
     return sublime.Region(start, end)
+
+
+def run_process(cmd, callback=None):
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        shell=True,
+        bufsize=0
+    )
+
+    output = process.communicate()[0].decode('UTF-8')
+    returncode = process.returncode
+
+    if callback is not None:
+        sublime.set_timeout(lambda: callback((output, returncode)), 0)
+    else:
+        return output
+
+
+class NimLimeMixin(object):
+    def __init__(self):
+        if hasattr(self, 'load_settings'):
+            self.settings = sublime.load_settings('NimLime.sublime-settings')
+            self.settings.add_on_change('reload', self.load_settings)
+            self.load_settings()
+
+    def is_enabled(self, *args, **kwargs):
+        return True
+
+    def description(self, *args, **kwargs):
+        return self.__doc__
+
+    def write_to_output(self, content, source_window, source_view, name):
+        tag = format_tag(self.output_tag, source_window, source_view)
+        output_window, output_view = get_output_view(
+            tag, self.output_method, name, source_window
+        )
+
+        write_to_view(output_view, content, self.clear_output)
+
+        if self.show_output:
+            is_console = (self.output_method == 'console')
+            show_view(output_window, output_view, is_console)

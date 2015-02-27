@@ -1,5 +1,5 @@
 {
-    "compiler.executable": "nim",
+    "nim.executable": "nim",
     "translate_tabs_to_spaces": true,
     "enable_nim_completions": true,
     "provide_immediate_nim_completions": false,
@@ -17,7 +17,7 @@
     //                 command's output to the output view. Has no effect when
     //                 'output.send' is false.
     //
-    // 'output.open': Toggles switching focus/opening the output view when the
+    // 'output.show': Toggles switching focus/opening the output view when the
     //                command is finished. Has no effect when 'output.send'
     //                is false.
     //
@@ -26,7 +26,7 @@
     //
     "nimble.executable": "nimble",
     
-    "nimble.update.enabled": true,
+    "nimble.update.enabled": false,
     "nimble.update.output.send": true,
     "nimble.update.output.clear": false,
     "nimble.update.output.show": true,
@@ -39,6 +39,7 @@
     "nimble.list.output.show": true,
     "nimble.list.output.method": true,
     "nimble.list.output.tag": "nimble",
+    "nimble.list.quickpanel.send": true,
 
     "nimble.search.enabled": true,
     "nimble.search.output.send": true,
@@ -74,7 +75,10 @@
     // 'output.method': Controls how output is displayed. Can be 'console',
     //                  'grouped' or 'separate'.
     //
-    // 'output.tag': Controls which view the command's output is sent to. Only
+    // 'output.name': Controls the name of the output view created when a view
+    //                with a matching output tag cannot be found.
+    //
+    // 'output.tag': Controls which view a command's output is sent to. Only
     //               applies when 'output.method' is 'shared'.
     //               When sending output, the command will retrieve/create an
     //               output view with the value specified by 'output.tag'.
@@ -88,22 +92,46 @@
     // Settings for checking a file on saving it
     "check.on_save.enabled": true,
     "check.on_save.highlight_errors": true,
-    "check.on_save.highlight_warnings": true,
-    "check.on_save.list_errors": true,
-    "check.on_save.list_warnings": true,
+    "check.on_save.highlight_warnings": false,
+
+    "check.on_save.list.include_context": false,
+    "check.on_save.list.show_errors": true,
+    "check.on_save.list.show_warnings": true,
+    "check.on_save.list.move_cursor": true,
+
+    "check.on_save.output.clear": false,
+    "check.on_save.output.method": "grouped",
+    "check.on_save.output.send": true,
+    "check.on_save.output.show": true,
+    "check.on_save.output.raw": false,
+    "check.on_save.output.tag": "Nim Check",
+
 
     // Settings for the 'check current file' command
     "check.current_file.enabled": true,
     "check.current_file.highlight_errors": true,
     "check.current_file.highlight_warnings": true,
-    "check.current_file.list_errors": true,
-    "check.current_file.list_warnings": true,
+
+    "check.current_file.list.include_context": false,
+    "check.current_file.list.show_errors": false,
+    "check.current_file.list.show_warnings": false,
+    "check.current_file.list.move_cursor": false,
+
+    "check.current_file.output.clear": false,
+    "check.current_file.output.method": "grouped",
+    "check.current_file.output.send": true,
+    "check.current_file.output.show": false,
+    "check.current_file.output.raw": false,
+    "check.current_file.output.tag": "Nim Check",
+
 
     // Settings for the 'check external file' command
     "check.external_file.enabled": true,
-    "check.external_file.remember": true,
+    "check.external_file.remember_input": true,
+
+    "check.external_file.output.include_context": true,
     "check.external_file.output.clear": false,
-    "check.external_file.output.show": true,
     "check.external_file.output.method": "grouped",
+    "check.external_file.output.show": true,
     "check.external_file.output.tag": "Nim Check"
 }

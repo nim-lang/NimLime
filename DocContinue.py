@@ -42,7 +42,6 @@ def load_settings():
     global settings
     debug('Entered load_settings')
     settings = sublime.load_settings('NimLime.sublime-settings')
-    settings.clear_on_change('reload')
     settings.add_on_change('reload', update_settings)
     update_settings()
     debug('Exiting load_settings')

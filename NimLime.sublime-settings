@@ -4,7 +4,8 @@
     "enable_nim_completions": true,
     "provide_immediate_nim_completions": false,
     "auto_complete_triggers": [ {"selector": "source.nim", "characters": "."} ],
-    "doccontinue.enabled": true,
+    "docontinue.enabled": true,
+    "docontinue.autostop": true,
 
     // Nimble settings
     // The below settings influence individual commands

@@ -8,9 +8,13 @@ fileTypes: ["nim"]
 uuid: fa6f2c1c-dd3f-4bcd-b2be-d05312be4080
 
 patterns:
+- comment: An empty documentation comment.
+  name: comment.line.number-sign.doc-comment.empty.nim
+  match: (##\s*)$\n?
+
 - comment: A documentation comment.
   name: comment.line.number-sign.doc-comment.nim
-  match: (##\s*(TODO|todo)?).*$\n?
+  match: (##\s*(TODO|todo)?).+$\n?
   captures:
     '1': {name: punctuation.definition.comment.nim}
     '2': {name: invalid.illegal.TODO.nim}

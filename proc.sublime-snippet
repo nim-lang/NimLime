@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[proc ${1:name}(${2})${3} =
+	]]></content>
+    <tabTrigger>proc</tabTrigger>
+    <scope>source.nim</scope>
+    <description>Create a Nim proc</description>
+</snippet>

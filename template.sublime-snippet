@@ -1,0 +1,7 @@
+<snippet>
+    <content><![CDATA[template ${1:name}(${2})${3} =
+	]]></content>
+    <tabTrigger>template</tabTrigger>
+    <scope>source.nim</scope>
+    <description>Create a Nim template</description>
+</snippet>

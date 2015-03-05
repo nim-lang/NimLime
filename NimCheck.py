@@ -4,7 +4,7 @@ import sublime
 from sublime_plugin import ApplicationCommand, EventListener
 from threading import Thread
 from utils import (
-    view_has_nim_syntax, send_self, busy_frames, FlagObject,
+    view_has_nim_syntax, send_self, busy_frames, get_next_method,
     loop_status_msg, trim_region, NimLimeMixin, run_process
 )
 
@@ -85,9 +85,8 @@ class NimCheckCurrentView(ApplicationCommand, NimLimeMixin):
     def run(self, show_error_list=True):
         this = yield
 
-        flag = FlagObject()
         frames = ["Running Nim Check" + f for f in busy_frames]
-        loop_status_msg(frames, 0.15, flag)
+        stop_status_loop = loop_status_msg(frames, 0.15)
 
         window = sublime.active_window()
         view = window.active_view()
@@ -106,7 +105,7 @@ class NimCheckCurrentView(ApplicationCommand, NimLimeMixin):
 
         messages = parse_nimcheck_output(output)
 
-        yield setattr(flag, 'break_status_loop', this.next)
+        yield stop_status_loop(get_next_method(this))
         sublime.status_message("Nim Check Finished.")
 
         self.highlight_and_list_messages(messages, window, view)
@@ -253,9 +252,8 @@ class NimCheckFile(ApplicationCommand, NimLimeMixin):
 
             # Run 'nim check' on the external file.
             if os.path.isfile(path):
-                flag = FlagObject()
                 frames = ['Checking external file' + f for f in busy_frames]
-                loop_status_msg(frames, 0.25, flag)
+                stop_status_loop = loop_status_msg(frames, 0.25)
 
                 output, returncode = yield Thread(
                     target=run_nimcheck,
@@ -275,7 +273,7 @@ class NimCheckFile(ApplicationCommand, NimLimeMixin):
             )
 
             # Stop the status loop
-            yield setattr(flag, 'break_status_loop', this.next)
+            yield stop_status_loop(get_next_method(this))
             sublime.status_message("External file checked.")
 
             # Print to the output view

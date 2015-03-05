@@ -27,18 +27,18 @@
     //
     "nimble.executable": "nimble",
     
-    "nimble.update.enabled": false,
+    "nimble.update.enabled": true,
     "nimble.update.output.send": true,
     "nimble.update.output.clear": false,
     "nimble.update.output.show": true,
-    "nimble.update.output.method": true,
+    "nimble.update.output.method": "grouped",
     "nimble.update.output.tag": "nimble",
 
     "nimble.list.enabled": true,
     "nimble.list.output.send": true,
     "nimble.list.output.clear": true,
     "nimble.list.output.show": true,
-    "nimble.list.output.method": true,
+    "nimble.list.output.method": "grouped",
     "nimble.list.output.tag": "nimble",
     "nimble.list.quickpanel.send": true,
 
@@ -46,7 +46,7 @@
     "nimble.search.output.send": true,
     "nimble.search.output.clear": true,
     "nimble.search.output.show": true,
-    "nimble.search.output.method": true,
+    "nimble.search.output.method": "grouped",
     "nimble.search.output.tag": "nimble",
     
 
@@ -102,7 +102,7 @@
 
     "check.on_save.output.clear": false,
     "check.on_save.output.method": "grouped",
-    "check.on_save.output.send": true,
+    "check.on_save.output.send": false,
     "check.on_save.output.show": true,
     "check.on_save.output.raw": false,
     "check.on_save.output.tag": "Nim Check",
@@ -112,6 +112,7 @@
     "check.current_file.enabled": true,
     "check.current_file.highlight_errors": true,
     "check.current_file.highlight_warnings": true,
+
 
     "check.current_file.list.include_context": false,
     "check.current_file.list.show_errors": false,

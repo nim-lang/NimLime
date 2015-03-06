@@ -217,6 +217,11 @@ def trim_region(view, region):
     return sublime.Region(start, end)
 
 
+def escape_shell(s):
+    "'" + s.replace("'", "'\"'\"'") + "'"
+    return s
+
+
 def run_process(cmd, callback=None):
     process = subprocess.Popen(
         cmd,

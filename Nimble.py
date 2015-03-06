@@ -2,7 +2,8 @@ import sublime
 from sublime_plugin import ApplicationCommand
 from utils import (
     send_self, loop_status_msg, busy_frames, format_tag, get_next_method,
-    get_output_view, write_to_view, show_view, run_process, NimLimeMixin)
+    get_output_view, write_to_view, show_view, run_process, escape_shell,
+    NimLimeMixin)
 from threading import Thread
 
 # Resources
@@ -151,15 +152,6 @@ class NimbleListCommand(ApplicationCommand, NimbleMixin):
             sublime.status_message('Nimble Package List Retrieval Failed')
         yield
 
-    def is_enabled(self):
-        return True
-
-    def is_visible(self):
-        return self.enabled
-
-    def description(self):
-        return self.__doc__
-
 
 class NimbleSearchCommand(ApplicationCommand, NimbleMixin):
 
@@ -167,6 +159,12 @@ class NimbleSearchCommand(ApplicationCommand, NimbleMixin):
     Search Nimble Packages
     """
     settings_selector = "search"
+
+    def load_settings(self):
+        get = lambda key: settings.get(key.format(self.settings_selector))
+        self.enabled = get('nimble.{0}.enabled')
+        self.send_to_quickpanel = get('nimble.{0}.list.send')
+        self.load_output_settings()
 
     def run(self):
         window = sublime.active_window()
@@ -187,7 +185,7 @@ class NimbleSearchCommand(ApplicationCommand, NimbleMixin):
             # Run the main command
             output, returncode = yield Thread(
                 target=run_nimble,
-                args=('-y search' + search_term, this.send)
+                args=('-y search ' + escape_shell(search_term), this.send)
             ).start()
 
             # Set the status to show we've finished
@@ -208,9 +206,10 @@ class NimbleSearchCommand(ApplicationCommand, NimbleMixin):
             # Show output
             if self.send_output:
                 formatted_tag = format_tag(self.output_tag, window)
-                output_view = get_output_view(
+                output_window, output_view = get_output_view(
                     formatted_tag,
                     self.output_method,
+                    "Nimble Search Output",
                     window
                 )
                 write_to_view(
@@ -219,7 +218,7 @@ class NimbleSearchCommand(ApplicationCommand, NimbleMixin):
                 )
                 if self.show_output:
                     is_console = self.output_method == 'console'
-                    show_view(output_view, is_console)
+                    show_view(output_window, output_view, is_console)
 
             if returncode == 0:
                 sublime.status_message("Listing Nimble Packages")
@@ -228,15 +227,6 @@ class NimbleSearchCommand(ApplicationCommand, NimbleMixin):
             yield
 
         callback()
-
-    def is_enabled(self):
-        return True
-
-    def is_visible(self):
-        return self.enabled
-
-    def description(self):
-        return self.__doc__
 
 
 class NimbleUninstallCommand(ApplicationCommand):
@@ -288,15 +278,6 @@ class NimbleUninstallCommand(ApplicationCommand):
             yield
 
         callback()
-
-    def is_enabled(self):
-        return True
-
-    def is_visible(self):
-        return self.enabled
-
-    def description(self):
-        return self.__doc__
 
 
 def run_nimble(command, callback):

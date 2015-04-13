@@ -471,7 +471,7 @@
 			<key>comment</key>
 			<string>Invalid and unused keywords.</string>
 			<key>match</key>
-			<string>(\b(generic|interface|lambda|out|shared|with|without)\b)</string>
+			<string>(\b(concept|generic|interface|lambda|out|shared|with|without)\b)</string>
 			<key>name</key>
 			<string>keyword.invalid.nim</string>
 		</dict>

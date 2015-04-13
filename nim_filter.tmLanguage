@@ -104,7 +104,7 @@
 							<key>comment</key>
 							<string>Invalid and unused keywords.</string>
 							<key>match</key>
-							<string>(\b(converter|generic|interface|lambda|mixin|out|shared|with|without)\b)</string>
+							<string>(\b(concept|converter|generic|interface|lambda|mixin|out|shared|with|without)\b)</string>
 							<key>name</key>
 							<string>keyword.invalid.nim_filter</string>
 						</dict>

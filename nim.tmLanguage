@@ -447,7 +447,7 @@
 			<key>comment</key>
 			<string>Other keywords.</string>
 			<key>match</key>
-			<string>(\b(addr|as|atomic|bind|cast|const|converter|defer|discard|distinct|div|enum|export|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)</string>
+			<string>(\b(addr|as|atomic|bind|cast|concept|const|converter|defer|discard|distinct|div|enum|export|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)</string>
 			<key>name</key>
 			<string>keyword.other.nim</string>
 		</dict>
@@ -471,7 +471,7 @@
 			<key>comment</key>
 			<string>Invalid and unused keywords.</string>
 			<key>match</key>
-			<string>(\b(concept|generic|interface|lambda|out|shared|with|without)\b)</string>
+			<string>(\b(generic|interface|lambda|out|shared|with|without)\b)</string>
 			<key>name</key>
 			<string>keyword.invalid.nim</string>
 		</dict>

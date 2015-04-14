@@ -167,7 +167,7 @@ patterns:
 
 - comment: Other keywords.
   name: keyword.other.nim
-  match: (\b(addr|as|atomic|bind|cast|const|converter|defer|discard|distinct|div|enum|export|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)
+  match: (\b(addr|as|atomic|bind|cast|concept|const|converter|defer|discard|distinct|div|enum|export|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)
 
 - comment: Destructure syntax
   begin: (var|let)\s*\(

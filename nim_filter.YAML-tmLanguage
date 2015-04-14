@@ -46,7 +46,7 @@ patterns:
 
     - comment: Other keywords.
       name: keyword.other.nim_filter
-      match: (\b(addr|as|asm|atomic|bind|cast|const|discard|distinct|div|enum|export|from|import|include|let|mod|object|of|ptr|ref|shl|shr|static|tuple|type|var)\b)
+      match: (\b(addr|as|asm|atomic|bind|cast|concept|const|discard|distinct|div|enum|export|from|import|include|let|mod|object|of|ptr|ref|shl|shr|static|tuple|type|var)\b)
 
     - comment: Invalid and unused keywords.
       name: keyword.invalid.nim_filter

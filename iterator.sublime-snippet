@@ -1,6 +1,5 @@
 <snippet>
-    <content><![CDATA[iterator ${1:name}(${2})${3} =
-	]]></content>
+    <content><![CDATA[iterator ${1:name}(${2})${3} = ]]></content>
     <tabTrigger>iterator</tabTrigger>
     <scope>source.nim</scope>
     <description>Create a Nim iterator</description>

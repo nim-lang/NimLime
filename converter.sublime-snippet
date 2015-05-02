@@ -1,6 +1,5 @@
 <snippet>
-    <content><![CDATA[converter ${1:name}(${2})${3} =
-	]]></content>
+    <content><![CDATA[converter ${1:name}(${2})${3} = ]]></content>
     <tabTrigger>converter</tabTrigger>
     <scope>source.nim</scope>
     <description>Create a Nim converter</description>

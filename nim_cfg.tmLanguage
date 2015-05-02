@@ -39,7 +39,30 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>^([a-zA-Z0-9_\.]+)(\:)</string>
+			<string>\@\b(if|elif|else)\b</string>
+			<key>captures</key>
+			<dict>
+				<key>0</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.nimcfg</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>Keywords that affect program control flow or scope.</string>
+			<key>end</key>
+			<string>\@\b(end)</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.nimcfg</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>([a-zA-Z0-9_\.]+)\s*(\=)</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>

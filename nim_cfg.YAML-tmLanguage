@@ -16,8 +16,16 @@ patterns:
   name: support.type.nimcfg
   match: \[.+\]
 
+- comment: Keywords that affect program control flow or scope.
+  begin: \@\b(if|elif|else)\b
+  end: \@\b(end)
+  captures:
+    '0': {name: keyword.control.nimcfg}
+  patterns:
+  - {include: source.nimcfg}
+
 - comment: Key declarations
-  begin: ^([a-zA-Z0-9_\.]+)(\:)
+  begin: ([a-zA-Z0-9_\.]+)\s*(\=)
   end: \n
   captures:
     '1': {name: variable.parameter.nimcfg}

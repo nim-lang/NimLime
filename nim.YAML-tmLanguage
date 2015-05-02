@@ -58,7 +58,7 @@ patterns:
 - comment: A nim procedure or method declaration
   name: meta.proc.nim
   patterns:
-  - begin: \b(proc|method|template|macro|iterator|converter)\s+(\`([^\s\`]+)\`|(\w+))(\*)?
+  - begin: \b(proc|method|template|type|macro|iterator|converter)\s+(\`([^\s\`]+)\`|(\w+))(\*)?
     end: (\=)
     beginCaptures:
       '1': {name: storage.type.proc.nim}
@@ -193,7 +193,7 @@ patterns:
 
 - comment: Function types
   name: storage.type.function.nim
-  match: \b(proc|iterator|method|template|macro)\b
+  match: \b(proc|iterator|method|type|template|macro)\b
 
 - comment: Special types.
   name: storage.type.generic.nim

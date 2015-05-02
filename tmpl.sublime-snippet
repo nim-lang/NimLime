@@ -1,6 +1,6 @@
 <snippet>
-    <content><![CDATA[tmpl ${1:html}"""
-    $2
+    <content><![CDATA[tmpl$1 ${2:html}"""
+    $3
     """]]></content>
     <tabTrigger>tmpl</tabTrigger>
     <scope>source.nim</scope>

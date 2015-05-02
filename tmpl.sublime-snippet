@@ -1,0 +1,8 @@
+<snippet>
+    <content><![CDATA[tmpl ${1:html}"""
+    $2
+    """]]></content>
+    <tabTrigger>tmpl</tabTrigger>
+    <scope>source.nim</scope>
+    <description>Create a string based template</description>
+</snippet>

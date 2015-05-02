@@ -63,14 +63,6 @@
 		<dict>
 			<key>begin</key>
 			<string>([a-zA-Z0-9_\.]+)\s*(\=)</string>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>variable.parameter.nimcfg</string>
-				</dict>
-			</dict>
 			<key>comment</key>
 			<string>Key declarations</string>
 			<key>end</key>

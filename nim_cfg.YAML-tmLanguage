@@ -27,8 +27,6 @@ patterns:
 - comment: Key declarations
   begin: ([a-zA-Z0-9_\.]+)\s*(\=)
   end: \n
-  captures:
-    '1': {name: variable.parameter.nimcfg}
   patterns:
 
   - name: constant.numeric.float.decimal.nimcfg

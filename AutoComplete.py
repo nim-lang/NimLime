@@ -3,9 +3,9 @@ import os, subprocess, tempfile
 import re
 
 try: # Python 3
-    from NimLime.Project import Utility
+    from NimLime.Project import get_project
 except ImportError: # Python 2:
-    from Project import Utility
+    from Project import get_project
 
 settings = {}
 do_suggestions = False # Whether to provide suggestions

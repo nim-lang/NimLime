@@ -1,5 +1,9 @@
-import sublime, sublime_plugin
-import os, tempfile
+from sublime_plugin import TextCommand
+from sublime import Region
+from utils import NimLimeMixin
+from tempfile import NamedTemporaryFile
+import sublime
+import os
 
 try:  # Python 3
     from NimLime.Nim import Idetools
@@ -13,49 +17,63 @@ except ImportError:  # Python 2:
 # http://www.sublimetext.com/docs/plugin-examples
 
 
-class LookupCommand(sublime_plugin.TextCommand):
+class LookupCommand(TextCommand, NimLimeMixin):
 
     def lookup(self, filename, line, col):
         result = ""
-        dirtyFileName = ""
+        dirty_file_name = ""
 
         if self.view.is_dirty():
             # Generate temp file
             size = self.view.size()
 
-            with tempfile.NamedTemporaryFile(suffix=".nim", delete=False) as dirtyFile:
-                dirtyFileName = dirtyFile.name
-                dirtyFile.file.write(
-                    self.view.substr(sublime.Region(0, size)).encode("UTF-8")
+            with NamedTemporaryFile(suffix=".nim", delete=False) as dirty_file:
+                dirty_file_name = dirty_file.name
+                dirty_file.file.write(
+                    self.view.substr(Region(0, size)).encode("UTF-8")
                 )
-                dirtyFile.file.close()
+                dirty_file.file.close()
 
-                result = Idetools.idetool(self.view.window(), "--def", filename, line, col, dirtyFile.name)
-                dirtyFile.close();
-
+                result = Idetools.idetool(
+                    self.view.window(),
+                    "--def",
+                    filename,
+                    line,
+                    col,
+                    dirty_file.name
+                )
+                dirty_file.close()
 
             try:
-                os.unlink(dirtyFile.name)
+                os.unlink(dirty_file.name)
             except OSError:
                 pass
         else:
-            result = Idetools.idetool(self.view.window(), "--def", filename, line, col)
+            result = Idetools.idetool(
+                self.view.window(), "--def", filename, line, col)
 
         # Parse the result
         value = Idetools.parse(result)
 
         if value is not None:
-            lookupFile = filename if (value[2] == dirtyFileName) else value[2]
-            self.open_definition(self.view.window(),
-                lookupFile, int(value[3]), int(value[4]) + 1)
+            if value[2] == dirty_file_name:
+                lookup_file = filename
+            else:
+                lookup_file = value[2]
+            self.open_definition(
+                self.view.window(),
+                lookup_file,
+                int(value[3]),
+                int(value[4]) + 1
+            )
         else:
             sublime.status_message("No definition found")
 
     def open_definition(self, window, filename, line, col):
-        arg   = filename + ":" + str(line) + ":" + str(col)
+        arg = filename + ":" + str(line) + ":" + str(col)
         flags = sublime.ENCODED_POSITION
 
-        #TODO - If this is NOT in the same project, mark transient
+        # TODO - If this is NOT in the same project, mark transient
         # flags |= sublime.TRANSIENT
 
         window.open_file(arg, flags)
@@ -64,7 +82,7 @@ class LookupCommand(sublime_plugin.TextCommand):
         filename = self.view.file_name()
         sels = self.view.sel()
 
-        if filename == None or not filename.endswith(".nim"):
+        if filename is None or not filename.endswith(".nim"):
             return
 
         for sel in sels:

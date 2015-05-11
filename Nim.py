@@ -12,10 +12,10 @@ if int(sublime.version()) > 3000:
 
 try:  # Python 3
     from queue import Queue
-    from NimLime.Project import Utility
+    from NimLime.Project import get_project
 except ImportError:  # Python 2:
     from Queue import Queue
-    from Project import Utility
+    from Project import get_project
 
 class Idetools:
 
@@ -89,7 +89,7 @@ class Idetools:
     @staticmethod
     def idetool(win, cmd, filename, line, col, dirtyFile=""):
         filePath = filename
-        projFile = Utility.get_nimproject(win)
+        projFile = get_project(win)
 
         if projFile is None:
             projFile = filename

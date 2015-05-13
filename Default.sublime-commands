@@ -4,8 +4,20 @@
         "command": "nimble_update"
     },
     {
-        "caption": "Nim: Install Nimble Package",
+        "caption": "Nim: List Nimble Package",
         "command": "nimble_list"
+    },
+    {
+        "caption": "Nim: Search for Nimble Package",
+        "command": "nimble_search"
+    },
+    {
+        "caption": "Nim: Install Nimble Package",
+        "command": "nimble_install"
+    },
+    {
+        "caption": "Nim: Uninstall Nimble Package",
+        "command": "nimble_uninstall"
     },
     {
     	   "caption": "Nim: Go To Definition",

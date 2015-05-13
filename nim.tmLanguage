@@ -11,6 +11,14 @@
 	<key>patterns</key>
 	<array>
 		<dict>
+			<key>comment</key>
+			<string>An empty documentation comment.</string>
+			<key>match</key>
+			<string>(##\s*)$\n?</string>
+			<key>name</key>
+			<string>comment.line.number-sign.doc-comment.empty.nim</string>
+		</dict>
+		<dict>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -27,7 +35,7 @@
 			<key>comment</key>
 			<string>A documentation comment.</string>
 			<key>match</key>
-			<string>(##\s*(TODO|todo)?).*$\n?</string>
+			<string>(##\s*(TODO|todo)?).+$\n?</string>
 			<key>name</key>
 			<string>comment.line.number-sign.doc-comment.nim</string>
 		</dict>

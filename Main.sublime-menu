@@ -18,14 +18,14 @@
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/NimLime/nim.sublime-settings"
+                                    "file": "${packages}/NimLime/NimLime.sublime-settings"
                                 },
                                 "caption": "Settings – Default"
                             },
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/User/nim.sublime-settings"
+                                    "file": "${packages}/User/NimLime.sublime-settings"
                                 },
                                 "caption": "Settings – User"
                             },

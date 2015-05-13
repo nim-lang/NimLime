@@ -15,9 +15,9 @@ if int(sublime.version()) > 3000:
     st_version = 3
 
 if st_version == 3:
-    from NimLime.Project import Utility
+    from NimLime.Project import get_project
 else:
-    from Project import Utility
+    from Project import get_project
 
 class Idetools:
 
@@ -139,7 +139,7 @@ class Idetools:
     @staticmethod
     def idetool(win, cmd, filename, line, col, dirtyFile=""):
         filePath = filename
-        projFile = Utility.get_nimproject(win)
+        projFile = get_project(win)
 
         if projFile is None:
             projFile = filename
@@ -172,6 +172,7 @@ class Idetools:
 
         return None
 
+auto_reload = False
 if auto_reload:
     # Perform auto-reload
     reload_mods = []

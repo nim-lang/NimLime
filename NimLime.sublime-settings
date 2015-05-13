@@ -1,0 +1,153 @@
+{
+    "nim.executable": "nim",
+    "translate_tabs_to_spaces": true,
+    "enable_nim_completions": true,
+    "provide_immediate_nim_completions": false,
+    "auto_complete_triggers": [ {"selector": "source.nim", "characters": "."} ],
+    "docontinue.enabled": true,
+    "docontinue.autostop": true,
+
+    // Nimble settings
+    // The below settings influence individual commands
+    //
+    // 'enabled': Toggles command visibility in the action pane.
+    //
+    // 'output.send': Toggles sending command output to an output view.
+    //
+    // 'output.clear': Toggles clearing previous output when writing the
+    //                 command's output to the output view. Has no effect when
+    //                 'output.send' is false.
+    //
+    // 'output.show': Toggles switching focus/opening the output view when the
+    //                command is finished. Has no effect when 'output.send'
+    //                is false.
+    //
+    // 'output.method': Controls how output is displayed. Can be 'console',
+    //                  'shared', 'grouped' or 'separate'.
+    //
+    "nimble.executable": "nimble",
+    
+    "nimble.update.enabled": true,
+    "nimble.update.output.send": true,
+    "nimble.update.output.clear": false,
+    "nimble.update.output.show": true,
+    "nimble.update.output.method": "grouped",
+    "nimble.update.output.tag": "nimble",
+
+    "nimble.list.enabled": true,
+    "nimble.list.output.send": true,
+    "nimble.list.output.clear": true,
+    "nimble.list.output.show": true,
+    "nimble.list.output.method": "grouped",
+    "nimble.list.output.tag": "nimble",
+    "nimble.list.quickpanel.send": true,
+
+    "nimble.search.enabled": true,
+    "nimble.search.output.send": true,
+    "nimble.search.output.clear": true,
+    "nimble.search.output.show": true,
+    "nimble.search.output.method": "grouped",
+    "nimble.search.output.tag": "nimble",
+
+    "nimble.install.enabled": true,
+    "nimble.install.output.send": true,
+    "nimble.install.output.clear": true,
+    "nimble.install.output.show": true,
+    "nimble.install.output.method": "grouped",
+    "nimble.install.output.tag": "nimble",
+
+    "nimble.uninstall.enabled": true,
+    "nimble.uninstall.output.send": true,
+    "nimble.uninstall.output.clear": true,
+    "nimble.uninstall.output.show": true,
+    "nimble.uninstall.output.method": "grouped",
+    "nimble.uninstall.output.tag": "nimble",
+    
+
+    // 'nim check' settings
+    // The below settings influence individual commands.
+    //
+    // 'enabled': Toggles command visibility in the action pane.
+    //
+    // 'highlight_errors': Toggles highlighting of errors when the
+    //                     command is run.
+    //
+    // 'highlight_warnings': Toggles highlighting of warnings when the
+    //                       command is run.
+    //
+    // 'list_errors': Toggles listing of errors when the command is run.
+    //
+    // 'list_warnings': Toggles listing of warnings when the command is run.
+    //
+    // 'remember_last_file': Remember the last file entered.
+    //
+    // 'output.clear': Toggles clearing previous output when writing the
+    //                 command's output to the output view.
+    //
+    // 'output.show': Toggles switching focus/opening the output view when the
+    //                command is finished.
+    //
+    // 'output.method': Controls how output is displayed. Can be 'console',
+    //                  'grouped' or 'separate'.
+    //
+    // 'output.name': Controls the name of the output view created when a view
+    //                with a matching output tag cannot be found.
+    //
+    // 'output.tag': Controls which view a command's output is sent to. Only
+    //               applies when 'output.method' is 'shared'.
+    //               When sending output, the command will retrieve/create an
+    //               output view with the value specified by 'output.tag'.
+    //               Current modifiers:
+    //                 - 'view_id'
+    //                 - 'buffer_id'
+    //                 - 'window_id'
+    //                 - 'file_name'
+    //                 - 'view_name'
+
+    // Settings for checking a file on saving it
+    "check.on_save.enabled": true,
+    "check.on_save.highlight_errors": true,
+    "check.on_save.highlight_warnings": false,
+
+    "check.on_save.list.include_context": false,
+    "check.on_save.list.show_errors": true,
+    "check.on_save.list.show_warnings": true,
+    "check.on_save.list.move_cursor": true,
+
+    "check.on_save.output.clear": false,
+    "check.on_save.output.method": "grouped",
+    "check.on_save.output.send": false,
+    "check.on_save.output.show": true,
+    "check.on_save.output.raw": false,
+    "check.on_save.output.tag": "Nim Check",
+
+
+    // Settings for the 'check current file' command
+    "check.current_file.enabled": true,
+    "check.current_file.highlight_errors": true,
+    "check.current_file.highlight_warnings": true,
+
+
+    "check.current_file.list.include_context": false,
+    "check.current_file.list.show_errors": false,
+    "check.current_file.list.show_warnings": false,
+    "check.current_file.list.move_cursor": false,
+
+    "check.current_file.output.clear": false,
+    "check.current_file.output.method": "grouped",
+    "check.current_file.output.send": true,
+    "check.current_file.output.show": false,
+    "check.current_file.output.raw": false,
+    "check.current_file.output.tag": "Nim Check",
+
+
+    // Settings for the 'check external file' command
+    "check.external_file.enabled": true,
+    "check.external_file.remember_input": true,
+
+    "check.external_file.output.include_context": true,
+    "check.external_file.output.clear": false,
+    "check.external_file.output.method": "grouped",
+    "check.external_file.output.show": true,
+    "check.external_file.output.tag": "Nim Check"
+}

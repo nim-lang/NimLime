@@ -44,6 +44,7 @@ class NimbleMixin(NimLimeMixin):
         self.show_output = get("nimble.{0}.output.show")
         self.output_method = get("nimble.{0}.output.method")
         self.output_tag = get("nimble.{0}.output.tag")
+        self.output_name = get("nimble.{0}.output.name")
         self.raw_output = get("nimble.{0}.output.raw")
 
 
@@ -71,12 +72,24 @@ class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
         ).start()
 
         # Set the status to show we've finished
-
         yield stop_status_loop(get_next_method(this))
 
         # Show output
         if self.send_output:
-            self.write_to_output(output, window, None, "Nimble Status")
+            formatted_tag = format_tag(self.output_tag, window)
+            output_window, output_view = get_output_view(
+                formatted_tag,
+                self.output_method,
+                self.output_name,
+                window
+            )
+            write_to_view(
+                output_view, output,
+                self.clear_output
+            )
+            if self.show_output:
+                is_console = (self.output_method == 'console')
+                show_view(output_window, output_view, is_console)
 
         if returncode == 0:
             sublime.status_message("Nimble Package List Updated")

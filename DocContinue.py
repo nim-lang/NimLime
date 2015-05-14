@@ -91,7 +91,7 @@ class CommentListener(EventListener, NimLimeMixin):
 
             # Text Modification Stage
             # Simply insert a doc-comment into the current line.
-            insertion_edit = view.begin_edit("continueComment")
-            view.insert(insertion_edit, current_point, "## ")
-            view.end_edit(insertion_edit)
+            # insertion_edit = view.begin_edit("continueComment")
+            view.run_command('insert', {'characters': '## '})
+            # view.end_edit(insertion_edit)
             self.already_running = False

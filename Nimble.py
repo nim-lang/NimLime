@@ -45,7 +45,23 @@ class NimbleMixin(NimLimeMixin):
         self.output_method = get("nimble.{0}.output.method")
         self.output_tag = get("nimble.{0}.output.tag")
         self.output_name = get("nimble.{0}.output.name")
-        self.raw_output = get("nimble.{0}.output.raw")
+
+    def output_content(self, output, window):
+        if self.send_output:
+            formatted_tag = format_tag(self.output_tag, window)
+            output_window, output_view = get_output_view(
+                formatted_tag,
+                self.output_method,
+                self.output_name,
+                window
+            )
+            write_to_view(
+                output_view, output,
+                self.clear_output
+            )
+            if self.show_output:
+                is_console = self.output_method == 'console'
+                show_view(output_window, output_view, is_console)
 
 
 class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
@@ -66,7 +82,7 @@ class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
         stop_status_loop = loop_status_msg(frames, 0.15)
 
         # Run the main command
-        output, returncode = yield Thread(
+        output, return_code = yield Thread(
             target=run_nimble,
             args=('-y update', this.send)
         ).start()
@@ -75,23 +91,9 @@ class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
         yield stop_status_loop(get_next_method(this))
 
         # Show output
-        if self.send_output:
-            formatted_tag = format_tag(self.output_tag, window)
-            output_window, output_view = get_output_view(
-                formatted_tag,
-                self.output_method,
-                self.output_name,
-                window
-            )
-            write_to_view(
-                output_view, output,
-                self.clear_output
-            )
-            if self.show_output:
-                is_console = (self.output_method == 'console')
-                show_view(output_window, output_view, is_console)
+        self.output_content(output, window)
 
-        if returncode == 0:
+        if return_code == 0:
             sublime.status_message("Nimble Package List Updated")
         else:
             sublime.status_message('Updating Nimble Package List Failed')
@@ -143,21 +145,7 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
             window.show_quick_panel(items, None)
 
         # Show output
-        if self.send_output:
-            formatted_tag = format_tag(self.output_tag, window)
-            output_window, output_view = get_output_view(
-                formatted_tag,
-                self.output_method,
-                "Nimble List Output",
-                window
-            )
-            write_to_view(
-                output_view, output,
-                self.clear_output
-            )
-            if self.show_output:
-                is_console = self.output_method == 'console'
-                show_view(output_window, output_view, is_console)
+        self.output_content(output, window)
 
         if returncode == 0:
             sublime.status_message("Listing Nimble Packages")
@@ -196,7 +184,7 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
             stop_status_loop = loop_status_msg(frames, 0.15)
 
             # Run the main command
-            output, returncode = yield Thread(
+            output, return_code = yield Thread(
                 target=run_nimble,
                 args=('-y search ' + escape_shell(search_term), this.send)
             ).start()
@@ -217,23 +205,9 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
                 window.show_quick_panel(items, None)
 
             # Show output
-            if self.send_output:
-                formatted_tag = format_tag(self.output_tag, window)
-                output_window, output_view = get_output_view(
-                    formatted_tag,
-                    self.output_method,
-                    "Nimble Search Output",
-                    window
-                )
-                write_to_view(
-                    output_view, output,
-                    self.clear_output
-                )
-                if self.show_output:
-                    is_console = self.output_method == 'console'
-                    show_view(output_window, output_view, is_console)
+            self.output_content(output, window)
 
-            if returncode == 0:
+            if return_code == 0:
                 sublime.status_message("Listing Nimble Packages")
             else:
                 sublime.status_message('Nimble Package List Retrieval Failed')
@@ -282,7 +256,7 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
             stop_status_loop = loop_status_msg(frames, 0.15)
 
             # Run the search/list command
-            output, returncode = yield Thread(
+            output, return_code = yield Thread(
                 target=run_nimble,
                 args=process_args
             ).start()
@@ -290,7 +264,7 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
             # Set the status to show we've finished searching
             yield stop_status_loop(get_next_method(this))
 
-            if returncode != 0:
+            if return_code != 0:
                 sublime.status_message("Nimble Package Load Failed")
             else:
                 items = []
@@ -316,7 +290,7 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
                         stop_status_loop = loop_status_msg(frames, 0.15)
 
                         # Run the install command
-                        output, returncode = yield Thread(
+                        output, return_code = yield Thread(
                             target=run_nimble,
                             args=(
                                 '-y install ' + escape_shell(target_name),
@@ -326,24 +300,8 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
 
                         yield stop_status_loop(get_next_method(this))
 
-                        if self.send_output:
-                            formatted_tag = format_tag(self.output_tag, window)
-                            output_window, output_view = get_output_view(
-                                formatted_tag,
-                                self.output_method,
-                                "Nimble Install Output",
-                                window
-                            )
-                            write_to_view(
-                                output_view, output,
-                                self.clear_output
-                            )
-                            if self.show_output:
-                                is_console = self.output_method == 'console'
-                                show_view(
-                                    output_window, output_view, is_console
-                                )
-                        if returncode == 0:
+                        self.output_content(output, window)
+                        if return_code == 0:
                             sublime.status_message("Installed Nimble Package")
                         else:
                             sublime.status_message(
@@ -378,7 +336,7 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
             stop_status_loop = loop_status_msg(frames, 0.15)
 
             # Run the search/list command
-            output, returncode = yield Thread(
+            output, return_code = yield Thread(
                 target=run_nimble,
                 args=('-y list -i', this.send)
             ).start()
@@ -386,7 +344,7 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
             # Set the status to show we've finished searching
             yield stop_status_loop(get_next_method(this))
 
-            if returncode != 0:
+            if return_code != 0:
                 sublime.status_message("Nimble Installed Package Listing Failed")
             else:
                 items = []
@@ -412,7 +370,7 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
                         stop_status_loop = loop_status_msg(frames, 0.15)
 
                         # Run the install command
-                        output, returncode = yield Thread(
+                        output, return_code = yield Thread(
                             target=run_nimble,
                             args=(
                                 '-y uninstall ' + escape_shell(target_name),
@@ -422,24 +380,8 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
 
                         yield stop_status_loop(get_next_method(this))
 
-                        if self.send_output:
-                            formatted_tag = format_tag(self.output_tag, window)
-                            output_window, output_view = get_output_view(
-                                formatted_tag,
-                                self.output_method,
-                                "Nimble Install Output",
-                                window
-                            )
-                            write_to_view(
-                                output_view, output,
-                                self.clear_output
-                            )
-                            if self.show_output:
-                                is_console = self.output_method == 'console'
-                                show_view(
-                                    output_window, output_view, is_console
-                                )
-                        if returncode == 0:
+                        self.output_content(output, window)
+                        if return_code == 0:
                             sublime.status_message("Uninstalled Nimble Package")
                         else:
                             sublime.status_message(

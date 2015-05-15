@@ -1,15 +1,16 @@
-import sublime, sublime_plugin
-import os, subprocess, tempfile
-import re
-
-try: # Python 3
+import os
+import tempfile
+import sublime
+import sublime_plugin
+try:  # Python 3
     from NimLime.Project import get_project
-except ImportError: # Python 2:
-    from Project import get_project
+except ImportError:  # Python 2:
+    from Project import get_project_file
 
 settings = {}
-do_suggestions = False # Whether to provide suggestions
-provide_immediate_completions = False # Whether to provide completions immediatly
+do_suggestions = False  # Whether to provide suggestions
+provide_immediate_completions = False  # Whether to provide completions immediatly
+
 
 def update_settings():
     global do_suggestions
@@ -34,6 +35,7 @@ last_suggestion_pos = ""
 had_suggestions = False
 give_suggestions = False
 
+
 def plugin_loaded():
     # Load all settings relevant for autocomplete
     global settings
@@ -46,11 +48,12 @@ def plugin_loaded():
 if int(sublime.version()) < 3000:
     sublime.set_timeout(plugin_loaded, 1000)
 
+
 def position_str(filename, line, col):
     return "{0}:{1}:{2}".format(filename, line, col)
 
-class SuggestItem:
 
+class SuggestItem:
     def prettify_signature(self, currentModule):
         if self.symType == "skProc" or self.symType == "skMethod":
             fn_name = ""
@@ -61,10 +64,10 @@ class SuggestItem:
 
             self.signature = self.signature.replace("proc", fn_name)
 
-class NimUpdateCompletions(sublime_plugin.TextCommand):
 
+class NimUpdateCompletions(sublime_plugin.TextCommand):
     def run(self, edit):
-        if had_suggestions: # Only run when there were already suggestions for this position
+        if had_suggestions:  # Only run when there were already suggestions for this position
             return
 
         global give_suggestions
@@ -73,8 +76,8 @@ class NimUpdateCompletions(sublime_plugin.TextCommand):
         reload = lambda: self.view.window().run_command("auto_complete");
         sublime.set_timeout(reload, 0)
 
-class NimCompleter(sublime_plugin.EventListener):
 
+class NimCompleter(sublime_plugin.EventListener):
     def on_query_completions(self, view, prefix, locations):
         filename = view.file_name()
         if filename == None or not filename.endswith(".nim") or not do_suggestions:
@@ -92,19 +95,19 @@ class NimCompleter(sublime_plugin.EventListener):
         # Extract the cursor position
         pos = view.rowcol(view.sel()[0].begin())
         line = pos[0] + 1
-        col  = pos[1]
+        col = pos[1]
 
         suggestion_pos = position_str(filename, line, col)
         global had_suggestions
         global give_suggestions
         global last_suggestion_pos
 
-        #print(suggestion_pos)
+        # print(suggestion_pos)
         #print(last_suggestion_pos)
         #print("had: " + str(had_suggestions))
         #print("give: " + str(give_suggestions))
 
-        if (not give_suggestions and suggestion_pos != last_suggestion_pos): # Reset logic
+        if (not give_suggestions and suggestion_pos != last_suggestion_pos):  # Reset logic
             had_suggestions = False
             give_suggestions = False
 
@@ -137,8 +140,8 @@ class NimCompleter(sublime_plugin.EventListener):
             pargs = pargs + "--track:"
 
         pargs = pargs + filename \
-         + "," + str(line) + "," + str(col) \
-         + " --suggest " + projFile
+                + "," + str(line) + "," + str(col) \
+                + " --suggest " + projFile
 
         print(pargs)
 
@@ -164,11 +167,11 @@ class NimCompleter(sublime_plugin.EventListener):
             item.docs = parts[7]
             dots = item.qualName.split(".")
             if len(dots) == 2:
-              item.name = dots[1]
-              item.modName = dots[0]
+                item.name = dots[1]
+                item.modName = dots[0]
             else:
-              item.modName = currentModule
-              item.name = item.qualName
+                item.modName = currentModule
+                item.name = item.qualName
 
             item.prettify_signature(currentModule)
 
@@ -199,4 +202,4 @@ class NimCompleter(sublime_plugin.EventListener):
             except OSError:
                 pass
         # get results from each tab
-        return results # sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS
+        return results  # sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS

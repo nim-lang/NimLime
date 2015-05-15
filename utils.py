@@ -2,7 +2,9 @@ from weakref import proxy, WeakKeyDictionary
 from sys import version_info
 from functools import wraps
 import subprocess
+
 import sublime
+
 
 busy_frames = ['.', '..', '...']
 output_handle_mappings = WeakKeyDictionary()
@@ -43,6 +45,7 @@ def send_self(use_proxy):
                 generator.send(proxy(generator))
             else:
                 generator.send(generator)
+
         return send_self_wrapper
 
     # If the argument is a callable, we've been used without being directly
@@ -109,7 +112,6 @@ def loop_status_msg(frames, speed, view=None, key=''):
 
 
 class _FlagObject(object):
-
     """
     Used with loop_status_msg to signal when a status message loop should end.
     """
@@ -241,7 +243,6 @@ def run_process(cmd, callback=None):
 
 
 class NimLimeMixin(object):
-
     def __init__(self):
         if hasattr(self, 'load_settings'):
             self.settings = sublime.load_settings('NimLime.sublime-settings')

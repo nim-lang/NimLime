@@ -28,8 +28,8 @@ class CommentListener(EventListener, NimLimeMixin):
 
     def load_settings(self):
         get = lambda key: settings.get(key)
-        self.enabled = get('docontinue.enabled')
-        self.autostop = get('docontinue.autostop')
+        self.enabled = get('doccontinue.enabled')
+        self.autostop = get('doccontinue.autostop')
 
     def on_activated(self, view):
         nim_syntax = view.settings().get('syntax', None)
@@ -56,9 +56,9 @@ class CommentListener(EventListener, NimLimeMixin):
             # Stage 1 Checks
             # Checks if the last history action was a newline insertion.
             command, args, repeats = view.command_history(0, False)
-            if (command == "insert" and args["characters"] == '\n'):
+            if command == "insert" and args["characters"] == '\n':
                 pass
-            elif (command != "paste"):
+            elif command != "paste":
                 self.already_running = False
                 continue
 
@@ -82,7 +82,6 @@ class CommentListener(EventListener, NimLimeMixin):
                 self.already_running = False
                 continue
 
-            print("here")
             # Stage 4 Checks (Optional)
             # Checks if the previous line has an empty doc-comment.
             # If so, and if the autostop settings are on, don't add anything

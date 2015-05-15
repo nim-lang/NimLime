@@ -1,12 +1,12 @@
-import sublime
-import sublime_plugin
 import sys
 import re
 import subprocess
 import socket
 from time import sleep
 from threading import Thread
-import os
+
+import sublime
+
 
 auto_reload = False
 
@@ -17,13 +17,13 @@ if int(sublime.version()) > 3000:
 if st_version == 3:
     from NimLime.Project import get_project
 else:
-    from Project import get_project
+    from Project import get_project_file
+
 
 class Idetools:
-
     # Fields
-    service   = None
-    running   = False
+    service = None
+    running = False
     outThread = None
 
     pattern = re.compile(
@@ -69,7 +69,7 @@ class Idetools:
         return s
 
     @staticmethod
-    def sendrecv(args, getresp = True):
+    def sendrecv(args, getresp=True):
         sock = None
         try:
             sock = Idetools.opensock()
@@ -106,9 +106,9 @@ class Idetools:
                 sock = None
 
     @staticmethod
-    def ensure_service(proj = ""):
+    def ensure_service(proj=""):
         # Ensure there is a listening socket
-        if Idetools.ensure_socket(secs = 0):
+        if Idetools.ensure_socket(secs=0):
             return
 
         # If server is running, do nothing
@@ -123,7 +123,7 @@ class Idetools:
             universal_newlines=True,
             shell=True)
 
-        Idetools.service   = proc
+        Idetools.service = proc
         Idetools.outThread = Thread(
             target=Idetools.print_output,
             args=(proc.stdout,))
@@ -139,7 +139,7 @@ class Idetools:
     @staticmethod
     def idetool(win, cmd, filename, line, col, dirtyFile=""):
         filePath = filename
-        projFile = get_project(win)
+        projFile = get_project_file(win)
 
         if projFile is None:
             projFile = filename
@@ -171,6 +171,7 @@ class Idetools:
                         m.group("col"), m.group("description"))
 
         return None
+
 
 auto_reload = False
 if auto_reload:

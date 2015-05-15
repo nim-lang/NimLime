@@ -1,10 +1,12 @@
+from threading import Thread
+
 import sublime
 from sublime_plugin import ApplicationCommand
 from utils import (
     send_self, loop_status_msg, busy_frames, format_tag, get_next_method,
     get_output_view, write_to_view, show_view, run_process, escape_shell,
     NimLimeMixin)
-from threading import Thread
+
 
 # Resources
 # http://docs.sublimetext.info/en/latest/reference/command_palette.html
@@ -25,13 +27,13 @@ def load():
     global nimble_executable
     nimble_executable = settings.get('nimble.executable', 'nim')
 
+
 settings = sublime.load_settings('NimLime.sublime-settings')
 settings.add_on_change('nimble.executable', load)
 load()
 
 
 class NimbleMixin(NimLimeMixin):
-
     def load_settings(self):
         get = lambda key: settings.get(key.format(self.settings_selector))
         self.enabled = get('nimble.{0}.enabled')
@@ -65,7 +67,6 @@ class NimbleMixin(NimLimeMixin):
 
 
 class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
-
     """
     Update the Nimble package list
     """
@@ -102,7 +103,6 @@ class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
 
 
 class NimbleListCommand(NimbleMixin, ApplicationCommand):
-
     """
     List Nimble Packages
     """
@@ -155,7 +155,6 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
 
 
 class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
-
     """
     Search Nimble Packages
     """
@@ -217,7 +216,6 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
 
 
 class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
-
     """
     Search Nimble Packages
     """
@@ -313,7 +311,6 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
 
 
 class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
-
     """
     Search Nimble Packages
     """
@@ -390,6 +387,7 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
             yield
 
         callback()
+
 
 def run_nimble(command, callback):
     global nimble_executable

@@ -1,12 +1,13 @@
-import sublime_plugin
 import os
 import json
+
+import sublime_plugin
+
 
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class ListModulesCommand(sublime_plugin.WindowCommand):
-
     """
     Display list of all modules and their descriptions
     """
@@ -60,7 +61,6 @@ class ListModulesCommand(sublime_plugin.WindowCommand):
 
 
 class ListAllCommand(sublime_plugin.WindowCommand):
-
     """
     Display index of all procs/modules/methods/etc in std lib
     """

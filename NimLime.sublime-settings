@@ -1,13 +1,17 @@
 {
     "nim.executable": "nim",
+    "nimble.executable": "nimble",
+
     "translate_tabs_to_spaces": true,
     "enable_nim_completions": true,
     "provide_immediate_nim_completions": false,
     "auto_complete_triggers": [ {"selector": "source.nim", "characters": "."} ],
-    "docontinue.enabled": true,
-    "docontinue.autostop": true,
 
-    // Nimble settings
+    // DocComment Settings
+    "doccontinue.enabled": true,  // Enable/Disable auto-continuation of doc-comments
+    "doccontinue.autostop": true, // Stop doc-comment continuation after placing empty doc-comments
+
+    // Nimble Settings
     // The below settings influence individual commands
     //
     // 'enabled': Toggles command visibility in the action pane.
@@ -25,13 +29,26 @@
     // 'output.method': Controls how output is displayed. Can be 'console',
     //                  'shared', 'grouped' or 'separate'.
     //
-    "nimble.executable": "nimble",
-    
+    // 'output.name': Controls the name of the output view created when a view
+    //                with a matching output tag cannot be found.
+    //
+    // 'output.tag': Controls which view a command's output is sent to. Only
+    //               applies when 'output.method' is 'shared'.
+    //               When sending output, the command will retrieve/create an
+    //               output view with the value specified by 'output.tag'.
+    //               Current modifiers:
+    //                 - 'view_id'
+    //                 - 'buffer_id'
+    //                 - 'window_id'
+    //                 - 'file_name'
+    //                 - 'view_name'
+
     "nimble.update.enabled": true,
     "nimble.update.output.send": true,
     "nimble.update.output.clear": false,
     "nimble.update.output.show": true,
     "nimble.update.output.method": "grouped",
+    "nimble.update.output.name": "Nimble Update Output",
     "nimble.update.output.tag": "nimble",
 
     "nimble.list.enabled": true,
@@ -39,6 +56,7 @@
     "nimble.list.output.clear": true,
     "nimble.list.output.show": true,
     "nimble.list.output.method": "grouped",
+    "nimble.list.output.name": "Nimble List Output",
     "nimble.list.output.tag": "nimble",
     "nimble.list.quickpanel.send": true,
 
@@ -47,6 +65,7 @@
     "nimble.search.output.clear": true,
     "nimble.search.output.show": true,
     "nimble.search.output.method": "grouped",
+    "nimble.search.output.name": "Nimble Search Output",
     "nimble.search.output.tag": "nimble",
 
     "nimble.install.enabled": true,
@@ -54,6 +73,7 @@
     "nimble.install.output.clear": true,
     "nimble.install.output.show": true,
     "nimble.install.output.method": "grouped",
+    "nimble.install.output.name": "Nimble Install Output",
     "nimble.install.output.tag": "nimble",
 
     "nimble.uninstall.enabled": true,
@@ -61,10 +81,11 @@
     "nimble.uninstall.output.clear": true,
     "nimble.uninstall.output.show": true,
     "nimble.uninstall.output.method": "grouped",
+    "nimble.uninstall.output.name": "Nimble Uninstall Output",
     "nimble.uninstall.output.tag": "nimble",
     
 
-    // 'nim check' settings
+    // Nim Check Settings
     // The below settings influence individual commands.
     //
     // 'enabled': Toggles command visibility in the action pane.

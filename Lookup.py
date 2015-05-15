@@ -1,9 +1,11 @@
+from tempfile import NamedTemporaryFile
+import os
+
 from sublime_plugin import TextCommand
 from sublime import Region
 from utils import NimLimeMixin
-from tempfile import NamedTemporaryFile
 import sublime
-import os
+
 
 try:  # Python 3
     from NimLime.Nim import Idetools
@@ -18,7 +20,6 @@ except ImportError:  # Python 2:
 
 
 class LookupCommand(TextCommand, NimLimeMixin):
-
     def lookup(self, filename, line, col):
         result = ""
         dirty_file_name = ""

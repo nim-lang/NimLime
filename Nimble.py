@@ -1,8 +1,9 @@
 from threading import Thread
 
+import NimLime
 import sublime
 from sublime_plugin import ApplicationCommand
-from utils import (
+from utils.misc import (
     send_self, loop_status_msg, busy_frames, format_tag, get_next_method,
     get_output_view, write_to_view, show_view, run_process, escape_shell,
     NimLimeMixin)
@@ -342,7 +343,8 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
             yield stop_status_loop(get_next_method(this))
 
             if return_code != 0:
-                sublime.status_message("Nimble Installed Package Listing Failed")
+                sublime.status_message(
+                    "Nimble Installed Package Listing Failed")
             else:
                 items = []
                 packages = parse_package_descriptions(output)

@@ -1,0 +1,160 @@
+import re
+import subprocess
+import socket
+import sys
+from time import sleep
+from threading import Thread
+from utils.project import get_project_file
+
+
+class Idetools:
+    # Fields
+    service = None
+    running = False
+    outThread = None
+
+    pattern = re.compile(
+        '^(?P<cmd>\S+)\s(?P<ast>\S+)\s' +
+        '(?P<symbol>\S+)( (?P<instance>\S+))?\s' +
+        '(?P<type>[^\t]+)\s(?P<path>[^\t]+)\s' +
+        '(?P<line>\d+)\s(?P<col>\d+)\s' +
+        '(?P<description>\".+\")?')
+
+    # Methods
+    @staticmethod
+    def print_output(out):
+        for line in iter(out.readline, b''):
+            print(line.rstrip())
+
+    @staticmethod
+    def linesplit(socket):
+        buffer = None
+
+        if sys.version_info < (3,0):
+            buffer = socket.recv(4096)
+        else:
+            buffer = socket.recv(4096).decode('UTF-8')
+
+        buffering = True
+        while buffering:
+            if "\n" in buffer:
+                (line, buffer) = buffer.split("\n", 1)
+                yield line + "\n"
+            else:
+                more = socket.recv(4096)
+                if not more:
+                    buffering = False
+                else:
+                    buffer += more.decode('UTF-8')
+        if buffer:
+            yield buffer
+
+    @staticmethod
+    def opensock():
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect(("localhost", 8088))
+        return s
+
+    @staticmethod
+    def sendrecv(args, getresp=True):
+        sock = None
+        try:
+            sock = Idetools.opensock()
+
+            if sys.version_info < (3,0):
+                sock.send(args + "\r\n")
+            else:
+                sock.send(bytes(args + "\r\n", 'UTF-8'))
+
+            if getresp:
+                for line in Idetools.linesplit(sock):
+                    print(line)
+                    return line
+                return ""
+        finally:
+            if sock is not None:
+                sock.close()
+
+    @staticmethod
+    def ensure_socket(secs=2, wait=.2):
+        while True:
+            sock = None
+            try:
+                sock = Idetools.opensock()
+                sock.close()
+                return True
+            except:
+                secs -= wait
+                if secs <= 0:
+                    print('nimsuggest failed to respond')
+                    Idetools.service = None
+                    return False
+                sleep(wait)
+                sock = None
+
+    @staticmethod
+    def ensure_service(proj=""):
+        # Ensure there is a listening socket
+        if Idetools.ensure_socket(secs=0):
+            return
+
+        # If server is running, do nothing
+        if Idetools.service is not None and Idetools.service.poll() is None:
+            return
+
+        # Start the server
+        proc = subprocess.Popen(
+            'nimsuggest --port:8088 "' + proj + '"',
+            bufsize=0,
+            stdout=subprocess.PIPE,
+            universal_newlines=True,
+            shell=True)
+
+        Idetools.service = proc
+        Idetools.outThread = Thread(
+            target=Idetools.print_output,
+            args=(proc.stdout,))
+
+        Idetools.outThread.daemon = True
+        Idetools.outThread.start()
+
+        # Ensure the socket is available
+        Idetools.ensure_socket()
+
+        print('nimsuggest running on "' + proj + '"')
+
+    @staticmethod
+    def idetool(win, cmd, filename, line, col, dirtyFile=""):
+        filePath = filename
+        projFile = get_project_file(win)
+
+        if projFile is None:
+            projFile = filename
+
+        if dirtyFile != "":
+            filePath = filePath + '";"' + dirtyFile
+
+        # Ensure IDE Tools server is running
+        Idetools.ensure_service(projFile)
+
+        # Call the server
+        args = 'def "' + filePath + '":' + str(line) + ":" + str(col)
+        print(args)
+
+        # Write to service & read result
+        result = Idetools.sendrecv(args)
+        if result is not None:
+            return result
+
+    @staticmethod
+    def parse(result):
+        m = Idetools.pattern.match(result)
+        if m is not None:
+            cmd = m.group("cmd")
+
+            if cmd == "def":
+                return (m.group("symbol"), m.group("type"),
+                        m.group("path"), m.group("line"),
+                        m.group("col"), m.group("description"))
+
+        return None

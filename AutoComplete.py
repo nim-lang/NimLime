@@ -1,11 +1,11 @@
 import os
 import tempfile
+
+import NimLime
 import sublime
 import sublime_plugin
-try:  # Python 3
-    from NimLime.Project import get_project
-except ImportError:  # Python 2:
-    from Project import get_project_file
+from utils.project import get_nim_project
+
 
 settings = {}
 do_suggestions = False  # Whether to provide suggestions
@@ -22,7 +22,8 @@ def update_settings():
     do_suggestions = settings.get("enable_nim_completions")
     if do_suggestions == None:
         do_suggestions = False
-    provide_immediate_completions = settings.get("provide_immediate_nim_completions")
+    provide_immediate_completions = settings.get(
+        "provide_immediate_nim_completions")
     if provide_immediate_completions == None:
         provide_immediate_completions = False
 
@@ -80,10 +81,11 @@ class NimUpdateCompletions(sublime_plugin.TextCommand):
 class NimCompleter(sublime_plugin.EventListener):
     def on_query_completions(self, view, prefix, locations):
         filename = view.file_name()
-        if filename == None or not filename.endswith(".nim") or not do_suggestions:
+        if filename == None or not filename.endswith(
+                ".nim") or not do_suggestions:
             return []
 
-        projFile = Utility.get_nimproject(view.window())
+        projFile = get_nim_project(view.window())
         if projFile is None:
             projFile = filename
         modfilename = os.path.basename(filename)
@@ -103,11 +105,12 @@ class NimCompleter(sublime_plugin.EventListener):
         global last_suggestion_pos
 
         # print(suggestion_pos)
-        #print(last_suggestion_pos)
+        # print(last_suggestion_pos)
         #print("had: " + str(had_suggestions))
         #print("give: " + str(give_suggestions))
 
-        if (not give_suggestions and suggestion_pos != last_suggestion_pos):  # Reset logic
+        if (
+            not give_suggestions and suggestion_pos != last_suggestion_pos):  # Reset logic
             had_suggestions = False
             give_suggestions = False
 

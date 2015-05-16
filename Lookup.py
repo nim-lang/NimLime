@@ -1,16 +1,12 @@
 from tempfile import NamedTemporaryFile
 import os
 
+import NimLime
 from sublime_plugin import TextCommand
 from sublime import Region
-from utils import NimLimeMixin
-import sublime
+from utils.misc import NimLimeMixin
+from utils.idetools import Idetools
 
-
-try:  # Python 3
-    from NimLime.Nim import Idetools
-except ImportError:  # Python 2:
-    from Nim import Idetools
 
 # Resources
 # http://sublimetext.info/docs/en/extensibility/plugins.html

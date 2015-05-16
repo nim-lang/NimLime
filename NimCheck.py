@@ -2,14 +2,13 @@ import os.path
 import re
 from threading import Thread
 
+import NimLime
 import sublime
 from sublime_plugin import ApplicationCommand, EventListener
-from utils import (
+from utils.misc import (
     view_has_nim_syntax, send_self, busy_frames, get_next_method,
     loop_status_msg, trim_region, NimLimeMixin, run_process
 )
-
-
 
 
 

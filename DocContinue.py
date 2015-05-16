@@ -1,5 +1,6 @@
+import NimLime
 from sublime_plugin import EventListener
-from utils import NimLimeMixin
+from utils.misc import NimLimeMixin
 import sublime
 
 # TODO - Features
@@ -8,7 +9,7 @@ import sublime
 # TODO - Optimizations
 # Reduce rowcol/textpoint conversions
 # Add and use scope selectors for checking?
-#  - To check that previous line is empty
+# - To check that previous line is empty
 #  - To check that current line is an empty line after a doc-comment
 #  - Use startswith instead of in
 
@@ -34,7 +35,7 @@ class CommentListener(EventListener, NimLimeMixin):
     def on_activated(self, view):
         nim_syntax = view.settings().get('syntax', None)
         if self.enabled and not self.active:
-            if nim_syntax is not None and "nim" in nim_syntax:
+            if nim_syntax is not None and "nim" in nim_syntax.lower():
                 self.active = True
 
     def on_deactivated(self, view):
@@ -42,6 +43,7 @@ class CommentListener(EventListener, NimLimeMixin):
 
     def on_modified(self, view):
         # Pre-process stage
+
         if not self.active:
             return
 

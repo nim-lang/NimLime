@@ -8,11 +8,15 @@ from utils.misc import NimLimeMixin
 from utils.idetools import Idetools
 
 
+
+
 # Resources
 # http://sublimetext.info/docs/en/extensibility/plugins.html
 # http://www.sublimetext.com/docs/2/api_reference.html#sublime.View
 # http://net.tutsplus.com/tutorials/python-tutorials/how-to-create-a-sublime-text-2-plugin/
 # http://www.sublimetext.com/docs/plugin-examples
+
+NimLime.add_module(__name__)
 
 
 class LookupCommand(TextCommand, NimLimeMixin):

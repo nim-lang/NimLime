@@ -1,17 +1,10 @@
 import NimLime
-from sublime_plugin import EventListener
-from utils.misc import NimLimeMixin
 import sublime
+from sublime_plugin import EventListener, TextCommand
+from utils.misc import NimLimeMixin
 
-# TODO - Features
-# Add double line erasure option
+NimLime.add_module(__name__)
 
-# TODO - Optimizations
-# Reduce rowcol/textpoint conversions
-# Add and use scope selectors for checking?
-# - To check that previous line is empty
-#  - To check that current line is an empty line after a doc-comment
-#  - Use startswith instead of in
 
 COMMENT_SCOPE = "comment.line.number-sign.doc-comment"
 EMPTY_COMMENT_SUFFIX = ".empty"
@@ -20,17 +13,18 @@ settings = sublime.load_settings('NimLime.sublime-settings')
 
 
 class CommentListener(EventListener, NimLimeMixin):
-
     """
     Continues docComment lines.
     """
     active = True
     already_running = True
+    settings_selector = 'doccontinue'
 
     def load_settings(self):
-        get = lambda key: settings.get(key)
-        self.enabled = get('doccontinue.enabled')
-        self.autostop = get('doccontinue.autostop')
+        super(CommentListener, self).load_settings()
+        get = self.get_setting
+
+        self.autostop = get('{0}.autostop')
 
     def on_activated(self, view):
         nim_syntax = view.settings().get('syntax', None)
@@ -64,12 +58,6 @@ class CommentListener(EventListener, NimLimeMixin):
                 self.already_running = False
                 continue
 
-            # Checks if the user is undoing the insertion.
-            command, args, repeats = view.command_history(1, False)
-            if command == "continueComment":
-                self.already_running = False
-                continue
-
             current_point = view.text_point(row, col)
             current_line = view.line(current_point)
             if (col != 0) and not (view.substr(current_line).isspace()):
@@ -92,7 +80,5 @@ class CommentListener(EventListener, NimLimeMixin):
 
             # Text Modification Stage
             # Simply insert a doc-comment into the current line.
-            # insertion_edit = view.begin_edit("continueComment")
             view.run_command('insert', {'characters': '## '})
-            # view.end_edit(insertion_edit)
             self.already_running = False

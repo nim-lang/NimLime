@@ -4,6 +4,8 @@ import NimLime
 import sublime_plugin
 from utils.project import get_project_file, set_nim_project
 
+NimLime.add_module(__name__)
+
 
 class SetProjectCommand(sublime_plugin.WindowCommand):
     def run(self):

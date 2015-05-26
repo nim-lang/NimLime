@@ -1,10 +1,12 @@
 import os
 import json
 
+import NimLime
 import sublime_plugin
 
 
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
+NimLime.add_module(__name__)
 
 
 class ListModulesCommand(sublime_plugin.WindowCommand):

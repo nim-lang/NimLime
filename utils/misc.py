@@ -2,7 +2,6 @@ from weakref import proxy, WeakKeyDictionary
 from sys import version_info
 from functools import wraps
 import subprocess
-
 import sublime
 
 
@@ -243,11 +242,29 @@ def run_process(cmd, callback=None):
 
 
 class NimLimeMixin(object):
+    settings = sublime.load_settings('NimLime.sublime-settings')
+
     def __init__(self):
         if hasattr(self, 'load_settings'):
-            self.settings = sublime.load_settings('NimLime.sublime-settings')
-            self.settings.add_on_change('reload', self.load_settings)
-            self.load_settings()
+            self.reload_settings()
+
+    def get_setting(self, key):
+        formatted_key = key.format(self.settings_selector)
+        if not self.settings.has(formatted_key):
+            print("Warning, '{0}' not found.".format(formatted_key))
+        return self.settings.get(formatted_key)
+
+    def load_settings(self):
+        self.enabled = self.get_setting('{0}.enabled')
+
+    def reload_settings(self):
+        print("Reloading settings")
+        self.settings.clear_on_change(str(self))
+        self.settings.add_on_change(
+            str(self),
+            lambda: self.reload_settings()
+        )
+        self.load_settings()
 
     def is_enabled(self, *args, **kwargs):
         return True
@@ -258,10 +275,24 @@ class NimLimeMixin(object):
     def description(self, *args, **kwargs):
         return self.__doc__
 
-    def write_to_output(self, content, source_window, source_view, name):
+
+class NimLimeOutputMixin(NimLimeMixin):
+    def load_settings(self):
+        super(NimLimeOutputMixin, self).load_settings()
+        get = self.get_setting
+
+        self.clear_output = get('{0}.output.clear')
+        self.output_method = get('{0}.output.method')
+        self.send_output = get('{0}.output.send')
+        self.show_output = get('{0}.output.show')
+        self.output_tag = get('{0}.output.tag')
+        self.raw_output = get('{0}.output.raw')
+        self.output_name = get('{0}.output.name')
+
+    def write_to_output(self, content, source_window, source_view):
         tag = format_tag(self.output_tag, source_window, source_view)
         output_window, output_view = get_output_view(
-            tag, self.output_method, name, source_window
+            tag, self.output_method, self.output_name, source_window
         )
 
         write_to_view(output_view, content, self.clear_output)

@@ -7,6 +7,8 @@ import sublime_plugin
 from utils.project import get_nim_project
 
 
+NimLime.add_module(__name__)
+
 settings = {}
 do_suggestions = False  # Whether to provide suggestions
 provide_immediate_completions = False  # Whether to provide completions immediatly
@@ -106,11 +108,11 @@ class NimCompleter(sublime_plugin.EventListener):
 
         # print(suggestion_pos)
         # print(last_suggestion_pos)
-        #print("had: " + str(had_suggestions))
+        # print("had: " + str(had_suggestions))
         #print("give: " + str(give_suggestions))
 
         if (
-            not give_suggestions and suggestion_pos != last_suggestion_pos):  # Reset logic
+                    not give_suggestions and suggestion_pos != last_suggestion_pos):  # Reset logic
             had_suggestions = False
             give_suggestions = False
 

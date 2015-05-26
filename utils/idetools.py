@@ -4,6 +4,7 @@ import socket
 import sys
 from time import sleep
 from threading import Thread
+
 from utils.project import get_project_file
 
 
@@ -30,7 +31,7 @@ class Idetools:
     def linesplit(socket):
         buffer = None
 
-        if sys.version_info < (3,0):
+        if sys.version_info < (3, 0):
             buffer = socket.recv(4096)
         else:
             buffer = socket.recv(4096).decode('UTF-8')
@@ -61,7 +62,7 @@ class Idetools:
         try:
             sock = Idetools.opensock()
 
-            if sys.version_info < (3,0):
+            if sys.version_info < (3, 0):
                 sock.send(args + "\r\n")
             else:
                 sock.send(bytes(args + "\r\n", 'UTF-8'))

@@ -232,7 +232,7 @@ patterns:
       match: ([^\']{2,}?)
 
 - comment: Call syntax
-  begin: ([\w\`]+)\s*(?=\(|\[.+?\]\s*\()
+  begin: ([\w\x{80}-\x{10FFFF}\`]+)\s*(?=\(|\[.+?\]\s*\()
   end: \)
   captures:
     '1': { name: support.function.any-method.nim }

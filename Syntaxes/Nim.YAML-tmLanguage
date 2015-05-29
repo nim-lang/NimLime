@@ -1,6 +1,4 @@
 # [PackageDev] target_format: plist, ext: tmLanguage
-# TODO:
-# Determine solid nim ident pattern & replace any general \w with this
 ---
 name: Nim
 scopeName: source.nim
@@ -62,7 +60,7 @@ patterns:
 - comment: A nim procedure or method declaration
   name: meta.proc.nim
   patterns:
-  - begin: \b(proc|method|template|macro|iterator|converter)\s+(\`([^\s\`]+)\`|(\w+))(\*)?
+  - begin: (?<![\w\x{80}-\x{10FFFF}])(proc|method|template|macro|iterator|converter)\s+(\`([^\s\`]+)\`|([\w\x{80}-\x{10FFFF}]+))(\*)?
     end: (\=)
     beginCaptures:
       '1': {name: storage.type.proc.nim}
@@ -72,7 +70,7 @@ patterns:
       '1': {name: keyword.operator.nim}
     patterns:
       - comment: Generic
-        match: \[\w+\]
+        match: \[[\w\x{80}-\x{10FFFF}]+\]
       - comment: Pattern
         begin: \{
         end: \}
@@ -81,7 +79,7 @@ patterns:
           begin: \"
           end: \"
         - name: entity.other.attribute-name.pattern.nim
-          match: \w+
+          match: ([\w\x{80}-\x{10FFFF}]+)
       - comment: Parameters
         begin: \(
         end: \)
@@ -94,7 +92,7 @@ patterns:
             begin: \"
             end: \"
           - name: entity.other.attribute-name.pattern.nim
-            match: \w+
+            match: ([\w\x{80}-\x{10FFFF}]+)
         - {include: source.nim}
       - {include: source.nim}
 
@@ -106,7 +104,7 @@ patterns:
     end: \"
     name: string.something.nim
   - name: entity.other.attribute-name.pragma.nim
-    match: \w+
+    match: ([\w\x{80}-\x{10FFFF}]+)
 
 - comment: A discarded triple string literal comment
   name: comment.line.discarded.nim
@@ -115,35 +113,35 @@ patterns:
 
 - comment: A float literal
   name: constant.numeric.float.decimal.nim
-  match: \b((\d[_\d]*\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*))('[fF](32|64))?
+  match: (?<![\w\x{80}-\x{10FFFF}])((\d[_\d]*\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*))('[fF](32|64))?
 
 - comment: A hexadecimal literal
   name: constant.numeric.integer.hexadecimal.nim
-  match: \b(0[xX]\h[_\h]*)('(([iIuUfF](8|16|32|64))|[uU]))?
+  match: (?<![\w\x{80}-\x{10FFFF}])(0[xX]\h[_\h]*)('(([iIuUfF](8|16|32|64))|[uU]))?
 
 - comment: A base-8 integer literal
   name: constant.numeric.integer.octal.nim
-  match: \b(0o[0-7][_0-7]*)('(([iIuUfF](8|16|32|64))|[uU]))?
+  match: (?<![\w\x{80}-\x{10FFFF}])(0o[0-7][_0-7]*)('(([iIuUfF](8|16|32|64))|[uU]))?
 
 - comment: A base-2 integer literal
   name: constant.numeric.integer.binary.nim
-  match: \b(0(b|B)[01][_01]*)('(([iIuUfF](8|16|32|64))|[uU]))?
+  match: (?<![\w\x{80}-\x{10FFFF}])(0(b|B)[01][_01]*)('(([iIuUfF](8|16|32|64))|[uU]))?
 
 - comment: A base-10 integer literal
   name: constant.numeric.integer.decimal.nim
-  match: \b(\d[_\d]*)('(([iIuUfF](8|16|32|64))|[uU]))?
+  match: (?<![\w\x{80}-\x{10FFFF}])(\d[_\d]*)('(([iIuUfF](8|16|32|64))|[uU]))?
 
 - comment: Language Constants.
   name: constant.language.nim
-  match: \b(true|false|inf|nil)\b
+  match: (?<![\w\x{80}-\x{10FFFF}])(true|false|inf|nil)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Keywords that affect program control flow or scope.
   name: keyword.control.nim
-  match: \b(block|break|case|continue|do|elif|else|end|except|finally|if|raise|return|try|when|while|yield)\b
+  match: (?<![\w\x{80}-\x{10FFFF}])(block|break|case|continue|do|elif|else|end|except|finally|if|raise|return|try|when|while|yield)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Keyword boolean operators for expressions.
   name: keyword.operator.boolean.nim
-  match: (\b(and|in|is|isnot|not|notin|or|xor)\b)
+  match: ((?<![\w\x{80}-\x{10FFFF}])(and|in|is|isnot|not|notin|or|xor)(?![\w\x{80}-\x{10FFFF}]))
 
 - comment: Generic operators for expressions.
   name: keyword.operator.nim
@@ -156,7 +154,7 @@ patterns:
   captures:
     '1': { name: keyword.control.nim }
   patterns:
-  - match: \w+\s+(in)\s+
+  - match: \ [\w\x{80}-\x{10FFFF}]+\s+(in)\s+
     captures:
       '1': { name: keyword.control.nim }
   - {include: source.nim}
@@ -171,7 +169,7 @@ patterns:
 
 - comment: Other keywords.
   name: keyword.other.nim
-  match: (\b(addr|as|atomic|bind|cast|const|converter|defer|discard|distinct|div|enum|export|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|var)\b)
+  match: ((?<![\w\x{80}-\x{10FFFF}])(addr|as|atomic|bind|cast|const|converter|defer|discard|distinct|div|enum|export|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|var)(?![\w\x{80}-\x{10FFFF}]))
 
 - comment: Destructure syntax
   begin: (var|let)\s*\(
@@ -181,27 +179,27 @@ patterns:
 
 - comment: Invalid and unused keywords.
   name: keyword.invalid.nim
-  match: (\b(generic|interface|lambda|out|shared|with|without)\b)
+  match: ((?<![\w\x{80}-\x{10FFFF}])(generic|interface|lambda|out|shared|with|without)(?![\w\x{80}-\x{10FFFF}]))
 
 - comment: Common functions
   name: support.function.any-method.nim
-  match: \b(len|high|low)\b
+  match: (?<![\w\x{80}-\x{10FFFF}])(len|high|low)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nim
-  match: \b(((uint|int|float)(8|16|32|64)?)|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr)\b
+  match: (?<![\w\x{80}-\x{10FFFF}])(((uint|int|float)(8|16|32|64)?)|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Built-in, generic types.
   name: storage.type.generic.nim
-  match: \b(range|array|seq|tuple|natural|set|ref|ptr)\b
+  match: (?<![\w\x{80}-\x{10FFFF}])(range|array|seq|tuple|natural|set|ref|ptr)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Function types
   name: storage.type.function.nim
-  match: \b(proc|iterator|method|template|macro)\b
+  match: (?<![\w\x{80}-\x{10FFFF}])(proc|iterator|method|template|macro)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Special types.
   name: storage.type.generic.nim
-  match: \b(openarray|varargs|void)\b
+  match: (?<![\w\x{80}-\x{10FFFF}])(openarray|varargs|void)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: (Raw) Triple Quoted String
   name: string.quoted.triple.nim
@@ -234,7 +232,7 @@ patterns:
       match: ([^\']{2,}?)
 
 - comment: Call syntax
-  begin: ([\w\`]+)\s*(?=\(|\[.+?\]\s*\()
+  begin: ([\w\x{80}-\x{10FFFF}\`]+)\s*(?=\(|\[.+?\]\s*\()
   end: \)
   captures:
     '1': { name: support.function.any-method.nim }
@@ -242,12 +240,12 @@ patterns:
     - {include: source.nim}
 
 - comment: Command syntax
-  match: (\w+)(?=\s+[\w](?!\w+((?!\n)\s)+))
+  match: ([\w\x{80}-\x{10FFFF}]+)(?=\s+[\w](?![\w\x{80}-\x{10FFFF}]+((?!\n)\s)+))
   captures:
     '1': { name: support.function.any-method.nim }
   patterns:
     - {include: source.nim}
-- match: (\w+)(?=\s+[\"\'\`])
+- match: ([\w\x{80}-\x{10FFFF}]+)(?=\s+[\"\'\`])
   captures:
     '1': { name: support.function.any-method.nim }
   patterns:

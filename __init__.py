@@ -1,4 +1,6 @@
 try:
-    import NimLime.NimLime
+    import NimLime.NimLime as lime
 except ImportError:
-    import NimLime
+    import NimLime as lime
+
+add_module = lime.add_module

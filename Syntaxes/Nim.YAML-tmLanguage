@@ -65,7 +65,7 @@ patterns:
     beginCaptures:
       '1': {name: storage.type.proc.nim}
       '2': {name: entity.name.function.nim}
-      '5': {name: keyword.operator.nim}
+      '5': {name: keyword.operator.kw-public.nim}
     endCaptures:
       '1': {name: keyword.operator.nim}
     patterns:
@@ -154,10 +154,20 @@ patterns:
   captures:
     '1': { name: keyword.control.nim }
   patterns:
-  - match: \ [\w\x{80}-\x{10FFFF}]+\s+(in)\s+
+  - match: \ [\w\x{80}-\x{10FFFF},]+\s+(in)\s+
     captures:
       '1': { name: keyword.control.nim }
   - {include: source.nim}
+
+- comment: expression list for 'of' case
+  begin: (^\s*of)\s+
+  end: \:()
+  name: entity.name.control.parameter
+  captures:
+    '1': { name: keyword.other.nim }
+  patterns:
+  - match: \ [\w\x{80}-\x{10FFFF},\s]+
+    name: entity.name.control.parameter
 
 - comment: Import syntax
   match: ((import)\s+[\/\w]+,?)

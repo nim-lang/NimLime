@@ -187,7 +187,7 @@
 						<key>5</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.operator.nim</string>
+							<string>keyword.operator.kw-public.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -417,11 +417,38 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>\ [\w\x{80}-\x{10FFFF}]+\s+(in)\s+</string>
+					<string>\ [\w\x{80}-\x{10FFFF},]+\s+(in)\s+</string>
 				</dict>
 				<dict>
 					<key>include</key>
 					<string>source.nim</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>(^\s*of)\s+</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.other.nim</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>expression list for 'of' case</string>
+			<key>end</key>
+			<string>\:()</string>
+			<key>name</key>
+			<string>entity.name.control.parameter</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\ [\w\x{80}-\x{10FFFF},\s]+</string>
+					<key>name</key>
+					<string>entity.name.control.parameter</string>
 				</dict>
 			</array>
 		</dict>
@@ -598,7 +625,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>([\w\`]+)\s*(?=\(|\[.+?\]\s*\()</string>
+			<string>([\w\x{80}-\x{10FFFF}\`]+)\s*(?=\(|\[.+?\]\s*\()</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>

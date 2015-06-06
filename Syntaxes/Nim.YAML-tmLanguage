@@ -179,7 +179,7 @@ patterns:
 
 - comment: Other keywords.
   name: keyword.other.nim
-  match: ((?<![\w\x{80}-\x{10FFFF}])(addr|as|atomic|bind|cast|const|converter|defer|discard|distinct|div|enum|export|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|var)(?![\w\x{80}-\x{10FFFF}]))
+  match: ((?<![\w\x{80}-\x{10FFFF}])(addr|as|atomic|bind|cast|concept|const|converter|defer|discard|distinct|div|enum|export|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|var)(?![\w\x{80}-\x{10FFFF}]))
 
 - comment: Destructure syntax
   begin: (var|let)\s*\(

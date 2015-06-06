@@ -14,7 +14,7 @@ settings = sublime.load_settings('NimLime.sublime-settings')
 
 class CommentListener(EventListener, NimLimeMixin):
     """
-    Continues docComment lines.
+    Continues Document Comment lines.
     """
     active = True
     already_running = True

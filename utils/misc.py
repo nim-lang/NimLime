@@ -111,6 +111,7 @@ def loop_status_msg(frames, speed, view=None, key=''):
 
 
 class _FlagObject(object):
+
     """
     Used with loop_status_msg to signal when a status message loop should end.
     """
@@ -246,7 +247,11 @@ class NimLimeMixin(object):
 
     def __init__(self):
         if hasattr(self, 'load_settings'):
-            self.reload_settings()
+            self.settings.add_on_change(
+                str(self),
+                lambda: self.reload_settings()
+            )
+            self.load_settings()
 
     def get_setting(self, key):
         formatted_key = key.format(self.settings_selector)
@@ -256,15 +261,6 @@ class NimLimeMixin(object):
 
     def load_settings(self):
         self.enabled = self.get_setting('{0}.enabled')
-
-    def reload_settings(self):
-        print("Reloading settings")
-        self.settings.clear_on_change(str(self))
-        self.settings.add_on_change(
-            str(self),
-            lambda: self.reload_settings()
-        )
-        self.load_settings()
 
     def is_enabled(self, *args, **kwargs):
         return True
@@ -277,6 +273,7 @@ class NimLimeMixin(object):
 
 
 class NimLimeOutputMixin(NimLimeMixin):
+
     def load_settings(self):
         super(NimLimeOutputMixin, self).load_settings()
         get = self.get_setting

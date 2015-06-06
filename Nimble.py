@@ -56,15 +56,13 @@ class NimbleMixin(NimLimeMixin):
                 formatted_tag,
                 self.output_method,
                 self.output_name,
+                self.show_output,
                 window
             )
             write_to_view(
                 output_view, output,
                 self.clear_output
             )
-            if self.show_output:
-                is_console = self.output_method == 'console'
-                show_view(output_window, output_view, is_console)
 
 
 class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
@@ -112,7 +110,7 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
     def load_settings(self):
         get = lambda key: settings.get(key.format(self.settings_selector))
         self.enabled = get('nimble.{0}.enabled')
-        self.send_to_quickpanel = get('nimble.{0}.list.send')
+        self.send_to_quickpanel = get('nimble.{0}.quickpanel.send')
         self.load_output_settings()
 
     @send_self
@@ -134,6 +132,9 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
         # Set the status to show we've finished
         yield stop_status_loop(get_next_method(this))
 
+        # Show output
+        self.output_content(output, window)
+
         if self.send_to_quickpanel:
             items = []
             packages = parse_package_descriptions(output)
@@ -144,9 +145,6 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
                     package.get('url', '')
                 ])
             window.show_quick_panel(items, None)
-
-        # Show output
-        self.output_content(output, window)
 
         if returncode == 0:
             sublime.status_message("Listing Nimble Packages")
@@ -164,7 +162,7 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
     def load_settings(self):
         get = lambda key: settings.get(key.format(self.settings_selector))
         self.enabled = get('nimble.{0}.enabled')
-        self.send_to_quickpanel = get('nimble.{0}.list.send')
+        self.send_to_quickpanel = get('nimble.{0}.quickpanel.send')
         self.load_output_settings()
 
     def run(self):

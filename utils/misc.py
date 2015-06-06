@@ -121,7 +121,7 @@ class _FlagObject(object):
         self.flag = False
 
 
-def get_output_view(tag, strategy, name, fallback_window):
+def get_output_view(tag, strategy, name, switch_to, fallback_window):
     """
     Retrieves an output using the given strategy, window, and views.
     """
@@ -129,6 +129,7 @@ def get_output_view(tag, strategy, name, fallback_window):
 
     # Console Strategy
     if strategy == 'console':
+        show_view(fallback_window, fallback_window.active_view(), True)
         return fallback_window.get_output_panel(tag)
 
     # Grouped strategy
@@ -137,13 +138,22 @@ def get_output_view(tag, strategy, name, fallback_window):
             view_list = window.views()
             for view in view_list:
                 if view.settings().get('output_tag') == tag:
+                    if switch_to:
+                        show_view(window, view, False)
                     return window, view
 
     if (strategy == 'separate') or (strategy == 'grouped'):
+        w = sublime.active_window()
+        v = w.active_view()
+
         result = fallback_window.new_file()
         result.set_name(name)
         result.set_scratch(True)
         result.settings().set('output_tag', tag)
+        if switch_to:
+            show_view(fallback_window, result, False)
+        else:
+            show_view(w, v, False)
         return fallback_window, result
 
 
@@ -248,8 +258,8 @@ class NimLimeMixin(object):
     def __init__(self):
         if hasattr(self, 'load_settings'):
             self.settings.add_on_change(
-                str(self),
-                lambda: self.reload_settings()
+                'reload',
+                self.load_settings
             )
             self.load_settings()
 
@@ -289,7 +299,8 @@ class NimLimeOutputMixin(NimLimeMixin):
     def write_to_output(self, content, source_window, source_view):
         tag = format_tag(self.output_tag, source_window, source_view)
         output_window, output_view = get_output_view(
-            tag, self.output_method, self.output_name, source_window
+            tag, self.output_method, self.output_name, self.show_output,
+            source_window
         )
 
         write_to_view(output_view, content, self.clear_output)

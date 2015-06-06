@@ -1,6 +1,6 @@
 import NimLime
 import sublime
-from sublime_plugin import EventListener, TextCommand
+from sublime_plugin import EventListener
 from utils.misc import NimLimeMixin
 
 NimLime.add_module(__name__)

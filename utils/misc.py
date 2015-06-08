@@ -257,20 +257,33 @@ class NimLimeMixin(object):
 
     def __init__(self):
         if hasattr(self, 'load_settings'):
-            self.settings.add_on_change(
-                'reload',
-                self.load_settings
-            )
-            self.load_settings()
+            self.reload_settings()
 
-    def get_setting(self, key):
+    def reload_settings(self):
+        NimLimeMixin.settings = sublime.load_settings(
+            'NimLime.sublime-settings'
+        )
+        # Workaround for a ST3 bug
+        if self.settings.get('is_loaded', True) is None:
+            sublime.set_timeout(self.reload_settings, 1000)
+        self.settings.add_on_change(
+            'reload',
+            self.load_settings
+        )
+        self.load_settings()
+
+    def get_setting(self, key, default):
         formatted_key = key.format(self.settings_selector)
         if not self.settings.has(formatted_key):
-            print("Warning, '{0}' not found.".format(formatted_key))
-        return self.settings.get(formatted_key)
+            # print("Warning, '{0}' not found.".format(formatted_key))
+            result = default
+        else:
+            # print("'{0}' found!".format(formatted_key))
+            result = self.settings.get(formatted_key)
+        return result
 
     def load_settings(self):
-        self.enabled = self.get_setting('{0}.enabled')
+        self.enabled = self.get_setting('{0}.enabled', True)
 
     def is_enabled(self, *args, **kwargs):
         return True
@@ -288,13 +301,13 @@ class NimLimeOutputMixin(NimLimeMixin):
         super(NimLimeOutputMixin, self).load_settings()
         get = self.get_setting
 
-        self.clear_output = get('{0}.output.clear')
-        self.output_method = get('{0}.output.method')
-        self.send_output = get('{0}.output.send')
-        self.show_output = get('{0}.output.show')
-        self.output_tag = get('{0}.output.tag')
-        self.raw_output = get('{0}.output.raw')
-        self.output_name = get('{0}.output.name')
+        self.clear_output = get('{0}.output.clear', True)
+        self.output_method = get('{0}.output.method', 'grouped')
+        self.send_output = get('{0}.output.send', True)
+        self.show_output = get('{0}.output.show', True)
+        self.output_tag = get('{0}.output.tag', 'nimlime')
+        self.raw_output = get('{0}.output.raw', True)
+        self.output_name = get('{0}.output.name', 'nimlime')
 
     def write_to_output(self, content, source_window, source_view):
         tag = format_tag(self.output_tag, source_window, source_view)

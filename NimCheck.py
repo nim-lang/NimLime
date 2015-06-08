@@ -71,12 +71,12 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         super(NimCheckCurrentView, self).load_settings()
         get = self.get_setting
 
-        self.highlight_errors = get('{0}.highlight_errors')
-        self.highlight_warnings = get('{0}.highlight_warnings')
-        self.include_context = get('{0}.list.include_context')
-        self.list_errors = get('{0}.list.show_errors')
-        self.list_warnings = get('{0}.list.show_warnings')
-        self.move_cursor = get('{0}.list.move_cursor')
+        self.highlight_errors = get('{0}.highlight_errors', True)
+        self.highlight_warnings = get('{0}.highlight_warnings', True)
+        self.include_context = get('{0}.list.include_context', True)
+        self.list_errors = get('{0}.list.show_errors', True)
+        self.list_warnings = get('{0}.list.show_warnings', True)
+        self.move_cursor = get('{0}.list.move_cursor', True)
 
     @send_self
     def run(self, show_error_list=True):
@@ -221,8 +221,8 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
         super(NimCheckFile, self).load_settings()
         get = self.get_setting
 
-        self.remember_input = get("{0}.remember_input")
-        self.include_context = get("{0}.output.include_context")
+        self.remember_input = get("{0}.remember_input", True)
+        self.include_context = get("{0}.output.include_context", True)
 
     @send_self
     def run(self):

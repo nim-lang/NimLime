@@ -1,8 +1,10 @@
 import sys
 import os
 from imp import reload
+from sublime_plugin import ApplicationCommand
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from utils.profile_tools import print_profile_data
 
 modules = set()
 auto_reload = False
@@ -19,3 +21,11 @@ def reload_modules():
         if mod is not None:
             reload(sys.modules[mod])
             print("Reloading '{}'".format(mod))
+
+
+class PrintProfileData(ApplicationCommand):
+    def run(self):
+        print_profile_data()
+
+    def is_visible(self):
+        return False

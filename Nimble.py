@@ -12,6 +12,7 @@ from utils.misc import (
 # Resources
 # http://docs.sublimetext.info/en/latest/reference/command_palette.html
 # https://github.com/wbond/sublime_package_control/blob/6a8b91ca58d66cb495b383d9572bb801316bcec5/package_control/commands/install_package_command.py
+NimLime.add_module(__name__)
 
 
 def debug(string):
@@ -36,18 +37,18 @@ load()
 
 class NimbleMixin(NimLimeMixin):
     def load_settings(self):
-        get = lambda key: settings.get(key.format(self.settings_selector))
-        self.enabled = get('nimble.{0}.enabled')
+        get = self.get_setting
+        self.enabled = get('nimble.{0}.enabled', True)
         self.load_output_settings()
 
     def load_output_settings(self):
-        get = lambda key: settings.get(key.format(self.settings_selector))
-        self.send_output = get("nimble.{0}.output.send")
-        self.clear_output = get("nimble.{0}.output.clear")
-        self.show_output = get("nimble.{0}.output.show")
-        self.output_method = get("nimble.{0}.output.method")
-        self.output_tag = get("nimble.{0}.output.tag")
-        self.output_name = get("nimble.{0}.output.name")
+        get = self.get_setting
+        self.send_output = get("nimble.{0}.output.send", True)
+        self.clear_output = get("nimble.{0}.output.clear", True)
+        self.show_output = get("nimble.{0}.output.show", True)
+        self.output_method = get("nimble.{0}.output.method", "grouped")
+        self.output_tag = get("nimble.{0}.output.tag", 'nimlime')
+        self.output_name = get("nimble.{0}.output.name", 'nimlime')
 
     def output_content(self, output, window):
         if self.send_output:
@@ -108,9 +109,8 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
     settings_selector = 'list'
 
     def load_settings(self):
-        get = lambda key: settings.get(key.format(self.settings_selector))
-        self.enabled = get('nimble.{0}.enabled')
-        self.send_to_quickpanel = get('nimble.{0}.quickpanel.send')
+        get = self.get_setting
+        self.send_to_quickpanel = get('nimble.{0}.quickpanel.send', True)
         self.load_output_settings()
 
     @send_self
@@ -160,9 +160,8 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
     settings_selector = "search"
 
     def load_settings(self):
-        get = lambda key: settings.get(key.format(self.settings_selector))
-        self.enabled = get('nimble.{0}.enabled')
-        self.send_to_quickpanel = get('nimble.{0}.quickpanel.send')
+        get = self.get_setting
+        self.send_to_quickpanel = get('nimble.{0}.quickpanel.send', True)
         self.load_output_settings()
 
     def run(self):
@@ -221,9 +220,8 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
     settings_selector = "install"
 
     def load_settings(self):
-        get = lambda key: settings.get(key.format(self.settings_selector))
-        self.enabled = get('nimble.{0}.enabled')
-        self.preemptive_search = get('nimble.preemptive_search')
+        get = self.get_setting
+        self.preemptive_search = get('nimble.preemptive_search', True)
         self.load_output_settings()
 
     def run(self):
@@ -315,11 +313,6 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
     """
     settings_selector = "uninstall"
 
-    def load_settings(self):
-        get = lambda key: settings.get(key.format(self.settings_selector))
-        self.enabled = get('nimble.{0}.enabled')
-        self.load_output_settings()
-
     def run(self):
         window = sublime.active_window()
 
@@ -379,7 +372,8 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
 
                         self.output_content(output, window)
                         if return_code == 0:
-                            sublime.status_message("Uninstalled Nimble Package")
+                            sublime.status_message(
+                                "Uninstalled Nimble Package")
                         else:
                             sublime.status_message(
                                 'Nimble Package Uninstallation Failed'

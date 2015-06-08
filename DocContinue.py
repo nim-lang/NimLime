@@ -24,7 +24,7 @@ class CommentListener(EventListener, NimLimeMixin):
         super(CommentListener, self).load_settings()
         get = self.get_setting
 
-        self.autostop = get('{0}.autostop')
+        self.autostop = get('{0}.autostop', True)
 
     def on_activated(self, view):
         nim_syntax = view.settings().get('syntax', None)

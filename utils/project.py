@@ -42,7 +42,6 @@ def get_project_file(win_id):
             continue
     if session_data is None:
         return None
-        #     raise IOError("Couldn't open session file.")
 
     for window in session_data.get('windows', []):
         if window.get('window_id') == win_id and 'workspace_name' in window:
@@ -52,13 +51,13 @@ def get_project_file(win_id):
                     project.lstrip("/").replace("/", ":/", 1))
                 break
 
-    # Throw out empty project names
-    if project or re.match(".*\\.sublime-project",
-                           project) or not os.path.exists(project):
-        project = None
+            # Throw out empty project names
+            if project or re.match(".*\\.sublime-project",
+                                   project) or not os.path.exists(project):
+                project = None
+            return project
 
-    return project
-
+    return None
 
 def set_nim_project(st_project, nim_path):
     if st_project is not None:

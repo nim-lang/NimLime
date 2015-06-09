@@ -1,6 +1,6 @@
 {
     // Misc. Settings //
-    "nim.executable": "C:\\64\\Nimrod\\bin\\nim.exe",
+    "nim.executable": "nim",
     "nimble.executable": "nimble",
 
     "translate_tabs_to_spaces": true,
@@ -25,7 +25,7 @@
     //      Toggles switching focus/opening the output view when the command
     //      is finished. Has no effect when 'output.send' is false.
     //
-    //   'output.method': 
+    //   'output.method':
     //      Controls how output is displayed.
     //      Available methods:
     //        'console'  - Displays output in the build console.
@@ -33,12 +33,12 @@
     //                     Creates a new view if one doesn't exist.
     //        'separate' - Always displays output in a new view.
     //
-    //   'output.name': 
-    //      Controls the name of the output view created when a view with 
+    //   'output.name':
+    //      Controls the name of the output view created when a view with
     //      matching output tag cannot be found. Only applies when the
     //      'separate' or 'console' output methods are selected.
     //
-    //   'output.tag': 
+    //   'output.tag':
     //      Controls which view a command's output is sent to when the
     //      'grouped' output method is selected. When sending output, the
     //      command will look for a view with a matching output tag. If such
@@ -48,7 +48,7 @@
     //      surrounded by curly braces ('{}') to be replaced.
     //      Current modifiers:
     //        'view_id'   - ID unique to the view the command is run from.
-    //        'buffer_id' - ID unique to the text buffer the command is run 
+    //        'buffer_id' - ID unique to the text buffer the command is run
     //                      from. Multiple views may share the same buffer.
     //        'window_id' - ID unique the the window the command is run from.
     //        'file_name' - Name of the file the command is being run from.
@@ -56,10 +56,10 @@
 
     //// Documention Comment Continuation Settings ////
     // Unique settings suffixes:
-    //   'autostop': 
+    //   'autostop':
     //     Stop comment continuation after placing empty doc-comments
     "doccontinue.enabled": true,
-    "doccontinue.autostop": true, 
+    "doccontinue.autostop": true,
 
     //// Nimble Interface Settings ////
     // Unique settings suffixes:
@@ -67,7 +67,7 @@
     //     Perform an initial search using user input. May reduce memory/cpu
     //     usage when searching via the quickpanel, as not all results are
     //     loaded.
-    
+
     // Settings for the 'nimble update' command
     "nimble.update.enabled": false,
 
@@ -82,7 +82,7 @@
     // Settings for the 'nimble list' command
     "nimble.list.enabled": true,
     "nimble.list.quickpanel.send": true,
-    
+
     "nimble.list.output.send": true,
     "nimble.list.output.show": true,
     "nimble.list.output.clear": true,
@@ -125,7 +125,7 @@
     "nimble.uninstall.output.method": "grouped",
     "nimble.uninstall.output.tag": "nimble",
     "nimble.uninstall.output.raw": false,
-    
+
 
     //// Nim Check Settings ////
     // Unique settings suffixes:
@@ -153,7 +153,7 @@
 
     // Settings for checking a file on saving it
     "check.on_save.enabled": true,
-    
+
     "check.on_save.highlight_errors": true,
     "check.on_save.highlight_warnings": false,
 

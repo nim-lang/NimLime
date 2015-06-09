@@ -41,7 +41,8 @@ def get_project_file(win_id):
         except (IOError, ValueError):
             continue
     if session_data is None:
-        raise IOError("Couldn't open session file.")
+        return None
+        #     raise IOError("Couldn't open session file.")
 
     for window in session_data.get('windows', []):
         if window.get('window_id') == win_id and 'workspace_name' in window:

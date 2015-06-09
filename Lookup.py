@@ -7,7 +7,7 @@ from sublime import Region
 from utils.misc import NimLimeMixin
 from utils.idetools import Idetools
 
-
+import sublime
 
 
 # Resources

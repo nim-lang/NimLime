@@ -1,4 +1,7 @@
-from cProfile import Profile
+try:
+    from cProfile import Profile
+except ImportError:
+    from profile import Profile
 from pstats import Stats
 from functools import wraps
 try:

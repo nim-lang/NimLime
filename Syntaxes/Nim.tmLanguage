@@ -171,7 +171,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(?&lt;![\w\x{80}-\x{10FFFF}])(proc|method|template|macro|iterator|converter)\s+(\`([^\s\`]+)\`|([\w\x{80}-\x{10FFFF}]+))(\*)?(\(.*\))?(\:[^={]+)?</string>
+					<string>(?&lt;![\w\x{80}-\x{10FFFF}])(proc|method|template|macro|iterator|converter)\s+((\`[^\s\`]+\`)|([\w\x{80}-\x{10FFFF}]+))(\*)?(\[[^\]]+?\])?(\(.*\))?(\:[^={]+)?</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -195,6 +195,11 @@
 							<string>variable.parameter.nim</string>
 						</dict>
 						<key>7</key>
+						<dict>
+							<key>name</key>
+							<string>variable.parameter.nim</string>
+						</dict>
+						<key>8</key>
 						<dict>
 							<key>name</key>
 							<string>storage.type.generic.nim</string>
@@ -403,6 +408,10 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#eat_numbers</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#eat_strings</string>
 				</dict>
 			</array>
@@ -460,6 +469,10 @@
 			<string>control.variable.parameter.nim</string>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>include</key>
+					<string>#eat_numbers</string>
+				</dict>
 				<dict>
 					<key>include</key>
 					<string>#eat_strings</string>
@@ -1720,6 +1733,18 @@
 	</array>
 	<key>repository</key>
 	<dict>
+		<key>eat_dig_literal</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>comment</key>
+					<string>A base-2 integer literal</string>
+					<key>match</key>
+					<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0(b|B)[01][_01]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+				</dict>
+			</array>
+		</dict>
 		<key>eat_double_string</key>
 		<dict>
 			<key>patterns</key>
@@ -1798,6 +1823,80 @@
 				<dict>
 					<key>match</key>
 					<string>\\\\</string>
+				</dict>
+			</array>
+		</dict>
+		<key>eat_float_literal</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>comment</key>
+					<string>A float literal</string>
+					<key>match</key>
+					<string>(?&lt;![\w\x{80}-\x{10FFFF}])(\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([fF](32|64|128))|[fFdD])?</string>
+				</dict>
+			</array>
+		</dict>
+		<key>eat_hex_literal</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>comment</key>
+					<string>A hexadecimal literal</string>
+					<key>match</key>
+					<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0[xX]\h[_\h]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+				</dict>
+			</array>
+		</dict>
+		<key>eat_int_literal</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>comment</key>
+					<string>A base-10 integer literal</string>
+					<key>match</key>
+					<string>(?&lt;![\w\x{80}-\x{10FFFF}])(\d[_\d]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+				</dict>
+			</array>
+		</dict>
+		<key>eat_numbers</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#eat_float_literal</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#eat_hex_literal</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#eat_oct_literal</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#eat_dig_literal</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#eat_int_literal</string>
+				</dict>
+			</array>
+		</dict>
+		<key>eat_oct_literal</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>comment</key>
+					<string>A base-8 integer literal</string>
+					<key>match</key>
+					<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0[ocC][0-7][_0-7]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
 				</dict>
 			</array>
 		</dict>

@@ -60,14 +60,15 @@ patterns:
 - comment: A nim procedure or method declaration
   name: meta.proc.nim
   patterns:
-  - begin: (?<![\w\x{80}-\x{10FFFF}])(proc|method|template|macro|iterator|converter)\s+(\`([^\s\`]+)\`|([\w\x{80}-\x{10FFFF}]+))(\*)?(\(.*\))?(\:[^={]+)?
+  - begin: (?<![\w\x{80}-\x{10FFFF}])(proc|method|template|macro|iterator|converter)\s+((\`[^\s\`]+\`)|([\w\x{80}-\x{10FFFF}]+))(\*)?(\[[^\]]+?\])?(\(.*\))?(\:[^={]+)?
     end: (\=)
     beginCaptures:
       '1': {name: storage.type.proc.nim}
       '2': {name: entity.name.function.nim}
       '5': {name: keyword.secondary.operator.kw-public.nim}
       '6': {name: variable.parameter.nim}
-      '7': {name: storage.type.generic.nim}
+      '7': {name: variable.parameter.nim}
+      '8': {name: storage.type.generic.nim}
 
     endCaptures:
       '1': {name: keyword.secondary.operator.nim}
@@ -147,6 +148,7 @@ patterns:
   endCaptures:
     '1': {name: control.variable.parameter.nim}
   patterns:
+    - include: '#eat_numbers'
     - include: '#eat_strings'
 
 - comment: Primary branching keyword 'case'
@@ -167,6 +169,7 @@ patterns:
   endCaptures:
     '1': {name: control.variable.parameter.nim}
   patterns:
+    - include: '#eat_numbers'
     - include: '#eat_strings'
 
 - comment: Keywords that affect program control flow or scope.
@@ -558,6 +561,45 @@ patterns:
 
 
 repository:
+  eat_numbers:
+    patterns:
+    - include: '#eat_float_literal'
+    - include: '#eat_hex_literal'
+    - include: '#eat_oct_literal'
+    - include: '#eat_dig_literal'
+    - include: '#eat_int_literal'
+
+  eat_float_literal:
+    patterns:
+    - comment: A float literal
+      #name: constant.numeric.float.decimal.nim
+      match: (?<![\w\x{80}-\x{10FFFF}])(\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([fF](32|64|128))|[fFdD])?   #' highlight-flaw-fixer-comment
+
+  eat_hex_literal:
+    patterns:
+    - comment: A hexadecimal literal
+      #name: constant.numeric.integer.hexadecimal.nim
+      match: (?<![\w\x{80}-\x{10FFFF}])(0[xX]\h[_\h]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+
+  eat_oct_literal:
+    patterns:
+    - comment: A base-8 integer literal
+      #name: constant.numeric.integer.octal.nim
+      match: (?<![\w\x{80}-\x{10FFFF}])(0[ocC][0-7][_0-7]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+
+  eat_dig_literal:
+    patterns:
+    - comment: A base-2 integer literal
+      #name: constant.numeric.integer.binary.nim
+      match: (?<![\w\x{80}-\x{10FFFF}])(0(b|B)[01][_01]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+
+  eat_int_literal:
+    patterns:
+    - comment: A base-10 integer literal
+      #name: constant.numeric.integer.decimal.nim
+      match: (?<![\w\x{80}-\x{10FFFF}])(\d[_\d]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+
+
   eat_strings:
     patterns:
     - include: '#eat_double_string'

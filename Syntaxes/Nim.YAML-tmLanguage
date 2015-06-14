@@ -172,7 +172,7 @@ patterns:
 
 
 - comment: Keywords that affect program control flow or scope.
-  name: keyword.primary.control
+  name: keyword.primary.control.nim
   match: (?<![\w\x{80}-\x{10FFFF}])(await|block|break|continue|do|end|except|finally|raise|return|try|while|yield)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Keyword boolean operators for expressions.
@@ -180,15 +180,15 @@ patterns:
   match: ((?<![\w\x{80}-\x{10FFFF}])(and|in|is|isnot|not|notin|or|xor)(?![\w\x{80}-\x{10FFFF}]))
 
 - comment: Assign operator.
-  name: variable.primary.assign.hot
+  name: variable.primary.assign.hot.nim
   match: ((^|[\(\)\:\;])\s*(const|let|type|var)?\s+)([\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?([\w\x{80}-\x{10FFFF}\[\]]+)([*]?)\s*(:\s*[\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?(=)(?![\<\>\-\+\=~])
   captures:
-    '1': { name: keyword.secondary }
-    '4': { name: variable.primary.assign.hot }
-    '5': { name: variable.primary.assign.hotter }
-    '6': { name: keyword.secondary.operator.kw-public }
-    '7': { name: storage.type.generic }
-    '8': { name: keyword.primary.assign.hottest }
+    '1': { name: keyword.secondary.nim }
+    '4': { name: variable.primary.assign.hot.nim }
+    '5': { name: variable.primary.assign.hotter.nim }
+    '6': { name: keyword.secondary.operator.kw-public.nim }
+    '7': { name: storage.type.generic.nim }
+    '8': { name: keyword.primary.assign.hottest.nim }
 
 - comment: Other keywords.
   name: keyword.other.secondary.nim

@@ -471,7 +471,7 @@
 			<key>match</key>
 			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(await|block|break|continue|do|end|except|finally|raise|return|try|while|yield)(?![\w\x{80}-\x{10FFFF}])</string>
 			<key>name</key>
-			<string>keyword.primary.control</string>
+			<string>keyword.primary.control.nim</string>
 		</dict>
 		<dict>
 			<key>comment</key>
@@ -487,32 +487,32 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.secondary</string>
+					<string>keyword.secondary.nim</string>
 				</dict>
 				<key>4</key>
 				<dict>
 					<key>name</key>
-					<string>variable.primary.assign.hot</string>
+					<string>variable.primary.assign.hot.nim</string>
 				</dict>
 				<key>5</key>
 				<dict>
 					<key>name</key>
-					<string>variable.primary.assign.hotter</string>
+					<string>variable.primary.assign.hotter.nim</string>
 				</dict>
 				<key>6</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.secondary.operator.kw-public</string>
+					<string>keyword.secondary.operator.kw-public.nim</string>
 				</dict>
 				<key>7</key>
 				<dict>
 					<key>name</key>
-					<string>storage.type.generic</string>
+					<string>storage.type.generic.nim</string>
 				</dict>
 				<key>8</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.primary.assign.hottest</string>
+					<string>keyword.primary.assign.hottest.nim</string>
 				</dict>
 			</dict>
 			<key>comment</key>
@@ -520,7 +520,7 @@
 			<key>match</key>
 			<string>((^|[\(\)\:\;])\s*(const|let|type|var)?\s+)([\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?([\w\x{80}-\x{10FFFF}\[\]]+)([*]?)\s*(:\s*[\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?(=)(?![\&lt;\&gt;\-\+\=~])</string>
 			<key>name</key>
-			<string>variable.primary.assign.hot</string>
+			<string>variable.primary.assign.hot.nim</string>
 		</dict>
 		<dict>
 			<key>comment</key>

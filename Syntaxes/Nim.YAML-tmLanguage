@@ -93,7 +93,7 @@ patterns:
             begin: \"
             end: \"
           - name: entity.other.attribute-name.pattern.nim
-            match: ([\w\x{80}-\x{10FFFF}]+)
+            match: ([\[\]\w\x{80}-\x{10FFFF}]+)
         - {include: source.nim}
       - {include: source.nim}
 
@@ -179,16 +179,16 @@ patterns:
   name: keyword.operator.boolean.nim
   match: ((?<![\w\x{80}-\x{10FFFF}])(and|in|is|isnot|not|notin|or|xor)(?![\w\x{80}-\x{10FFFF}]))
 
-- comment: Assign operator.
-  name: variable.primary.assign.hot.nim
-  match: ((^|[\(\)\:\;])\s*(const|let|type|var)?\s+)([\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?([\w\x{80}-\x{10FFFF}\[\]]+)([*]?)\s*(:\s*[\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?(=)(?![\<\>\-\+\=~])
-  captures:
-    '1': { name: keyword.secondary.nim }
-    '4': { name: variable.primary.assign.hot.nim }
-    '5': { name: variable.primary.assign.hotter.nim }
-    '6': { name: keyword.secondary.operator.kw-public.nim }
-    '7': { name: storage.type.generic.nim }
-    '8': { name: keyword.primary.assign.hottest.nim }
+# - comment: Assign operator.
+#   name: variable.primary.assign.hot.nim
+#   match: ((^|[\(\)\:\;])\s*(const|let|type|var)?\s+)([\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?([\w\x{80}-\x{10FFFF}\[\]]+)([*]?)\s*(:\s*[\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?(=)(?![\<\>\-\+\=~])
+#   captures:
+#     '1': { name: keyword.secondary.nim }
+#     '4': { name: variable.primary.assign.hot.nim }
+#     '5': { name: variable.primary.assign.hotter.nim }
+#     '6': { name: keyword.secondary.operator.kw-public.nim }
+#     '7': { name: storage.type.generic.nim }
+#     '8': { name: keyword.primary.assign.hottest.nim }
 
 - comment: Other keywords.
   name: keyword.other.secondary.nim

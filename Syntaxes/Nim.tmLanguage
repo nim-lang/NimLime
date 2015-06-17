@@ -261,7 +261,7 @@
 										</dict>
 										<dict>
 											<key>match</key>
-											<string>([\w\x{80}-\x{10FFFF}]+)</string>
+											<string>([\[\]\w\x{80}-\x{10FFFF}]+)</string>
 											<key>name</key>
 											<string>entity.other.attribute-name.pattern.nim</string>
 										</dict>
@@ -480,47 +480,6 @@
 			<string>((?&lt;![\w\x{80}-\x{10FFFF}])(and|in|is|isnot|not|notin|or|xor)(?![\w\x{80}-\x{10FFFF}]))</string>
 			<key>name</key>
 			<string>keyword.operator.boolean.nim</string>
-		</dict>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.secondary.nim</string>
-				</dict>
-				<key>4</key>
-				<dict>
-					<key>name</key>
-					<string>variable.primary.assign.hot.nim</string>
-				</dict>
-				<key>5</key>
-				<dict>
-					<key>name</key>
-					<string>variable.primary.assign.hotter.nim</string>
-				</dict>
-				<key>6</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.secondary.operator.kw-public.nim</string>
-				</dict>
-				<key>7</key>
-				<dict>
-					<key>name</key>
-					<string>storage.type.generic.nim</string>
-				</dict>
-				<key>8</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.primary.assign.hottest.nim</string>
-				</dict>
-			</dict>
-			<key>comment</key>
-			<string>Assign operator.</string>
-			<key>match</key>
-			<string>((^|[\(\)\:\;])\s*(const|let|type|var)?\s+)([\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?([\w\x{80}-\x{10FFFF}\[\]]+)([*]?)\s*(:\s*[\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?(=)(?![\&lt;\&gt;\-\+\=~])</string>
-			<key>name</key>
-			<string>variable.primary.assign.hot.nim</string>
 		</dict>
 		<dict>
 			<key>comment</key>

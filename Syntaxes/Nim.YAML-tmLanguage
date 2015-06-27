@@ -31,12 +31,12 @@ patterns:
   - begin: \{\.(emit:) ?(\"\"\")
     end: (\"\"\")\.?
     captures:
-      '1': {name: keyword.secondary.other.nim}
+      '1': {name: keyword.other.nim}
       '2': {name: comment.syntax.nim}
     endCaptures:
       '1': {name: comment.syntax.nim}
     patterns:
-    - name: keyword.secondary.operator.nim
+    - name: keyword.operator.nim
       begin: \`
       end: \`
     - {include: source.c}
@@ -47,12 +47,12 @@ patterns:
   - begin: (asm )(\"\"\")
     end: \"\"\"
     captures:
-      '1': {name: keyword.secondary.other.nim}
+      '1': {name: keyword.other.nim}
       '2': {name: comment.syntax.nim}
     endCaptures:
       '0': {name: comment.syntax.nim}
     patterns:
-    - name: keyword.secondary.operator.nim
+    - name: keyword.operator.nim
       begin: \`
       end: \`
     - {include: source.asm}
@@ -60,17 +60,15 @@ patterns:
 - comment: A nim procedure or method declaration
   name: meta.proc.nim
   patterns:
-  - begin: (?<![\w\x{80}-\x{10FFFF}])(proc|method|template|macro|iterator|converter)\s+(\`([^\s\`]+)\`|([\w\x{80}-\x{10FFFF}]+))(\*)?(\(.*\))?(\:[^={]+)?
+  - begin: (?<![\w\x{80}-\x{10FFFF}])(proc|method|template|macro|iterator|converter)\s+((\`[^\s\`]+\`)|([\w\x{80}-\x{10FFFF}]+))(\*)?
     end: (\=)
     beginCaptures:
       '1': {name: storage.type.proc.nim}
       '2': {name: entity.name.function.nim}
-      '5': {name: keyword.secondary.operator.kw-public.nim}
-      '6': {name: variable.parameter.nim}
-      '7': {name: storage.type.generic.nim}
+      '5': {name: keyword.operator.secondary.kw-public.nim}
 
     endCaptures:
-      '1': {name: keyword.secondary.operator.nim}
+      '1': {name: keyword.operator.nim}
     patterns:
       - comment: Generic
         match: \[[\w\x{80}-\x{10FFFF}]+\]
@@ -95,13 +93,14 @@ patterns:
             begin: \"
             end: \"
           - name: entity.other.attribute-name.pattern.nim
-            match: ([\w\x{80}-\x{10FFFF}]+)
+            match: ([\[\]\w\x{80}-\x{10FFFF}]+)
         - {include: source.nim}
       - {include: source.nim}
 
 - comment: Pragmas
   begin: \{\.
   end: \.?\}
+  name: pragma
   patterns:
   - begin: \"
     end: \"
@@ -116,79 +115,66 @@ patterns:
 
 - comment: A float literal
   name: constant.numeric.float.decimal.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([fF](32|64|128))|[fFdD])?   #' highlight-flaw-fixer-comment
+  match: (\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([fF]\d)|[fFdD])?   #' highlight-flaw-fixer-comment
 
 - comment: A hexadecimal literal
   name: constant.numeric.integer.hexadecimal.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(0[xX]\h[_\h]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (0[xX]\h[_\h]*)('?(([iIuUfF]\d)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: A base-8 integer literal
   name: constant.numeric.integer.octal.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(0[ocC][0-7][_0-7]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (0[ocC][0-7][_0-7]*)('?(([iIuUfF]\d)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: A base-2 integer literal
   name: constant.numeric.integer.binary.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(0(b|B)[01][_01]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (0(b|B)[01][_01]*)('?(([iIuUfF]\d)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: A base-10 integer literal
   name: constant.numeric.integer.decimal.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(\d[_\d]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (\d[_\d]*)('?(([iIuUfF]\d)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: Language Constants.
   name: constant.language.nim
   match: (?<![\w\x{80}-\x{10FFFF}])(true|false|inf|nil)(?![\w\x{80}-\x{10FFFF}])
 
-- comment: Primary branching keywords and their conditions
-  name: control.variable.parameter.nim
-  begin: \s+(when|if)\b     # removed for|while|
+- comment: Primary branching keywords
+  begin: (?:^|\s+|=)(when|if)\b
   end: (:)
   captures:
-    '1': {name: keyword.primary.control.nim}
+    '1': {name: keyword.control.primary.nim}
   endCaptures:
     '1': {name: control.variable.parameter.nim}
   patterns:
-    - include: '#eat_strings'
+  - {include: source.nim}
 
 - comment: Primary branching keyword 'case'
-  name: control.variable.parameter.nim
-  begin: \s+(case)\b
-  end: ($)
+  begin: (?:^|\s+|=)(case)\b
+  end: (?=\bof\b)
   captures:
-    '1': {name: keyword.primary.control.nim}
-  endCaptures:
-    '1': {name: control.variable.parameter.nim}
-
-- comment: Secondary branching keywords and their conditions
-  name: control.variable.parameter.nim
-  begin: \s+(of|else|elif)\b    # (.*?)\b
-  end: (:)
-  captures:
-    '1': {name: keyword.secondary.control.nim}
+    '1': {name: keyword.control.primary.nim}
   endCaptures:
     '1': {name: control.variable.parameter.nim}
   patterns:
-    - include: '#eat_strings'
+  - {include: source.nim}
+
+- comment: Secondary branching keywords and their conditions
+  begin: (?:^|\s+)(of|else|elif)\b
+  end: (:)
+  captures:
+    '1': {name: keyword.control.secondary.nim}
+  endCaptures:
+    '1': {name: control.variable.parameter.nim}
+  patterns:
+  - {include: source.nim}
+
 
 - comment: Keywords that affect program control flow or scope.
-  name: keyword.primary.control.nim
-  #match: (?<![\w\x{80}-\x{10FFFF}])(block|break|case|continue|do|elif|else|end|except|finally|if|raise|return|try|when|while|yield)(?![\w\x{80}-\x{10FFFF}])
-  match: (?<![\w\x{80}-\x{10FFFF}])(block|break|continue|do|end|except|finally|raise|return|try|while|yield)(?![\w\x{80}-\x{10FFFF}])
+  name: keyword.control.nim
+  match: (?<![\w\x{80}-\x{10FFFF}])(await|block|break|continue|do|end|except|finally|raise|return|try|while|yield)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Keyword boolean operators for expressions.
   name: keyword.operator.boolean.nim
   match: ((?<![\w\x{80}-\x{10FFFF}])(and|in|is|isnot|not|notin|or|xor)(?![\w\x{80}-\x{10FFFF}]))
-
-
-- comment: Assign operator.
-  name: variable.primary.assign.hot.nim
-  match: ((^|[\(\)\:\;])\s*(const|let|type|var)?\s+)([\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?([\w\x{80}-\x{10FFFF}\[\]]+)([*]?)\s*(:\s*[\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?(=)(?![\<\>\-\+\=~])
-  captures:
-    '1': { name: keyword.secondary.nim }
-    '4': { name: variable.primary.assign.hot.nim }
-    '5': { name: variable.primary.assign.hotter.nim }
-    '6': { name: keyword.secondary.operator.kw-public.nim }
-    '7': { name: storage.type.generic.nim }
-    '8': { name: operator.primary.assign.hottest.nim }
 
 - comment: Other keywords.
   name: keyword.other.nim
@@ -203,20 +189,20 @@ patterns:
   end: \:()
   name: meta.forloop.nim
   captures:
-    '1': { name: keyword.primary.control.nim }
+    '1': { name: keyword.control.nim }
   patterns:
   - match: \ [\w\x{80}-\x{10FFFF},]+\s+(in)\s+
     captures:
-      '1': { name: keyword.primary.control.nim }
+      '1': { name: keyword.control.nim }
   - {include: source.nim}
 
 - comment: Import syntax
   match: ((import)\s+[\/\w]+,?)
   captures:
-    '2': { name: keyword.secondary.control.nim }
+    '2': { name: keyword.control.nim }
 - match: (from)\s+[\/\w]+\s+(?=import)
   captures:
-    '1': { name: keyword.secondary.control.nim }
+    '1': { name: keyword.control.nim }
 
 - comment: Destructure syntax
   begin: (var|let)\s*\(
@@ -251,7 +237,7 @@ patterns:
 - comment: (Raw) Triple Quoted String
   name: string.quoted.triple.nim
   begin: r?\"\"\"
-  end: \"\"\"[^\"]   #" highlight-flaw-fixer-comment
+  end: \"\"\"[^\"]
 
 - comment: Raw Double Quoted String
   name: string.quoted.double.raw.nim
@@ -279,7 +265,7 @@ patterns:
       match: ([^\']{2,}?)   #' highlight-flaw-fixer-comment
 
 - comment: Call syntax
-  begin: ([\w\x{80}-\x{10FFFF}\`]+)\s*(?=\(|\[.+?\]\s*\()   #` highlight-flaw-fixer-comment
+  begin: ([\w\x{80}-\x{10FFFF}\`]+)\s*(?=\(|\[.+?\]\s*\()
   end: \)
   captures:
     '1': { name: support.function.any-method.nim }
@@ -292,7 +278,7 @@ patterns:
     '1': { name: support.function.any-method.nim }
   patterns:
     - {include: source.nim}
-- match: ([\w\x{80}-\x{10FFFF}]+)(?=\s+[\"\'\`])   #" highlight-flaw-fixer-comment
+- match: ([\w\x{80}-\x{10FFFF}]+)(?=\s+[\"\'\`])
   captures:
     '1': { name: support.function.any-method.nim }
   patterns:
@@ -317,27 +303,27 @@ patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.primary.control.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.control.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
       - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.secondary.operator.nim
+      name: keyword.operator.nim
     - {include: source.nim}
 
 - name: source.html.embedded.nim
@@ -353,27 +339,27 @@ patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.control.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.control.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
       - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.secondary.operator.nim
+      name: keyword.operator.nim
     - {include: text.xml}
 
 - name: source.xml.embedded.nim
@@ -389,27 +375,27 @@ patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.control.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.control.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
       - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.secondary.operator.nim
+      name: keyword.operator.nim
     - {include: text.xml}
 
 - name: source.js.embedded.nim
@@ -425,27 +411,27 @@ patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.control.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.control.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
       - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.secondary.operator.nim
+      name: keyword.operator.nim
     - {include: source.js}
 
 - name: source.css.embedded.nim
@@ -461,27 +447,27 @@ patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.control.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.control.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
       - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.secondary.operator.nim
+      name: keyword.operator.nim
     - {include: source.css}
 
 - name: source.glsl.embedded.nim
@@ -497,27 +483,27 @@ patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.control.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.control.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
       - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.secondary.operator.nim
+      name: keyword.operator.nim
     - {include: source.glsl}
 
 - name: source.markdown.embedded.nim
@@ -533,71 +519,30 @@ patterns:
     - begin: (?<!\$)(\$)\(
       end: \)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)\{
       end: \}
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.operator.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.operator.nim}
       patterns:
       - {include: source.nim}
     - begin: (?<!\$)(\$)(for|while|case|of|when|if|else|elif)( )
       end: (\{|\n)
       captures:
-        '1': {name: keyword.secondary.operator.nim}
-        '2': {name: keyword.secondary.control.nim}
+        '1': {name: keyword.operator.nim}
+        '2': {name: keyword.control.nim}
       endCaptures:
         '1': {name: plain}
       patterns:
       - {include: source.nim}
     - match: (?<!\$)(\$[a-zA-Z0-9_]+)
-      name: keyword.secondary.operator.nim
+      name: keyword.operator.nim
     - {include: text.html.markdown.multimarkdown}
 
-
 repository:
-  eat_strings:
-    patterns:
-    - include: '#eat_double_string'
-    - include: '#eat_single_string'
-
-  eat_double_string:
-    patterns:
-    - begin: \"
-      end: \"
-      patterns:
-      - include: '#eat_escaped_char'
-
-  eat_single_string:
-    patterns:
-    - begin: \'
-      end: \'
-      patterns:
-      - name: invalid.illegal.character.nim
-        match: \\n
-      - include: '#eat_escaped_char'
-      - name: invalid.illegal.character.nim
-        match: ([^\']{2,}?)   #' highlight-flaw-fixer-comment
-
-  eat_escaped_char:
-    patterns:
-    - match: \\[nN]
-    - match: \\[cC]|\\[rR]
-    - match: \\[lL]
-    - match: \\[fF]
-    - match: \\[tT]
-    - match: \\[vV]
-    - match: \\\"
-    - match: \\'
-    - match: \\[0-9]+
-    - match: \\[aA]
-    - match: \\[bB]
-    - match: \\[eE]
-    - match: \\[xX]\h\h
-    - match: \\\\
-
   escaped_char:
     patterns:
     - name: constant.character.escape.newline.nim

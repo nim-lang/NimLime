@@ -75,7 +75,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.secondary.other.nim</string>
+							<string>keyword.other.nim</string>
 						</dict>
 						<key>2</key>
 						<dict>
@@ -101,7 +101,7 @@
 							<key>end</key>
 							<string>\`</string>
 							<key>name</key>
-							<string>keyword.secondary.operator.nim</string>
+							<string>keyword.operator.nim</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -126,7 +126,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.secondary.other.nim</string>
+							<string>keyword.other.nim</string>
 						</dict>
 						<key>2</key>
 						<dict>
@@ -152,7 +152,7 @@
 							<key>end</key>
 							<string>\`</string>
 							<key>name</key>
-							<string>keyword.secondary.operator.nim</string>
+							<string>keyword.operator.nim</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -171,7 +171,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(?&lt;![\w\x{80}-\x{10FFFF}])(proc|method|template|macro|iterator|converter)\s+(\`([^\s\`]+)\`|([\w\x{80}-\x{10FFFF}]+))(\*)?(\(.*\))?(\:[^={]+)?</string>
+					<string>(?&lt;![\w\x{80}-\x{10FFFF}])(proc|method|template|macro|iterator|converter)\s+((\`[^\s\`]+\`)|([\w\x{80}-\x{10FFFF}]+))(\*)?</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -187,17 +187,7 @@
 						<key>5</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.secondary.operator.kw-public.nim</string>
-						</dict>
-						<key>6</key>
-						<dict>
-							<key>name</key>
-							<string>variable.parameter.nim</string>
-						</dict>
-						<key>7</key>
-						<dict>
-							<key>name</key>
-							<string>storage.type.generic.nim</string>
+							<string>keyword.operator.secondary.kw-public.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -207,7 +197,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.secondary.operator.nim</string>
+							<string>keyword.operator.nim</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -271,7 +261,7 @@
 										</dict>
 										<dict>
 											<key>match</key>
-											<string>([\w\x{80}-\x{10FFFF}]+)</string>
+											<string>([\[\]\w\x{80}-\x{10FFFF}]+)</string>
 											<key>name</key>
 											<string>entity.other.attribute-name.pattern.nim</string>
 										</dict>
@@ -298,6 +288,8 @@
 			<string>Pragmas</string>
 			<key>end</key>
 			<string>\.?\}</string>
+			<key>name</key>
+			<string>pragma</string>
 			<key>patterns</key>
 			<array>
 				<dict>
@@ -330,7 +322,7 @@
 			<key>comment</key>
 			<string>A float literal</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([fF](32|64|128))|[fFdD])?</string>
+			<string>(\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([fF]\d)|[fFdD])?</string>
 			<key>name</key>
 			<string>constant.numeric.float.decimal.nim</string>
 		</dict>
@@ -338,7 +330,7 @@
 			<key>comment</key>
 			<string>A hexadecimal literal</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0[xX]\h[_\h]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+			<string>(0[xX]\h[_\h]*)('?(([iIuUfF]\d)|[uUfFdD]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.hexadecimal.nim</string>
 		</dict>
@@ -346,7 +338,7 @@
 			<key>comment</key>
 			<string>A base-8 integer literal</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0[ocC][0-7][_0-7]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+			<string>(0[ocC][0-7][_0-7]*)('?(([iIuUfF]\d)|[uUfFdD]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.octal.nim</string>
 		</dict>
@@ -354,7 +346,7 @@
 			<key>comment</key>
 			<string>A base-2 integer literal</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0(b|B)[01][_01]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+			<string>(0(b|B)[01][_01]*)('?(([iIuUfF]\d)|[uUfFdD]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.binary.nim</string>
 		</dict>
@@ -362,7 +354,7 @@
 			<key>comment</key>
 			<string>A base-10 integer literal</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(\d[_\d]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+			<string>(\d[_\d]*)('?(([iIuUfF]\d)|[uUfFdD]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.decimal.nim</string>
 		</dict>
@@ -376,17 +368,17 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>\s+(when|if)\b</string>
+			<string>(?:^|\s+|=)(when|if)\b</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.primary.control.nim</string>
+					<string>keyword.control.primary.nim</string>
 				</dict>
 			</dict>
 			<key>comment</key>
-			<string>Primary branching keywords and their conditions</string>
+			<string>Primary branching keywords</string>
 			<key>end</key>
 			<string>(:)</string>
 			<key>endCaptures</key>
@@ -397,31 +389,29 @@
 					<string>control.variable.parameter.nim</string>
 				</dict>
 			</dict>
-			<key>name</key>
-			<string>control.variable.parameter.nim</string>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#eat_strings</string>
+					<string>source.nim</string>
 				</dict>
 			</array>
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>\s+(case)\b</string>
+			<string>(?:^|\s+|=)(case)\b</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.primary.control.nim</string>
+					<string>keyword.control.primary.nim</string>
 				</dict>
 			</dict>
 			<key>comment</key>
 			<string>Primary branching keyword 'case'</string>
 			<key>end</key>
-			<string>($)</string>
+			<string>(?=\bof\b)</string>
 			<key>endCaptures</key>
 			<dict>
 				<key>1</key>
@@ -430,18 +420,23 @@
 					<string>control.variable.parameter.nim</string>
 				</dict>
 			</dict>
-			<key>name</key>
-			<string>control.variable.parameter.nim</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.nim</string>
+				</dict>
+			</array>
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>\s+(of|else|elif)\b</string>
+			<string>(?:^|\s+)(of|else|elif)\b</string>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.secondary.control.nim</string>
+					<string>keyword.control.secondary.nim</string>
 				</dict>
 			</dict>
 			<key>comment</key>
@@ -456,13 +451,11 @@
 					<string>control.variable.parameter.nim</string>
 				</dict>
 			</dict>
-			<key>name</key>
-			<string>control.variable.parameter.nim</string>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#eat_strings</string>
+					<string>source.nim</string>
 				</dict>
 			</array>
 		</dict>
@@ -470,9 +463,9 @@
 			<key>comment</key>
 			<string>Keywords that affect program control flow or scope.</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(block|break|continue|do|end|except|finally|raise|return|try|while|yield)(?![\w\x{80}-\x{10FFFF}])</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(await|block|break|continue|do|end|except|finally|raise|return|try|while|yield)(?![\w\x{80}-\x{10FFFF}])</string>
 			<key>name</key>
-			<string>keyword.primary.control.nim</string>
+			<string>keyword.control.nim</string>
 		</dict>
 		<dict>
 			<key>comment</key>
@@ -481,47 +474,6 @@
 			<string>((?&lt;![\w\x{80}-\x{10FFFF}])(and|in|is|isnot|not|notin|or|xor)(?![\w\x{80}-\x{10FFFF}]))</string>
 			<key>name</key>
 			<string>keyword.operator.boolean.nim</string>
-		</dict>
-		<dict>
-			<key>captures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.secondary.nim</string>
-				</dict>
-				<key>4</key>
-				<dict>
-					<key>name</key>
-					<string>variable.primary.assign.hot.nim</string>
-				</dict>
-				<key>5</key>
-				<dict>
-					<key>name</key>
-					<string>variable.primary.assign.hotter.nim</string>
-				</dict>
-				<key>6</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.secondary.operator.kw-public.nim</string>
-				</dict>
-				<key>7</key>
-				<dict>
-					<key>name</key>
-					<string>storage.type.generic.nim</string>
-				</dict>
-				<key>8</key>
-				<dict>
-					<key>name</key>
-					<string>operator.primary.assign.hottest.nim</string>
-				</dict>
-			</dict>
-			<key>comment</key>
-			<string>Assign operator.</string>
-			<key>match</key>
-			<string>((^|[\(\)\:\;])\s*(const|let|type|var)?\s+)([\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?([\w\x{80}-\x{10FFFF}\[\]]+)([*]?)\s*(:\s*[\w\x{80}-\x{10FFFF}\.\[\]\(\)\s]*?)?(=)(?![\&lt;\&gt;\-\+\=~])</string>
-			<key>name</key>
-			<string>variable.primary.assign.hot.nim</string>
 		</dict>
 		<dict>
 			<key>comment</key>
@@ -547,7 +499,7 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.primary.control.nim</string>
+					<string>keyword.control.nim</string>
 				</dict>
 			</dict>
 			<key>comment</key>
@@ -564,7 +516,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.primary.control.nim</string>
+							<string>keyword.control.nim</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -582,7 +534,7 @@
 				<key>2</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.secondary.control.nim</string>
+					<string>keyword.control.nim</string>
 				</dict>
 			</dict>
 			<key>comment</key>
@@ -596,7 +548,7 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>keyword.secondary.control.nim</string>
+					<string>keyword.control.nim</string>
 				</dict>
 			</dict>
 			<key>match</key>
@@ -862,7 +814,7 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -883,12 +835,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -909,12 +861,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.primary.control.nim</string>
+									<string>keyword.control.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -939,7 +891,7 @@
 							<key>match</key>
 							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
-							<string>keyword.secondary.operator.nim</string>
+							<string>keyword.operator.nim</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -990,7 +942,7 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1011,12 +963,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1037,12 +989,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.control.nim</string>
+									<string>keyword.control.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1067,7 +1019,7 @@
 							<key>match</key>
 							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
-							<string>keyword.secondary.operator.nim</string>
+							<string>keyword.operator.nim</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -1118,7 +1070,7 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1139,12 +1091,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1165,12 +1117,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.control.nim</string>
+									<string>keyword.control.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1195,7 +1147,7 @@
 							<key>match</key>
 							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
-							<string>keyword.secondary.operator.nim</string>
+							<string>keyword.operator.nim</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -1246,7 +1198,7 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1267,12 +1219,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1293,12 +1245,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.control.nim</string>
+									<string>keyword.control.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1323,7 +1275,7 @@
 							<key>match</key>
 							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
-							<string>keyword.secondary.operator.nim</string>
+							<string>keyword.operator.nim</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -1374,7 +1326,7 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1395,12 +1347,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1421,12 +1373,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.control.nim</string>
+									<string>keyword.control.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1451,7 +1403,7 @@
 							<key>match</key>
 							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
-							<string>keyword.secondary.operator.nim</string>
+							<string>keyword.operator.nim</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -1502,7 +1454,7 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1523,12 +1475,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1549,12 +1501,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.control.nim</string>
+									<string>keyword.control.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1579,7 +1531,7 @@
 							<key>match</key>
 							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
-							<string>keyword.secondary.operator.nim</string>
+							<string>keyword.operator.nim</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -1630,7 +1582,7 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1651,12 +1603,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1677,12 +1629,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.operator.nim</string>
+									<string>keyword.operator.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.secondary.control.nim</string>
+									<string>keyword.control.nim</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1707,7 +1659,7 @@
 							<key>match</key>
 							<string>(?&lt;!\$)(\$[a-zA-Z0-9_]+)</string>
 							<key>name</key>
-							<string>keyword.secondary.operator.nim</string>
+							<string>keyword.operator.nim</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -1720,132 +1672,6 @@
 	</array>
 	<key>repository</key>
 	<dict>
-		<key>eat_double_string</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>\"</string>
-					<key>end</key>
-					<string>\"</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#eat_escaped_char</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		<key>eat_escaped_char</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>\\[nN]</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\[cC]|\\[rR]</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\[lL]</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\[fF]</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\[tT]</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\[vV]</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\\"</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\'</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\[0-9]+</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\[aA]</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\[bB]</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\[eE]</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\[xX]\h\h</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\\\\</string>
-				</dict>
-			</array>
-		</dict>
-		<key>eat_single_string</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>\'</string>
-					<key>end</key>
-					<string>\'</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>match</key>
-							<string>\\n</string>
-							<key>name</key>
-							<string>invalid.illegal.character.nim</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>#eat_escaped_char</string>
-						</dict>
-						<dict>
-							<key>match</key>
-							<string>([^\']{2,}?)</string>
-							<key>name</key>
-							<string>invalid.illegal.character.nim</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		<key>eat_strings</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#eat_double_string</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#eat_single_string</string>
-				</dict>
-			</array>
-		</dict>
 		<key>escaped_char</key>
 		<dict>
 			<key>patterns</key>

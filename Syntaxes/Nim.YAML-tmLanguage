@@ -115,23 +115,23 @@ patterns:
 
 - comment: A float literal
   name: constant.numeric.float.decimal.nim
-  match: (\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([fF]\d)|[fFdD])?   #' highlight-flaw-fixer-comment
+  match: (?<![\w\x{80}-\x{10FFFF}])(\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([fF](32|64|128))|[fFdD])?   #' highlight-flaw-fixer-comment
 
 - comment: A hexadecimal literal
   name: constant.numeric.integer.hexadecimal.nim
-  match: (0[xX]\h[_\h]*)('?(([iIuUfF]\d)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (?<![\w\x{80}-\x{10FFFF}])(0[xX]\h[_\h]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: A base-8 integer literal
   name: constant.numeric.integer.octal.nim
-  match: (0[ocC][0-7][_0-7]*)('?(([iIuUfF]\d)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (?<![\w\x{80}-\x{10FFFF}])(0[ocC][0-7][_0-7]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: A base-2 integer literal
   name: constant.numeric.integer.binary.nim
-  match: (0(b|B)[01][_01]*)('?(([iIuUfF]\d)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (?<![\w\x{80}-\x{10FFFF}])(0(b|B)[01][_01]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: A base-10 integer literal
   name: constant.numeric.integer.decimal.nim
-  match: (\d[_\d]*)('?(([iIuUfF]\d)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (?<![\w\x{80}-\x{10FFFF}])(\d[_\d]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: Language Constants.
   name: constant.language.nim

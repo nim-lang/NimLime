@@ -111,6 +111,7 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
     def load_settings(self):
         get = self.get_setting
         self.send_to_quickpanel = get('nimble.{0}.quickpanel.send', True)
+        self.enabled = get('nimble.{0}.enabled', True)
         self.load_output_settings()
 
     @send_self
@@ -162,6 +163,7 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
     def load_settings(self):
         get = self.get_setting
         self.send_to_quickpanel = get('nimble.{0}.quickpanel.send', True)
+        self.enabled = get('nimble.{0}.enabled', True)
         self.load_output_settings()
 
     def run(self):
@@ -222,6 +224,7 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
     def load_settings(self):
         get = self.get_setting
         self.preemptive_search = get('nimble.preemptive_search', True)
+        self.enabled = get('nimble.{0}.enabled', True)
         self.load_output_settings()
 
     def run(self):

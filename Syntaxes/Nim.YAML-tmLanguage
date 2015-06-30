@@ -139,7 +139,7 @@ patterns:
 
 - comment: Primary branching keywords
   begin: (?:^|\s+|=)(when|if)\b
-  end: (:)
+  end: (?=:)
   captures:
     '1': {name: keyword.control.primary.nim}
   endCaptures:
@@ -159,7 +159,7 @@ patterns:
 
 - comment: Secondary branching keywords and their conditions
   begin: (?:^|\s+)(of|else|elif)\b
-  end: (:)
+  end: (?=:)
   captures:
     '1': {name: keyword.control.secondary.nim}
   endCaptures:
@@ -186,7 +186,7 @@ patterns:
 
 - comment: in keyword in a 'for' loop
   begin: (for)\s+
-  end: \:()
+  end: (?=:)
   name: meta.forloop.nim
   captures:
     '1': { name: keyword.control.nim }

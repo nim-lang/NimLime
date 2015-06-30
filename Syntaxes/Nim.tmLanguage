@@ -380,7 +380,7 @@
 			<key>comment</key>
 			<string>Primary branching keywords</string>
 			<key>end</key>
-			<string>(:)</string>
+			<string>(?=:)</string>
 			<key>endCaptures</key>
 			<dict>
 				<key>1</key>
@@ -442,7 +442,7 @@
 			<key>comment</key>
 			<string>Secondary branching keywords and their conditions</string>
 			<key>end</key>
-			<string>(:)</string>
+			<string>(?=:)</string>
 			<key>endCaptures</key>
 			<dict>
 				<key>1</key>
@@ -505,7 +505,7 @@
 			<key>comment</key>
 			<string>in keyword in a 'for' loop</string>
 			<key>end</key>
-			<string>\:()</string>
+			<string>(?=:)</string>
 			<key>name</key>
 			<string>meta.forloop.nim</string>
 			<key>patterns</key>

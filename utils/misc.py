@@ -129,8 +129,10 @@ def get_output_view(tag, strategy, name, switch_to, fallback_window):
 
     # Console Strategy
     if strategy == 'console':
-        show_view(fallback_window, fallback_window.active_view(), True)
-        return fallback_window.get_output_panel(tag)
+        view = fallback_window.active_view()
+        view.settings().set('output_tag', tag)
+        show_view(fallback_window, view, True)
+        return fallback_window, fallback_window.get_output_panel(tag)
 
     # Grouped strategy
     if strategy == 'grouped':
@@ -319,5 +321,6 @@ class NimLimeOutputMixin(NimLimeMixin):
         write_to_view(output_view, content, self.clear_output)
 
         if self.show_output:
+            output_view.settings().set('output_tag', tag)
             is_console = (self.output_method == 'console')
             show_view(output_window, output_view, is_console)

@@ -6,6 +6,7 @@ from time import sleep
 from threading import Thread
 
 from utils.project import get_project_file
+import sublime
 
 
 class Idetools:
@@ -157,3 +158,84 @@ class Idetools:
                         m.group("col"), m.group("description"))
 
         return None
+
+
+    @staticmethod
+    def show_tooltip(view, value):
+        (func, typ, desc) = (value[0], value[1], value[5])
+
+        if desc is None:
+            desc = ""
+        else:
+            desc = desc.strip('"')
+
+        view.show_popup(
+            '<b>%s</b>'
+            '<div style="color: #666"><i>%s</i></div>'
+            '<div>%s</div>' %
+            (func, typ, desc))
+
+    @staticmethod
+    def open_definition(window, filename, line, col):
+        arg = filename + ":" + str(line) + ":" + str(col)
+        flags = sublime.ENCODED_POSITION
+
+        # TODO - If this is NOT in the same project, mark transient
+        # flags |= sublime.TRANSIENT
+
+        window.open_file(arg, flags)
+
+    @staticmethod
+    def lookup(command, goto, filename, line, col):
+        result = ""
+        dirty_file_name = ""
+
+        if command.view.is_dirty():
+            # Generate temp file
+            size = command.view.size()
+
+            with NamedTemporaryFile(suffix=".nim", delete=False) as dirty_file:
+                dirty_file_name = dirty_file.name
+                dirty_file.file.write(
+                    command.view.substr(Region(0, size)).encode("UTF-8")
+                )
+                dirty_file.file.close()
+
+                result = Idetools.idetool(
+                    command.view.window(),
+                    "--def",
+                    filename,
+                    line,
+                    col,
+                    dirty_file.name
+                )
+                dirty_file.close()
+
+            try:
+                os.unlink(dirty_file.name)
+            except OSError:
+                pass
+        else:
+            result = Idetools.idetool(
+                command.view.window(), "--def", filename, line, col)
+
+        # Parse the result
+        value = Idetools.parse(result)
+
+        if value is not None:
+            if value[2] == dirty_file_name:
+                lookup_file = filename
+            else:
+                lookup_file = value[2]
+
+            if goto:
+                Idetools.open_definition(
+                    command.view.window(),
+                    lookup_file,
+                    int(value[3]),
+                    int(value[4]) + 1
+                )
+            else:
+                Idetools.show_tooltip(command.view, value)
+        else:
+            sublime.status_message("No definition found")

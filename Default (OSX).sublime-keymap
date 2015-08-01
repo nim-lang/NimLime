@@ -1,9 +1,14 @@
 [
-    {"keys": ["shift+alt+d"], "command": "lookup", "context":
-    	[
-    		{ "key": "selector", "operator": "equal", "operand": "source.nim" }
-    	]
-	},
+    {"keys": ["shift+alt+d"], "command": "gotodef", "context":
+        [
+            { "key": "selector", "operator": "equal", "operand": "source.nim" }
+        ]
+    },
+    {"keys": ["shift+alt+i"], "command": "lookup", "context":
+        [
+            { "key": "selector", "operator": "equal", "operand": "source.nim" }
+        ]
+    },
     { "keys": ["shift+space"], "command": "nim_update_completions", "context":
         [
             { "key": "auto_complete_visible" },

@@ -1,9 +1,14 @@
 [
-    {"keys": ["f12"], "command": "lookup", "context":
+    {"keys": ["f12"], "command": "gotodef", "context":
     	[
     		{ "key": "selector", "operator": "equal", "operand": "source.nim" }
     	]
 	},
+    {"keys": ["shift+alt+i"], "command": "lookup", "context":
+        [
+            { "key": "selector", "operator": "equal", "operand": "source.nim" }
+        ]
+    },
     { "keys": ["ctrl+space"], "command": "nim_update_completions", "context":
         [
             { "key": "auto_complete_visible" },

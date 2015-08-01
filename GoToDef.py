@@ -9,15 +9,9 @@ from utils.idetools import Idetools
 
 import sublime
 
-# Resources
-# http://sublimetext.info/docs/en/extensibility/plugins.html
-# http://www.sublimetext.com/docs/2/api_reference.html#sublime.View
-# http://net.tutsplus.com/tutorials/python-tutorials/how-to-create-a-sublime-text-2-plugin/
-# http://www.sublimetext.com/docs/plugin-examples
-
 NimLime.add_module(__name__)
 
-class LookupCommand(TextCommand, NimLimeMixin):
+class GotodefCommand(TextCommand, NimLimeMixin):
 
     def run(self, edit):
         filename = self.view.file_name()
@@ -31,4 +25,4 @@ class LookupCommand(TextCommand, NimLimeMixin):
             line = pos[0] + 1
             col = pos[1]
 
-            Idetools.lookup(self, False, filename, line, col)
+            Idetools.lookup(self, True, filename, line, col)

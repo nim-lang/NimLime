@@ -52,9 +52,7 @@ class Idetools:
 
     @staticmethod
     def opensock():
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(("localhost", 8088))
-        return s
+        return socket.create_connection(("localhost", 8088), 3)
 
     @staticmethod
     def sendrecv(args, getresp=True):

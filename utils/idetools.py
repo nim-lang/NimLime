@@ -37,7 +37,7 @@ class Idetools:
         else:
             buffer = socket.recv(4096).decode('UTF-8')
 
-        buffering = True
+        buffering = buffer is not None
         while buffering:
             if "\n" in buffer:
                 (line, buffer) = buffer.split("\n", 1)
@@ -53,7 +53,9 @@ class Idetools:
 
     @staticmethod
     def opensock():
-        return socket.create_connection(("localhost", 8088), 3)
+        sock = socket.create_connection(("localhost", 8088), 3)
+        sock.settimeout(2.0)
+        return sock
 
     @staticmethod
     def sendrecv(args, getresp=True):
@@ -68,20 +70,20 @@ class Idetools:
 
             if getresp:
                 for line in Idetools.linesplit(sock):
-                    print(line)
                     return line
                 return ""
+        except:
+            return ""
         finally:
             if sock is not None:
                 sock.close()
 
     @staticmethod
-    def ensure_socket(secs=2, wait=.2):
+    def ensure_socket(secs=5, wait=.2):
         while True:
             sock = None
             try:
                 sock = Idetools.opensock()
-                sock.close()
                 return True
             except:
                 secs -= wait
@@ -90,7 +92,9 @@ class Idetools:
                     Idetools.service = None
                     return False
                 sleep(wait)
-                sock = None
+            finally:
+                if sock is not None:
+                    sock.close()
 
     @staticmethod
     def ensure_service(proj=""):
@@ -182,7 +186,6 @@ class Idetools:
 
         # TODO - If this is NOT in the same project, mark transient
         # flags |= sublime.TRANSIENT
-
         window.open_file(arg, flags)
 
     @staticmethod
@@ -228,6 +231,7 @@ class Idetools:
             else:
                 lookup_file = value[2]
 
+
             if goto:
                 Idetools.open_definition(
                     command.view.window(),
@@ -238,4 +242,5 @@ class Idetools:
             else:
                 Idetools.show_tooltip(command.view, value)
         else:
+
             sublime.status_message("No definition found")

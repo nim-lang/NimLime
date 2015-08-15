@@ -117,12 +117,12 @@ class Idetools:
             shell=True)
 
         Idetools.service = proc
-        Idetools.outThread = Thread(
-            target=Idetools.print_output,
-            args=(proc.stdout,))
+        # Idetools.outThread = Thread(
+        #     target=Idetools.print_output,
+        #     args=(proc.stdout,))
 
-        Idetools.outThread.daemon = True
-        Idetools.outThread.start()
+        # Idetools.outThread.daemon = True
+        # Idetools.outThread.start()
 
         # Ensure the socket is available
         Idetools.ensure_socket()

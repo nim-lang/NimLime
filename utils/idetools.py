@@ -25,8 +25,10 @@ class Idetools:
     # Methods
     @staticmethod
     def print_output(out):
-        for line in iter(out.readline, b''):
-            print(line.rstrip())
+        try:
+            for line in iter(out.readline, b''):
+                print(line.rstrip())
+        except: pass
 
     @staticmethod
     def linesplit(socket):

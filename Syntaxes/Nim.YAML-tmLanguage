@@ -2,7 +2,7 @@
 ---
 name: Nim
 scopeName: source.nim
-fileTypes: ["nim"]
+fileTypes: ["nim", "nims"]
 uuid: fa6f2c1c-dd3f-4bcd-b2be-d05312be4080
 
 patterns:

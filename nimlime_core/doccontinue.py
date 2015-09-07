@@ -1,9 +1,7 @@
-import NimLime
 import sublime
-from sublime_plugin import EventListener
-from utils.misc import NimLimeMixin
 
-NimLime.add_module(__name__)
+from sublime_plugin import EventListener
+from .utils.mixins import NimLimeMixin
 
 
 COMMENT_SCOPE = "comment.line.number-sign.doc-comment"

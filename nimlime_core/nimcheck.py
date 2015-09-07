@@ -1,17 +1,14 @@
 import os.path
 import re
-from threading import Thread
-
-import NimLime
 import sublime
+
+from threading import Thread
 from sublime_plugin import ApplicationCommand, EventListener
-from utils.misc import (
+from .utils.mixins import NimLimeMixin, NimLimeOutputMixin
+from .utils.misc import (
     view_has_nim_syntax, send_self, busy_frames, get_next_method,
-    loop_status_msg, trim_region, NimLimeMixin, run_process,
-    NimLimeOutputMixin)
-
-
-NimLime.add_module(__name__)
+    loop_status_msg, trim_region, run_process
+    )
 
 # Constants
 ERROR_REGION_TAG = 'NimCheckError'
@@ -57,10 +54,8 @@ class NimClearErrors(NimLimeMixin, ApplicationCommand):
         sublime.status_message('Cleared Nim Check Errors & Hints')
 
     def is_visible(self):
-        view = sublime.active_window().active_view()
-        return ((settings.get('check.current_file.enabled') or
-                 settings.get('check.on_save.enabled')) and
-                view_has_nim_syntax(view))
+        return (settings.get('check.current_file.enabled') or
+                settings.get('check.on_save.enabled'))
 
 
 class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
@@ -98,7 +93,6 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
             target=run_nimcheck,
             args=(view.file_name(), this.send)
         ).start()
-
         messages = parse_nimcheck_output(output)
 
         yield stop_status_loop(get_next_method(this))

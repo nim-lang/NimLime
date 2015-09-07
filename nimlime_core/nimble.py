@@ -1,18 +1,11 @@
-from threading import Thread
-
-import NimLime
 import sublime
+
+from threading import Thread
 from sublime_plugin import ApplicationCommand
 from utils.misc import (
     send_self, loop_status_msg, busy_frames, format_tag, get_next_method,
-    get_output_view, write_to_view, show_view, run_process, escape_shell,
-    NimLimeMixin)
-
-
-# Resources
-# http://docs.sublimetext.info/en/latest/reference/command_palette.html
-# https://github.com/wbond/sublime_package_control/blob/6a8b91ca58d66cb495b383d9572bb801316bcec5/package_control/commands/install_package_command.py
-NimLime.add_module(__name__)
+    get_output_view, write_to_view, show_view, run_process, escape_shell)
+from .utils.mixins import NimLimeMixin
 
 
 def debug(string):
@@ -27,7 +20,7 @@ nimble_executable = None
 # Load settings
 def load():
     global nimble_executable
-    nimble_executable = settings.get('nimble.executable', 'nim')
+    nimble_executable = settings.get('nimble.executable', 'nimble')
 
 
 settings = sublime.load_settings('NimLime.sublime-settings')

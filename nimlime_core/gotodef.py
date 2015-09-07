@@ -1,15 +1,10 @@
 from tempfile import NamedTemporaryFile
 import os
 
-import NimLime
 from sublime_plugin import TextCommand
-from sublime import Region
-from utils.misc import NimLimeMixin
+from .utils.mixins import NimLimeMixin
 from utils.idetools import Idetools
 
-import sublime
-
-NimLime.add_module(__name__)
 
 class GotodefCommand(TextCommand, NimLimeMixin):
 

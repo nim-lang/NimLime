@@ -1,13 +1,10 @@
 import os
 import tempfile
-
-import NimLime
 import sublime
 import sublime_plugin
-from utils.project import get_nim_project
 
+from .utils.project import get_nim_project
 
-NimLime.add_module(__name__)
 
 settings = {}
 do_suggestions = False  # Whether to provide suggestions

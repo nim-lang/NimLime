@@ -1,13 +1,14 @@
 import os
 
-import NimLime
-import sublime_plugin
-from utils.project import get_project_file, set_nim_project
-
-NimLime.add_module(__name__)
+from sublime_plugin import WindowCommand
+from .utils.project import get_project_file, set_nim_project
+from .utils.mixins import NimLimeMixin
 
 
-class SetProjectCommand(sublime_plugin.WindowCommand):
+class SetProjectCommand(NimLimeMixin, WindowCommand):
+
+    """ Sets the main Nim file for the current Sublime Text project. """
+
     def run(self):
         # Retrieve path of project
         st_project = get_project_file(self.window.id())
@@ -22,9 +23,8 @@ class SetProjectCommand(sublime_plugin.WindowCommand):
 
                 # Set input file
                 name, extension = os.path.splitext(relative_path)
-
                 if extension.lower() == ".nim":
                     set_nim_project(st_project, relative_path)
 
             except:
-                raise  # pass
+                pass

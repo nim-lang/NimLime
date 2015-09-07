@@ -2,6 +2,7 @@ from weakref import proxy, WeakKeyDictionary
 from sys import version_info
 from functools import wraps
 import subprocess
+
 import sublime
 
 
@@ -76,7 +77,7 @@ def loop_status_msg(frames, speed, view=None, key=''):
     To stop the loop, the returned function must be called with no arguments,
     or a single argument for which `bool(arg) == true`. As a special condition,
     if the first argument is a callable for which `bool(arg) == True`, then
-    the argument will be called after the last animation loop has finished.
+    the argument will be invoked after the last animation loop has finished.
     If for the the given argument, `bool(arg) == False`, nothing will
     happen.
     """
@@ -254,73 +255,3 @@ def run_process(cmd, callback=None):
         return output
 
 
-class NimLimeMixin(object):
-    settings = sublime.load_settings('NimLime.sublime-settings')
-
-    def __init__(self):
-        if hasattr(self, 'load_settings'):
-            self.reload_settings()
-
-    def reload_settings(self):
-        NimLimeMixin.settings = sublime.load_settings(
-            'NimLime.sublime-settings'
-        )
-        # Workaround for a ST3 bug
-        if self.settings.get('is_loaded', True) is None:
-            sublime.set_timeout(self.reload_settings, 1000)
-        self.settings.add_on_change(
-            'reload',
-            self.load_settings
-        )
-        self.load_settings()
-
-    def get_setting(self, key, default):
-        formatted_key = key.format(self.settings_selector)
-        if not self.settings.has(formatted_key):
-            # print("Warning, '{0}' not found.".format(formatted_key))
-            result = default
-        else:
-            # print("'{0}' found!".format(formatted_key))
-            result = self.settings.get(formatted_key)
-        return result
-
-    def load_settings(self):
-        self.enabled = self.get_setting('{0}.enabled', True)
-
-    def is_enabled(self, *args, **kwargs):
-        return True
-
-    def is_visible(self):
-        return self.enabled
-
-    def description(self, *args, **kwargs):
-        return self.__doc__
-
-
-class NimLimeOutputMixin(NimLimeMixin):
-
-    def load_settings(self):
-        super(NimLimeOutputMixin, self).load_settings()
-        get = self.get_setting
-
-        self.clear_output = get('{0}.output.clear', True)
-        self.output_method = get('{0}.output.method', 'grouped')
-        self.send_output = get('{0}.output.send', True)
-        self.show_output = get('{0}.output.show', True)
-        self.output_tag = get('{0}.output.tag', 'nimlime')
-        self.raw_output = get('{0}.output.raw', True)
-        self.output_name = get('{0}.output.name', 'nimlime')
-
-    def write_to_output(self, content, source_window, source_view):
-        tag = format_tag(self.output_tag, source_window, source_view)
-        output_window, output_view = get_output_view(
-            tag, self.output_method, self.output_name, self.show_output,
-            source_window
-        )
-
-        write_to_view(output_view, content, self.clear_output)
-
-        if self.show_output:
-            output_view.settings().set('output_tag', tag)
-            is_console = (self.output_method == 'console')
-            show_view(output_window, output_view, is_console)

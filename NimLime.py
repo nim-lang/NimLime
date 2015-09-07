@@ -1,31 +1,16 @@
-import sys
-import os
-from imp import reload
-from sublime_plugin import ApplicationCommand
+import os.path
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from utils.profile_tools import print_profile_data
+debug = True
+target_directory = os.path.basename(os.getcwd())
 
-modules = set()
-auto_reload = False
+try:
+    # Try using the sys_path mechanism provided by package control
+    from package_control import sys_path
+    sys_path.add(target_directory)
+except ImportError:
+    import sys
+    if debug:
+        print("Warning, couldn't import package_control.sys_path")
+    sys.path.append(target_directory)
 
-
-def add_module(module):
-    modules.add(module)
-
-
-def reload_modules():
-    # Perform auto-reload
-    for module_name in modules:
-        mod = sys.modules.get(module_name)
-        if mod is not None:
-            reload(sys.modules[mod])
-            print("Reloading '{}'".format(mod))
-
-
-class PrintProfileData(ApplicationCommand):
-    def run(self):
-        print_profile_data()
-
-    def is_visible(self):
-        return False
+from nimlime_core import *

@@ -3,9 +3,8 @@ import subprocess
 import socket
 import sys
 from time import sleep
-from threading import Thread
 
-from utils.project import get_project_file
+from .project import get_project_file
 import sublime
 
 

@@ -42,7 +42,7 @@ class NimLimeOutputMixin(NimLimeMixin):
     def load_settings(self):
         get = self.get_setting
 
-        self.clear_output = get('{0}.enabled', True)
+        self.enabled = get('{0}.enabled', True)
         self.clear_output = get('{0}.output.clear', True)
         self.output_method = get('{0}.output.method', 'grouped')
         self.send_output = get('{0}.output.send', True)

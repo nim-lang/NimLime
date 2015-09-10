@@ -1,20 +1,10 @@
 import os
 import json
 import re
-
 import sublime
 
 
-key = 'nim-project'
-
 # Based off of code from https://github.com/facelessuser/FavoriteFiles/
-
-
-def read_project_file(session_path):
-    with open(session_path, 'r') as session_file:
-        session_data = json.load(session_file, strict=False)
-
-
 def get_project_file(win_id):
     session_data = None
 
@@ -43,27 +33,37 @@ def get_project_file(win_id):
     if session_data is None:
         return None
 
-    for window in session_data.get('windows', []):
+    # Find the window data corresponding with the given ID
+    project = find_project_in_data(session_data, win_id) or ""
+
+    # Throw out empty project names
+    if re.match(".*\\.sublime-project", project) or os.path.exists(project):
+        return project
+
+    return None
+
+
+def find_project_in_data(session_data, win_id):
+    # Iterates through the given session data, searching for the window
+    # with the given ID, and returning the project path associated with the
+    # window.
+    for window in session_data.get('windows', ()):
         if window.get('window_id') == win_id and 'workspace_name' in window:
             project = window['workspace_name']
             if sublime.platform() == 'windows':
                 project = os.path.normpath(
-                    project.lstrip("/").replace("/", ":/", 1))
-                break
-
-            # Throw out empty project names
-            if project or re.match(".*\\.sublime-project",
-                                   project) or not os.path.exists(project):
-                project = None
+                    project.lstrip("/").replace("/", ":/", 1)
+                )
             return project
 
     return None
+
 
 def set_nim_project(st_project, nim_path):
     if st_project is not None:
         with open(st_project, "r+") as project_file:
             data = json.loads(project_file.read())
-            data['settings'][key] = nim_path.replace("\\", "/")
+            data['settings']['nim-project'] = nim_path.replace("\\", "/")
 
             project_file.seek(0)
             project_file.truncate()
@@ -73,16 +73,16 @@ def set_nim_project(st_project, nim_path):
 
 
 def get_nim_project(window):
-    stProject = get_project_file(window.id())
+    st_project = get_project_file(window.id())
 
-    if stProject is not None:
-        with open(stProject, 'r') as projFile:
+    if st_project is not None:
+        with open(st_project, 'r') as projFile:
             data = json.loads(projFile.read())
             try:
-                path = data['settings'][key]
+                path = data['settings']['nim-project']
 
                 # Get full path
-                directory = os.path.dirname(stProject)
+                directory = os.path.dirname(st_project)
                 path = path.replace("/", os.sep)
                 return os.path.join(directory, path)
             except:

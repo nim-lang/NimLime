@@ -8,6 +8,7 @@ from .utils.mixins import NimLimeMixin
 class SetProjectCommand(NimLimeMixin, WindowCommand):
 
     """ Sets the main Nim file for the current Sublime Text project. """
+    enabled = True
 
     def run(self):
         # Retrieve path of project

@@ -1,10 +1,10 @@
-import sublime
-
 from threading import Thread
+
+import sublime
 from sublime_plugin import ApplicationCommand
 from utils.misc import (
     send_self, loop_status_msg, busy_frames, format_tag, get_next_method,
-    get_output_view, write_to_view, show_view, run_process, escape_shell)
+    get_output_view, write_to_view, run_process, escape_shell)
 from .utils.mixins import NimLimeMixin
 
 

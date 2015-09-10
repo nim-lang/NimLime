@@ -3,7 +3,7 @@ import os
 
 from sublime_plugin import TextCommand
 from .utils.mixins import NimLimeMixin
-from utils.idetools import Idetools
+from .utils.idetools import Idetools
 
 # Resources
 # http://sublimetext.info/docs/en/extensibility/plugins.html

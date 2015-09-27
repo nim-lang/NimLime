@@ -2,10 +2,11 @@ from threading import Thread
 
 import sublime
 from sublime_plugin import ApplicationCommand
+from .utils.mixins import NimLimeMixin
 from utils.misc import (
     send_self, loop_status_msg, busy_frames, format_tag, get_next_method,
-    get_output_view, write_to_view, run_process, escape_shell)
-from .utils.mixins import NimLimeMixin
+    get_output_view, write_to_view, run_process, escape_shell
+)
 
 
 def debug(string):
@@ -13,18 +14,14 @@ def debug(string):
         print(string)
 
 
-# Settings handlers
-nimble_executable = None
-
-
 # Load settings
 def load():
     global nimble_executable
     nimble_executable = settings.get('nimble.executable', 'nimble')
 
-
 settings = sublime.load_settings('NimLime.sublime-settings')
 settings.add_on_change('nimble.executable', load)
+nimble_executable = None
 load()
 
 
@@ -159,53 +156,50 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
         self.enabled = get('nimble.{0}.enabled', True)
         self.load_output_settings()
 
+    @send_self
     def run(self):
         window = sublime.active_window()
 
-        @send_self
-        def callback():
-            this = yield
+        this = yield
 
-            # Get user input
-            search_term = yield window.show_input_panel(
-                "Package Search Term?", '', this.send, None, None
-            )
+        # Get user input
+        search_term = yield window.show_input_panel(
+            "Package Search Term?", '', this.send, None, None
+        )
 
-            # Setup the loading notice
-            frames = ['Searching package list' + f for f in busy_frames]
-            stop_status_loop = loop_status_msg(frames, 0.15)
+        # Setup the loading notice
+        frames = ['Searching package list' + f for f in busy_frames]
+        stop_status_loop = loop_status_msg(frames, 0.15)
 
-            # Run the main command
-            output, return_code = yield Thread(
-                target=run_nimble,
-                args=('-y search ' + escape_shell(search_term), this.send)
-            ).start()
+        # Run the main command
+        output, return_code = yield Thread(
+            target=run_nimble,
+            args=('-y search ' + escape_shell(search_term), this.send)
+        ).start()
 
-            # Set the status to show we've finished
-            yield stop_status_loop(get_next_method(this))
+        # Set the status to show we've finished
+        yield stop_status_loop(get_next_method(this))
 
-            # List output
-            if self.send_to_quickpanel:
-                items = []
-                packages = parse_package_descriptions(output)
-                for package in packages:
-                    items.append([
-                        package['name'],
-                        package.get('description', ''),
-                        package.get('url', '')
-                    ])
-                window.show_quick_panel(items, None)
+        # List output
+        if self.send_to_quickpanel:
+            items = []
+            packages = parse_package_descriptions(output)
+            for package in packages:
+                items.append([
+                    package['name'],
+                    package.get('description', ''),
+                    package.get('url', '')
+                ])
+            window.show_quick_panel(items, None)
 
-            # Show output
-            self.output_content(output, window)
+        # Show output
+        self.output_content(output, window)
 
-            if return_code == 0:
-                sublime.status_message("Listing Nimble Packages")
-            else:
-                sublime.status_message('Nimble Package List Retrieval Failed')
-            yield
-
-        callback()
+        if return_code == 0:
+            sublime.status_message("Listing Nimble Packages")
+        else:
+            sublime.status_message('Nimble Package List Retrieval Failed')
+        yield
 
 
 class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
@@ -309,74 +303,71 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
     """
     settings_selector = "uninstall"
 
+    @send_self
     def run(self):
         window = sublime.active_window()
 
-        @send_self
-        def callback():
-            this = yield
+        this = yield
 
-            # Setup the loading notice
-            frames = ['Loading package list' + f for f in busy_frames]
-            stop_status_loop = loop_status_msg(frames, 0.15)
+        # Setup the loading notice
+        frames = ['Loading package list' + f for f in busy_frames]
+        stop_status_loop = loop_status_msg(frames, 0.15)
 
-            # Run the search/list command
-            output, return_code = yield Thread(
-                target=run_nimble,
-                args=('-y list -i', this.send)
-            ).start()
+        # Run the search/list command
+        output, return_code = yield Thread(
+            target=run_nimble,
+            args=('-y list -i', this.send)
+        ).start()
 
-            # Set the status to show we've finished searching
-            yield stop_status_loop(get_next_method(this))
+        # Set the status to show we've finished searching
+        yield stop_status_loop(get_next_method(this))
 
-            if return_code != 0:
-                sublime.status_message(
-                    "Nimble Installed Package Listing Failed")
+        if return_code != 0:
+            sublime.status_message(
+                "Nimble Installed Package Listing Failed")
+        else:
+            items = []
+            packages = parse_package_descriptions(output)
+
+            if len(packages) == 0:
+                sublime.status_message("No Installed Packages Found")
             else:
-                items = []
-                packages = parse_package_descriptions(output)
+                for package in packages:
+                    items.append([
+                        package['name'],
+                        package.get('description', ''),
+                        package.get('url', '')
+                    ])
 
-                if len(packages) == 0:
-                    sublime.status_message("No Installed Packages Found")
-                else:
-                    for package in packages:
-                        items.append([
-                            package['name'],
-                            package.get('description', ''),
-                            package.get('url', '')
-                        ])
+                selection = yield window.show_quick_panel(items, this.send)
 
-                    selection = yield window.show_quick_panel(items, this.send)
+                if selection != -1:
+                    target_name = items[selection][0]
+                    # Setup the loading notice
+                    loading_notice = "Uninstalling package"
+                    frames = [loading_notice + f for f in busy_frames]
+                    stop_status_loop = loop_status_msg(frames, 0.15)
 
-                    if selection != -1:
-                        target_name = items[selection][0]
-                        # Setup the loading notice
-                        loading_notice = "Uninstalling package"
-                        frames = [loading_notice + f for f in busy_frames]
-                        stop_status_loop = loop_status_msg(frames, 0.15)
+                    # Run the install command
+                    output, return_code = yield Thread(
+                        target=run_nimble,
+                        args=(
+                            '-y uninstall ' + escape_shell(target_name),
+                            this.send
+                        )
+                    ).start()
 
-                        # Run the install command
-                        output, return_code = yield Thread(
-                            target=run_nimble,
-                            args=(
-                                '-y uninstall ' + escape_shell(target_name),
-                                this.send
-                            )
-                        ).start()
+                    yield stop_status_loop(get_next_method(this))
 
-                        yield stop_status_loop(get_next_method(this))
-
-                        self.output_content(output, window)
-                        if return_code == 0:
-                            sublime.status_message(
-                                "Uninstalled Nimble Package")
-                        else:
-                            sublime.status_message(
-                                'Nimble Package Uninstallation Failed'
-                            )
-            yield
-
-        callback()
+                    self.output_content(output, window)
+                    if return_code == 0:
+                        sublime.status_message(
+                            "Uninstalled Nimble Package")
+                    else:
+                        sublime.status_message(
+                            'Nimble Package Uninstallation Failed'
+                        )
+        yield
 
 
 def run_nimble(command, callback):

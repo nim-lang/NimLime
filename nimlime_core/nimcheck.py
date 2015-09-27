@@ -19,12 +19,12 @@ ERROR_MSG_FORMAT = '({0},{1}): {2}: {3}'.format
 MESSAGE_REGEX = re.compile(
     (r"""
         ^
-        (.+)  \(          # File Name
-        (\d+) \,\s        # Line Number
-        (\d+) \)\s*       # Column Number
-        (\w+) \s*:\s*     # Message Type
-        (.+)  \n          # Message Content
-        (.*   \n\s*  \^)? # Message Context
+        (?P<file_name> .+)      \(          # File Name
+        (?P<line_number> \d+)   \,\s        # Line Number
+        (?P<column_number> \d+) \)\s*       # Column Number
+        (?P<message_type> \w+)  \s*:\s*     # Message Type
+        (?P<content> .+)        \n          # Message Content
+        (?P<context> .* \n\s* \^)?          # Message Context
     """),
     flags=re.MULTILINE | re.IGNORECASE | re.VERBOSE
 )
@@ -287,13 +287,14 @@ def parse_nimcheck_output(output):
     # Retrieve and convert the matches
     message_list = []
     for match in MESSAGE_REGEX.finditer(output):
-        all = match.group(0)
-        file_name = match.group(1)
-        line = int(match.group(2)) - 1
-        column = int(match.group(3)) - 1
-        kind = match.group(4)
-        message = match.group(5)
-        message_list.append((file_name, line, column, kind, message, all))
+        message_list.append((
+            match.group('file_name'),
+            int(match.group('line_number')) - 1,
+            int(match.group('column_number')) - 1,
+            match.group('message_type'),
+            match.group('content'),
+            match.group(0),
+        ))
 
     # Sort the error list by line
     message_list.sort(key=lambda item: item[1])

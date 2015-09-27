@@ -1,5 +1,4 @@
 from tempfile import NamedTemporaryFile
-import os
 
 from sublime_plugin import TextCommand
 from .utils.mixins import NimLimeMixin
@@ -11,7 +10,8 @@ from .utils.idetools import Idetools
 # http://net.tutsplus.com/tutorials/python-tutorials/how-to-create-a-sublime-text-2-plugin/
 # http://www.sublimetext.com/docs/plugin-examples
 
-class LookupCommand(TextCommand, NimLimeMixin):
+
+class LookupCommand(NimLimeMixin, TextCommand):
 
     def run(self, edit):
         filename = self.view.file_name()

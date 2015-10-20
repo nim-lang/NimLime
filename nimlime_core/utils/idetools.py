@@ -8,6 +8,47 @@ from .project import get_project_file
 import sublime
 
 
+class IdeTool(object):
+    project_file = None
+    process = None
+
+    def __init__(self, executable, project_file, additional_args=[]):
+        self.executable = executable
+        self.process_args = []
+        self.process_args.extend(additional_args)
+        self.process_args.append(project_file)
+        self.check_process()
+
+    def check_process(self):
+        i = 0
+        while i < 5:
+            if self.process.poll() is None:
+                return True
+            else:
+                i += 1
+                self.process = subprocess.Popen(
+                    executable=self.executable,
+                    args=self.process_args,
+                    shell=True,
+                )
+        return False
+
+    def run_command(self, command, file, dirtyfile, line, column):
+        self.check_process()
+
+    def get_definition(self, file, dirtyfile, line, column):
+        pass
+
+    def get_suggestion(self, file, dirtyfile, line, column):
+        pass
+
+    def get_context(self, file, dirtyfile, line, column):
+        pass
+
+    def get_usage(self, file, dirtyfile, line, column):
+        pass
+
+
 class Idetools:
     # Fields
     service = None
@@ -27,7 +68,8 @@ class Idetools:
         try:
             for line in iter(out.readline, b''):
                 print(line.rstrip())
-        except: pass
+        except:
+            pass
 
     @staticmethod
     def linesplit(socket):
@@ -164,7 +206,6 @@ class Idetools:
 
         return None
 
-
     @staticmethod
     def show_tooltip(view, value):
         (func, typ, desc) = (value[0], value[1], value[5])
@@ -231,7 +272,6 @@ class Idetools:
                 lookup_file = filename
             else:
                 lookup_file = value[2]
-
 
             if goto:
                 Idetools.open_definition(

@@ -10,7 +10,7 @@ Features
 * Jump to definition
 * Auto-Completion
 * Error checking and highlighting
-* Babel package manager integration
+* Nimble package manager integration
 
 Installation
 ------------

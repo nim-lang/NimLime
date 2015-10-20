@@ -38,7 +38,6 @@ def load():
 settings = sublime.load_settings('NimLime.sublime-settings')
 settings.add_on_change('nim.executable', load)
 nim_executable = None
-load()
 
 
 # Commands
@@ -54,8 +53,7 @@ class NimClearErrors(NimLimeMixin, ApplicationCommand):
         sublime.status_message('Cleared Nim Check Errors & Hints')
 
     def is_visible(self):
-        return (settings.get('check.current_file.enabled') or
-                settings.get('check.on_save.enabled'))
+        return True
 
 
 class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):

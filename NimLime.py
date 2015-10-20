@@ -1,7 +1,7 @@
 import os.path
 
 debug = True
-target_directory = os.path.basename(os.getcwd())
+target_directory = os.path.dirname(__file__)
 
 try:
     # Try using the sys_path mechanism provided by package control

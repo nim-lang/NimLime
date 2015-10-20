@@ -3,7 +3,7 @@ from threading import Thread
 import sublime
 from sublime_plugin import ApplicationCommand
 from .utils.mixins import NimLimeMixin
-from utils.misc import (
+from .utils.misc import (
     send_self, loop_status_msg, busy_frames, format_tag, get_next_method,
     get_output_view, write_to_view, run_process, escape_shell
 )

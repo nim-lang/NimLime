@@ -12,7 +12,7 @@ from .utils.idetools import Idetools
 
 
 class LookupCommand(NimLimeMixin, TextCommand):
-
+    settings_selector = 'idetools.lookup'
     def run(self, edit):
         filename = self.view.file_name()
         sels = self.view.sel()

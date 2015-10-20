@@ -9,6 +9,7 @@ class SetProjectCommand(NimLimeMixin, WindowCommand):
 
     """ Sets the main Nim file for the current Sublime Text project. """
     enabled = True
+    settings_selector = 'project'
 
     def run(self):
         # Retrieve path of project

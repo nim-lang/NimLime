@@ -27,11 +27,14 @@ class NimLimeMixin(object):
         result = self.settings.get(formatted_key, default)
         return result
 
+    def load_settings(self):
+        self.enabled = self.get_setting('{0}.enabled', True)
+
     def is_enabled(self, *args, **kwargs):
-        return True
+        return self.enabled
 
     def is_visible(self):
-        return self.enabled
+        return self.is_enabled()
 
     def description(self, *args, **kwargs):
         return self.__doc__

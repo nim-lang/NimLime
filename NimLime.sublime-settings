@@ -163,7 +163,7 @@
     "check.on_save.list.show_warnings": true,
 
     "check.on_save.output.send": false,
-    "check.on_save.output.show": true,
+    "check.on_save.output.show": false,
     "check.on_save.output.name": "Nim Check - Current File",
     "check.on_save.output.method": "grouped",
     "check.on_save.output.clear": false,

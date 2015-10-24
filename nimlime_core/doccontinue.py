@@ -7,8 +7,6 @@ from .utils.mixins import NimLimeMixin
 COMMENT_SCOPE = "comment.line.number-sign.doc-comment"
 EMPTY_COMMENT_SUFFIX = ".empty"
 
-settings = sublime.load_settings('NimLime.sublime-settings')
-
 
 class CommentListener(EventListener, NimLimeMixin):
     """

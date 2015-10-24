@@ -21,6 +21,16 @@ def get_next_method(generator_instance):
     else:
         return generator_instance.next
 
+def exec_(code, global_dict=None, local_dict=None):
+    if global_dict == None:
+        global_dict = globals()
+    if local_dict == None:
+        local_dict = globals()
+    if sys.version_info > (3, 0):
+        exec(code, global_dict, local_dict)
+    else:
+        exec("exec code in globals, locals")
+
 
 def send_self(use_proxy):
     """ A decorator which sends a generator a reference to itself via the first
@@ -45,11 +55,12 @@ def send_self(use_proxy):
                 generator.send(proxy(generator))
             else:
                 generator.send(generator)
+            return generator
 
         return send_self_wrapper
 
     # If the argument is a callable, we've been used without being directly
-    # passed an arguement by the user, and thus should call _send_self directly
+    # passed an argument by the user, and thus should call _send_self directly
     if callable(use_proxy):
         # No arguments, this is the decorator
         return _send_self(use_proxy)

@@ -1,6 +1,7 @@
 import os
 
 from sublime_plugin import WindowCommand
+from .utils.error_handler import catch_errors
 from .utils.project import get_project_file, set_nim_project
 from .utils.mixins import NimLimeMixin
 
@@ -11,6 +12,7 @@ class SetProjectCommand(NimLimeMixin, WindowCommand):
     enabled = True
     settings_selector = 'project'
 
+    @catch_errors
     def run(self):
         # Retrieve path of project
         st_project = get_project_file(self.window.id())

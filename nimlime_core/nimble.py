@@ -1,8 +1,9 @@
-from threading import Thread
-
 import sublime
+from threading import Thread
 from sublime_plugin import ApplicationCommand
+from nimlime_core import settings, when_settings_load
 from .utils.mixins import NimLimeMixin
+from .utils.error_handler import catch_errors
 from .utils.misc import (
     send_self, loop_status_msg, busy_frames, format_tag, get_next_method,
     get_output_view, write_to_view, run_process, escape_shell
@@ -15,14 +16,12 @@ def debug(string):
 
 
 # Load settings
+nimble_executable = 'nimble'
 def load():
     global nimble_executable
     nimble_executable = settings.get('nimble.executable', 'nimble')
 
-settings = sublime.load_settings('NimLime.sublime-settings')
-settings.add_on_change('nimble.executable', load)
-nimble_executable = None
-load()
+when_settings_load(load)
 
 
 class NimbleMixin(NimLimeMixin):
@@ -63,6 +62,7 @@ class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
     settings_selector = 'update'
 
     @send_self
+    @catch_errors
     def run(self):
         this = yield
 
@@ -105,6 +105,7 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
         self.load_output_settings()
 
     @send_self
+    @catch_errors
     def run(self):
         this = yield
 
@@ -157,6 +158,7 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
         self.load_output_settings()
 
     @send_self
+    @catch_errors
     def run(self):
         window = sublime.active_window()
 
@@ -218,6 +220,7 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
         window = sublime.active_window()
 
         @send_self
+        @catch_errors
         def callback():
             this = yield
 
@@ -304,6 +307,7 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
     settings_selector = "uninstall"
 
     @send_self
+    @catch_errors
     def run(self):
         window = sublime.active_window()
 

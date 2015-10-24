@@ -2,12 +2,14 @@ from tempfile import NamedTemporaryFile
 import os
 
 from sublime_plugin import TextCommand
+from .utils.error_handler import catch_errors
 from .utils.mixins import NimLimeMixin
 from .utils.idetools import Idetools
 
 
 class GotodefCommand(TextCommand, NimLimeMixin):
 
+    @catch_errors
     def run(self, edit):
         filename = self.view.file_name()
         sels = self.view.sel()

@@ -2,6 +2,8 @@
     // Misc. Settings //
     "nim.executable": "nim",
     "nimble.executable": "nimble",
+    "error_handler.enabled": true,
+    "error_handler.logpath": "",
 
     "translate_tabs_to_spaces": true,
     "enable_nim_completions": true,

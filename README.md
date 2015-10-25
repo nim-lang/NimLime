@@ -32,7 +32,7 @@ Settings
 See Preferences -> PackageSettings -> NimLime
 
 Autocompletion works per default in an on-demand mode.
-This means `ctrl+space` has to be pressed again to fetch Nim compiler completions.
+This means <kbd>Ctrl</kbd>+<kbd>Space</kbd> has to be pressed again to fetch Nim compiler completions.
 It can also be set into an immediate mode.
 
 If auto-completions don't work copy the `nim_update_completions` block from the NimLime

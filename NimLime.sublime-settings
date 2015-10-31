@@ -73,8 +73,8 @@
     // Settings for the 'nimble update' command
     "nimble.update.enabled": false,
 
-    "nimble.update.output.send": true,
-    "nimble.update.output.show": true,
+    "nimble.update.output.send": false,
+    "nimble.update.output.show": false,
     "nimble.update.output.clear": false,
     "nimble.update.output.name": "Nimble Update Output",
     "nimble.update.output.method": "grouped",
@@ -85,8 +85,8 @@
     "nimble.list.enabled": true,
     "nimble.list.quickpanel.send": true,
 
-    "nimble.list.output.send": true,
-    "nimble.list.output.show": true,
+    "nimble.list.output.send": false,
+    "nimble.list.output.show": false,
     "nimble.list.output.clear": true,
     "nimble.list.output.name": "Nimble List Output",
     "nimble.list.output.method": "grouped",
@@ -97,8 +97,8 @@
     "nimble.search.enabled": true,
     "nimble.search.quickpanel.send": true,
 
-    "nimble.search.output.send": true,
-    "nimble.search.output.show": true,
+    "nimble.search.output.send": false,
+    "nimble.search.output.show": false,
     "nimble.search.output.clear": true,
     "nimble.search.output.name": "Nimble Search Output",
     "nimble.search.output.method": "grouped",
@@ -109,8 +109,8 @@
     "nimble.install.enabled": true,
     "nimble.install.preemptive_search": false,
 
-    "nimble.install.output.send": true,
-    "nimble.install.output.show": true,
+    "nimble.install.output.send": false,
+    "nimble.install.output.show": false,
     "nimble.install.output.clear": true,
     "nimble.install.output.name": "Nimble Install Output",
     "nimble.install.output.method": "grouped",
@@ -120,8 +120,8 @@
     // Settings for the 'nimble uninstall' command
     "nimble.uninstall.enabled": true,
 
-    "nimble.uninstall.output.send": true,
-    "nimble.uninstall.output.show": true,
+    "nimble.uninstall.output.send": false,
+    "nimble.uninstall.output.show": false,
     "nimble.uninstall.output.clear": true,
     "nimble.uninstall.output.name": "Nimble Uninstall Output",
     "nimble.uninstall.output.method": "grouped",
@@ -165,7 +165,7 @@
     "check.on_save.list.show_warnings": true,
 
     "check.on_save.output.send": false,
-    "check.on_save.output.show": true,
+    "check.on_save.output.show": false,
     "check.on_save.output.name": "Nim Check - Current File",
     "check.on_save.output.method": "grouped",
     "check.on_save.output.clear": false,
@@ -195,8 +195,8 @@
     "check.external_file.enabled": true,
     "check.external_file.remember_input": true,
 
-    "check.external_file.output.send": true,
-    "check.external_file.output.show": true,
+    "check.external_file.output.send": false,
+    "check.external_file.output.show": false,
     "check.external_file.output.clear": false,
     "check.external_file.output.name": "Nim Check - External File",
     "check.external_file.output.method": "grouped",

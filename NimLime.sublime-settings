@@ -87,7 +87,7 @@
 
     "nimble.list.output.send": false,
     "nimble.list.output.show": false,
-    "nimble.list.output.clear": true,
+    "nimble.list.output.clear": false,
     "nimble.list.output.name": "Nimble List Output",
     "nimble.list.output.method": "grouped",
     "nimble.list.output.tag": "nimble",
@@ -99,7 +99,7 @@
 
     "nimble.search.output.send": false,
     "nimble.search.output.show": false,
-    "nimble.search.output.clear": true,
+    "nimble.search.output.clear": false,
     "nimble.search.output.name": "Nimble Search Output",
     "nimble.search.output.method": "grouped",
     "nimble.search.output.tag": "nimble",
@@ -111,7 +111,7 @@
 
     "nimble.install.output.send": false,
     "nimble.install.output.show": false,
-    "nimble.install.output.clear": true,
+    "nimble.install.output.clear": false,
     "nimble.install.output.name": "Nimble Install Output",
     "nimble.install.output.method": "grouped",
     "nimble.install.output.tag": "nimble",
@@ -122,7 +122,7 @@
 
     "nimble.uninstall.output.send": false,
     "nimble.uninstall.output.show": false,
-    "nimble.uninstall.output.clear": true,
+    "nimble.uninstall.output.clear": false,
     "nimble.uninstall.output.name": "Nimble Uninstall Output",
     "nimble.uninstall.output.method": "grouped",
     "nimble.uninstall.output.tag": "nimble",

@@ -1,30 +1,24 @@
 import sublime
-from .misc import format_tag, get_output_view, write_to_view, show_view
+import nimlime_core
+from nimlime_core import settings
+from nimlime_core.utils.output import (
+    get_output_view, write_to_view, show_view, format_tag
+)
 
 
 class NimLimeMixin(object):
-    settings = sublime.load_settings('NimLime.sublime-settings')
-
     def __init__(self, *args, **kwargs):
+        self.enabled = True
         if hasattr(self, 'load_settings'):
             self.reload_settings()
 
     def reload_settings(self):
-        NimLimeMixin.settings = sublime.load_settings(
-            'NimLime.sublime-settings'
-        )
-        # Workaround for a ST3 bug
-        if self.settings.get('is_loaded', True) is None:
-            sublime.set_timeout(self.reload_settings, 1000)
-        self.settings.add_on_change(
-            'reload',
-            self.load_settings
-        )
         self.load_settings()
+        settings.add_on_change('reload', self.load_settings)
 
     def get_setting(self, key, default):
         formatted_key = key.format(self.settings_selector)
-        result = self.settings.get(formatted_key, default)
+        result = settings.get(formatted_key, default)
         return result
 
     def load_settings(self):
@@ -41,7 +35,6 @@ class NimLimeMixin(object):
 
 
 class NimLimeOutputMixin(NimLimeMixin):
-
     def load_settings(self):
         get = self.get_setting
 

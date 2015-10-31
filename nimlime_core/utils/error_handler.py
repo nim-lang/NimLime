@@ -1,13 +1,31 @@
-import sublime
+# This module contains code for handling generic uncaught exceptions at the
+# function level, and notifying the user of them.
+#
+# The 'catch_errors' function is meant to be used as a decorator to catch
+# exceptions and errors thrown by code. It handles uncaught exceptions by
+# notifying the user through an error message box or a status message, and then
+# logging the exception to a log file.
+#
+# The 'catch_errors' function should *not* be used for an automatically running
+# function, as repeated writing to the log file may result in degraded
+# performance and an annoyed user.
+#
+# NOTE: The 'catch_errors' mechanism relies on the availability of
+# 'yield from', which is only available on Python 3.3+ (or Sublime Text 3).
+# Since most of the commands are generators due to using 'send_self', this
+# makes the error handling mechanism rather less effective on ST2.
+
 import os
 import sys
 import traceback
 from time import strftime
-from NimLime import root_dir, when_settings_load
-from inspect import isgeneratorfunction
-from .utils.misc import exec_
 
-error_msg = """\
+import sublime
+from NimLime import root_dir
+from nimlime_core import settings
+from nimlime_core.utils.misc import exec_, format_msg
+
+error_msg = format_msg("""\
 The NimLime plugin has encountered an error. Please go to 
 https://github.com/Varriount/NimLime and create a new issue containing the
 contents of the logging file at:\\n\\n
@@ -16,40 +34,50 @@ Though this error message is only displayed once per session of
 Sublime Text, further errors will be logged to the logging file and indicated
 in the status bar.\\n
 To completely suppress this error message in the future, change the
-'notify_and_log_errors' setting in NimLime's settings file to 'False'.
-""".replace('\\n\n', '\\n').replace('\n', ' ').replace('\\n', '\n')
+'error_handler.enabled' setting in NimLime's settings file to 'False'.
+""")
 
-critical_error_msg = """\
+critical_error_msg = format_msg("""\
 Warning: The NimLime plugin's error handling mechanism is unable to log errors
 to:
 \\n\\n'{0}'.\\n\\n
 Please make sure either that the directory containing the
-NimLime plugin is writeable, or that the 'logging_path' setting in
+NimLime plugin is writeable, or that the 'error_handler.logpath' setting in
 NimLime's settings file is set to a writeable directory.\\n
-""".replace('\\n\n', '\\n').replace('\n', ' ').replace('\\n', '\n')
+To completely suppress this error message in the future, change the
+'error_handler.enabled' setting in NimLime's settings file to 'False'.
+""")
 
+default_logfile_path = os.path.join(root_dir)
 
-default_logfile_path = os.path.join(root_dir, 'NimLime-Log.txt')
-notified_user = False
-logfile_path = default_logfile_path
 enabled = True
+logfile_path = default_logfile_path
+notified_user = False
 
 
 def load():
     global notified_user, enabled, logfile_path
     notified_user = False
-    enabled = settings.get('notify_and_log_errors', True)
-    logfile_path = settings.get('logfile_path') or default_logfile_path
+    enabled = settings.get('error_handler.enabled', True)
+    if not enabled:
+        return
 
+    logfile_path = settings.get('error_handler.logfile_path')
+    logfile_path = logfile_path or default_logfile_path
+
+    logfile_path = os.path.join(logfile_path, 'NimLime-Log.txt')
     try:
         open(logfile_path, 'a+').close()
     except:
         notified_user = True
-        sublime.error_message(critical_error_msg.format(get_logfile_path()))
+        sublime.error_message(critical_error_msg.format(logfile_path))
 
-when_settings_load(load)
+settings.add_on_change('error_handler.logfile_path', load)
 
 
+# These are needed because 'yield from' was only intruduced in Python 3.3
+# Trying to use 'yield from' in Python 2.6 causes a syntax error, which can't
+# be handled - thus, exec must be used.
 generator_error_handler_impl = """
         def error_handler(*args, **kwargs):
             # Optimize check away?
@@ -67,6 +95,7 @@ other_error_handler_impl = """
 """
 
 error_wrapper_impl = """
+from inspect import isgeneratorfunction
 def catch_errors(function):
     if isgeneratorfunction(function):
 {0}
@@ -81,18 +110,18 @@ def catch_errors(function):
     return error_handler
 """
 
-
 if sys.version_info >= (3, 0):
     exec_(error_wrapper_impl.format(generator_error_handler_impl))
 else:
     exec_(error_wrapper_impl.format(other_error_handler_impl))
 
+
 def handle_error():
     global notified_user, error_msg, critical_error_msg
     try:
-        with open(logfile_path, 'a+') as log_file:
-            log_file.write(strftime("\n\n%Y-%m-%d %H:%M:%S\n"))
-            traceback.print_exc(None, log_file)
+        with open(logfile_path, 'a+') as logfile:
+            logfile.write(strftime("\n\n%Y-%m-%d %H:%M:%S\n"))
+            traceback.print_exc(None, logfile)
         message = error_msg
     except:
         message = critical_error_msg
@@ -100,6 +129,6 @@ def handle_error():
     if not notified_user:
         sublime.error_message(message.format(logfile_path))
         notified_user = True
-        
+
     traceback.print_exc()
     sublime.status_message("NimLime has encountered an error.")

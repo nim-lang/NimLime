@@ -1,30 +1,25 @@
-import sublime
 from threading import Thread
+
+import sublime
 from sublime_plugin import ApplicationCommand
-from nimlime_core import settings, when_settings_load
-from .utils.mixins import NimLimeMixin
-from .utils.error_handler import catch_errors
-from .utils.misc import (
-    send_self, loop_status_msg, busy_frames, format_tag, get_next_method,
-    get_output_view, write_to_view, run_process, escape_shell
+from nimlime_core import configuration
+from nimlime_core.utils.mixins import NimLimeMixin
+from nimlime_core.utils.error_handler import catch_errors
+from nimlime_core.utils.misc import (
+    send_self, loop_status_msg, busy_frames, get_next_method,
+    run_process, escape_shell
 )
-
-
-def debug(string):
-    if False:
-        print(string)
-
-
-# Load settings
-nimble_executable = 'nimble'
-def load():
-    global nimble_executable
-    nimble_executable = settings.get('nimble.executable', 'nimble')
-
-when_settings_load(load)
+from nimlime_core.utils.output import get_output_view, write_to_view, format_tag
 
 
 class NimbleMixin(NimLimeMixin):
+    send_output = False
+    clear_output = True
+    show_output = False
+    output_method = 'grouped'
+    output_tag = 'nimlime'
+    output_name = 'nimlime'
+
     def load_settings(self):
         get = self.get_setting
         self.enabled = get('nimble.{0}.enabled', True)
@@ -32,12 +27,12 @@ class NimbleMixin(NimLimeMixin):
 
     def load_output_settings(self):
         get = self.get_setting
-        self.send_output = get("nimble.{0}.output.send", True)
-        self.clear_output = get("nimble.{0}.output.clear", True)
-        self.show_output = get("nimble.{0}.output.show", True)
-        self.output_method = get("nimble.{0}.output.method", "grouped")
-        self.output_tag = get("nimble.{0}.output.tag", 'nimlime')
-        self.output_name = get("nimble.{0}.output.name", 'nimlime')
+        self.send_output = get('nimble.{0}.output.send', True)
+        self.clear_output = get('nimble.{0}.output.clear', True)
+        self.show_output = get('nimble.{0}.output.show', True)
+        self.output_method = get('nimble.{0}.output.method', 'grouped')
+        self.output_tag = get('nimble.{0}.output.tag', 'nimlime')
+        self.output_name = get('nimble.{0}.output.name', 'nimlime')
 
     def output_content(self, output, window):
         if self.send_output:
@@ -53,6 +48,9 @@ class NimbleMixin(NimLimeMixin):
                 output_view, output,
                 self.clear_output
             )
+
+    def is_enabled(self):
+        return self.enabled and (configuration.nimble_executable is not None)
 
 
 class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
@@ -97,6 +95,7 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
     List Nimble Packages
     """
     settings_selector = 'list'
+    send_to_quickpanel = True
 
     def load_settings(self):
         get = self.get_setting
@@ -139,7 +138,7 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
             window.show_quick_panel(items, None)
 
         if returncode == 0:
-            sublime.status_message("Listing Nimble Packages")
+            sublime.status_message('Listing Nimble Packages')
         else:
             sublime.status_message('Nimble Package List Retrieval Failed')
         yield
@@ -149,7 +148,8 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
     """
     Search Nimble Packages
     """
-    settings_selector = "search"
+    settings_selector = 'search'
+    send_to_quickpanel = True
 
     def load_settings(self):
         get = self.get_setting
@@ -208,7 +208,8 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
     """
     Search Nimble Packages
     """
-    settings_selector = "install"
+    settings_selector = 'install'
+    preemptive_search = True
 
     def load_settings(self):
         get = self.get_setting
@@ -375,8 +376,7 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
 
 
 def run_nimble(command, callback):
-    global nimble_executable
-    run_process(nimble_executable + " " + command, callback)
+    run_process(configuration.nimble_exe + " " + command, callback)
 
 
 def parse_package_descriptions(descriptions):

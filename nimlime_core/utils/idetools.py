@@ -1,12 +1,14 @@
+import os
 import re
 import subprocess
 import socket
 import sys
+from tempfile import NamedTemporaryFile
 from time import sleep
+from nimlime_core.utils.misc import format_msg
 
-from .project import get_project_file
+from nimlime_core.utils.project import get_project_file
 import sublime
-
 
 class IdeTool(object):
     project_file = None
@@ -17,6 +19,7 @@ class IdeTool(object):
         self.process_args = []
         self.process_args.extend(additional_args)
         self.process_args.append(project_file)
+        self.connection = None
         self.check_process()
 
     def check_process(self):
@@ -31,22 +34,23 @@ class IdeTool(object):
                     args=self.process_args,
                     shell=True,
                 )
+                self.connection = socket.create_connection(('127.0.0.1', 800))
         return False
 
     def run_command(self, command, file, dirtyfile, line, column):
         self.check_process()
 
     def get_definition(self, file, dirtyfile, line, column):
-        pass
+        self.check_process()
 
     def get_suggestion(self, file, dirtyfile, line, column):
-        pass
+        self.check_process()
 
     def get_context(self, file, dirtyfile, line, column):
-        pass
+        self.check_process()
 
     def get_usage(self, file, dirtyfile, line, column):
-        pass
+        self.check_process()
 
 
 class Idetools:

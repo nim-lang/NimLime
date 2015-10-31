@@ -1,14 +1,13 @@
 import os
 import tempfile
+
 import sublime
 import sublime_plugin
+from nimlime_core.utils.project import get_nim_project
 
-from .utils.project import get_nim_project
-
-
-settings = {}
-do_suggestions = False  # Whether to provide suggestions
-provide_immediate_completions = False  # Whether to provide completions immediatly
+setting = {}
+do_suggestions = False
+provide_immediate_completions = False
 
 
 def update_settings():
@@ -30,6 +29,7 @@ def update_settings():
     had_suggestions = False
     give_suggestions = False
 
+
 # settings regarding auto complete
 last_suggestion_pos = ""
 had_suggestions = False
@@ -43,6 +43,7 @@ def plugin_loaded():
     update_settings()
     settings.add_on_change("enable_nim_completions", update_settings)
     settings.add_on_change("provide_immediate_nim_completions", update_settings)
+
 
 # Hack to lazily initialize ST2 settings
 if int(sublime.version()) < 3000:
@@ -73,14 +74,14 @@ class NimUpdateCompletions(sublime_plugin.TextCommand):
         global give_suggestions
         give_suggestions = True
         self.view.window().run_command("hide_auto_complete")
-        reload = lambda: self.view.window().run_command("auto_complete");
+        reload = lambda: self.view.window().run_command("auto_complete")
         sublime.set_timeout(reload, 0)
 
 
 class NimCompleter(sublime_plugin.EventListener):
     def on_query_completions(self, view, prefix, locations):
         filename = view.file_name()
-        if filename == None or not filename.endswith(
+        if filename is None or not filename.endswith(
                 ".nim") or not do_suggestions:
             return []
 
@@ -106,7 +107,7 @@ class NimCompleter(sublime_plugin.EventListener):
         # print(suggestion_pos)
         # print(last_suggestion_pos)
         # print("had: " + str(had_suggestions))
-        #print("give: " + str(give_suggestions))
+        # print("give: " + str(give_suggestions))
 
         if (
                     not give_suggestions and suggestion_pos != last_suggestion_pos):  # Reset logic
@@ -125,11 +126,11 @@ class NimCompleter(sublime_plugin.EventListener):
         dirtyFileName = ""
         dirtyFile = None
         compiler = settings.get("nim_compiler_executable")
-        if compiler == None or compiler == "": return []
+        if compiler is None or compiler is "": return []
         pargs = compiler + " --verbosity:0 idetools "
 
         if view.is_dirty():
-            #Generate dirty file
+            # Generate dirty file
             size = view.size()
             dirtyFile = tempfile.NamedTemporaryFile(suffix=".nim", delete=False)
             dirtyFileName = dirtyFile.name
@@ -197,7 +198,7 @@ class NimCompleter(sublime_plugin.EventListener):
         handle.close()
 
         # Delete the dirty file
-        if dirtyFile != None:
+        if dirtyFile is not None:
             dirtyFile.close()
             try:
                 os.unlink(dirtyFile.name)

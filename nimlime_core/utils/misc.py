@@ -1,35 +1,27 @@
-from weakref import proxy, WeakKeyDictionary
-from sys import version_info
+from weakref import proxy
 from functools import wraps
+import sys
 import subprocess
+import os
 
 import sublime
 
 
-busy_frames = ['.', '..', '...']
-output_handle_mappings = WeakKeyDictionary()
-
-
-def debug(string):
-    if False:
-        print(string)
+def format_msg(message):
+    return (
+        message
+            .strip()
+            .replace('\\n\n', '\\n')
+            .replace('\n', ' ')
+            .replace('\\n','\n')
+    )
 
 
 def get_next_method(generator_instance):
-    if version_info[0] >= 3:
+    if sys.version_info > (3, 0):
         return generator_instance.__next__
     else:
         return generator_instance.next
-
-def exec_(code, global_dict=None, local_dict=None):
-    if global_dict == None:
-        global_dict = globals()
-    if local_dict == None:
-        local_dict = globals()
-    if sys.version_info > (3, 0):
-        exec(code, global_dict, local_dict)
-    else:
-        exec("exec code in globals, locals")
 
 
 def send_self(use_proxy):
@@ -69,6 +61,9 @@ def send_self(use_proxy):
         # _send_self to be called indirectly.
         _use_proxy = use_proxy
         return _send_self
+
+
+busy_frames = ['.', '..', '...']
 
 
 def loop_status_msg(frames, speed, view=None, key=''):
@@ -123,7 +118,6 @@ def loop_status_msg(frames, speed, view=None, key=''):
 
 
 class _FlagObject(object):
-
     """
     Used with loop_status_msg to signal when a status message loop should end.
     """
@@ -131,96 +125,6 @@ class _FlagObject(object):
 
     def __init__(self):
         self.flag = False
-
-
-def get_output_view(tag, strategy, name, switch_to, fallback_window):
-    """
-    Retrieves an output using the given strategy, window, and views.
-    """
-    window_list = sublime.windows()
-
-    # Console Strategy
-    if strategy == 'console':
-        view = fallback_window.active_view()
-        view.settings().set('output_tag', tag)
-        show_view(fallback_window, view, True)
-        return fallback_window, fallback_window.get_output_panel(tag)
-
-    # Grouped strategy
-    if strategy == 'grouped':
-        for window in window_list:
-            view_list = window.views()
-            for view in view_list:
-                if view.settings().get('output_tag') == tag:
-                    if switch_to:
-                        show_view(window, view, False)
-                    return window, view
-
-    if (strategy == 'separate') or (strategy == 'grouped'):
-        w = sublime.active_window()
-        v = w.active_view()
-
-        result = fallback_window.new_file()
-        result.set_name(name)
-        result.set_scratch(True)
-        result.settings().set('output_tag', tag)
-        if switch_to:
-            show_view(fallback_window, result, False)
-        else:
-            show_view(w, v, False)
-        return fallback_window, result
-
-
-def write_to_view(view, content, clear):
-    """
-    Writes to a view.
-    """
-    edit = view.begin_edit()
-    if clear or view.size() == 0:
-        view.erase(edit, sublime.Region(0, view.size()))
-    else:
-        view.insert(edit, view.size(), "\n\n")
-    view.insert(edit, view.size(), content)
-    view.end_edit(edit)
-
-
-def show_view(window, view, is_console):
-    """
-    Shows an output view.
-    """
-
-    # Workaround for ST2 bug
-
-    if is_console:
-        tag = view.settings().get('output_tag')
-        window.run_command("show_panel", {"panel": "output." + tag})
-    else:
-        window.focus_view(view)
-
-
-def format_tag(tag, window=None, view=None):
-    view_id = ''
-    buffer_id = ''
-    file_name = ''
-    view_name = ''
-    window_id = ''
-
-    if view is not None:
-        view_id = view.id()
-        buffer_id = view.id()
-        file_name = view.file_name()
-        view_name = view.name()
-
-    if window is not None:
-        window_id = window.id()
-
-    return tag.format(
-        view_id=view_id,
-        buffer_id=buffer_id,
-        file_name=file_name,
-        view_name=view_name,
-        window_id=window_id
-    )
 
 
 def view_has_nim_syntax(view=None):
@@ -258,11 +162,73 @@ def run_process(cmd, callback=None):
     )
 
     output = process.communicate()[0].decode('UTF-8')
-    returncode = process.returncode
 
     if callback is not None:
-        sublime.set_timeout(lambda: callback((output, returncode)), 0)
+        sublime.set_timeout(lambda: callback((output, process)), 0)
     else:
-        return output
+        return output, process
+
+def split_semicolons(string):
+    sections = []
+    start = 0
+    end = 0
+    while end < len(string):
+        # Grab the current character
+        character = string[end]
+
+        # If the character is a backslash
+        if character == '\\':
+            # And the next character is a semicolon
+            found_semicolon = end < len(string) and string[end+1] == ';'
+            if found_semicolon:
+                # Add the section to the section list
+                # Then advance the start and end points to the next character.
+                sections.append(string[start:end])
+                end += 1
+                start = end
+
+        # Otherwise, if we encounter an unescaped semicolon
+        elif character == ';':
+            # Add the section to the section list, then yield the joined contects
+            sections.append(string[start:end])
+            result = ''.join(sections)
+            if result != '':
+                yield ''.join(sections)
+
+            # And reset the variables to start a new section
+            start=end+1
+            sections = []
+
+        end +=1
+
+    # Take care of remaining section
+    result.append(string[start:end])
+    result = ''.join(sections)
+    if result != '':
+        yield result
 
 
+def find_file(file_name, path_list=None):
+    pl = path_list
+    if path_list is None:
+        pl = split_semicolons(os.environ.get('PATH', ''))
+    for path in pl:
+        result = os.path.join(path, file_name)
+        if os.path.exists(result):
+            return result
+    return None
+
+
+def exec_(code, global_dict=None, local_dict=None):
+    frame = sys._getframe(1)
+    gd = global_dict
+    ld = local_dict
+    if global_dict is None:
+        gd = frame.f_globals
+    if local_dict is None:
+        ld = frame.f_globals
+
+    if sys.version_info > (3, 0):
+        exec (code, gd, ld)
+    else:
+        exec ("exec code in gd, ld")

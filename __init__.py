@@ -1,5 +1,4 @@
 import os
-
 debug = True
 root_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -14,4 +13,4 @@ except ImportError:
         print("Warning, couldn't import package_control.sys_path")
     sys.path.append(root_dir)
 
-from nimlime_core import *
+from nimlime_core.commands import *

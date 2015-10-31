@@ -3,8 +3,8 @@ import json
 
 from sublime_plugin import WindowCommand
 
-
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 class ListModulesCommand(WindowCommand):
     """

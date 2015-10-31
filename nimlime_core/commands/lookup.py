@@ -1,8 +1,7 @@
-from tempfile import NamedTemporaryFile
-
 from sublime_plugin import TextCommand
-from .utils.mixins import NimLimeMixin
-from .utils.idetools import Idetools
+from nimlime_core.utils.mixins import NimLimeMixin
+from nimlime_core.utils.idetools import Idetools
+
 
 # Resources
 # http://sublimetext.info/docs/en/extensibility/plugins.html
@@ -13,6 +12,7 @@ from .utils.idetools import Idetools
 
 class LookupCommand(NimLimeMixin, TextCommand):
     settings_selector = 'idetools.lookup'
+
     def run(self, edit):
         filename = self.view.file_name()
         sels = self.view.sel()

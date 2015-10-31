@@ -4,6 +4,7 @@ except ImportError:
     from profile import Profile
 from pstats import Stats
 from functools import wraps
+
 try:
     from StringIO import StringIO
 except ImportError:

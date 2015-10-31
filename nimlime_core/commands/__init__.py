@@ -6,9 +6,10 @@ from pkgutil import iter_modules
 
 import sublime
 from sublime_plugin import ApplicationCommand, WindowCommand, TextCommand
+from nimlime_core.utils.misc import format_msg
 
 __all__ = []
-collision_message = format("""
+collision_message = format_msg("""
 Error: Command collision detected while loading the NimLime plugin.\\n
 Please file an issue at https://github.com/Varriount/NimLime
 """)
@@ -38,7 +39,7 @@ def load_submodules():
                     )
                     if valid_command:
                         if class_name in __all__:
-                            sublime.error_message("Error: ")
+                            sublime.error_message(collision_message)
                         globals()[class_name] = class_def
                         __all__.append(class_name)
 

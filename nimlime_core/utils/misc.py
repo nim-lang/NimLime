@@ -169,43 +169,29 @@ def run_process(cmd, callback=None):
         return output, process
 
 def split_semicolons(string):
+    # I hate direct string manipulation in python, as immutable strings
+    # make efficient building hard.
     sections = []
+    found_caret = False
     start = 0
-    end = 0
-    while end < len(string):
-        # Grab the current character
-        character = string[end]
+    for end, character in enumerate(string):
+        if found_caret:
+            found_caret = False
+            sections.append(string[start:end-1])
+            start = end
+            continue
 
-        # If the character is a backslash
-        if character == '\\':
-            # And the next character is a semicolon
-            found_semicolon = end < len(string) and string[end+1] == ';'
-            if found_semicolon:
-                # Add the section to the section list
-                # Then advance the start and end points to the next character.
-                sections.append(string[start:end])
-                end += 1
-                start = end
-
-        # Otherwise, if we encounter an unescaped semicolon
+        if character == '^':
+            found_caret = True
         elif character == ';':
-            # Add the section to the section list, then yield the joined contects
             sections.append(string[start:end])
-            result = ''.join(sections)
-            if result != '':
-                yield ''.join(sections)
-
-            # And reset the variables to start a new section
-            start=end+1
+            start = end+1
+            yield ''.join(sections)
             sections = []
 
-        end +=1
-
-    # Take care of remaining section
-    result.append(string[start:end])
-    result = ''.join(sections)
-    if result != '':
-        yield result
+    if start != end+1:
+        sections.append(string[start:end+1])
+    yield ''.join(sections)
 
 
 def find_file(file_name, path_list=None):

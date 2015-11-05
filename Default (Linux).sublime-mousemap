@@ -2,7 +2,7 @@
     {
         "button": "button1",
         "count": 1,
-        "modifiers": ["ctrl"],
+        "modifiers": ["alt"],
         "press_command": "drag_select",
         "command": "lookup"
     }

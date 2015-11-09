@@ -1,3 +1,4 @@
+import traceback
 import sublime
 import nimlime_core
 from nimlime_core import settings
@@ -14,7 +15,7 @@ class NimLimeMixin(object):
 
     def reload_settings(self):
         self.load_settings()
-        settings.add_on_change('reload', self.load_settings)
+        settings.run_on_load_and_change('reload', self.load_settings)
 
     def get_setting(self, key, default):
         formatted_key = key.format(self.settings_selector)

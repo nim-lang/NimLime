@@ -1,5 +1,13 @@
 import sublime
+from sublime_plugin import TextCommand
 
+
+class NimlimeOutputCommand(TextCommand):
+    def run(self, edit_obj, action, *args):
+        if action == 'clear':
+            self.view.erase(edit_obj, sublime.Region(0, self.view.size()))
+        elif action == 'append':
+            self.view.insert(edit_obj, self.view.size(), args[0])
 
 def get_output_view(tag, strategy, name, switch_to, fallback_window):
     """
@@ -43,13 +51,11 @@ def write_to_view(view, content, clear):
     """
     Writes to a view.
     """
-    edit = view.begin_edit()
     if clear or view.size() == 0:
-        view.erase(edit, sublime.Region(0, view.size()))
+        sublime.run_command('NimlimeOutputCommand', ['clear'])
     else:
-        view.insert(edit, view.size(), "\n\n")
-    view.insert(edit, view.size(), content)
-    view.end_edit(edit)
+        sublime.run_command('NimlimeOutputCommand', ['append', '\n\n'])
+    sublime.run_command('NimlimeOutputCommand', ['append', content])
 
 
 def show_view(window, view, is_console):

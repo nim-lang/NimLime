@@ -124,7 +124,8 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
             warn_region_list = []
 
         for file_name, row, column, kind, message, all in messages:
-            if file_name != view_name:
+
+            if file_name.lower() != view_name.lower():
                 continue
 
             # For listing
@@ -159,7 +160,6 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
                 # For highlighting
                 if self.highlight_warnings:
                     warn_region_list.append(message_region)
-
         if self.highlight_errors:
             view.add_regions(
                 ERROR_REGION_TAG,
@@ -263,9 +263,8 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
 
         # Print to the output view
         fallback_view_name = path + " - Nim Check Output"
-        self.write_to_output(
-            error_output, active_window, active_view
-        )
+        if self.send_output:
+            self.write_to_output(error_output, active_window, active_view)
 
         yield
 

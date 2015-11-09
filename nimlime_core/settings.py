@@ -1,6 +1,4 @@
-# This module handles loading settings for the NimLime plugin, primarily due
-# to a nasty bug in which Sublime Text returns invalid settings object while
-# in the process of loading plugin code.
+# This module handles loading settings for the NimLime plugin
 from collections import defaultdict
 
 import sublime
@@ -10,8 +8,6 @@ _settings = None
 add_on_change_callbacks = defaultdict(set)
 run_on_load_callbacks = set()
 
-def plugin_loaded():
-    print("settings module pinged!")
 
 def load():
     global _settings, add_on_change_callbacks, run_on_load_callbacks
@@ -26,7 +22,6 @@ def load():
     # Settings have loaded
     _settings = s
     for callback in run_on_load_callbacks:
-        print
         callback()
     for key in add_on_change_callbacks:
         for callback in add_on_change_callbacks[key]:

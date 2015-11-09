@@ -72,7 +72,7 @@ def load():
         notified_user = True
         sublime.error_message(critical_error_msg.format(logfile_path))
 
-settings.add_on_change('error_handler.logfile_path', load)
+settings.run_on_load_and_change('error_handler.logfile_path', load)
 
 
 # These are needed because 'yield from' was only intruduced in Python 3.3
@@ -119,16 +119,17 @@ else:
 def handle_error():
     global notified_user, error_msg, critical_error_msg
     try:
+        traceback.print_exc()
         with open(logfile_path, 'a+') as logfile:
             logfile.write(strftime("\n\n%Y-%m-%d %H:%M:%S\n"))
             traceback.print_exc(None, logfile)
         message = error_msg
     except:
+        print("\nError handler exception:")
+        traceback.print_exc()
         message = critical_error_msg
 
     if not notified_user:
         sublime.error_message(message.format(logfile_path))
         notified_user = True
-
-    traceback.print_exc()
     sublime.status_message("NimLime has encountered an error.")

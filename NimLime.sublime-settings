@@ -156,6 +156,7 @@
 
     "check.on_save.highlight_errors": true,
     "check.on_save.highlight_warnings": false,
+    "check.on_save.verbosity": 2,
 
     "check.on_save.list.include_context": false,
     "check.on_save.list.move_cursor": true,
@@ -175,6 +176,7 @@
 
     "check.current_file.highlight_errors": true,
     "check.current_file.highlight_warnings": true,
+    "check.current_file.verbosity": 2,
 
     "check.current_file.list.include_context": false,
     "check.current_file.list.show_errors": false,

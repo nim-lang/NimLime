@@ -78,7 +78,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         self.list_errors = get('{0}.list.show_errors', True)
         self.list_warnings = get('{0}.list.show_warnings', True)
         self.move_cursor = get('{0}.list.move_cursor', True)
-        
+
     @send_self
     def run(self, show_error_list=True):
         this = yield
@@ -97,7 +97,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         # Run 'nim check' on the current view and retrieve the output.
         output, returncode = yield Thread(
             target=run_nimcheck,
-            args=(view.file_name(), this.send, this.verbosity)
+            args=(view.file_name(), this.send, self.verbosity)
         ).start()
 
         messages = parse_nimcheck_output(output)
@@ -275,7 +275,6 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
         )
 
         yield
-
 
 
 # Utility functions

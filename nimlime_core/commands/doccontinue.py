@@ -15,9 +15,10 @@ class CommentListener(EventListener, NimLimeMixin):
     active = True
     already_running = True
     settings_selector = 'doccontinue'
+    def __init__(self, *args, **kwargs):
+        super(CommentListener, self).__init__(self, *args, **kwargs)
 
     def load_settings(self):
-        super(CommentListener, self).load_settings()
         get = self.get_setting
 
         self.autostop = get('{0}.autostop', True)

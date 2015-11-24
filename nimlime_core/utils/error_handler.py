@@ -93,7 +93,7 @@ generator_error_handler_impl = """
 other_error_handler_impl = """
         function()
 """
-
+catch_errors = None
 error_wrapper_impl = """
 from inspect import isgeneratorfunction
 def catch_errors(function):

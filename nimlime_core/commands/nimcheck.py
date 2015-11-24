@@ -1,6 +1,7 @@
 import os.path
 import re
 from threading import Thread
+from nimlime_core.utils.project import get_nim_project
 
 import sublime
 from sublime_plugin import ApplicationCommand, EventListener
@@ -86,9 +87,10 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
             view.run_command('save')
 
         # Run 'nim check' on the current view and retrieve the output.
+        project_file = get_nim_project(window) or view.file_name()
         output, returncode = yield Thread(
             target=run_nimcheck,
-            args=(view.file_name(), this.send)
+            args=(project_file, this.send)
         ).start()
         messages = parse_nimcheck_output(output)
 

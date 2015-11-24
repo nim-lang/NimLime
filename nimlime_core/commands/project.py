@@ -11,6 +11,10 @@ class SetProjectCommand(NimLimeMixin, WindowCommand):
     enabled = True
     settings_selector = 'project'
 
+    def __init__(self, *args, **kwargs):
+        NimLimeMixin.__init__(self, *args, **kwargs)
+        WindowCommand.__init__(self, *args, **kwargs)
+
     @catch_errors
     def run(self):
         # Retrieve path of project

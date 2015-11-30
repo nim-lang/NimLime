@@ -1,7 +1,7 @@
 # Mixins used to give common functionality to NimLime commands.
 from nimlime_core import settings
 from nimlime_core.utils.output import (
-    get_output_view, write_to_view, show_view, format_tag
+    get_output_view, show_view, format_tag
 )
 
 
@@ -37,7 +37,7 @@ class NimLimeMixin(object):
                 setattr(self, entry[0], self.get_setting(entry[1], entry[2]))
             else:
                 for sub_entry in entry:
-                    self.load_entry(sub_entry)
+                    load_entry(sub_entry)
 
         load_entry(self.setting_entries)
 
@@ -70,7 +70,15 @@ class NimLimeOutputMixin(NimLimeMixin):
             source_window
         )
 
-        write_to_view(output_view, content, self.clear_output)
+        if self.clear_output:
+            output_view.run_command(
+                'nimlime_output',
+                dict(action='erase', args=(0, output_view.size()))
+            )
+        output_view.run_command(
+            'nimlime_output',
+            dict(action='insert', args=(output_view.size(), content))
+        )
 
         if self.show_output:
             output_view.settings().set('output_tag', tag)

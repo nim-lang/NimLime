@@ -53,6 +53,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
     """ Checks the current Nim file for errors. """
     settings_selector = 'check.current_file'
     setting_entries = (
+        NimLimeOutputMixin.setting_entries,
         ('highlight_errors', '{0}.highlight_errors', True),
         ('highlight_warnings', '{0}.highlight_warnings', True),
         ('include_context', '{0}.list.include_context', True),
@@ -201,6 +202,7 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
     last_entry = ''
     settings_selector = 'check.external_file'
     setting_entries = (
+        NimLimeOutputMixin.setting_entries,
         ('remember_input', "{0}.remember_input", True),
         ('include_context', "{0}.output.include_context", True)
     )

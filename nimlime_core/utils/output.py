@@ -2,13 +2,6 @@ import sublime
 from sublime_plugin import TextCommand
 
 
-class NimlimeOutputCommand(TextCommand):
-    def run(self, edit_obj, action, *args):
-        if action == 'clear':
-            self.view.erase(edit_obj, sublime.Region(0, self.view.size()))
-        elif action == 'append':
-            self.view.insert(edit_obj, self.view.size(), args[0])
-
 def get_output_view(tag, strategy, name, switch_to, fallback_window):
     """
     Retrieves an output using the given strategy, window, and views.
@@ -23,7 +16,7 @@ def get_output_view(tag, strategy, name, switch_to, fallback_window):
         return fallback_window, fallback_window.get_output_panel(tag)
 
     # Grouped strategy
-    if strategy == 'grouped':
+    elif strategy == 'grouped':
         for window in window_list:
             view_list = window.views()
             for view in view_list:
@@ -47,22 +40,7 @@ def get_output_view(tag, strategy, name, switch_to, fallback_window):
         return fallback_window, result
 
 
-def write_to_view(view, content, clear):
-    """
-    Writes to a view.
-    """
-    if clear or view.size() == 0:
-        sublime.run_command('NimlimeOutputCommand', ['clear'])
-    else:
-        sublime.run_command('NimlimeOutputCommand', ['append', '\n\n'])
-    sublime.run_command('NimlimeOutputCommand', ['append', content])
-
-
 def show_view(window, view, is_console):
-    """
-    Shows an output view.
-    """
-
     # Workaround for ST2 bug
 
     if is_console:
@@ -72,26 +50,11 @@ def show_view(window, view, is_console):
         window.focus_view(view)
 
 
-def format_tag(tag, window=None, view=None):
-    view_id = ''
-    buffer_id = ''
-    file_name = ''
-    view_name = ''
-    window_id = ''
-
-    if view is not None:
-        view_id = view.id()
-        buffer_id = view.id()
-        file_name = view.file_name()
-        view_name = view.name()
-
-    if window is not None:
-        window_id = window.id()
-
+def format_tag(tag, window, view):
     return tag.format(
-        view_id=view_id,
-        buffer_id=buffer_id,
-        file_name=file_name,
-        view_name=view_name,
-        window_id=window_id
+        view_id=view.id(),
+        buffer_id=view.id(),
+        file_name=view.file_name(),
+        view_name=view.name(),
+        window_id=window.id()
     )

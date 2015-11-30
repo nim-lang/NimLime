@@ -9,26 +9,9 @@ from nimlime_core.utils.misc import (
     send_self, loop_status_msg, busy_frames, get_next_method,
     run_process, escape_shell
 )
-from nimlime_core.utils.output import get_output_view, write_to_view, format_tag
 
 
 class NimbleMixin(NimLimeOutputMixin):
-
-    def output_content(self, output, window):
-        if self.send_output:
-            formatted_tag = format_tag(self.output_tag, window)
-            output_window, output_view = get_output_view(
-                formatted_tag,
-                self.output_method,
-                self.output_name,
-                self.show_output,
-                window
-            )
-            write_to_view(
-                output_view, output,
-                self.clear_output
-            )
-
     def is_enabled(self):
         return self.enabled and (configuration.nimble_executable is not None)
 
@@ -45,6 +28,7 @@ class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
         this = yield
 
         window = sublime.active_window()
+        view = window.active_view()
 
         # Setup the loading notice
         frames = ['Updating Nimble package list' + f for f in busy_frames]
@@ -60,7 +44,7 @@ class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
         yield stop_status_loop(get_next_method(this))
 
         # Show output
-        self.output_content(output, window)
+        self.write_to_output(output, window, view)
 
         if return_code == 0:
             sublime.status_message("Nimble Package List Updated")
@@ -86,6 +70,7 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
         this = yield
 
         window = sublime.active_window()
+        view = window.active_view()
 
         # Setup the loading notice
         frames = ['Retrieving package list' + f for f in busy_frames]
@@ -101,7 +86,7 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
         yield stop_status_loop(get_next_method(this))
 
         # Show output
-        self.output_content(output, window)
+        self.write_to_output(output, window, view)
 
         if self.send_to_quickpanel:
             items = []
@@ -135,6 +120,7 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
     @catch_errors
     def run(self):
         window = sublime.active_window()
+        view = window.active_view()
 
         this = yield
 
@@ -169,7 +155,7 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
             window.show_quick_panel(items, None)
 
         # Show output
-        self.output_content(output, window)
+        self.write_to_output(output, window, view)
 
         if return_code == 0:
             sublime.status_message("Listing Nimble Packages")
@@ -190,6 +176,7 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
 
     def run(self):
         window = sublime.active_window()
+        view = sublime.active_view()
 
         @send_self
         @catch_errors
@@ -260,7 +247,7 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
 
                         yield stop_status_loop(get_next_method(this))
 
-                        self.output_content(output, window)
+                        self.write_to_output(output, window, view)
                         if return_code == 0:
                             sublime.status_message("Installed Nimble Package")
                         else:
@@ -282,6 +269,7 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
     @catch_errors
     def run(self):
         window = sublime.active_window()
+        view = window.active_view()
 
         this = yield
 
@@ -335,7 +323,7 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
 
                     yield stop_status_loop(get_next_method(this))
 
-                    self.output_content(output, window)
+                    self.write_to_output(output, window, view)
                     if return_code == 0:
                         sublime.status_message(
                             "Uninstalled Nimble Package")

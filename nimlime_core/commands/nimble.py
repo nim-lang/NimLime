@@ -3,7 +3,7 @@ from threading import Thread
 import sublime
 from sublime_plugin import ApplicationCommand
 from nimlime_core import configuration
-from nimlime_core.utils.mixins import NimLimeMixin
+from nimlime_core.utils.mixins import NimLimeOutputMixin
 from nimlime_core.utils.error_handler import catch_errors
 from nimlime_core.utils.misc import (
     send_self, loop_status_msg, busy_frames, get_next_method,
@@ -12,27 +12,7 @@ from nimlime_core.utils.misc import (
 from nimlime_core.utils.output import get_output_view, write_to_view, format_tag
 
 
-class NimbleMixin(NimLimeMixin):
-    send_output = False
-    clear_output = True
-    show_output = False
-    output_method = 'grouped'
-    output_tag = 'nimlime'
-    output_name = 'nimlime'
-
-    def load_settings(self):
-        get = self.get_setting
-        self.enabled = get('nimble.{0}.enabled', True)
-        self.load_output_settings()
-
-    def load_output_settings(self):
-        get = self.get_setting
-        self.send_output = get('nimble.{0}.output.send', True)
-        self.clear_output = get('nimble.{0}.output.clear', True)
-        self.show_output = get('nimble.{0}.output.show', True)
-        self.output_method = get('nimble.{0}.output.method', 'grouped')
-        self.output_tag = get('nimble.{0}.output.tag', 'nimlime')
-        self.output_name = get('nimble.{0}.output.name', 'nimlime')
+class NimbleMixin(NimLimeOutputMixin):
 
     def output_content(self, output, window):
         if self.send_output:
@@ -57,7 +37,7 @@ class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
     """
     Update the Nimble package list
     """
-    settings_selector = 'update'
+    settings_selector = 'nimble.update'
 
     @send_self
     @catch_errors
@@ -94,14 +74,11 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
     """
     List Nimble Packages
     """
-    settings_selector = 'list'
-    send_to_quickpanel = True
-
-    def load_settings(self):
-        get = self.get_setting
-        self.send_to_quickpanel = get('nimble.{0}.quickpanel.send', True)
-        self.enabled = get('nimble.{0}.enabled', True)
-        self.load_output_settings()
+    settings_selector = 'nimble.list'
+    setting_entries = (
+        NimbleMixin.setting_entries,
+        ('send_to_quickpanel', '{0}.quickpanel.send', True)
+    )
 
     @send_self
     @catch_errors
@@ -148,14 +125,11 @@ class NimbleSearchCommand(NimbleMixin, ApplicationCommand):
     """
     Search Nimble Packages
     """
-    settings_selector = 'search'
-    send_to_quickpanel = True
-
-    def load_settings(self):
-        get = self.get_setting
-        self.send_to_quickpanel = get('nimble.{0}.quickpanel.send', True)
-        self.enabled = get('nimble.{0}.enabled', True)
-        self.load_output_settings()
+    settings_selector = 'nimble.search'
+    setting_entries = (
+        NimbleMixin.setting_entries,
+        ('send_to_quickpanel', '{0}.quickpanel.send', True)
+    )
 
     @send_self
     @catch_errors
@@ -208,14 +182,11 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
     """
     Search Nimble Packages
     """
-    settings_selector = 'install'
-    preemptive_search = True
-
-    def load_settings(self):
-        get = self.get_setting
-        self.preemptive_search = get('nimble.preemptive_search', True)
-        self.enabled = get('nimble.{0}.enabled', True)
-        self.load_output_settings()
+    settings_selector = 'nimble.install'
+    setting_entries = (
+        NimbleMixin.setting_entries,
+        ('preemptive_search', 'nimble.preemptive_search', True)
+    )
 
     def run(self):
         window = sublime.active_window()
@@ -305,7 +276,7 @@ class NimbleUninstallCommand(NimbleMixin, ApplicationCommand):
     """
     Search Nimble Packages
     """
-    settings_selector = "uninstall"
+    settings_selector = "nimble.uninstall"
 
     @send_self
     @catch_errors

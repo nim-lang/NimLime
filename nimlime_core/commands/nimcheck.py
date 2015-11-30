@@ -52,23 +52,14 @@ class NimClearErrors(NimLimeMixin, ApplicationCommand):
 class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
     """ Checks the current Nim file for errors. """
     settings_selector = 'check.current_file'
-    highlight_errors = True
-    highlight_warnings = True
-    include_context = True
-    list_errors = True
-    list_warnings = True
-    move_cursor = True
-
-    def load_settings(self):
-        super(NimCheckCurrentView, self).load_settings()
-        get = self.get_setting
-
-        self.highlight_errors = get('{0}.highlight_errors', True)
-        self.highlight_warnings = get('{0}.highlight_warnings', True)
-        self.include_context = get('{0}.list.include_context', True)
-        self.list_errors = get('{0}.list.show_errors', True)
-        self.list_warnings = get('{0}.list.show_warnings', True)
-        self.move_cursor = get('{0}.list.move_cursor', True)
+    setting_entries = (
+        ('highlight_errors', '{0}.highlight_errors', True),
+        ('highlight_warnings', '{0}.highlight_warnings', True),
+        ('include_context', '{0}.list.include_context', True),
+        ('list_errors', '{0}.list.show_errors', True),
+        ('list_warnings', '{0}.list.show_warnings', True),
+        ('move_cursor', '{0}.list.move_cursor', True)
+    )
 
     @send_self
     @catch_errors
@@ -209,15 +200,10 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
     """ Check an external nim file """
     last_entry = ''
     settings_selector = 'check.external_file'
-    remember_input = True
-    include_context = True
-
-    def load_settings(self):
-        super(NimCheckFile, self).load_settings()
-        get = self.get_setting
-
-        self.remember_input = get("{0}.remember_input", True)
-        self.include_context = get("{0}.output.include_context", True)
+    setting_entries = (
+        ('remember_input', "{0}.remember_input", True),
+        ('include_context', "{0}.output.include_context", True)
+    )
 
     @send_self
     @catch_errors

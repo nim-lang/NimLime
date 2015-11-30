@@ -15,13 +15,13 @@ class CommentListener(EventListener, NimLimeMixin):
     active = True
     already_running = True
     settings_selector = 'doccontinue'
+    setting_entries = (
+        NimLimeMixin.setting_entries,
+        ('autostop', '{0}.autostop', True)
+    )
+
     def __init__(self, *args, **kwargs):
         super(CommentListener, self).__init__(self, *args, **kwargs)
-
-    def load_settings(self):
-        get = self.get_setting
-
-        self.autostop = get('{0}.autostop', True)
 
     def on_activated(self, view):
         nim_syntax = view.settings().get('syntax', None)

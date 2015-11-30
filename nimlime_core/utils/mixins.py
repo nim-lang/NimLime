@@ -1,6 +1,4 @@
-import traceback
-import sublime
-import nimlime_core
+# Mixins used to give common functionality to NimLime commands.
 from nimlime_core import settings
 from nimlime_core.utils.output import (
     get_output_view, write_to_view, show_view, format_tag
@@ -8,6 +6,10 @@ from nimlime_core.utils.output import (
 
 
 class NimLimeMixin(object):
+    setting_entries = (
+        ('enabled', '{0}.enabled', True),
+    )
+
     def __init__(self, *args, **kwargs):
         self.enabled = True
         if hasattr(self, 'load_settings'):
@@ -23,7 +25,21 @@ class NimLimeMixin(object):
         return result
 
     def load_settings(self):
-        self.enabled = self.get_setting('{0}.enabled', True)
+        def is_setting_entry(entry):
+            return (
+                len(entry) == 3 and
+                isinstance(entry[0], str) and
+                isinstance(entry[1], str)
+            )
+
+        def load_entry(entry):
+            if is_setting_entry(entry):
+                setattr(self, entry[0], self.get_setting(entry[1], entry[2]))
+            else:
+                for sub_entry in entry:
+                    self.load_entry(sub_entry)
+
+        load_entry(self.setting_entries)
 
     def is_enabled(self, *args, **kwargs):
         return self.enabled
@@ -36,17 +52,16 @@ class NimLimeMixin(object):
 
 
 class NimLimeOutputMixin(NimLimeMixin):
-    def load_settings(self):
-        get = self.get_setting
-
-        self.enabled = get('{0}.enabled', True)
-        self.clear_output = get('{0}.output.clear', True)
-        self.output_method = get('{0}.output.method', 'grouped')
-        self.send_output = get('{0}.output.send', True)
-        self.show_output = get('{0}.output.show', True)
-        self.output_tag = get('{0}.output.tag', 'nimlime')
-        self.raw_output = get('{0}.output.raw', True)
-        self.output_name = get('{0}.output.name', 'nimlime')
+    setting_entries = (
+        NimLimeMixin.setting_entries,
+        ('clear_output', '{0}.output.clear', True),
+        ('output_method', '{0}.output.method', 'grouped'),
+        ('send_output', '{0}.output.send', True),
+        ('show_output', '{0}.output.show', True),
+        ('output_tag', '{0}.output.tag', 'nimlime'),
+        ('raw_output', '{0}.output.raw', True),
+        ('output_name', '{0}.output.name', 'nimlime'),
+    )
 
     def write_to_output(self, content, source_window, source_view):
         tag = format_tag(self.output_tag, source_window, source_view)

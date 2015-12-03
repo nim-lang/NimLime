@@ -1,291 +1,145 @@
 import os
-import re
 import subprocess
 import socket
-import sys
-from tempfile import NamedTemporaryFile
-from time import sleep
-from nimlime_core.utils.misc import format_msg
 
-from nimlime_core.utils.project import get_project_file
-import sublime
+
+def create_server_socket(host, port=0):
+    def create_server_socket_from_info(*addrinfo_params):
+        try:
+            address_matches = socket.getaddrinfo(*addrinfo_params)
+        except socket.gaierror:
+            return None
+
+        for info in address_matches:
+            af, socktype, proto, canonname, sa = info
+            try:
+                result = socket.socket(af, socktype, proto)
+                result.bind(sa)
+                # result.setblocking(0)
+                result.listen(5)
+                return result
+            except socket.error as msg:
+                pass
+
+    # Try IPv4, then IPv6
+    result = create_server_socket_from_info(
+        host, port, socket.AF_INET,
+        socket.SOCK_STREAM, 0, socket.AI_PASSIVE
+    )
+    if result is None:
+        result = create_server_socket_from_info(
+            host, port, socket.AF_INET6,
+            socket.SOCK_STREAM, 0, socket.AI_PASSIVE
+        )
+
+    return result
+
+
+double_newline_byte = '\r\n\r\n'.encode('utf-8')
+
 
 class IdeTool(object):
-    project_file = None
-    process = None
+    """
+    Used to retrieve suggestions, completions, and other IDE-like information
+    using a pool of nimsuggest instances.
+    """
 
-    def __init__(self, executable, project_file, additional_args=[]):
+    def __init__(self, executable, limit):
+        # Establish a server socket and get the information needed to connect
+        # nimsuggest instances to this process.
+        self.server_socket = create_server_socket("")
+        host, port = self.server_socket.getsockname()
+
+        # Information needed to start a nimsuggest process
         self.executable = executable
-        self.process_args = []
-        self.process_args.extend(additional_args)
-        self.process_args.append(project_file)
-        self.connection = None
-        self.check_process()
+        self.process_args = [
+            'nimsuggest', 'tcp', '--client',
+            '--address:' + host, '--port:' + str(port),
+            None  # This gets mutated during add_project_file
+        ]
 
-    def check_process(self):
-        i = 0
-        while i < 5:
-            if self.process.poll() is None:
-                return True
-            else:
-                i += 1
-                self.process = subprocess.Popen(
-                    executable=self.executable,
-                    args=self.process_args,
-                    shell=True,
-                )
-                self.connection = socket.create_connection(('127.0.0.1', 800))
-        return False
+        # Mapping of project files to nimsuggest instances and their sockets
+        self.nimsuggest_instances = {}
 
-    def run_command(self, command, file, dirtyfile, line, column):
-        self.check_process()
+        # Mapping of current outstanding requests
 
-    def get_definition(self, file, dirtyfile, line, column):
-        self.check_process()
+        # General settings
+        self.process_limit = limit
 
-    def get_suggestion(self, file, dirtyfile, line, column):
-        self.check_process()
-
-    def get_context(self, file, dirtyfile, line, column):
-        self.check_process()
-
-    def get_usage(self, file, dirtyfile, line, column):
-        self.check_process()
-
-
-class Idetools:
-    # Fields
-    service = None
-    running = False
-    outThread = None
-
-    pattern = re.compile(
-        '^(?P<cmd>\S+)\s(?P<ast>\S+)\s' +
-        '(?P<symbol>\S+)( (?P<instance>\S+))?\s' +
-        '(?P<type>[^\t]+)\s(?P<path>[^\t]+)\s' +
-        '(?P<line>\d+)\s(?P<col>\d+)\s' +
-        '(?P<description>\".+\")?')
-
-    # Methods
-    @staticmethod
-    def print_output(out):
-        try:
-            for line in iter(out.readline, b''):
-                print(line.rstrip())
-        except:
-            pass
-
-    @staticmethod
-    def linesplit(socket):
-        buffer = None
-
-        if sys.version_info < (3, 0):
-            buffer = socket.recv(4096)
-        else:
-            buffer = socket.recv(4096).decode('UTF-8')
-
-        buffering = buffer is not None
-        while buffering:
-            if "\n" in buffer:
-                (line, buffer) = buffer.split("\n", 1)
-                yield line + "\n"
-            else:
-                more = socket.recv(4096)
-                if not more:
-                    buffering = False
-                else:
-                    buffer += more.decode('UTF-8')
-        if buffer:
-            yield buffer
-
-    @staticmethod
-    def opensock():
-        sock = socket.create_connection(("localhost", 8088), 3)
-        sock.settimeout(2.0)
-        return sock
-
-    @staticmethod
-    def sendrecv(args, getresp=True):
-        sock = None
-        try:
-            sock = Idetools.opensock()
-
-            if sys.version_info < (3, 0):
-                sock.send(args + "\r\n")
-            else:
-                sock.send(bytes(args + "\r\n", 'UTF-8'))
-
-            if getresp:
-                for line in Idetools.linesplit(sock):
-                    return line
-                return ""
-        except:
-            return ""
-        finally:
-            if sock is not None:
-                sock.close()
-
-    @staticmethod
-    def ensure_socket(secs=5, wait=.2):
-        while True:
-            sock = None
+    def __del__(self):
+        # Kill each process, then try closing each socket.
+        for process, connection in self.nimsuggest_instances.values():
+            process.kill()
             try:
-                sock = Idetools.opensock()
-                return True
-            except:
-                secs -= wait
-                if secs <= 0:
-                    print('nimsuggest failed to respond')
-                    Idetools.service = None
-                    return False
-                sleep(wait)
-            finally:
-                if sock is not None:
-                    sock.close()
-
-    @staticmethod
-    def ensure_service(proj=""):
-        # Ensure there is a listening socket
-        if Idetools.ensure_socket(secs=0):
-            return
-
-        # If server is running, do nothing
-        if Idetools.service is not None and Idetools.service.poll() is None:
-            return
-
-        # Start the server
-        proc = subprocess.Popen(
-            'nimsuggest --port:8088 "' + proj + '"',
-            bufsize=0,
-            stdout=subprocess.PIPE,
-            universal_newlines=True,
-            shell=True)
-
-        Idetools.service = proc
-        # Idetools.outThread = Thread(
-        #     target=Idetools.print_output,
-        #     args=(proc.stdout,))
-
-        # Idetools.outThread.daemon = True
-        # Idetools.outThread.start()
-
-        # Ensure the socket is available
-        Idetools.ensure_socket()
-
-        print('nimsuggest running on "' + proj + '"')
-
-    @staticmethod
-    def idetool(win, cmd, filename, line, col, dirtyFile=""):
-        filePath = filename
-        projFile = get_project_file(win)
-
-        if projFile is None:
-            projFile = filename
-
-        if dirtyFile != "":
-            filePath = filePath + '";"' + dirtyFile
-
-        # Ensure IDE Tools server is running
-        Idetools.ensure_service(projFile)
-
-        # Call the server
-        args = 'def "' + filePath + '":' + str(line) + ":" + str(col)
-        print(args)
-
-        # Write to service & read result
-        result = Idetools.sendrecv(args)
-        if result is not None:
-            return result
-
-    @staticmethod
-    def parse(result):
-        m = Idetools.pattern.match(result)
-        if m is not None:
-            cmd = m.group("cmd")
-
-            if cmd == "def":
-                return (m.group("symbol"), m.group("type"),
-                        m.group("path"), m.group("line"),
-                        m.group("col"), m.group("description"))
-
-        return None
-
-    @staticmethod
-    def show_tooltip(view, value):
-        (func, typ, desc) = (value[0], value[1], value[5])
-
-        if desc is None:
-            desc = ""
-        else:
-            desc = desc.strip('"')
-
-        view.show_popup(
-            '<b>%s</b>'
-            '<div style="color: #666"><i>%s</i></div>'
-            '<div>%s</div>' %
-            (func, typ, desc))
-
-    @staticmethod
-    def open_definition(window, filename, line, col):
-        arg = filename + ":" + str(line) + ":" + str(col)
-        flags = sublime.ENCODED_POSITION
-
-        # TODO - If this is NOT in the same project, mark transient
-        # flags |= sublime.TRANSIENT
-        window.open_file(arg, flags)
-
-    @staticmethod
-    def lookup(command, goto, filename, line, col):
-        result = ""
-        dirty_file_name = ""
-
-        if command.view.is_dirty():
-            # Generate temp file
-            size = command.view.size()
-
-            with NamedTemporaryFile(suffix=".nim", delete=False) as dirty_file:
-                dirty_file_name = dirty_file.name
-                dirty_file.file.write(
-                    command.view.substr(Region(0, size)).encode("UTF-8")
-                )
-                dirty_file.file.close()
-
-                result = Idetools.idetool(
-                    command.view.window(),
-                    "--def",
-                    filename,
-                    line,
-                    col,
-                    dirty_file.name
-                )
-                dirty_file.close()
-
-            try:
-                os.unlink(dirty_file.name)
-            except OSError:
+                connection.shutdown(socket.SHUT_RDWR)
+                connection.close()
+            except socket.error:
                 pass
+
+    def add_project_file(self, project_file):
+        canonical_project = os.path.normcase(os.path.normpath(project_file))
+        if canonical_project in self.nimsuggest_instances:
+            return
+        self.process_args[-1] = canonical_project
+        process = subprocess.Popen(
+            executable=self.executable,
+            args=self.process_args,
+        )
+        connection, _ = self.server_socket.accept()
+        self.nimsuggest_instances[canonical_project] = (process, connection)
+
+    def remove_project_file(self, project_file):
+        old_data = self.nimsuggest_instances.get(project_file, None)
+        if old_data is not None:
+            del(self.nimsuggest_instances[project_file])
+            old_process, old_connection, old_address = old_data
+            if old_process.poll() is None:
+                old_process.kill()
+            try:
+                old_connection.close()
+            except socket.error:
+                pass
+
+    def run_command(self, project, command, nim_file, dirty_file, line, column):
+        # Normalize the file and project paths, then grab the appropriate
+        # process and socket objects.
+        canonical_project = os.path.normcase(os.path.normpath(project))
+        process, connection = self.nimsuggest_instances[canonical_project]
+
+        # Send the formatted command down the socket
+        if dirty_file:
+            formatted_command = '{0}\t"{1}";{2}:{3}:{4}\r\n'.format(
+                command, nim_file, dirty_file, line, column
+            ).encode('utf-8')
         else:
-            result = Idetools.idetool(
-                command.view.window(), "--def", filename, line, col)
+            formatted_command = '{0}\t"{1}":{2}:{3}\r\n'.format(
+                command, nim_file, line, column
+            ).encode('utf-8')
 
-        # Parse the result
-        value = Idetools.parse(result)
+        try:
+            connection.send(formatted_command)
 
-        if value is not None:
-            if value[2] == dirty_file_name:
-                lookup_file = filename
-            else:
-                lookup_file = value[2]
+            # Repeatedly read socket data into a bytearray buffer,
+            # Looking for a double newline (\r\n\r\n) as the end mark.
+            result = bytearray()
+            while True:
+                result += connection.recv(1)  # Optimize?
+                newline_found = result.find(
+                    double_newline_byte,
+                    len(result) - len(double_newline_byte))
+                if newline_found != -1:
+                    break
+        except socket.error:
+            return None
 
-            if goto:
-                Idetools.open_definition(
-                    command.view.window(),
-                    lookup_file,
-                    int(value[3]),
-                    int(value[4]) + 1
-                )
-            else:
-                Idetools.show_tooltip(command.view, value)
-        else:
+        return result
 
-            sublime.status_message("No definition found")
+def main():
+    koch_source = "C:\\xCommon\\Nim\\koch.nim"
+    i = IdeTool("C:\\x64\\Nimsuggest\\Nimsuggest.exe", 0)
+    i.add_project_file(koch_source)
+    print(i.run_command(koch_source, 'chk', koch_source, "", 0, 0))
+
+
+if __name__ == "__main__":
+    main()

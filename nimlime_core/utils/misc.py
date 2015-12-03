@@ -1,3 +1,4 @@
+from threading import Thread
 from weakref import proxy
 from functools import wraps
 import sys
@@ -203,6 +204,16 @@ def find_file(file_name, path_list=None):
         if os.path.exists(result):
             return result
     return None
+
+
+def run_in_thread(function, callback, *args, **kwargs):
+    def run_in_thread_inner():
+        result = function(*args, **kwargs)
+        sublime.set_timeout(lambda: callback(result), 0)
+
+    t = Thread(target=run_in_thread_inner)
+    t.start()
+    return t
 
 
 def exec_(code, global_dict=None, local_dict=None):

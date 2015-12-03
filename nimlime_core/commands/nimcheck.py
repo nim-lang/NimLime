@@ -10,7 +10,7 @@ from nimlime_core.utils.error_handler import catch_errors
 from nimlime_core.utils.mixins import NimLimeMixin, NimLimeOutputMixin
 from nimlime_core.utils.misc import (
     view_has_nim_syntax, send_self, busy_frames, get_next_method,
-    loop_status_msg, trim_region, run_process)
+    loop_status_msg, trim_region, run_process, run_in_thread)
 
 
 # Constants
@@ -80,10 +80,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
 
         # Run 'nim check' on the current view and retrieve the output.
         project_file = get_nim_project(window) or view.file_name()
-        output, returncode = yield Thread(
-            target=run_nimcheck,
-            args=(project_file, this.send)
-        ).start()
+        output, returncode = yield run_in_thread(run_nimcheck, this.send)
         messages = parse_nimcheck_output(output)
 
         yield stop_status_loop(get_next_method(this))

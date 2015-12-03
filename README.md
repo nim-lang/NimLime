@@ -47,7 +47,7 @@ Per default it is set to `nim`, which means that the compiler must be in your `P
 Contributing
 ------------
 
-Pull requests are welcome!
+Pull requests are welcome! See DEVELOPMENT.md for an overview of NimLime's design.
 
 Clone the repository in your Sublime package directory.
 

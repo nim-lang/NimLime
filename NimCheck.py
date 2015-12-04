@@ -72,6 +72,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         get = self.get_setting
 
         self.highlight_errors = get('{0}.highlight_errors', True)
+        self.verbosity = get('{0}.verbosity', 2)
         self.highlight_warnings = get('{0}.highlight_warnings', True)
         self.include_context = get('{0}.list.include_context', True)
         self.list_errors = get('{0}.list.show_errors', True)
@@ -96,7 +97,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         # Run 'nim check' on the current view and retrieve the output.
         output, returncode = yield Thread(
             target=run_nimcheck,
-            args=(view.file_name(), this.send)
+            args=(view.file_name(), this.send, self.verbosity)
         ).start()
 
         messages = parse_nimcheck_output(output)
@@ -276,13 +277,12 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
         yield
 
 
-
 # Utility functions
-def run_nimcheck(file_path, callback):
+def run_nimcheck(file_path, callback, verbosity=2):
     # Prepare the regex's
     run_process(
-        "{0} check --verbosity:2 \"{1}\"".format(
-            nim_executable, file_path
+        "{0} check --verbosity:{1} \"{2}\"".format(
+            nim_executable, verbosity, file_path
         ),
         callback
     )

@@ -47,5 +47,25 @@
     {
         "caption": "Nim: Clear Errors & Warnings",
         "command": "nim_clear_errors"
+    },
+    {
+        "caption": "Nim: Find Usages In Current File",
+        "command": "find_nim_usages_in_current_file"
+    },
+    {
+        "caption": "Nim: Find Definition",
+        "command": "nim_find_definition"
+    },
+    {
+        "caption": "Nim: Find Usages",
+        "command": "nim_find_usages"
+    },
+    {
+        "caption": "Nim: Find Usages In Current File",
+        "command": "nim_find_usages_in_current_file"
+    },
+    {
+        "caption": "Nim: Get Suggestion",
+        "command": "get_nim_suggestions"
     }
 ]

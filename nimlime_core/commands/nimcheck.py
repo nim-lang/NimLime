@@ -1,3 +1,7 @@
+# coding=utf-8
+"""
+Commands and code to check Nim files for errors.
+"""
 import os.path
 import re
 from threading import Thread
@@ -79,7 +83,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
             view.run_command('save')
 
         # Run 'nim check' on the current view and retrieve the output.
-        project_file = get_nim_project(window) or view.file_name()
+        project_file = get_nim_project(window, view) or view.file_name()
         output, returncode = yield run_in_thread(run_nimcheck, this.send)
         messages = parse_nimcheck_output(output)
 
@@ -114,7 +118,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         if self.highlight_warnings:
             warn_region_list = []
 
-        for file_name, row, column, kind, message, all in messages:
+        for file_name, row, column, kind, message, all_msg in messages:
 
             if file_name.lower() != view_name.lower():
                 continue
@@ -132,9 +136,9 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
                 # For listing
                 if self.list_errors:
                     if self.include_context:
-                        quick_message_list.append(all.split('\n'))
+                        quick_message_list.append(all_msg.split('\n'))
                     else:
-                        quick_message_list.append(all.split('\n')[0])
+                        quick_message_list.append(all_msg.split('\n')[0])
 
                 # For highlighting
                 if self.highlight_errors:
@@ -144,9 +148,9 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
                 # For listing
                 if self.list_warnings:
                     if self.include_context:
-                        quick_message_list.append(all.split('\n'))
+                        quick_message_list.append(all_msg.split('\n'))
                     else:
-                        quick_message_list.append(all.split('\n')[0])
+                        quick_message_list.append(all_msg.split('\n')[0])
 
                 # For highlighting
                 if self.highlight_warnings:

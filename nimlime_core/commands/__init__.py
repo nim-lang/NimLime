@@ -1,5 +1,8 @@
-# This package automatically exports all commands found in immediate submodules
-# This used by the root NimLime plugin to automatically export
+# coding=utf-8
+"""
+This package automatically exports all commands found in immediate submodules
+This used by the root NimLime plugin to automatically export
+"""
 import inspect
 import sys
 from pkgutil import iter_modules

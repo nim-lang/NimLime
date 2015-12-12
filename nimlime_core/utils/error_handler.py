@@ -1,19 +1,22 @@
-# This module contains code for handling generic uncaught exceptions at the
-# function level, and notifying the user of them.
-#
-# The 'catch_errors' function is meant to be used as a decorator to catch
-# exceptions and errors thrown by code. It handles uncaught exceptions by
-# notifying the user through an error message box or a status message, and then
-# logging the exception to a log file.
-#
-# The 'catch_errors' function should *not* be used for an automatically running
-# function, as repeated writing to the log file may result in degraded
-# performance and an annoyed user.
-#
-# NOTE: The 'catch_errors' mechanism relies on the availability of
-# 'yield from', which is only available on Python 3.3+ (or Sublime Text 3).
-# Since most of the commands are generators due to using 'send_self', this
-# makes the error handling mechanism rather less effective on ST2.
+# coding=utf-8
+"""
+This module contains code for handling generic uncaught exceptions at the
+function level, and notifying the user of them.
+
+The 'catch_errors' function is meant to be used as a decorator to catch
+exceptions and errors thrown by code. It handles uncaught exceptions by
+notifying the user through an error message box or a status message, and then
+logging the exception to a log file.
+
+The 'catch_errors' function should *not* be used for an automatically running
+function, as repeated writing to the log file may result in degraded
+performance and an annoyed user.
+
+NOTE: The 'catch_errors' mechanism relies on the availability of
+'yield from', which is only available on Python 3.3+ (or Sublime Text 3).
+Since most of the commands are generators due to using 'send_self', this
+makes the error handling mechanism rather less effective on ST2.
+"""
 
 import os
 import sys
@@ -55,7 +58,7 @@ logfile_path = default_logfile_path
 notified_user = False
 
 
-def load():
+def _load():
     global notified_user, enabled, logfile_path
     notified_user = False
     enabled = settings.get('error_handler.enabled', True)
@@ -72,10 +75,10 @@ def load():
         notified_user = True
         sublime.error_message(critical_error_msg.format(logfile_path))
 
-settings.run_on_load_and_change('error_handler.logfile_path', load)
 
+settings.run_on_load_and_change('error_handler.logfile_path', _load)
 
-# These are needed because 'yield from' was only intruduced in Python 3.3
+# These are needed because 'yield from' was only introduced in Python 3.3
 # Trying to use 'yield from' in Python 2.6 causes a syntax error, which can't
 # be handled - thus, exec must be used.
 generator_error_handler_impl = """
@@ -85,7 +88,7 @@ generator_error_handler_impl = """
                 try:
                     yield from function(*args, **kwargs)
                 except:
-                    handle_error()
+                    _handle_error()
             else:
                 yield from function(*args, **kwargs)
 """
@@ -106,7 +109,7 @@ def catch_errors(function):
                 try:
                     return function(*args, **kwargs)
                 except:
-                    handle_error()
+                    _handle_error()
     return error_handler
 """
 
@@ -116,7 +119,7 @@ else:
     exec_(error_wrapper_impl.format(other_error_handler_impl))
 
 
-def handle_error():
+def _handle_error():
     global notified_user, error_msg, critical_error_msg
     try:
         traceback.print_exc()

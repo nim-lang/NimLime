@@ -1,10 +1,21 @@
+# coding=utf-8
+"""
+Functions providing a uniform way to write command/process output to a Sublime
+Text view.
+"""
 import sublime
-from sublime_plugin import TextCommand
 
 
 def get_output_view(tag, strategy, name, switch_to, fallback_window):
     """
     Retrieves an output using the given strategy, window, and views.
+
+    Args:
+        fallback_window ():
+        switch_to ():
+        name ():
+        strategy ():
+        tag ():
     """
     window_list = sublime.windows()
 
@@ -52,9 +63,9 @@ def show_view(window, view, is_console):
 
 def format_tag(tag, window, view):
     return tag.format(
-        view_id=view.id(),
-        buffer_id=view.id(),
-        file_name=view.file_name(),
-        view_name=view.name(),
-        window_id=window.id()
+            view_id=view.id(),
+            buffer_id=view.id(),
+            file_name=view.file_name(),
+            view_name=view.name(),
+            window_id=window.id()
     )

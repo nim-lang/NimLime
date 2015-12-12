@@ -1,145 +1,163 @@
+# coding=utf-8
+"""
+Module containing Nimsuggest process interface code.
+"""
 import os
+import re
 import subprocess
-import socket
+import sys
+from threading import Thread
+
+import sublime
+from nimlime_core import configuration
+
+try:
+    from Queue import Queue, Empty
+except ImportError:
+    from queue import Queue, Empty  # python 3.x
+
+ON_POSIX = 'posix' in sys.builtin_module_names
+DOUBLE_NEWLINE_BYTE = '\r\n\r\n'.encode()
+ANSWER_REGEX = r"""
+(?P<answer_type>[^\t]*)\t
+(?P<symbol_type>[^\t]*)\t
+(?P<name>[^\t]*)\t
+(?P<declaration>[^\t]*)\t
+(?P<file_path>[^\t]*)\t
+(?P<line>[^\t]*)\t
+(?P<column>[^\t]*)\t
+(?P<docstring>[^\t]*)\t
+.*\n?
+"""
 
 
-def create_server_socket(host, port=0):
-    def create_server_socket_from_info(*addrinfo_params):
-        try:
-            address_matches = socket.getaddrinfo(*addrinfo_params)
-        except socket.gaierror:
-            return None
+def _nimsuggest_handler(process, input_queue):
+    while True:
+        input_data, callback = input_queue.get()
+        process.stdin.write(input_data)
 
-        for info in address_matches:
-            af, socktype, proto, canonname, sa = info
-            try:
-                result = socket.socket(af, socktype, proto)
-                result.bind(sa)
-                # result.setblocking(0)
-                result.listen(5)
-                return result
-            except socket.error as msg:
-                pass
+        raw_output = bytearray()
+        while True:
+            output_char = process.stdout.read(1)
+            if not output_char:
+                # Subprocess is dead
+                return
 
-    # Try IPv4, then IPv6
-    result = create_server_socket_from_info(
-        host, port, socket.AF_INET,
-        socket.SOCK_STREAM, 0, socket.AI_PASSIVE
-    )
-    if result is None:
-        result = create_server_socket_from_info(
-            host, port, socket.AF_INET6,
-            socket.SOCK_STREAM, 0, socket.AI_PASSIVE
-        )
+            raw_output.append(output_char)
+            newline_found = raw_output.find(
+                    DOUBLE_NEWLINE_BYTE,
+                    len(raw_output) - len(DOUBLE_NEWLINE_BYTE)
+            )
+            if newline_found != -1:
+                break
 
-    return result
+        # Parse the data
+        output = raw_output.decode('utf-8')
+        entries = re.findall(ANSWER_REGEX, output, re.X)
+
+        # Run the callback
+        input_queue.task_done()
+        sublime.set_timeout(0, lambda: callback(entries))
 
 
-double_newline_byte = '\r\n\r\n'.encode('utf-8')
-
-
-class IdeTool(object):
+class Nimsuggest(object):
     """
     Used to retrieve suggestions, completions, and other IDE-like information
     using a pool of nimsuggest instances.
     """
 
-    def __init__(self, executable, limit):
-        # Establish a server socket and get the information needed to connect
-        # nimsuggest instances to this process.
-        self.server_socket = create_server_socket("")
-        host, port = self.server_socket.getsockname()
+    def __init__(self, project_file):
+        """
+        Create a Nimsuggest instance using the given project file path.
+        :type project_file: string
+        """
+
+        # Nimsuggest process
+        self.input_queue = None
+        self.nimsuggest_process = None
+        self.nimsuggest_handler = None
 
         # Information needed to start a nimsuggest process
-        self.executable = executable
-        self.process_args = [
-            'nimsuggest', 'tcp', '--client',
-            '--address:' + host, '--port:' + str(port),
-            None  # This gets mutated during add_project_file
-        ]
-
-        # Mapping of project files to nimsuggest instances and their sockets
-        self.nimsuggest_instances = {}
-
-        # Mapping of current outstanding requests
-
-        # General settings
-        self.process_limit = limit
-
-    def __del__(self):
-        # Kill each process, then try closing each socket.
-        for process, connection in self.nimsuggest_instances.values():
-            process.kill()
-            try:
-                connection.shutdown(socket.SHUT_RDWR)
-                connection.close()
-            except socket.error:
-                pass
-
-    def add_project_file(self, project_file):
-        canonical_project = os.path.normcase(os.path.normpath(project_file))
-        if canonical_project in self.nimsuggest_instances:
-            return
-        self.process_args[-1] = canonical_project
-        process = subprocess.Popen(
-            executable=self.executable,
-            args=self.process_args,
+        self.process_args = ('nimsuggest', 'stdin', project_file)
+        self.environment = os.environ.copy()
+        self.environment['PATH'] = "{0};{1}".format(
+                os.path.dirname(configuration.nimsuggest_executable),
+                self.environment['PATH']
         )
-        connection, _ = self.server_socket.accept()
-        self.nimsuggest_instances[canonical_project] = (process, connection)
 
-    def remove_project_file(self, project_file):
-        old_data = self.nimsuggest_instances.get(project_file, None)
-        if old_data is not None:
-            del(self.nimsuggest_instances[project_file])
-            old_process, old_connection, old_address = old_data
-            if old_process.poll() is None:
-                old_process.kill()
-            try:
-                old_connection.close()
-            except socket.error:
-                pass
+    def start_nimsuggest(self):
+        """
+        Start the internal nimsuggest process
+        """
+        # Create input/output queues
+        self.input_queue = Queue()
 
-    def run_command(self, project, command, nim_file, dirty_file, line, column):
-        # Normalize the file and project paths, then grab the appropriate
-        # process and socket objects.
-        canonical_project = os.path.normcase(os.path.normpath(project))
-        process, connection = self.nimsuggest_instances[canonical_project]
+        # Create process
+        self.nimsuggest_process = subprocess.Popen(
+                executable=configuration.nimsuggest_executable,
+                args=self.process_args,
+                env=self.environment,
+                creationflags=0x08000000,
+                stdin=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE
+        )
 
-        # Send the formatted command down the socket
+        # Start handler
+        self.nimsuggest_handler = Thread(
+                target=_nimsuggest_handler,
+                args=(
+                self.input_queue, self.output_queue, self.nimsuggest_process)
+        )
+        self.nimsuggest_handler.daemon = True  # thread dies with the program
+        self.nimsuggest_handler.start()
+
+    def stop_nimsuggest(self):
+        """
+        Stop the internal nimsuggest process.
+        """
+        # First, kill the subprocess
+        if self.nimsuggest_process.poll() is None:
+            self.nimsuggest_process.kill()
+
+        # Next, clear the thread
+        self.nimsuggest_handler = None
+
+    def run_command(self, command, nim_file, dirty_file, line, column, cb):
+        # First, check that the process and thread are active
+        alive = (
+            self.nimsuggest_handler.is_alive() and
+            self.nimsuggest_process.poll is None
+        )
+        if not alive:
+            self.stop_nimsuggest()
+            self.start_nimsuggest()
+
+        # Next, prepare the command
         if dirty_file:
-            formatted_command = '{0}\t"{1}";{2}:{3}:{4}\r\n'.format(
-                command, nim_file, dirty_file, line, column
+            formatted_command = '{0}\t"{1}";"{2}":{3}:{4}\r\n'.format(
+                    command, nim_file, dirty_file, line, column
             ).encode('utf-8')
         else:
             formatted_command = '{0}\t"{1}":{2}:{3}\r\n'.format(
-                command, nim_file, line, column
+                    command, nim_file, line, column
             ).encode('utf-8')
+        self.input_queue.put((formatted_command, cb))
 
-        try:
-            connection.send(formatted_command)
+    def __del__(self):
+        pass
 
-            # Repeatedly read socket data into a bytearray buffer,
-            # Looking for a double newline (\r\n\r\n) as the end mark.
-            result = bytearray()
-            while True:
-                result += connection.recv(1)  # Optimize?
-                newline_found = result.find(
-                    double_newline_byte,
-                    len(result) - len(double_newline_byte))
-                if newline_found != -1:
-                    break
-        except socket.error:
-            return None
+    def find_definition(self, nim_file, dirty_file, line, column, cb):
+        self.run_command('def', nim_file, dirty_file, line, column, cb)
 
-        return result
+    def find_usages(self, nim_file, dirty_file, line, column, cb):
+        self.run_command('use', nim_file, dirty_file, line, column, cb)
 
-def main():
-    koch_source = "C:\\xCommon\\Nim\\koch.nim"
-    i = IdeTool("C:\\x64\\Nimsuggest\\Nimsuggest.exe", 0)
-    i.add_project_file(koch_source)
-    print(i.run_command(koch_source, 'chk', koch_source, "", 0, 0))
+    def find_d_usages(self, nim_file, dirty_file, line, column, cb):
+        self.run_command('dus', nim_file, dirty_file, line, column, cb)
 
+    def get_suggestions(self, nim_file, dirty_file, line, column, cb):
+        self.run_command('sug', nim_file, dirty_file, line, column, cb)
 
-if __name__ == "__main__":
-    main()
+    def get_outline(self, nim_file, dirty_file, line, column, cb):
+        self.run_command('outline', nim_file, dirty_file, line, column, cb)

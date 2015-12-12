@@ -1,3 +1,7 @@
+# coding=utf-8
+"""
+User commands for setting the Nim project file.
+"""
 import os
 
 from sublime_plugin import WindowCommand
@@ -12,7 +16,7 @@ class SetProjectCommand(NimLimeMixin, WindowCommand):
     settings_selector = 'project'
 
     def __init__(self, *args, **kwargs):
-        NimLimeMixin.__init__(self, *args, **kwargs)
+        NimLimeMixin.__init__(self)
         WindowCommand.__init__(self, *args, **kwargs)
 
     @catch_errors

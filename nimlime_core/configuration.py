@@ -1,6 +1,9 @@
-# Global configuration
-# This file loads and verifies the more global and complex aspects of NimLime's
-# settings and configuration.
+# coding=utf-8
+"""
+Global configuration
+This file loads and verifies the more global and complex aspects of NimLime's
+settings and configuration.
+"""
 import os
 
 import sublime
@@ -18,17 +21,22 @@ in NimLime's settings file to 'False'.
 """)
 
 
-def gen_exe_check(program_name, setting_prefix, default_exe):
+def gen_exe_check(program_name, setting_key, default_exe):
     """
     Generates a function that checks if a program is on the path, based off
-    of settings. May also notify the user.
+    of settings. May also notify the user if the check can't find the executable
+    or the executable doesn't exist.
+    :type default_exe: string
+    :type setting_key: string
+    :type program_name: string
+    :rtype: () -> string
     """
 
     def load():
         # Get the current executable, and look for the file.
         # Consider that the path given in the settings may be the executable's
         # directory, or its path+name.
-        current_exe = settings.get(setting_prefix + '.executable', default_exe)
+        current_exe = settings.get(setting_key, default_exe)
         executable_path = (
             find_file(current_exe) or
             find_file(os.path.join(current_exe, default_exe))
@@ -36,9 +44,9 @@ def gen_exe_check(program_name, setting_prefix, default_exe):
 
         # Optionally notify the user.
         if executable_path is None and current_exe != load.old_exe:
-            if settings.get(setting_prefix + '.check_configuration', True):
+            if settings.get('check_configuration', True):
                 sublime.error_message(
-                    not_found_msg.format(program_name, setting_prefix)
+                    not_found_msg.format(program_name, setting_key)
                 )
 
         # Store the old path, so that we don't end up notifying the user twice
@@ -60,21 +68,21 @@ _nimsuggest_exe_check = gen_exe_check('Nimsuggest', 'nimsuggest',
                                       'nimsuggest.exe')
 
 
-def nimble_exe_check():
+def _check_for_nimble_exe():
     global nimble_executable
     nimble_executable = _nimble_exe_check()
 
 
-def nim_exe_check():
+def _check_for_nim_exe():
     global nim_executable
     nim_executable = _nim_exe_check()
 
 
-def nimsuggest_exe_check():
+def check_for_nimsuggest_exe():
     global nimsuggest_executable
     nimsuggest_executable = _nimsuggest_exe_check()
 
 
-settings.run_on_load_and_change('nimble.executable', nimble_exe_check)
-settings.run_on_load_and_change('nim.executable', nim_exe_check)
-settings.run_on_load_and_change('nimsuggest.executable', nimsuggest_exe_check)
+settings.run_on_load_and_change('nimble.executable', _check_for_nimble_exe)
+settings.run_on_load_and_change('nim.executable', _check_for_nim_exe)
+settings.run_on_load_and_change('nimsuggest.executable', check_for_nimsuggest_exe)

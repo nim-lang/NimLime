@@ -1,3 +1,7 @@
+# coding=utf-8
+"""
+Misc. functions that don't really fit anywhere else.
+"""
 from threading import Thread
 from weakref import proxy
 from functools import wraps
@@ -34,6 +38,10 @@ def send_self(use_proxy):
     Note that by default, the generator instance reference sent is a weakly
     referenced proxy. To override this behavior, pass `False` or
     `use_proxy=False` as the first argument to the decorator.
+
+    Args:
+        use_proxy (bool): Whether to use a weakly referenced proxy(default is
+                          True)
     """
     _use_proxy = True
 
@@ -74,11 +82,11 @@ def loop_status_msg(frames, speed, view=None, key=''):
     Useful for creating 'animations' in the status bar.
 
     Parameters:
-        `frames`: A sequence of strings displayed in order on the status bar
-        `speed`: Delay between frame shifts, in seconds
-        `view`: View to set the status on. If not provided, then
+        frames (): A sequence of strings displayed in order on the status bar
+        speed (): Delay between frame shifts, in seconds
+        view (): View to set the status on. If not provided, then
                 sublime.status_message is used.
-        `key`: Key used when setting the status on a view. Ignored if no
+        key (): Key used when setting the status on a view. Ignored if no
                view is given.
 
     To stop the loop, the returned function must be called with no arguments,
@@ -114,7 +122,7 @@ def loop_status_msg(frames, speed, view=None, key=''):
     def stop_status_loop(callback=True):
         flag.flag = callback
 
-    sublime.set_timeout(loop_status_generator, 0)
+    sublime.set_timeout(loop_status_generator)
     return stop_status_loop
 
 
@@ -132,6 +140,9 @@ def view_has_nim_syntax(view=None):
     """
     Tests whether the given view (or the active view) currently has 'Nim' as
     the selected syntax.
+
+    Args:
+        view ():
     """
     if view is None:
         view = sublime.active_window().active_view()
@@ -141,6 +152,10 @@ def view_has_nim_syntax(view=None):
 def trim_region(view, region):
     """
     Trim a region of whitespace.
+
+    Args:
+        region ():
+        view ():
     """
     text = view.substr(region)
     start = region.a + ((len(text) - 1) - (len(text.strip()) - 1))
@@ -154,18 +169,13 @@ def escape_shell(s):
 
 
 def run_process(cmd, callback=None):
-    process = subprocess.Popen(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        shell=True,
-        bufsize=0
-    )
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT, shell=True)
 
     output = process.communicate()[0].decode('UTF-8')
 
     if callback is not None:
-        sublime.set_timeout(lambda: callback((output, process)), 0)
+        sublime.set_timeout(lambda: callback((output, process)))
     else:
         return output, process
 
@@ -209,7 +219,7 @@ def find_file(file_name, path_list=None):
 def run_in_thread(function, callback, *args, **kwargs):
     def run_in_thread_inner():
         result = function(*args, **kwargs)
-        sublime.set_timeout(lambda: callback(result), 0)
+        sublime.set_timeout(lambda: callback(result))
 
     t = Thread(target=run_in_thread_inner)
     t.start()
@@ -228,4 +238,4 @@ def exec_(code, global_dict=None, local_dict=None):
     if sys.version_info > (3, 0):
         exec (code, gd, ld)
     else:
-        exec ("exec code in gd, ld")
+        exec("exec code in gd, ld")

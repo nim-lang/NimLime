@@ -1,9 +1,15 @@
+# coding=utf-8
+"""
+Dummy command for text output to a view.
+"""
+import sublime
 from sublime_plugin import TextCommand
 
 
 class NimlimeOutputCommand(TextCommand):
 
-    def run(self, edit_obj, action, args):
+    def run(self, *varargs):
+        edit_obj, action, args = varargs
         if action == 'insert':
             self.view.insert(edit_obj, *args)
         elif action == 'erase':

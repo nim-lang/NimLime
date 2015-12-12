@@ -56,12 +56,14 @@
     //        'file_name' - Name of the file the command is being run from.
     //        'view_name' - Name of the view the command is being run from.
 
+
     //// Documention Comment Continuation Settings ////
     // Unique settings suffixes:
     //   'autostop':
     //     Stop comment continuation after placing empty doc-comments
     "doccontinue.enabled": true,
     "doccontinue.autostop": true,
+
 
     //// Nimble Interface Settings ////
     // Unique settings suffixes:
@@ -195,9 +197,9 @@
     "check.external_file.enabled": true,
     "check.external_file.remember_input": true,
 
-    "check.external_file.output.send": false,
-    "check.external_file.output.show": false,
-    "check.external_file.output.clear": false,
+    "check.external_file.output.send": true,
+    "check.external_file.output.show": true,
+    "check.external_file.output.clear": true,
     "check.external_file.output.name": "Nim Check - External File",
     "check.external_file.output.method": "grouped",
     "check.external_file.output.include_context": true,
@@ -205,5 +207,11 @@
     "check.external_file.output.raw": false,
 
     // Settings for the 'clear errors' command
-    "check.clear_errors.enabled": true
+    "check.clear_errors.enabled": true,
+
+    // IDE Tool Settings //
+    "idetools.find_definition.enabled": true,
+    "idetools.find_usages.enabled": true,
+    "idetools.find_current_file_usages.enabled": true,
+    "idetools.get_suggestions.enabled": true
 }

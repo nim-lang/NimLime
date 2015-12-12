@@ -1,3 +1,7 @@
+# coding=utf-8
+"""
+Commands to expose Nimble to the user.
+"""
 from threading import Thread
 
 import sublime

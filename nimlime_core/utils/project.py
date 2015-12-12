@@ -1,3 +1,8 @@
+# coding=utf-8
+"""
+Functions for retrieving and saving the Nim project file path in a Sublime Text
+projct.
+"""
 import os
 import json
 import re
@@ -26,7 +31,7 @@ def get_project_file(win_id):
     # Try loading the session data from one of the files
     for session_path in (auto_save_session_path, regular_session_path):
         try:
-            with open(session_path, 'r') as session_file:
+            with open(session_path) as session_file:
                 session_data = json.load(session_file, strict=False)
             break
         except (IOError, ValueError):
@@ -73,11 +78,12 @@ def set_nim_project(st_project, nim_path):
             )
 
 
-def get_nim_project(window):
+def get_nim_project(window, view):
     st_project = get_project_file(window.id())
+    result = view.file_name()
 
     if st_project is not None:
-        with open(st_project, 'r') as projFile:
+        with open(st_project) as projFile:
             data = json.loads(projFile.read())
             try:
                 path = data['settings']['nim-project']
@@ -85,7 +91,7 @@ def get_nim_project(window):
                 # Get full path
                 directory = os.path.dirname(st_project)
                 path = path.replace("/", os.sep)
-                return os.path.join(directory, path)
+                result = os.path.join(directory, path)
             except:
                 pass
-    return ''
+    return result

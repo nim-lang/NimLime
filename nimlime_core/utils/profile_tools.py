@@ -1,3 +1,7 @@
+# coding=utf-8
+"""
+Profiling tools for plugin development.
+"""
 try:
     from cProfile import Profile
 except ImportError:

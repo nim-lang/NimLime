@@ -1,3 +1,7 @@
+# coding=utf-8
+"""
+Documentation retrieval code.
+"""
 import os
 import json
 
@@ -44,7 +48,6 @@ class ListModulesCommand(WindowCommand):
 
     def run(self):
         self.items = []
-
         # Parse items
         with open(PACKAGE_DIR + ListModulesCommand.path) as json_data:
             data = json.load(json_data)

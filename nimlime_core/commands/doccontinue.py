@@ -1,14 +1,15 @@
-import sublime
-
-from sublime_plugin import EventListener
+# coding=utf-8
+"""
+Document comment continuation feature.
+"""
 from nimlime_core.utils.mixins import NimLimeMixin
-
+from sublime_plugin import EventListener
 
 COMMENT_SCOPE = "comment.line.number-sign.doc-comment"
 EMPTY_COMMENT_SUFFIX = ".empty"
 
 
-class CommentListener(EventListener, NimLimeMixin):
+class CommentListener(NimLimeMixin, EventListener):
     """
     Continues Document Comment lines.
     """
@@ -21,7 +22,7 @@ class CommentListener(EventListener, NimLimeMixin):
     )
 
     def __init__(self, *args, **kwargs):
-        super(CommentListener, self).__init__(self, *args, **kwargs)
+        super(CommentListener, self).__init__(*args, **kwargs)
 
     def on_activated(self, view):
         nim_syntax = view.settings().get('syntax', None)

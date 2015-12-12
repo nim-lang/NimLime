@@ -13,6 +13,12 @@ import sublime
 
 
 def format_msg(message):
+    """
+    Used to format user messages.
+    Replaces newline characters with spaces, '\\n' with newlines, etc.
+    :type message: string
+    :rtype: string
+    """
     return (
         message
             .strip()
@@ -227,6 +233,12 @@ def run_in_thread(function, callback, *args, **kwargs):
 
 
 def exec_(code, global_dict=None, local_dict=None):
+    """
+    Cross-version exec function.
+    :type code: string
+    :type global_dict: dict[string, Any]
+    :type local_dict: dict[string, Any]
+    """
     frame = sys._getframe(1)
     gd = global_dict
     ld = local_dict

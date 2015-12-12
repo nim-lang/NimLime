@@ -2,6 +2,7 @@
 """
 Mixins used to give common functionality to NimLime commands.
 """
+import sublime
 from nimlime_core import configuration
 from nimlime_core import settings
 from nimlime_core.utils.output import (
@@ -10,9 +11,11 @@ from nimlime_core.utils.output import (
 
 
 class NimLimeMixin(object):
-    # Mixin class for commands and event listeners that implements additional
-    # functionality for setting loading, requirements, etc.
-    # Note: The docstring for the command functions as the command description.
+    """
+    Mixin class for commands and event listeners that implements additional
+    functionality for setting loading, requirements, etc.
+    Note: The docstring for the command functions as the command description.
+    """
 
     # Executable requirements.
     # Set these to 'true' in the implementing class in order to specify that
@@ -31,35 +34,43 @@ class NimLimeMixin(object):
     )
 
     def __init__(self):
-        self.reload_settings()
+        self._reload_settings()
 
-    def reload_settings(self):
-        self.load_settings()
-        settings.run_on_load_and_change('reload', self.load_settings)
+    def _reload_settings(self):
+        self._load_settings()
+        settings.run_on_load_and_change('reload', self._load_settings)
 
     def get_setting(self, key, default):
+        """
+        Retrieve the setting value associated with the given key, returning the
+        given default if the setting doesn't exist. The key must have a format
+        specifier of '{0}'!
+        :type key: string
+        :type default: Any
+        :rtype: Any
+        """
         formatted_key = key.format(self.settings_selector)
         result = settings.get(formatted_key, default)
         return result
 
-    def load_settings(self):
-        def is_setting_entry(entry):
+    def _load_settings(self):
+        def _is_setting_entry(entry):
             return (
                 len(entry) == 3 and
                 isinstance(entry[0], str) and
                 isinstance(entry[1], str)
             )
 
-        def load_entry(entry):
-            if is_setting_entry(entry):
+        def _load_entry(entry):
+            if _is_setting_entry(entry):
                 setattr(self, entry[0], self.get_setting(entry[1], entry[2]))
             elif isinstance(entry, tuple):
                 for sub_entry in entry:
-                    load_entry(sub_entry)
+                    _load_entry(sub_entry)
             else:
                 raise Exception("Bad setting entry type")
 
-        load_entry(self.setting_entries)
+        _load_entry(self.setting_entries)
 
     def is_enabled(self):
         result = (
@@ -80,6 +91,9 @@ class NimLimeMixin(object):
 
 
 class NimLimeOutputMixin(NimLimeMixin):
+    """
+    A mixin for commands that generate output.
+    """
     # As long as any output mixin has a tag matching that of an output view,
     # that output view must stay in memory. We use manual refcounting
     # to make sure of this
@@ -123,6 +137,7 @@ class NimLimeOutputMixin(NimLimeMixin):
     def write_to_output_2(self, content, window, view):
         # First, get the format tag so we know what view to retrieve
         output_view = self.console_view
+        tag = format_tag(self.output_tag, )
         if tag != self.last_output_tag:
             output_view = window.create_output_panel(tag)
             self.last_output_tag = tag

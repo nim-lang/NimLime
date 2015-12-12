@@ -73,11 +73,13 @@ def get(key, default=None):
     """
     Gets the given setting, returning the given default if the setting key
     doesn't exist.
+    :type default: Any
     :type key: string
     """
     if _settings is None:
         return default
     else:
         return _settings.get(key, default)
+
 
 _load()

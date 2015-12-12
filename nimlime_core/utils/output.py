@@ -52,8 +52,12 @@ def get_output_view(tag, strategy, name, switch_to, fallback_window):
 
 
 def show_view(window, view, is_console):
-    # Workaround for ST2 bug
-
+    """
+    Switches to the given window or view.
+    :type window: sublime_plugin.Window
+    :type view: sublime_plugin.View
+    :type is_console: bool
+    """
     if is_console:
         tag = view.settings().get('output_tag')
         window.run_command("show_panel", {"panel": "output." + tag})
@@ -62,6 +66,13 @@ def show_view(window, view, is_console):
 
 
 def format_tag(tag, window, view):
+    """
+    Format the tag using the attributes of the given window and view.
+    :type tag: string
+    :type window: sublime.Window
+    :type view: sublime.View
+    :rtype: string
+    """
     return tag.format(
             view_id=view.id(),
             buffer_id=view.id(),

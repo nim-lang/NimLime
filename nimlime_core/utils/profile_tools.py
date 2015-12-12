@@ -18,6 +18,9 @@ running = False
 
 
 def print_profile_data():
+    """
+    Print the collected profile data.
+    """
     stream = StringIO()
     statistics = Stats(profiler, stream=stream)
     statistics.sort_stats('cumulative')
@@ -26,8 +29,15 @@ def print_profile_data():
 
 
 def profile_func(func):
+    """
+    Decorator which profiles a single function.
+    Call print_profile_data to print the collected data.
+    :type func: Callable
+    :rtype: Callable
+    """
+
     @wraps(func)
-    def profile_wrapper(*args, **kwargs):
+    def _profile_wrapper(*args, **kwargs):
         global running
         if not running:
             running = True
@@ -38,4 +48,4 @@ def profile_func(func):
                 profiler.disable()
                 running = False
 
-    return profile_wrapper
+    return _profile_wrapper

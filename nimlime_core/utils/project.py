@@ -1,7 +1,7 @@
 # coding=utf-8
 """
 Functions for retrieving and saving the Nim project file path in a Sublime Text
-projct.
+project.
 """
 import os
 import json
@@ -11,7 +11,7 @@ import sublime
 
 
 # Based off of code from https://github.com/facelessuser/FavoriteFiles/
-def get_project_file(win_id):
+def _get_project_file(win_id):
     session_data = None
 
     # Construct the base settings paths
@@ -40,7 +40,7 @@ def get_project_file(win_id):
         return None
 
     # Find the window data corresponding with the given ID
-    project = find_project_in_data(session_data, win_id) or ""
+    project = _find_project_in_data(session_data, win_id) or ""
 
     # Throw out empty project names
     if re.match(".*\\.sublime-project", project) or os.path.exists(project):
@@ -49,7 +49,7 @@ def get_project_file(win_id):
     return None
 
 
-def find_project_in_data(session_data, win_id):
+def _find_project_in_data(session_data, win_id):
     # Iterates through the given session data, searching for the window
     # with the given ID, and returning the project path associated with the
     # window.
@@ -66,6 +66,11 @@ def find_project_in_data(session_data, win_id):
 
 
 def set_nim_project(st_project, nim_path):
+    """
+    Associate a nim project file with the current sublime project.
+    :type st_project: string
+    :type nim_path: string
+    """
     if st_project is not None:
         with open(st_project, "r+") as project_file:
             data = json.loads(project_file.read())
@@ -79,12 +84,18 @@ def set_nim_project(st_project, nim_path):
 
 
 def get_nim_project(window, view):
-    st_project = get_project_file(window.id())
+    """
+    Given a window and view, return the Nim project associated with it.
+    :type window: sublime_plugin.Window
+    :type view: sublime_plugin.View
+    :rtype: string
+    """
+    st_project = _get_project_file(window.id())
     result = view.file_name()
 
     if st_project is not None:
-        with open(st_project) as projFile:
-            data = json.loads(projFile.read())
+        with open(st_project) as project_file:
+            data = json.loads(project_file.read())
             try:
                 path = data['settings']['nim-project']
 
@@ -92,6 +103,6 @@ def get_nim_project(window, view):
                 directory = os.path.dirname(st_project)
                 path = path.replace("/", os.sep)
                 result = os.path.join(directory, path)
-            except:
+            except IOError:
                 pass
     return result

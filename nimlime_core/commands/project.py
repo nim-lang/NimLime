@@ -6,7 +6,7 @@ import os
 
 from sublime_plugin import WindowCommand
 from nimlime_core.utils.error_handler import catch_errors
-from nimlime_core.utils.project import get_project_file, set_nim_project
+from nimlime_core.utils.project import _get_project_file, set_nim_project
 from nimlime_core.utils.mixins import NimLimeMixin
 
 
@@ -22,7 +22,7 @@ class SetProjectCommand(NimLimeMixin, WindowCommand):
     @catch_errors
     def run(self):
         # Retrieve path of project
-        st_project = get_project_file(self.window.id())
+        st_project = _get_project_file(self.window.id())
 
         if st_project is not None:
             active_view = self.window.active_view()

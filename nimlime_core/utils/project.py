@@ -3,8 +3,8 @@
 Functions for retrieving and saving the Nim project file path in a Sublime Text
 project.
 """
-import os
 import json
+import os
 import re
 
 import sublime
@@ -68,8 +68,8 @@ def _find_project_in_data(session_data, win_id):
 def set_nim_project(st_project, nim_path):
     """
     Associate a nim project file with the current sublime project.
-    :type st_project: string
-    :type nim_path: string
+    :type st_project: str
+    :type nim_path: str
     """
     if st_project is not None:
         with open(st_project, "r+") as project_file:
@@ -86,9 +86,9 @@ def set_nim_project(st_project, nim_path):
 def get_nim_project(window, view):
     """
     Given a window and view, return the Nim project associated with it.
-    :type window: sublime_plugin.Window
-    :type view: sublime_plugin.View
-    :rtype: string
+    :type window: sublime.Window
+    :type view: sublime.View
+    :rtype: str
     """
     st_project = _get_project_file(window.id())
     result = view.file_name()

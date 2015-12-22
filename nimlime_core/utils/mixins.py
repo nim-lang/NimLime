@@ -2,12 +2,14 @@
 """
 Mixins used to give common functionality to NimLime commands.
 """
+import os
+from os import fdopen
+from tempfile import mkstemp
+
 import sublime
 from nimlime_core import configuration
 from nimlime_core import settings
-from nimlime_core.utils.output import (
-    get_output_view, show_view
-)
+from nimlime_core.utils.idetools import Nimsuggest
 
 
 class NimLimeMixin(object):
@@ -24,17 +26,24 @@ class NimLimeMixin(object):
     requires_nimble = False
     requires_nim = False
     requires_nimsuggest = False
+    requires_nim_syntax = False
 
     # Setting entries associated with the command or event listener.
     # Each entry should either be a tuple of the form
     #     (attribute_ident, entry_name, default_value)
     # or a tuple containing sub-entries of the same form.
+    settings_selector = None
     setting_entries = (
         ('enabled', '{0}.enabled', True),
     )
 
+
     def __init__(self):
         self._reload_settings()
+
+    def __getattr__(self, item):
+        # This is to satisfy static checkers, to ignore settings accesses.
+        pass
 
     def _reload_settings(self):
         self._load_settings()
@@ -45,7 +54,7 @@ class NimLimeMixin(object):
         Retrieve the setting value associated with the given key, returning the
         given default if the setting doesn't exist. The key must have a format
         specifier of '{0}'!
-        :type key: string
+        :type key: str
         :type default: Any
         :rtype: Any
         """
@@ -73,10 +82,28 @@ class NimLimeMixin(object):
         _load_entry(self.setting_entries)
 
     def is_enabled(self):
-        result = (
+        current_view = sublime.active_window().active_view()
+        syntax = current_view.settings().get('syntax', '')
+
+        # Maybe change this to something more straightforward?
+        result = bool(
             self.enabled and
-            ((not self.requires_nim) or configuration.nim_executable) and
-            ((not self.requires_nimble) or configuration.nimble_executable)
+            (
+                (not self.requires_nim_syntax) or  # If self.requires_nim
+                (syntax.find('Nim.'))
+            ) and
+            (
+                (not self.requires_nim or not self.requires_nimsuggest) or
+                configuration.nim_executable
+            ) and
+            (
+                (not self.requires_nimble) or  # If self.requires_nimble
+                configuration.nimble_executable
+            ) and
+            (
+                (not self.requires_nimsuggest) or  # If self.requires_nimsuggest
+                configuration.nimsuggest_executable
+            )
         )
         return result
 
@@ -90,6 +117,9 @@ class NimLimeMixin(object):
         return self.__doc__
 
 
+del NimLimeMixin.__getattr__
+
+
 class NimLimeOutputMixin(NimLimeMixin):
     """
     A mixin for commands that generate output.
@@ -98,7 +128,7 @@ class NimLimeOutputMixin(NimLimeMixin):
     # that output view must stay in memory. We use manual refcounting
     # to make sure of this
     last_output_tag = ''
-    console_view = None
+    last_console_view = None
 
     setting_entries = (
         NimLimeMixin.setting_entries,
@@ -111,22 +141,14 @@ class NimLimeOutputMixin(NimLimeMixin):
         ('output_name', '{0}.output.name', 'nimlime'),
     )
 
-    def get_output_view(self, window, view):
-        tag = self.output_tag.format(
-                view_id=view.id(),
-                buffer_id=view.id(),
-                file_name=view.file_name(),
-                view_name=view.name(),
-                window_id=window.id()
-        )
-
+    def _get_output_view(self, tag, window, view):
         if self.output_method == 'console':
-            output_view = self.console_view
+            output_view = self.last_console_view
             if tag != self.last_output_tag:
                 output_view = window.create_output_panel(tag)
                 self.last_output_tag = tag
-                self.console_view = output_view
-                return window, output_view
+                self.last_console_view = output_view
+            return window, output_view
 
         elif self.output_method == 'grouped':
             for output_window in sublime.windows():
@@ -134,58 +156,100 @@ class NimLimeOutputMixin(NimLimeMixin):
                     if view.settings().get('output_tag') == tag:
                         return output_window, output_view
 
-    def write_to_output_2(self, content, window, view):
-        # First, get the format tag so we know what view to retrieve
-        output_view = self.console_view
-        tag = format_tag(self.output_tag, )
-        if tag != self.last_output_tag:
-            output_view = window.create_output_panel(tag)
-            self.last_output_tag = tag
-            self.console_view = output_view
+        output_view = window.new_file()
+        output_view.set_name(self.output_name)
+        output_view.settings().set('ouput_tag', tag)
+        output_view.set_scratch(True)
+        return window, output_view
 
-        if self.output_method == 'console':
-            # Use a simple per-command view pseudo-cache.
-            # Trying to create a true cache would be too complicated
-            output_view = self.console_view
-            if tag != self.last_output_tag:
-                output_view = window.create_output_panel(tag)
-                self.last_output_tag = tag
-                self.console_view = output_view
 
-        else:
-            for window in sublime.windows():
-                for view in window.views():
-                    if view.settings().get('output_tag') == tag:
-                        output_view = view
-                        break
-
-    def write_to_output(self, content, source_window, source_view):
-        # First, get the format tag so we know what view to retrieve
-
+    def write_to_output(self, content, window, view):
+        # First, get the format tag
+        """
+        Write the given content to an output view, as specified by the output
+        settings.
+        :type content: str
+        :type window: sublime.Window
+        :type view: sublime.View
+        """
+        if not self.send_output:
+            return
+        
         tag = self.output_tag.format(
-                view_id=view.id(),
-                buffer_id=view.id(),
-                file_name=view.file_name(),
-                view_name=view.name(),
-                window_id=window.id()
+            view_id=view.id(),
+            buffer_id=view.id(),
+            file_name=view.file_name(),
+            view_name=view.name(),
+            window_id=window.id()
         )
 
-        output_window, output_view = get_output_view(
-                tag, self.output_method, self.output_name, self.show_output,
-                source_window
-        )
+        # Then, get the window and view
+        output_window, output_view = self._get_output_view(tag, window, view)
 
+        # Output to the view
         if self.clear_output:
             output_view.run_command(
-                    'nimlime_output',
-                    dict(action='erase', args=(0, output_view.size()))
+                'nimlime_output',
+                dict(action='erase', args=(0, output_view.size()))
             )
         output_view.run_command(
-                'nimlime_output',
-                dict(action='insert', args=(output_view.size(), content))
+            'nimlime_output',
+            dict(action='insert', args=(output_view.size(), content))
         )
 
-        if self.show_output:
-            output_view.settings().set('output_tag', tag)
-            is_console = (self.output_method == 'console')
-            show_view(output_window, output_view, is_console)
+        # Show the view
+        if self.output_method == 'console':
+            tag = view.settings().get('output_tag')
+            window.run_command("show_panel", {"panel": "output." + tag})
+        elif self.output_method == 'grouped':
+            window.focus_view(view)
+
+
+class IdetoolMixin(object):
+    """
+    Mixin for classes needing to use nimsuggest.
+    """
+    nimsuggest_instances = {}
+    tmp_files = {}
+
+    def get_ide_parameters(self, window, view):
+        """
+        Retrieve most of the information needed for a nimsuggest call using
+        the given window and view.
+        :type window: sublime.Window
+        :type view: sublime.View
+        :rtype: tuple[str, str, int, int]
+        """
+        nim_file = view.file_name()
+
+        tmp_pair = self.tmp_files.get(nim_file, None)
+        if tmp_pair is None:
+            a, b = mkstemp()
+            tmp_pair = (fdopen(a, 'wb', 0), b)
+            self.tmp_files[nim_file] = tmp_pair
+        handle, dirty_file = tmp_pair
+
+        handle.truncate(0)
+        handle.write(
+            view.substr(sublime.Region(0, view.size())).encode('utf-8'))
+        handle.flush()
+
+        line, column = view.rowcol(view.sel()[0].a)
+        line += 1
+        column += 1
+
+        return nim_file, dirty_file, line, column
+
+    def get_nimsuggest_instance(self, project_file):
+        """
+        Retrieve (or create) a nimsuggest instance associated with the given
+        project file.
+        :type project_file: str
+        :rtype: nimlime_core.utils.idetools.IdeTool
+        """
+        canonical_project = os.path.normcase(os.path.normpath(project_file))
+        instance = self.nimsuggest_instances.get(canonical_project)
+        if instance is None:
+            instance = Nimsuggest(canonical_project)
+            self.nimsuggest_instances[canonical_project] = instance
+        return instance

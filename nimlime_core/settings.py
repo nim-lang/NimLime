@@ -49,7 +49,7 @@ def run_on_load(callback):
 def add_on_change(key, callback):
     """
     Sets the callback to run when the given settings key changes.
-    :type key: string
+    :type key: str
     :type callback: () -> None
     """
     if _settings is None:
@@ -62,7 +62,7 @@ def run_on_load_and_change(key, callback):
     """
     Runs the given callback when settings are loaded,
     then again whenever the given settings key changes.
-    :type key: string
+    :type key: str
     :type callback: () -> None
     """
     run_on_load(callback)
@@ -74,7 +74,7 @@ def get(key, default=None):
     Gets the given setting, returning the given default if the setting key
     doesn't exist.
     :type default: Any
-    :type key: string
+    :type key: str
     """
     if _settings is None:
         return default

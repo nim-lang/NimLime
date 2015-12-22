@@ -6,8 +6,8 @@ try:
     from cProfile import Profile
 except ImportError:
     from profile import Profile
-from pstats import Stats
 from functools import wraps
+from pstats import Stats
 
 try:
     from StringIO import StringIO

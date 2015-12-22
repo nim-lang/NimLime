@@ -21,6 +21,8 @@ class CommentListener(NimLimeMixin, EventListener):
         ('autostop', '{0}.autostop', True)
     )
 
+    autostop = True
+
     def __init__(self, *args, **kwargs):
         super(CommentListener, self).__init__(*args, **kwargs)
 

@@ -30,25 +30,39 @@ ANSWER_REGEX = r"""
 .*\n?
 """
 
+def check_process(process, args, failure_count):
+    if process is None or process.poll() is not None:
+        process = subprocess.Popen(**args)
+    return process, failure_count
 
-def _nimsuggest_handler(process, input_queue):
-    while True:
+
+def _nimsuggest_handler(input_queue, process_args):
+    process, fail_count = check_process(None, process_args, -1)
+
+    while input_queue.nim_running:
+        process, fail_count = check_process(process, process_args, fail_count)
+        if fail_count > 10:
+            pass
+
         input_data, callback = input_queue.get()
         process.stdin.write(input_data)
+        process.stdin.flush()
 
         raw_output = bytearray()
         while True:
+            process.stdout.flush()
             output_char = process.stdout.read(1)
             if not output_char:
-                # Subprocess is dead
-                return
+                wrapped_callback = lambda: callback((raw_output, None))
+                break
 
-            raw_output.append(output_char)
+            raw_output.extend(output_char)
             newline_found = raw_output.find(
-                    DOUBLE_NEWLINE_BYTE,
-                    len(raw_output) - len(DOUBLE_NEWLINE_BYTE)
+                DOUBLE_NEWLINE_BYTE,
+                len(raw_output) - len(DOUBLE_NEWLINE_BYTE)
             )
             if newline_found != -1:
+                wrapped_callback = lambda: callback((raw_output, entries))
                 break
 
         # Parse the data
@@ -57,7 +71,12 @@ def _nimsuggest_handler(process, input_queue):
 
         # Run the callback
         input_queue.task_done()
-        sublime.set_timeout(0, lambda: callback(entries))
+        print("Finished idetool request")
+        sublime.set_timeout(wrapped_callback, 0)
+
+    # Cleanup
+    if process.poll() is None:
+        process.kill()
 
 
 class Nimsuggest(object):
@@ -69,21 +88,31 @@ class Nimsuggest(object):
     def __init__(self, project_file):
         """
         Create a Nimsuggest instance using the given project file path.
-        :type project_file: string
+        :type project_file: str
         """
 
-        # Nimsuggest process
+        # Nimsuggest process handlers
         self.input_queue = None
-        self.nimsuggest_process = None
         self.nimsuggest_handler = None
 
         # Information needed to start a nimsuggest process
-        self.process_args = ('nimsuggest', 'stdin', project_file)
         self.environment = os.environ.copy()
         self.environment['PATH'] = "{0};{1}".format(
-                os.path.dirname(configuration.nimsuggest_executable),
-                self.environment['PATH']
+            os.path.dirname(configuration.nim_executable),
+            self.environment['PATH']
         )
+
+        self.process_args = dict(
+            executable=configuration.nimsuggest_executable,
+            args=('nimsuggest', 'stdin', '--interactive:false', project_file),
+            env=self.environment,
+            universal_newlines=False,
+            creationflags=0x08000000,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        )
+
 
     def start_nimsuggest(self):
         """
@@ -91,24 +120,14 @@ class Nimsuggest(object):
         """
         # Create input/output queues
         self.input_queue = Queue()
+        self.input_queue.nim_running = True
 
-        # Create process
-        self.nimsuggest_process = subprocess.Popen(
-                executable=configuration.nimsuggest_executable,
-                args=self.process_args,
-                env=self.environment,
-                creationflags=0x08000000,
-                stdin=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE
-        )
-
-        # Start handler
+        # Start request handler
         self.nimsuggest_handler = Thread(
-                target=_nimsuggest_handler,
-                args=(
-                self.input_queue, self.output_queue, self.nimsuggest_process)
+            target=_nimsuggest_handler,
+            args=(self.input_queue, self.process_args)
         )
+
         self.nimsuggest_handler.daemon = True  # thread dies with the program
         self.nimsuggest_handler.start()
 
@@ -116,18 +135,27 @@ class Nimsuggest(object):
         """
         Stop the internal nimsuggest process.
         """
-        # First, kill the subprocess
-        if self.nimsuggest_process.poll() is None:
-            self.nimsuggest_process.kill()
-
-        # Next, clear the thread
+        # We use the input_queue to signal to the handler thread to cleanup.
+        if self.input_queue is not None:
+            self.input_queue.nim_running = False
         self.nimsuggest_handler = None
 
     def run_command(self, command, nim_file, dirty_file, line, column, cb):
         # First, check that the process and thread are active
+        """
+        Run the given nimsuggest command.
+        :type command: str
+        :type nim_file: str
+        :type dirty_file: str
+        :type line: int
+        :type column: int
+        :type cb: (str, list[Any]) -> None
+        """
         alive = (
+            self.nimsuggest_handler is not None and
+            self.nimsuggest_process is not None and
             self.nimsuggest_handler.is_alive() and
-            self.nimsuggest_process.poll is None
+            self.nimsuggest_process.poll() is None
         )
         if not alive:
             self.stop_nimsuggest()
@@ -136,11 +164,11 @@ class Nimsuggest(object):
         # Next, prepare the command
         if dirty_file:
             formatted_command = '{0}\t"{1}";"{2}":{3}:{4}\r\n'.format(
-                    command, nim_file, dirty_file, line, column
+                command, nim_file, dirty_file, line, column
             ).encode('utf-8')
         else:
             formatted_command = '{0}\t"{1}":{2}:{3}\r\n'.format(
-                    command, nim_file, line, column
+                command, nim_file, line, column
             ).encode('utf-8')
         self.input_queue.put((formatted_command, cb))
 

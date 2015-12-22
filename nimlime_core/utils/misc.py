@@ -2,12 +2,12 @@
 """
 Misc. functions that don't really fit anywhere else.
 """
+import os
+import subprocess
+import sys
+from functools import wraps
 from threading import Thread
 from weakref import proxy
-from functools import wraps
-import sys
-import subprocess
-import os
 
 import sublime
 
@@ -16,19 +16,25 @@ def format_msg(message):
     """
     Used to format user messages.
     Replaces newline characters with spaces, '\\n' with newlines, etc.
-    :type message: string
-    :rtype: string
+    :type message: str
+    :rtype: str
     """
     return (
         message
             .strip()
             .replace('\\n\n', '\\n')
             .replace('\n', ' ')
-            .replace('\\n','\n')
+            .replace('\\n', '\n')
     )
 
 
 def get_next_method(generator_instance):
+    """
+    Cross-platform function that retrieves the 'next' method from a generator
+    instance.
+    :type generator_instance: Any
+    :rtype: () -> Any
+    """
     if sys.version_info > (3, 0):
         return generator_instance.__next__
     else:
@@ -55,7 +61,7 @@ def send_self(use_proxy):
     # decorator mechanism.
     def _send_self(func):
         @wraps(func)
-        def send_self_wrapper(*args, **kwargs):
+        def _send_self_wrapper(*args, **kwargs):
             generator = func(*args, **kwargs)
             generator.send(None)
             if _use_proxy:
@@ -64,7 +70,7 @@ def send_self(use_proxy):
                 generator.send(generator)
             return generator
 
-        return send_self_wrapper
+        return _send_self_wrapper
 
     # If the argument is a callable, we've been used without being directly
     # passed an argument by the user, and thus should call _send_self directly
@@ -106,7 +112,7 @@ def loop_status_msg(frames, speed, view=None, key=''):
     flag.flag = False
 
     @send_self
-    def loop_status_generator():
+    def _loop_status_generator():
         self = yield
 
         # Get the correct status function
@@ -125,11 +131,11 @@ def loop_status_msg(frames, speed, view=None, key=''):
             flag.flag()
         yield
 
-    def stop_status_loop(callback=True):
+    def _stop_status_loop(callback=True):
         flag.flag = callback
 
-    sublime.set_timeout(loop_status_generator)
-    return stop_status_loop
+    sublime.set_timeout(_loop_status_generator)
+    return _stop_status_loop
 
 
 class _FlagObject(object):
@@ -158,10 +164,9 @@ def view_has_nim_syntax(view=None):
 def trim_region(view, region):
     """
     Trim a region of whitespace.
-
-    Args:
-        region ():
-        view ():
+    :type region: sublime.Region
+    :type view: sublime.View
+    :rtype: sublime.Region
     """
     text = view.substr(region)
     start = region.a + ((len(text) - 1) - (len(text.strip()) - 1))
@@ -170,20 +175,50 @@ def trim_region(view, region):
 
 
 def escape_shell(s):
+    """
+    Escape a string so that it is a shell string.
+    :type s: str
+    :rtype: str
+    """
     "'" + s.replace("'", "'\"'\"'") + "'"
     return s
 
 
-def run_process(cmd, callback=None):
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT, shell=True)
+def run_process(cmd, callback=None, timeout=0, *args, **kwargs):
+    """
+    Run the given process in another thread. The callback, if given, will be
+    passed the process and its output when the process finishes.
+    :type cmd: list[str]
+    :type callback: (subprocess.Popen, bytearray)
+    """
+    result = Thread(
+        target=_run_process_worker,
+        args=(cmd, callback, timeout, args, kwargs)
+    )
+    result.daemon = False
+    result.start()
+    return result
 
-    output = process.communicate()[0].decode('UTF-8')
 
-    if callback is not None:
-        sublime.set_timeout(lambda: callback((output, process)))
-    else:
-        return output, process
+def _run_process_worker(cmd, callback, timeout, args, kwargs):
+    process = subprocess.Popen(
+        cmd,
+        creationflags=0x08000000,
+        universal_newlines=True,
+        *args,
+        **kwargs
+    )
+
+    if timeout:
+        def kill_process():
+            if process.poll() is None:
+                process.kill()
+
+        sublime.set_timeout(kill_process, int(timeout * 1000))
+
+    stdout, stderr = process.communicate()
+    sublime.set_timeout(lambda: callback((process, stdout, stderr)), 0)
+
 
 def split_semicolons(string):
     # I hate direct string manipulation in python, as immutable strings
@@ -191,10 +226,11 @@ def split_semicolons(string):
     sections = []
     found_caret = False
     start = 0
+    end = 0
     for end, character in enumerate(string):
         if found_caret:
             found_caret = False
-            sections.append(string[start:end-1])
+            sections.append(string[start:end - 1])
             start = end
             continue
 
@@ -202,16 +238,23 @@ def split_semicolons(string):
             found_caret = True
         elif character == ';':
             sections.append(string[start:end])
-            start = end+1
+            start = end + 1
             yield ''.join(sections)
             sections = []
 
-    if start != end+1:
-        sections.append(string[start:end+1])
+    if start != end + 1:
+        sections.append(string[start:end + 1])
     yield ''.join(sections)
 
 
 def find_file(file_name, path_list=None):
+    """
+    Find a file in the given path list. If a path list is not given, use the
+    system path.
+    :type file_name: str
+    :type path_list: list[str]
+    :rtype: str|None
+    """
     pl = path_list
     if path_list is None:
         pl = split_semicolons(os.environ.get('PATH', ''))
@@ -223,11 +266,22 @@ def find_file(file_name, path_list=None):
 
 
 def run_in_thread(function, callback, *args, **kwargs):
-    def run_in_thread_inner():
+    """
+    Run the given function in a thread, calling the callback when the function
+    completes.
+    :type function: Any
+    :type callback: Any
+    :type args: Any
+    :type kwargs: Any
+    :rtype: Thread
+    """
+
+    def _run_in_thread_inner():
         result = function(*args, **kwargs)
         sublime.set_timeout(lambda: callback(result))
 
-    t = Thread(target=run_in_thread_inner)
+    t = Thread(target=_run_in_thread_inner)
+    t.daemon = False
     t.start()
     return t
 
@@ -235,9 +289,9 @@ def run_in_thread(function, callback, *args, **kwargs):
 def exec_(code, global_dict=None, local_dict=None):
     """
     Cross-version exec function.
-    :type code: string
-    :type global_dict: dict[string, Any]
-    :type local_dict: dict[string, Any]
+    :type code: str
+    :type global_dict: dict[str, Any]
+    :type local_dict: dict[str, Any]
     """
     frame = sys._getframe(1)
     gd = global_dict
@@ -250,4 +304,4 @@ def exec_(code, global_dict=None, local_dict=None):
     if sys.version_info > (3, 0):
         exec (code, gd, ld)
     else:
-        exec("exec code in gd, ld")
+        exec ("exec code in gd, ld")

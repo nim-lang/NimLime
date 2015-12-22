@@ -26,10 +26,10 @@ def gen_exe_check(program_name, setting_key, default_exe):
     Generates a function that checks if a program is on the path, based off
     of settings. May also notify the user if the check can't find the executable
     or the executable doesn't exist.
-    :type default_exe: string
-    :type setting_key: string
-    :type program_name: string
-    :rtype: () -> string
+    :type default_exe: str
+    :type setting_key: str
+    :type program_name: str
+    :rtype: () -> str
     """
 
     def _load():

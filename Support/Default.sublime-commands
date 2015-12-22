@@ -49,12 +49,12 @@
         "command": "nim_clear_errors"
     },
     {
-        "caption": "Nim: Find Usages In Current File",
-        "command": "find_nim_usages_in_current_file"
+        "caption": "Nim: Goto Definition",
+        "command": "nim_goto_definition"
     },
     {
-        "caption": "Nim: Find Definition",
-        "command": "nim_find_definition"
+        "caption": "Nim: Show Definition",
+        "command": "nim_show_definition"
     },
     {
         "caption": "Nim: Find Usages",
@@ -66,6 +66,6 @@
     },
     {
         "caption": "Nim: Get Suggestion",
-        "command": "get_nim_suggestions"
+        "command": "nim_get_suggestions"
     }
 ]

@@ -11,10 +11,10 @@ EMPTY_COMMENT_SUFFIX = ".empty"
 
 class CommentListener(NimLimeMixin, EventListener):
     """
-    Continues Document Comment lines.
+    Continues document comment blocks.
     """
-    active = True
-    already_running = True
+    requires_nim_syntax = True
+
     settings_selector = 'doccontinue'
     setting_entries = (
         NimLimeMixin.setting_entries,
@@ -24,16 +24,17 @@ class CommentListener(NimLimeMixin, EventListener):
     autostop = True
 
     def __init__(self, *args, **kwargs):
+        self.active = True
+        self.already_running = False
         super(CommentListener, self).__init__(*args, **kwargs)
 
     def on_activated(self, view):
-        nim_syntax = view.settings().get('syntax', None)
-        if self.enabled and not self.active:
-            if nim_syntax is not None and "nim" in nim_syntax.lower():
-                self.active = True
+        if self.is_enabled(view):
+            self.active = True
 
     def on_deactivated(self, view):
-        self.active = False
+        if not self.is_enabled(view):
+            self.active = False
 
     def on_modified(self, view):
         # Pre-process stage

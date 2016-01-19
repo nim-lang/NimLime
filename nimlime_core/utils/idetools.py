@@ -16,6 +16,7 @@ try:
 except ImportError:
     from queue import Queue, Empty  # python 3.x
 
+sys.path.append("C:\\Users\\Clay\\Apps\\winpdb-1.4.8\\")
 ON_POSIX = 'posix' in sys.builtin_module_names
 DOUBLE_NEWLINE_BYTE = '\r\n\r\n'.encode()
 ANSWER_REGEX = r"""
@@ -26,11 +27,18 @@ ANSWER_REGEX = r"""
 (?P<file_path>[^\t]*)\t
 (?P<line>[^\t]*)\t
 (?P<column>[^\t]*)\t
-(?P<docstring>[^\t]*)\t
-.*\n?
+(?P<docstring>[^\t]*)\n?
 """
 
+
 def check_process(process, args, failure_count):
+    """
+    Check if the process is alive, if it isn't, restart it.
+    :type process: subprocess.Popen|None
+    :type args:
+    :type failure_count:
+    :rtype:
+    """
     if process is None or process.poll() is not None:
         process = subprocess.Popen(**args)
     return process, failure_count
@@ -38,21 +46,26 @@ def check_process(process, args, failure_count):
 
 def _nimsuggest_handler(input_queue, process_args):
     process, fail_count = check_process(None, process_args, -1)
+    input_queue.nimsuggest_process = process
 
     while input_queue.nim_running:
         process, fail_count = check_process(process, process_args, fail_count)
+        input_queue.nimsuggest_process = process
         if fail_count > 10:
-            pass
+            break
 
         input_data, callback = input_queue.get()
         process.stdin.write(input_data)
         process.stdin.flush()
 
+        # Assigned to later
+        entries = None
+
         raw_output = bytearray()
         while True:
             process.stdout.flush()
             output_char = process.stdout.read(1)
-            if not output_char:
+            if output_char == b'':
                 wrapped_callback = lambda: callback((raw_output, None))
                 break
 
@@ -68,10 +81,12 @@ def _nimsuggest_handler(input_queue, process_args):
         # Parse the data
         output = raw_output.decode('utf-8')
         entries = re.findall(ANSWER_REGEX, output, re.X)
+        if len(entries) == 0:
+            print("No entries found. Output:")
+            print(output)
 
         # Run the callback
         input_queue.task_done()
-        print("Finished idetool request")
         sublime.set_timeout(wrapped_callback, 0)
 
     # Cleanup
@@ -104,7 +119,7 @@ class Nimsuggest(object):
 
         self.process_args = dict(
             executable=configuration.nimsuggest_executable,
-            args=('nimsuggest', 'stdin', '--interactive:false', project_file),
+            args=['nimsuggest', 'stdin', '--interactive:false', project_file],
             env=self.environment,
             universal_newlines=False,
             creationflags=0x08000000,
@@ -112,7 +127,6 @@ class Nimsuggest(object):
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
         )
-
 
     def start_nimsuggest(self):
         """
@@ -153,9 +167,9 @@ class Nimsuggest(object):
         """
         alive = (
             self.nimsuggest_handler is not None and
-            self.nimsuggest_process is not None and
+            self.input_queue.nimsuggest_process is not None and
             self.nimsuggest_handler.is_alive() and
-            self.nimsuggest_process.poll() is None
+            self.input_queue.nimsuggest_process.poll() is None
         )
         if not alive:
             self.stop_nimsuggest()

@@ -2,19 +2,19 @@
 """
 Commands to expose Nimble to the user.
 """
-from threading import Thread
 
 import subprocess
 
 import sublime
-from sublime_plugin import ApplicationCommand
 from nimlime_core import configuration
-from nimlime_core.utils.mixins import NimLimeOutputMixin
 from nimlime_core.utils.error_handler import catch_errors
 from nimlime_core.utils.misc import (
     send_self, loop_status_msg, busy_frames, get_next_method,
     run_process, escape_shell
 )
+from nimlime_core.utils.mixins import NimLimeOutputMixin
+from sublime_plugin import ApplicationCommand
+
 
 class NimbleMixin(NimLimeOutputMixin):
     requires_nimble = True
@@ -339,11 +339,13 @@ class NimbleUninstallCommand(NimLimeOutputMixin, ApplicationCommand):
                         )
         yield
 
+
 def run_nimble(cmd, callback, timeout):
     run_process(
         cmd, callback, timeout,
         stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
+
 
 def parse_package_descriptions(descriptions):
     package_list = []

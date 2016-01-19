@@ -188,7 +188,7 @@ def run_process(cmd, callback=None, timeout=0, *args, **kwargs):
     """
     Run the given process in another thread. The callback, if given, will be
     passed the process and its output when the process finishes.
-    :type cmd: list[str]
+    :type cmd: list[str]|tuple
     :type callback: (subprocess.Popen, bytearray)
     """
     result = Thread(
@@ -284,6 +284,21 @@ def run_in_thread(function, callback, *args, **kwargs):
     t.daemon = False
     t.start()
     return t
+
+
+def samefile(path_one, path_two):
+    """
+    Cross-version samefile function
+    :type path_one: str
+    :type path_two: str
+    :rtype: bool
+    """
+    stat_one = os.stat(path_one)
+    stat_two = os.stat(path_two)
+    return (
+        stat_one.st_ino == stat_two.st_ino and
+        stat_one.st_dev == stat_two.st_dev
+    )
 
 
 def exec_(code, global_dict=None, local_dict=None):

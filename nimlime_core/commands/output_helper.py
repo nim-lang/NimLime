@@ -9,6 +9,11 @@ from sublime_plugin import TextCommand
 class NimlimeOutputCommand(TextCommand):
 
     def run(self, edit_obj, action, args):
+        """
+        :type edit_obj: Any
+        :type action: str
+        :type args: Any
+        """
         if action == 'insert':
             self.view.insert(edit_obj, *args)
         elif action == 'erase':

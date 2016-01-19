@@ -11,6 +11,7 @@ from nimlime_core import configuration
 from nimlime_core import settings
 from nimlime_core.utils.idetools import Nimsuggest
 
+SUBLIME_VERSION = int(sublime.version())
 
 class NimLimeMixin(object):
     """
@@ -21,12 +22,14 @@ class NimLimeMixin(object):
 
     # Executable requirements.
     # Set these to 'true' in the implementing class in order to specify that
-    # the command should only be enabled when the given executable is present.
-    # in the system
-    requires_nimble = False
-    requires_nim = False
-    requires_nimsuggest = False
-    requires_nim_syntax = False
+    # the command should only be visible/enabled when the stated condition is
+    # true
+    requires_nimble = False     # A valid Nimble executable is present.
+    requires_nim = False        # A valid Nim executable is present.
+    requires_nimsuggest = False # A valid Nimsuggest executable is present.
+    requires_nim_syntax = False # The current view must be using Nim syntax.
+    st2_compatible = True         # Runs on Sublime Text 2.
+    st3_compatible = True         # Runs on Sublime Text 3.
 
     # Setting entries associated with the command or event listener.
     # Each entry should either be a tuple of the form
@@ -81,13 +84,13 @@ class NimLimeMixin(object):
 
         _load_entry(self.setting_entries)
 
-    def is_enabled(self):
-        current_view = sublime.active_window().active_view()
-        syntax = current_view.settings().get('syntax', '')
+    def is_enabled(self, view=None):
+        if view is None:
+            view = sublime.active_window().active_view()
+        syntax = view.settings().get('syntax', '')
 
         # Maybe change this to something more straightforward?
         result = bool(
-            self.enabled and
             (
                 (not self.requires_nim_syntax) or  # If self.requires_nim
                 (syntax.find('Nim.'))
@@ -103,6 +106,10 @@ class NimLimeMixin(object):
             (
                 (not self.requires_nimsuggest) or  # If self.requires_nimsuggest
                 configuration.nimsuggest_executable
+            ) and
+            (
+                (self.st2_compatible and (2 <= SUBLIME_VERSION < 3)) or
+                (self.st3_compatible and (3 <= SUBLIME_VERSION))
             )
         )
         return result
@@ -229,6 +236,7 @@ class IdetoolMixin(object):
             self.tmp_files[nim_file] = tmp_pair
         handle, dirty_file = tmp_pair
 
+        handle.seek(0)
         handle.truncate(0)
         handle.write(
             view.substr(sublime.Region(0, view.size())).encode('utf-8'))

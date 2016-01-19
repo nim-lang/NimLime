@@ -87,18 +87,21 @@ generator_error_handler_impl = """
             if enabled:
                 try:
                     yield from function(*args, **kwargs)
-                except:
+                except Exception:
+                    print_stack()
                     _handle_error()
+                    raise
             else:
                 yield from function(*args, **kwargs)
 """
 
 other_error_handler_impl = """
-        function()
+        error_handler = function
 """
 catch_errors = None
 error_wrapper_impl = """
 from inspect import isgeneratorfunction
+from traceback import print_stack
 def catch_errors(function):
     if isgeneratorfunction(function):
 {0}
@@ -108,8 +111,9 @@ def catch_errors(function):
             if enabled:
                 try:
                     return function(*args, **kwargs)
-                except:
+                except Exception:
                     _handle_error()
+                    raise
     return error_handler
 """
 
@@ -122,12 +126,16 @@ else:
 def _handle_error():
     global notified_user, error_msg, critical_error_msg
     try:
-        traceback.print_exc()
         with open(logfile_path, 'a+') as logfile:
-            logfile.write(strftime("\n\n%Y-%m-%d %H:%M:%S\n"))
-            traceback.print_exc(None, logfile)
+            logfile.write(strftime("\n\n%Y-%m-%d: %H:%M:%S\n"))
+            logfile.write("[Stack frames]\n")
+            for thread_id, stack_frame in sys._current_frames().items():
+                logfile.write("[Thread {0}]\n".format(thread_id))
+                traceback.print_stack(stack_frame, file=logfile)
+            logfile.write("Main ")
+            traceback.print_exc(file=logfile)
         message = error_msg
-    except:
+    except Exception:
         print("\nError handler exception:")
         traceback.print_exc()
         message = critical_error_msg

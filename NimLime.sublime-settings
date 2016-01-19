@@ -1,6 +1,9 @@
 {
     // Misc. Settings //
     "nim.executable": "nim",
+    // Executable paths.
+    // These *must* be in absolute form, or the name of the executable
+    // (if it's in the PATH environment variable)
     "nimble.executable": "nimble",
     "error_handler.enabled": true,
     "error_handler.logpath": "",

@@ -159,15 +159,15 @@ proc setupCompiler(projectPath: string) =
     condsyms.initDefines()
     defineSymbol "nimsuggest"
 
-    gProjectName = projectPath
+    gProjectName = unixToNativePath(projectPath)
     if gProjectName != "":
       try:
         gProjectFull = canonicalizePath(gProjectName)
       except OSError:
         gProjectFull = gProjectName
+        
       var p = splitFile(gProjectFull)
       gProjectPath = p.dir
-      gProjectName = p.name
     else:
       gProjectPath = getCurrentDir()
 
@@ -255,8 +255,21 @@ proc main =
   msgs.writelnHook = (proc (msg: string) = discard)
   compileProject()
   msgs.writelnHook = oldHook
+
+  # echo("gCmd: ", gCmd)
+  # echo("gGlobalOptions: ", gGlobalOptions)
+  # echo("gProjectFull: ", gProjectFull)
+  # echo("gProjectPath: ", gProjectPath)
+  # echo("gVerbosity: ", gVerbosity)
+  # echo("gProjectName: ", gProjectName)
+  # echo("gIdeCmd: ", gIdeCmd)
+  # echo("gProjectMainIdx: ", gProjectMainIdx)
+  # echo("gErrorCounter: ", gErrorCounter)
+  # echo("gPrefixDir: ", gPrefixDir)
+  # echo("gTrackPos: ", gTrackPos)
+
   data.mainCommand()
 
-suggestVersion = 2
+suggestVersion = 1
 when isMainModule:
   main()

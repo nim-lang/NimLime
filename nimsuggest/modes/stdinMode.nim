@@ -64,5 +64,5 @@ method mainCommand(data: StdinModeData) =
   while readLineFromStdin(prefix, line):
     flushFile(stdin)
     parseCmdLine line
-    echo "a\n\n"
+    echo("\n")
     flushFile(stdout)

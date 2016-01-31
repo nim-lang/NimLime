@@ -1,7 +1,12 @@
 {
     // Misc. Settings //
     "nim.executable": "nim",
+    // Executable paths.
+    // These *must* be in absolute form, or the name of the executable
+    // (if it's in the PATH environment variable)
     "nimble.executable": "nimble",
+    "error_handler.enabled": true,
+    "error_handler.logpath": "",
 
     "translate_tabs_to_spaces": true,
     "enable_nim_completions": true,
@@ -54,12 +59,14 @@
     //        'file_name' - Name of the file the command is being run from.
     //        'view_name' - Name of the view the command is being run from.
 
+
     //// Documention Comment Continuation Settings ////
     // Unique settings suffixes:
     //   'autostop':
     //     Stop comment continuation after placing empty doc-comments
     "doccontinue.enabled": true,
     "doccontinue.autostop": true,
+
 
     //// Nimble Interface Settings ////
     // Unique settings suffixes:
@@ -71,8 +78,8 @@
     // Settings for the 'nimble update' command
     "nimble.update.enabled": false,
 
-    "nimble.update.output.send": true,
-    "nimble.update.output.show": true,
+    "nimble.update.output.send": false,
+    "nimble.update.output.show": false,
     "nimble.update.output.clear": false,
     "nimble.update.output.name": "Nimble Update Output",
     "nimble.update.output.method": "grouped",
@@ -83,9 +90,9 @@
     "nimble.list.enabled": true,
     "nimble.list.quickpanel.send": true,
 
-    "nimble.list.output.send": true,
-    "nimble.list.output.show": true,
-    "nimble.list.output.clear": true,
+    "nimble.list.output.send": false,
+    "nimble.list.output.show": false,
+    "nimble.list.output.clear": false,
     "nimble.list.output.name": "Nimble List Output",
     "nimble.list.output.method": "grouped",
     "nimble.list.output.tag": "nimble",
@@ -95,9 +102,9 @@
     "nimble.search.enabled": true,
     "nimble.search.quickpanel.send": true,
 
-    "nimble.search.output.send": true,
-    "nimble.search.output.show": true,
-    "nimble.search.output.clear": true,
+    "nimble.search.output.send": false,
+    "nimble.search.output.show": false,
+    "nimble.search.output.clear": false,
     "nimble.search.output.name": "Nimble Search Output",
     "nimble.search.output.method": "grouped",
     "nimble.search.output.tag": "nimble",
@@ -107,9 +114,9 @@
     "nimble.install.enabled": true,
     "nimble.install.preemptive_search": false,
 
-    "nimble.install.output.send": true,
-    "nimble.install.output.show": true,
-    "nimble.install.output.clear": true,
+    "nimble.install.output.send": false,
+    "nimble.install.output.show": false,
+    "nimble.install.output.clear": false,
     "nimble.install.output.name": "Nimble Install Output",
     "nimble.install.output.method": "grouped",
     "nimble.install.output.tag": "nimble",
@@ -118,9 +125,9 @@
     // Settings for the 'nimble uninstall' command
     "nimble.uninstall.enabled": true,
 
-    "nimble.uninstall.output.send": true,
-    "nimble.uninstall.output.show": true,
-    "nimble.uninstall.output.clear": true,
+    "nimble.uninstall.output.send": false,
+    "nimble.uninstall.output.show": false,
+    "nimble.uninstall.output.clear": false,
     "nimble.uninstall.output.name": "Nimble Uninstall Output",
     "nimble.uninstall.output.method": "grouped",
     "nimble.uninstall.output.tag": "nimble",
@@ -197,7 +204,7 @@
 
     "check.external_file.output.send": true,
     "check.external_file.output.show": true,
-    "check.external_file.output.clear": false,
+    "check.external_file.output.clear": true,
     "check.external_file.output.name": "Nim Check - External File",
     "check.external_file.output.method": "grouped",
     "check.external_file.output.include_context": true,
@@ -205,5 +212,11 @@
     "check.external_file.output.raw": false,
 
     // Settings for the 'clear errors' command
-    "check.clear_errors.enabled": true
+    "check.clear_errors.enabled": true,
+
+    // IDE Tool Settings //
+    "idetools.find_definition.enabled": true,
+    "idetools.find_usages.enabled": true,
+    "idetools.find_current_file_usages.enabled": true,
+    "idetools.get_suggestions.enabled": true
 }

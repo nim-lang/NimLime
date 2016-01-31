@@ -1,15 +1,16 @@
+# coding=utf-8
+"""
+Documentation retrieval code.
+"""
 import os
 import json
 
-import NimLime
-import sublime_plugin
-
+from sublime_plugin import WindowCommand
 
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
-NimLime.add_module(__name__)
 
 
-class ListModulesCommand(sublime_plugin.WindowCommand):
+class ListModulesCommand(WindowCommand):
     """
     Display list of all modules and their descriptions
     """
@@ -47,7 +48,6 @@ class ListModulesCommand(sublime_plugin.WindowCommand):
 
     def run(self):
         self.items = []
-
         # Parse items
         with open(PACKAGE_DIR + ListModulesCommand.path) as json_data:
             data = json.load(json_data)
@@ -62,7 +62,7 @@ class ListModulesCommand(sublime_plugin.WindowCommand):
             self.window.show_quick_panel(self.items, self.on_done)
 
 
-class ListAllCommand(sublime_plugin.WindowCommand):
+class ListAllCommand(WindowCommand):
     """
     Display index of all procs/modules/methods/etc in std lib
     """
@@ -75,7 +75,7 @@ class ListAllCommand(sublime_plugin.WindowCommand):
     def run(self):
         items = []
 
-        with open(ListAllCommand.path) as json_data:
+        with open(self.path) as json_data:
             data = json.load(json_data)
 
             for obj in data:

@@ -1,39 +1,40 @@
-import NimLime
-import sublime
+# coding=utf-8
+"""
+Document comment continuation feature.
+"""
+from nimlime_core.utils.mixins import NimLimeMixin
 from sublime_plugin import EventListener
-from utils.misc import NimLimeMixin
-
-NimLime.add_module(__name__)
-
 
 COMMENT_SCOPE = "comment.line.number-sign.doc-comment"
 EMPTY_COMMENT_SUFFIX = ".empty"
 
-settings = sublime.load_settings('NimLime.sublime-settings')
 
+class CommentListener(NimLimeMixin, EventListener):
+    """
+    Continues document comment blocks.
+    """
+    requires_nim_syntax = True
 
-class CommentListener(EventListener, NimLimeMixin):
-    """
-    Continues Document Comment lines.
-    """
-    active = True
-    already_running = True
     settings_selector = 'doccontinue'
+    setting_entries = (
+        NimLimeMixin.setting_entries,
+        ('autostop', '{0}.autostop', True)
+    )
 
-    def load_settings(self):
-        super(CommentListener, self).load_settings()
-        get = self.get_setting
+    autostop = True
 
-        self.autostop = get('{0}.autostop', True)
+    def __init__(self, *args, **kwargs):
+        self.active = True
+        self.already_running = False
+        super(CommentListener, self).__init__(*args, **kwargs)
 
     def on_activated(self, view):
-        nim_syntax = view.settings().get('syntax', None)
-        if self.enabled and not self.active:
-            if nim_syntax is not None and "nim" in nim_syntax.lower():
-                self.active = True
+        if self.is_enabled(view):
+            self.active = True
 
     def on_deactivated(self, view):
-        self.active = False
+        if not self.is_enabled(view):
+            self.active = False
 
     def on_modified(self, view):
         # Pre-process stage

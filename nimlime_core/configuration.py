@@ -45,9 +45,16 @@ def gen_exe_check(program_name, setting_key, default_exe):
         # Optionally notify the user.
         if executable_path is None and current_exe != _load.old_exe:
             if settings.get('check_configuration', True):
-                sublime.error_message(
-                    not_found_msg.format(program_name, setting_key)
-                )
+                # Needed due to a bug in ST2 - Main window won't appear
+                # if inturrupted by an error message.
+                def callback():
+                    if sublime.active_window() is None:
+                        sublime.set_timeout(callback, 500)
+                        return
+                    sublime.error_message(
+                        not_found_msg.format(program_name, setting_key)
+                    )
+                callback()
 
         # Store the old path, so that we don't end up notifying the user twice
         # over an unchanged path.

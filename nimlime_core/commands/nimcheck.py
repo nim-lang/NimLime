@@ -84,7 +84,9 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
 
         # Run 'nim check' on the current view and retrieve the output.
         # project_file = get_nim_project(window, view) or view.file_name()
-        process, output, err = yield run_nimcheck(view.file_name(), self.verbosity, this.send)
+        process, output, err = yield run_nimcheck(
+            view.file_name(), this.send, self.verbosity
+            )
         messages = parse_nimcheck_output(output)
 
         yield stop_status_loop(get_next_method(this))
@@ -231,7 +233,9 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
             frames = ['Checking external file' + f for f in busy_frames]
             stop_status_loop = loop_status_msg(frames, 0.25)
 
-            process, output, errors = yield run_nimcheck(path, self.verbosity, this.send)
+            process, output, errors = yield run_nimcheck(
+                path, this.send, self.verbosity
+            )
 
         else:
             sublime.error_message(

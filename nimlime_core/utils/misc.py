@@ -134,7 +134,7 @@ def loop_status_msg(frames, speed, view=None, key=''):
     def _stop_status_loop(callback=True):
         flag.flag = callback
 
-    sublime.set_timeout(_loop_status_generator)
+    sublime.set_timeout(_loop_status_generator, 0)
     return _stop_status_loop
 
 

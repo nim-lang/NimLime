@@ -24,8 +24,8 @@ in NimLime's settings file to 'False'.
 def gen_exe_check(program_name, setting_key, default_exe):
     """
     Generates a function that checks if a program is on the path, based off
-    of settings. May also notify the user if the check can't find the executable
-    or the executable doesn't exist.
+    of settings. May also notify the user if the check can't find the
+    executable or the executable doesn't exist.
     :type default_exe: str
     :type setting_key: str
     :type program_name: str
@@ -39,7 +39,9 @@ def gen_exe_check(program_name, setting_key, default_exe):
         current_exe = settings.get(setting_key, default_exe)
         executable_path = (
             find_file(current_exe) or
-            find_file(os.path.join(current_exe, default_exe))
+            find_file(current_exe + ".exe") or
+            find_file(os.path.join(current_exe, default_exe)) or
+            find_file(os.path.join(current_exe, default_exe) + ".exe")
         )
 
         # Optionally notify the user.

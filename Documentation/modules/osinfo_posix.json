@@ -1,7 +1,0 @@
-[
-  {
-    "name": "getSystemVersion", 
-    "type": "skProc", 
-    "code": "proc getSystemVersion*(): string"
-  }
-]

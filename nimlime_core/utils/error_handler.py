@@ -20,6 +20,7 @@ makes the error handling mechanism rather less effective on ST2.
 
 import os
 import sys
+import tempfile
 import traceback
 from time import strftime
 
@@ -51,7 +52,7 @@ To completely suppress this error message in the future, change the
 'error_handler.enabled' setting in NimLime's settings file to 'False'.
 """)
 
-default_logfile_path = os.path.join(root_dir)
+default_logfile_path = tempfile.gettempdir()
 
 enabled = True
 logfile_path = default_logfile_path

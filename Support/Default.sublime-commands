@@ -67,5 +67,9 @@
     {
         "caption": "Nim: Get Suggestion",
         "command": "nim_get_suggestions"
+    },
+    {
+        "caption": "Nim: Setup Nimsuggest.",
+        "command": "nim_compile_internal_nimsuggest"
     }
 ]

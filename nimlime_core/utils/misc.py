@@ -3,6 +3,7 @@
 Misc. functions that don't really fit anywhere else.
 """
 import os
+import platform
 import subprocess
 import sys
 from functools import wraps
@@ -201,9 +202,12 @@ def run_process(cmd, callback=None, timeout=0, *args, **kwargs):
 
 
 def _run_process_worker(cmd, callback, timeout, args, kwargs):
+    if platform.system() == "Windows":
+        kwargs = kwargs.copy()
+        kwargs['creationflags'] = 0x08000000
+
     process = subprocess.Popen(
         cmd,
-        creationflags=0x08000000,
         universal_newlines=True,
         *args,
         **kwargs
@@ -217,7 +221,8 @@ def _run_process_worker(cmd, callback, timeout, args, kwargs):
         sublime.set_timeout(kill_process, int(timeout * 1000))
 
     stdout, stderr = process.communicate()
-    sublime.set_timeout(lambda: callback((process, stdout, stderr)), 0)
+    if callback is not None:
+        sublime.set_timeout(lambda: callback((process, stdout, stderr)), 0)
 
 
 def split_semicolons(string):
@@ -299,6 +304,14 @@ def samefile(path_one, path_two):
         stat_one.st_ino == stat_two.st_ino and
         stat_one.st_dev == stat_two.st_dev
     )
+
+def start_file(path):
+    if platform.system() == "Windows":
+        os.startfile(path)
+    elif platform.system() == "Darwin":
+        subprocess.Popen(["open", path])
+    else:
+        subprocess.Popen(["xdg-open", path])
 
 
 def exec_(code, global_dict=None, local_dict=None):

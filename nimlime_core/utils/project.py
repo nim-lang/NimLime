@@ -5,6 +5,7 @@ project.
 """
 import json
 import os
+import platform
 import re
 
 import sublime
@@ -56,7 +57,7 @@ def _find_project_in_data(session_data, win_id):
     for window in session_data.get('windows', ()):
         if window.get('window_id') == win_id and 'workspace_name' in window:
             project = window['workspace_name']
-            if sublime.platform() == 'windows':
+            if platform.system() == "Windows":
                 project = os.path.normpath(
                     project.lstrip("/").replace("/", ":/", 1)
                 )

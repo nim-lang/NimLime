@@ -4,8 +4,6 @@ Commands and code to check Nim files for errors.
 """
 import os.path
 import re
-from threading import Thread
-
 import subprocess
 
 import sublime
@@ -86,7 +84,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         # project_file = get_nim_project(window, view) or view.file_name()
         process, output, err = yield run_nimcheck(
             view.file_name(), this.send, self.verbosity
-            )
+        )
         messages = parse_nimcheck_output(output)
 
         yield stop_status_loop(get_next_method(this))
@@ -229,14 +227,13 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
         self.last_entry = path
 
         # Run 'nim check' on the external file.
-        if os.path.isfile(path):
-            frames = ['Checking external file' + f for f in busy_frames]
-            stop_status_loop = loop_status_msg(frames, 0.25)
+        frames = ['Checking external file' + f for f in busy_frames]
+        stop_status_loop = loop_status_msg(frames, 0.25)
 
+        if os.path.isfile(path):
             process, output, errors = yield run_nimcheck(
                 path, this.send, self.verbosity
             )
-
         else:
             sublime.error_message(
                 "File '{0}' does not exist, or isn't a file.".format(path)
@@ -254,7 +251,6 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
         sublime.status_message("External file checked.")
 
         # Print to the output view
-        fallback_view_name = path + " - Nim Check Output"
         if self.send_output or True:
             self.write_to_output(error_output, window, view)
 
@@ -264,8 +260,9 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
 # Utility functions
 def run_nimcheck(file_path, callback, verbosity=2):
     # Prepare the regex's
+    verbosity_str = '--verbosity:' + str(verbosity)
     run_process(
-        (configuration.nim_executable, 'check', '--verbosity:2', file_path),
+        (configuration.nim_executable, 'check', verbosity_str, file_path),
         callback,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,

@@ -25,7 +25,6 @@ import traceback
 from time import strftime
 
 import sublime
-from NimLime import root_dir
 from nimlime_core import settings
 from nimlime_core.utils.misc import exec_, format_msg
 

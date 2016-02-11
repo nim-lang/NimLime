@@ -48,7 +48,6 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
     def run(self):
         this = yield
         window = sublime.active_window()
-        view = window.active_view()
 
         exe_path = yield window.show_input_panel(
             'Path to copy nimsuggest to? (Blank for home directory)', '',
@@ -111,7 +110,7 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
             sublime.status_message('Nimsuggest compiled.')
             sublime.run_command("open_file", {
                 "file": "${packages}/User/NimLime/NimLime.sublime-settings"
-                })
+            })
             sublime.message_dialog("Please make sure to set the "
                                    "'nimsuggest.exe' setting!")
             start_file(exe_path)

@@ -11,6 +11,7 @@ from threading import Thread
 from weakref import proxy
 
 import sublime
+from nimlime_core import configuration
 
 
 def format_msg(message):
@@ -21,8 +22,7 @@ def format_msg(message):
     :rtype: str
     """
     return (
-        message
-            .strip()
+        message.strip()
             .replace('\\n\n', '\\n')
             .replace('\n', ' ')
             .replace('\\n', '\n')
@@ -189,6 +189,7 @@ def run_process(cmd, callback=None, timeout=0, *args, **kwargs):
     """
     Run the given process in another thread. The callback, if given, will be
     passed the process and its output when the process finishes.
+    :type timeout: int|float
     :type cmd: list[str]|tuple
     :type callback: (subprocess.Popen, bytearray)
     """
@@ -225,9 +226,11 @@ def _run_process_worker(cmd, callback, timeout, args, kwargs):
         sublime.set_timeout(lambda: callback((process, stdout, stderr)), 0)
 
 
-def split_semicolons(string):
+def split_pathlist(string):
     # I hate direct string manipulation in python, as immutable strings
     # make efficient building hard.
+    pathsep = os.pathsep
+
     sections = []
     found_caret = False
     start = 0
@@ -239,9 +242,9 @@ def split_semicolons(string):
             start = end
             continue
 
-        if character == '^':
+        if configuration.on_windows and character == '^':
             found_caret = True
-        elif character == ';':
+        elif character == pathsep:
             sections.append(string[start:end])
             start = end + 1
             yield ''.join(sections)
@@ -262,7 +265,7 @@ def find_file(file_name, path_list=None):
     """
     pl = path_list
     if path_list is None:
-        pl = split_semicolons(os.environ.get('PATH', ''))
+        pl = split_pathlist(os.environ.get('PATH', ''))
     for path in pl:
         result = os.path.join(path, file_name)
         if os.path.exists(result):
@@ -305,7 +308,13 @@ def samefile(path_one, path_two):
         stat_one.st_dev == stat_two.st_dev
     )
 
+
 def start_file(path):
+    """
+    'start' a file or path, using the appropriate system handler.
+    :type path: str
+    :rtype: None
+    """
     if platform.system() == "Windows":
         os.startfile(path)
     elif platform.system() == "Darwin":

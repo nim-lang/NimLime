@@ -13,6 +13,7 @@ from nimlime_core.utils.idetools import Nimsuggest
 
 SUBLIME_VERSION = int(sublime.version())
 
+
 class NimLimeMixin(object):
     """
     Mixin class for commands and event listeners that implements additional
@@ -24,12 +25,12 @@ class NimLimeMixin(object):
     # Set these to 'true' in the implementing class in order to specify that
     # the command should only be visible/enabled when the stated condition is
     # true
-    requires_nimble = False     # A valid Nimble executable is present.
-    requires_nim = False        # A valid Nim executable is present.
-    requires_nimsuggest = False # A valid Nimsuggest executable is present.
-    requires_nim_syntax = False # The current view must be using Nim syntax.
-    st2_compatible = True         # Runs on Sublime Text 2.
-    st3_compatible = True         # Runs on Sublime Text 3.
+    requires_nimble = False  # A valid Nimble executable is present.
+    requires_nim = False  # A valid Nim executable is present.
+    requires_nimsuggest = False  # A valid Nimsuggest executable is present.
+    requires_nim_syntax = False  # The current view must be using Nim syntax.
+    st2_compatible = True  # Runs on Sublime Text 2.
+    st3_compatible = True  # Runs on Sublime Text 3.
 
     # Setting entries associated with the command or event listener.
     # Each entry should either be a tuple of the form
@@ -39,7 +40,6 @@ class NimLimeMixin(object):
     setting_entries = (
         ('enabled', '{0}.enabled', True),
     )
-
 
     def __init__(self):
         self._reload_settings()
@@ -169,7 +169,6 @@ class NimLimeOutputMixin(NimLimeMixin):
         output_view.set_scratch(True)
         return window, output_view
 
-
     def write_to_output(self, content, window, view):
         # First, get the format tag
         """
@@ -181,7 +180,7 @@ class NimLimeOutputMixin(NimLimeMixin):
         """
         if not self.send_output:
             return
-        
+
         tag = self.output_tag.format(
             view_id=view.id(),
             buffer_id=view.id(),

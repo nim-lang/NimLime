@@ -8,4 +8,4 @@ import sys
 
 root_dir = os.path.dirname(os.path.abspath(__file__))
 if sys.version_info < (3, 0):
-	execfile('__init__.py')
+    execfile('__init__.py')

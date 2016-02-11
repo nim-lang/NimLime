@@ -33,6 +33,7 @@ def print_debug(*args, **kwargs):
     if debug_on:
         pprint(*args, **kwargs)
 
+
 # Profiling functions
 profiler = Profile()
 profiler_running = False

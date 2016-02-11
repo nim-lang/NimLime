@@ -4,10 +4,10 @@ User commands for setting the Nim project file.
 """
 import os
 
-from sublime_plugin import WindowCommand
 from nimlime_core.utils.error_handler import catch_errors
-from nimlime_core.utils.project import _get_project_file, set_nim_project
 from nimlime_core.utils.mixins import NimLimeMixin
+from nimlime_core.utils.project import _get_project_file, set_nim_project
+from sublime_plugin import WindowCommand
 
 
 class SetProjectCommand(NimLimeMixin, WindowCommand):

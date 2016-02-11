@@ -322,7 +322,8 @@ class NimbleUninstallCommand(NimLimeOutputMixin, ApplicationCommand):
 
                     # Run the install command
                     process, output, errors = run_process(
-                        [configuration.nimble_executable, '-y', 'uninstall'],
+                        [configuration.nimble_executable, '-y', 'uninstall',
+                         target_name],
                         this.send, self.timeout
                     )
                     return_code = process.poll()

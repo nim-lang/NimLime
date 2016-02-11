@@ -1,7 +1,0 @@
-<snippet>
-    <content><![CDATA[type ${1:name} = $2object
-	]]></content>
-    <tabTrigger>type</tabTrigger>
-    <scope>source.nim</scope>
-    <description>Create a Nim type</description>
-</snippet>

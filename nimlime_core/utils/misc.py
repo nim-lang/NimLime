@@ -11,7 +11,6 @@ from threading import Thread
 from weakref import proxy
 
 import sublime
-from nimlime_core import configuration
 
 
 def format_msg(message):
@@ -230,6 +229,8 @@ def split_pathlist(string):
     # I hate direct string manipulation in python, as immutable strings
     # make efficient building hard.
     pathsep = os.pathsep
+    # TODO Sort out the interdependancy between misc. and configuration
+    on_windows = sublime.platform() == 'windows'
 
     sections = []
     found_caret = False
@@ -242,7 +243,7 @@ def split_pathlist(string):
             start = end
             continue
 
-        if configuration.on_windows and character == '^':
+        if on_windows and character == '^':
             found_caret = True
         elif character == pathsep:
             sections.append(string[start:end])

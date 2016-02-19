@@ -10,6 +10,8 @@ from functools import wraps
 from threading import Thread
 from weakref import proxy
 
+import re
+
 import sublime
 
 
@@ -20,12 +22,10 @@ def format_msg(message):
     :type message: str
     :rtype: str
     """
-    return (
-        message.strip()
-            .replace('\\n\n', '\\n')
-            .replace('\n', ' ')
-            .replace('\\n', '\n')
-    )
+    message = re.sub('\\\\n\n *', '\\\\n', message)
+    message = re.sub('\n\s*', " ", message)
+    message = message.replace('\\n', '\n')
+    return message.strip()
 
 
 def get_next_method(generator_instance):
@@ -223,55 +223,6 @@ def _run_process_worker(cmd, callback, timeout, args, kwargs):
     stdout, stderr = process.communicate()
     if callback is not None:
         sublime.set_timeout(lambda: callback((process, stdout, stderr)), 0)
-
-
-def split_pathlist(string):
-    # I hate direct string manipulation in python, as immutable strings
-    # make efficient building hard.
-    pathsep = os.pathsep
-    # TODO Sort out the interdependancy between misc. and configuration
-    on_windows = sublime.platform() == 'windows'
-
-    sections = []
-    found_caret = False
-    start = 0
-    end = 0
-    for end, character in enumerate(string):
-        if found_caret:
-            found_caret = False
-            sections.append(string[start:end - 1])
-            start = end
-            continue
-
-        if on_windows and character == '^':
-            found_caret = True
-        elif character == pathsep:
-            sections.append(string[start:end])
-            start = end + 1
-            yield ''.join(sections)
-            sections = []
-
-    if start != end + 1:
-        sections.append(string[start:end + 1])
-    yield ''.join(sections)
-
-
-def find_file(file_name, path_list=None):
-    """
-    Find a file in the given path list. If a path list is not given, use the
-    system path.
-    :type file_name: str
-    :type path_list: list[str]
-    :rtype: str|None
-    """
-    pl = path_list
-    if path_list is None:
-        pl = split_pathlist(os.environ.get('PATH', ''))
-    for path in pl:
-        result = os.path.join(path, file_name)
-        if os.path.exists(result):
-            return result
-    return None
 
 
 def run_in_thread(function, callback, *args, **kwargs):

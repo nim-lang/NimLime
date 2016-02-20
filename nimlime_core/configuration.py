@@ -108,6 +108,8 @@ def gen_exe_check(program_name, setting_key, default_exe, message=None):
     Generates a function that checks if a program is on the path, based off
     of settings. May also notify the user if the check can't find the
     executable or the executable doesn't exist.
+    This generates a closure because some state needs to be persisted across
+    calls.
     :type message: str
     :type default_exe: str
     :type setting_key: str
@@ -118,6 +120,7 @@ def gen_exe_check(program_name, setting_key, default_exe, message=None):
     def _load():
         # Get the current executable, and look for the file.
         current_exe = settings.get(setting_key, default_exe)
+        executable_path = None
         for path in possible_exe_paths(current_exe, default_exe):
             if os.path.isfile(path):
                 executable_path = path
@@ -127,10 +130,10 @@ def gen_exe_check(program_name, setting_key, default_exe, message=None):
         if executable_path is None and current_exe != _load.old_exe:
             if settings.get('check_configuration', True):
                 # Needed due to a bug in ST2 - Main window won't appear
-                # if inturrupted by an error message.
-                def callback():
+                # if interrupted by an error message.
+                def _callback():
                     if sublime.active_window() is None:
-                        sublime.set_timeout(callback, 500)
+                        sublime.set_timeout(_callback, 500)
                         return
                     sublime.error_message(
                         (message or not_found_msg).format(
@@ -138,7 +141,7 @@ def gen_exe_check(program_name, setting_key, default_exe, message=None):
                         )
                     )
 
-                callback()
+                _callback()
 
         # Store the old path, so that we don't end up notifying the user twice
         # over an unchanged path.
@@ -155,9 +158,10 @@ nimsuggest_executable = 'nimsuggest'
 
 _nimble_exe_check = gen_exe_check('Nimble', 'nimble.executable', 'nimble.exe')
 _nim_exe_check = gen_exe_check('Nim', 'nim.executable', 'nim.exe')
-_nimsuggest_exe_check = gen_exe_check('Nimsuggest', 'nimsuggest.executable',
-                                      'nimsuggest.exe',
-                                      nimsuggest_not_found_msg)
+_nimsuggest_exe_check = gen_exe_check(
+    'Nimsuggest', 'nimsuggest.executable', 'nimsuggest.exe',
+    nimsuggest_not_found_msg
+)
 
 
 def _check_for_nimble_exe():

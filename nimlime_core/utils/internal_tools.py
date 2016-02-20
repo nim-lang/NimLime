@@ -2,9 +2,10 @@
 """
 Internal tools for NimLime development & testing.
 """
-from pprint import pprint
+from pprint import pprint, pformat
 
 import sublime
+from nimlime_core import configuration
 
 try:
     from cProfile import Profile
@@ -24,14 +25,20 @@ if debug_on:
 
 
 # Debug printer
-def print_debug(*args, **kwargs):
+def debug_print(*args):
     """
     Print when debugging.
     :type args: Any
     :type kwargs: Any
     """
-    if debug_on:
-        pprint(*args, **kwargs)
+    if configuration.in_debug_mode:
+        res = []
+        for o in args:
+            if isinstance(o, str):
+                res.append(o)
+            else:
+                res.append(pformat(o))
+        print(''.join(res))
 
 
 # Profiling functions

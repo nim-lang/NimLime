@@ -4,13 +4,12 @@ Misc. functions that don't really fit anywhere else.
 """
 import os
 import platform
+import re
 import subprocess
 import sys
 from functools import wraps
 from threading import Thread
 from weakref import proxy
-
-import re
 
 import sublime
 
@@ -188,9 +187,12 @@ def run_process(cmd, callback=None, timeout=0, *args, **kwargs):
     """
     Run the given process in another thread. The callback, if given, will be
     passed the process and its output when the process finishes.
-    :type timeout: int|float
     :type cmd: list[str]|tuple
     :type callback: (subprocess.Popen, bytearray)
+    :type timeout: int|float
+    :type args: Any
+    :type kwargs: Any
+    :rtype: Thread
     """
     result = Thread(
         target=_run_process_worker,

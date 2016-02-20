@@ -8,9 +8,9 @@ import sys
 from pkgutil import iter_modules
 
 import sublime
+from nimlime_core.utils.misc import format_msg
 from sublime_plugin import ApplicationCommand, WindowCommand, TextCommand, \
     EventListener
-from nimlime_core.utils.misc import format_msg
 
 __all__ = []
 collision_message = format_msg("""

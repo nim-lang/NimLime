@@ -13,6 +13,15 @@ from nimlime_core.utils.misc import format_msg
 
 # Package state
 is_zipped = not os.path.isfile(__file__)
+in_debug_mode = False
+
+
+def _check_debug_value():
+    global in_debug_mode
+    in_debug_mode = settings.get('debug_mode', False)
+
+
+settings.run_on_load_and_change('debug_mode', _check_debug_value)
 
 # OS Conditionals
 on_windows = False

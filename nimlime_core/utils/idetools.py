@@ -113,12 +113,12 @@ class Nimsuggest(object):
         # Information needed to start a nimsuggest process
         self.environment = os.environ.copy()
         self.environment['PATH'] = "{0};{1}".format(
-            os.path.dirname(configuration.nim_executable),
+            os.path.dirname(configuration.nim_exe),
             self.environment['PATH']
         )
 
         self.process_args = dict(
-            executable=configuration.nimsuggest_executable,
+            executable=configuration.nimsuggest_exe,
             args=['nimsuggest', 'stdin', '--interactive:false', project_file],
             env=self.environment,
             universal_newlines=False,

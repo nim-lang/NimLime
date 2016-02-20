@@ -10,8 +10,11 @@ import sublime
 from nimlime_core import configuration
 from nimlime_core import settings
 from nimlime_core.utils.idetools import Nimsuggest
+from sublime_plugin import Command
 
 SUBLIME_VERSION = int(sublime.version())
+EXE_NOT_FOUND_MSG = ("Unable to run command, the following executables could "
+                     "not be found: ")
 
 
 class NimLimeMixin(object):
@@ -41,12 +44,37 @@ class NimLimeMixin(object):
         ('enabled', '{0}.enabled', True),
     )
 
-    def __init__(self):
-        self._reload_settings()
-
     def __getattr__(self, item):
         # This is to satisfy static checkers, to ignore settings accesses.
         pass
+
+    def __init__(self):
+        self._reload_settings()
+        if not isinstance(self, Command):
+            return
+
+        # TODO Come up with a less hacky version of this?
+        # Insert a wrapper around run notifying the user if a required exe
+        # wasn't found.
+        self._original_run = self.run
+        self.run = self._run_wrapper
+
+    def _run_wrapper(self, *args, **kwargs):
+        missing_executables = []
+
+        if self.requires_nim and not configuration.nim_exe:
+            missing_executables.append('Nim')
+        if self.requires_nimsuggest and not configuration.nimsuggest_exe:
+            missing_executables.append('Nimsuggest')
+        if self.requires_nimble and not configuration.nimble_exe:
+            missing_executables.append('Nimble')
+
+        if missing_executables:
+            full_message = (EXE_NOT_FOUND_MSG + ', '.join(missing_executables))
+            sublime.status_message(full_message)
+        else:
+            print("Running for real")
+            self._original_run(*args, **kwargs)
 
     def _reload_settings(self):
         self._load_settings()
@@ -89,29 +117,22 @@ class NimLimeMixin(object):
             view = sublime.active_window().active_view()
         syntax = view.settings().get('syntax', '')
 
-        # Maybe change this to something more straightforward?
-        result = bool(
-            (
-                (not self.requires_nim_syntax) or  # If self.requires_nim
-                (syntax.find('Nim.'))
-            ) and
-            (
-                (not self.requires_nim or not self.requires_nimsuggest) or
-                configuration.nim_executable
-            ) and
-            (
-                (not self.requires_nimble) or  # If self.requires_nimble
-                configuration.nimble_executable
-            ) and
-            (
-                (not self.requires_nimsuggest) or  # If self.requires_nimsuggest
-                configuration.nimsuggest_executable
-            ) and
-            (
-                (self.st2_compatible and (2 <= SUBLIME_VERSION < 3)) or
-                (self.st3_compatible and (3 <= SUBLIME_VERSION))
-            )
-        )
+        result = True
+        if self.requires_nim_syntax and not syntax.find("Nim."):
+            result = False
+        elif (2 <= SUBLIME_VERSION < 3) and not self.st2_compatible:
+            result = False
+        elif (3 <= SUBLIME_VERSION) and not self.st3_compatible:
+            result = False
+
+        if result and isinstance(self, Command):
+            if self.requires_nim and not configuration.nim_exe:
+                result = False
+            elif self.requires_nimsuggest and not configuration.nimsuggest_exe:
+                result = False
+            elif self.requires_nimble and not configuration.nimble_exe:
+                result = False
+
         return result
 
     def is_visible(self):

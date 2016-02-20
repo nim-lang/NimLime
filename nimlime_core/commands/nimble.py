@@ -43,7 +43,7 @@ class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
 
         # Run the main command
         process, output, errors = yield run_nimble(
-            (configuration.nimble_executable, '-y', 'update'),
+            (configuration.nimble_exe, '-y', 'update'),
             this.send, self.timeout
         )
         return_code = process.poll()
@@ -86,7 +86,7 @@ class NimbleListCommand(NimbleMixin, ApplicationCommand):
 
         # Run the main command
         process, output, errors = yield run_nimble(
-            (configuration.nimble_executable, '-y', 'list'),
+            (configuration.nimble_exe, '-y', 'list'),
             this.send, self.timeout
         )
         return_code = process.poll()
@@ -144,7 +144,7 @@ class NimbleSearchCommand(NimLimeOutputMixin, ApplicationCommand):
 
         # Run the main command
         process, output, error = yield run_nimble(
-            (configuration.nimble_executable, '-y', 'search', search_term),
+            (configuration.nimble_exe, '-y', 'search', search_term),
             this.send, self.timeout
         )
         return_code = process.poll()
@@ -200,12 +200,12 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
 
             loading_notice = 'Searching package list'
             process_args = (
-                configuration.nimble_executable, '-y', 'search',
+                configuration.nimble_exe, '-y', 'search',
                 escape_shell(search_term)
             )
         else:
             loading_notice = 'Loading package list'
-            process_args = (configuration.nimble_executable, '-y', 'list ')
+            process_args = (configuration.nimble_exe, '-y', 'list ')
 
         # Setup the loading notice
         frames = [loading_notice + f for f in busy_frames]
@@ -248,7 +248,7 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
 
                     # Run the install command
                     process, output, errors = run_process(
-                        [configuration.nimble_executable, '-y', 'install',
+                        [configuration.nimble_exe, '-y', 'install',
                          escape_shell(target_name)], this.send, self.timeout
                     )
 
@@ -286,7 +286,7 @@ class NimbleUninstallCommand(NimLimeOutputMixin, ApplicationCommand):
 
         # Run the search/list command
         process, output, errors = run_process(
-            [configuration.nimble_executable, '-y', 'list', '-i'],
+            [configuration.nimble_exe, '-y', 'list', '-i'],
             this.send, self.timeout
         )
         return_code = process.poll()
@@ -322,7 +322,7 @@ class NimbleUninstallCommand(NimLimeOutputMixin, ApplicationCommand):
 
                     # Run the install command
                     process, output, errors = run_process(
-                        [configuration.nimble_executable, '-y', 'uninstall',
+                        [configuration.nimble_exe, '-y', 'uninstall',
                          target_name],
                         this.send, self.timeout
                     )

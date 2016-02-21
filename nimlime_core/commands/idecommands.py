@@ -108,7 +108,7 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
             stderr=subprocess.STDOUT
         )
 
-        debug_print('Compiling with Nim exe: ', configuration.nim_executable)
+        debug_print('Compiling with Nim exe: ', configuration.nim_exe)
 
         yield stop_status_loop(get_next_method(this))
 
@@ -203,8 +203,6 @@ class NimShowDefinition(NimIdeCommand):
     """
     settings_selector = 'idetools.find_definition'
     requires_nim_syntax = True
-
-    # requires_nimsuggest = True
 
     @send_self
     @catch_errors

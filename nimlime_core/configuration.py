@@ -5,7 +5,7 @@ This file loads and verifies the more global and complex aspects of NimLime's
 settings and configuration.
 """
 import os
-from distutils.spawn import find_executable
+from subprocess import Popen
 
 import sublime
 from nimlime_core import settings
@@ -39,17 +39,17 @@ elif platform == 'osx':
 # Executable conditionals
 def _update_nimble_value():
     global nimble_exe
-    nimble_exe = find_executable(settings.get('nimble.executable'))
+    nimble_exe = settings.get('nimble.executable', 'nim')
 
 
 def _update_nim_value():
     global nim_exe
-    nim_exe = find_executable(settings.get('nimble.executable'))
+    nim_exe = settings.get('nimble.executable', 'nimble')
 
 
 def _update_nimsuggest_value():
     global nimsuggest_exe
-    nimsuggest_exe = find_executable(settings.get('nimble.executable'))
+    nimsuggest_exe = settings.get('nimsuggest.executable', 'nimble')
 
 
 nimble_exe = 'nimble'

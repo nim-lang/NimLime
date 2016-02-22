@@ -7,10 +7,8 @@ from os import fdopen
 from tempfile import mkstemp
 
 import sublime
-from nimlime_core import configuration
 from nimlime_core import settings
 from nimlime_core.utils.idetools import Nimsuggest
-from sublime_plugin import Command
 
 SUBLIME_VERSION = int(sublime.version())
 EXE_NOT_FOUND_MSG = ("Unable to run command, the following executables could "
@@ -28,9 +26,6 @@ class NimLimeMixin(object):
     # Set these to 'true' in the implementing class in order to specify that
     # the command should only be visible/enabled when the stated condition is
     # true
-    requires_nimble = False  # A valid Nimble executable is present.
-    requires_nim = False  # A valid Nim executable is present.
-    requires_nimsuggest = False  # A valid Nimsuggest executable is present.
     requires_nim_syntax = False  # The current view must be using Nim syntax.
     st2_compatible = True  # Runs on Sublime Text 2.
     st3_compatible = True  # Runs on Sublime Text 3.
@@ -45,45 +40,22 @@ class NimLimeMixin(object):
     )
 
     def __getattr__(self, item):
-        # This is to satisfy static checkers, to ignore settings accesses.
-        pass
+        pass  # This is to satisfy static checkers, to ignore settings accesses.
 
     def __init__(self):
         self._reload_settings()
-        if not isinstance(self, Command):
-            return
 
-        # TODO Come up with a less hacky version of this?
-        # Insert a wrapper around run notifying the user if a required exe
-        # wasn't found.
-        self._original_run = self.run
-        self.run = self._run_wrapper
-
-    def _run_wrapper(self, *args, **kwargs):
-        missing_executables = []
-
-        if self.requires_nim and not configuration.nim_exe:
-            missing_executables.append('Nim')
-        if self.requires_nimsuggest and not configuration.nimsuggest_exe:
-            missing_executables.append('Nimsuggest')
-        if self.requires_nimble and not configuration.nimble_exe:
-            missing_executables.append('Nimble')
-
-        if missing_executables:
-            full_message = (EXE_NOT_FOUND_MSG + ', '.join(missing_executables))
-            sublime.status_message(full_message)
-        else:
-            print("Running for real")
-            self._original_run(*args, **kwargs)
-
+    # Settings code
     def _reload_settings(self):
         self._load_settings()
         settings.run_on_load_and_change('reload', self._load_settings)
 
     def get_setting(self, key, default):
         """
-        Retrieve the setting value associated with the given key, returning the
-        given default if the setting doesn't exist. The key must have a format
+        Retrieve the setting value associated with the given key,
+        returning the
+        given default if the setting doesn't exist. The key must have a
+        format
         specifier of '{0}'!
         :type key: str
         :type default: Any
@@ -103,7 +75,8 @@ class NimLimeMixin(object):
 
         def _load_entry(entry):
             if _is_setting_entry(entry):
-                setattr(self, entry[0], self.get_setting(entry[1], entry[2]))
+                setattr(self, entry[0],
+                        self.get_setting(entry[1], entry[2]))
             elif isinstance(entry, tuple):
                 for sub_entry in entry:
                     _load_entry(sub_entry)
@@ -124,14 +97,6 @@ class NimLimeMixin(object):
             result = False
         elif (3 <= SUBLIME_VERSION) and not self.st3_compatible:
             result = False
-
-        if result and isinstance(self, Command):
-            if self.requires_nim and not configuration.nim_exe:
-                result = False
-            elif self.requires_nimsuggest and not configuration.nimsuggest_exe:
-                result = False
-            elif self.requires_nimble and not configuration.nimble_exe:
-                result = False
 
         return result
 
@@ -186,7 +151,7 @@ class NimLimeOutputMixin(NimLimeMixin):
 
         output_view = window.new_file()
         output_view.set_name(self.output_name)
-        output_view.settings().set('ouput_tag', tag)
+        output_view.settings().set('output_tag', tag)
         output_view.set_scratch(True)
         return window, output_view
 

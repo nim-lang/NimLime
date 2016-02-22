@@ -71,7 +71,7 @@ def _load():
     logfile_path = os.path.join(logfile_path, 'NimLime-Log.txt')
     try:
         open(logfile_path, 'a+').close()
-    except:
+    except Exception:
         notified_user = True
         sublime.error_message(critical_error_msg.format(logfile_path))
 

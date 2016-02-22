@@ -3,10 +3,8 @@
 Commands and code to expose nimsuggest functionality to the user.
 """
 import os
-import shutil
 import subprocess
 import tarfile
-import traceback
 from shutil import copytree
 from tempfile import mkdtemp
 from zipfile import ZipFile
@@ -18,14 +16,15 @@ from nimlime_core.utils.error_handler import catch_errors
 from nimlime_core.utils.internal_tools import debug_print
 from nimlime_core.utils.misc import (send_self, get_next_method, samefile,
                                      run_process, busy_frames, format_msg,
-                                     loop_status_msg, start_file)
+                                     loop_status_msg, start_file,
+                                     handle_process_error)
 from nimlime_core.utils.mixins import (NimLimeOutputMixin, IdetoolMixin,
                                        NimLimeMixin)
 from sublime_plugin import ApplicationCommand
 
 
 class NimIdeCommand(NimLimeOutputMixin, IdetoolMixin, ApplicationCommand):
-    requires_nimsuggest = True
+    """A Nimsuggest command."""
     requires_nim_syntax = True
     st2_compatible = False
 
@@ -40,7 +39,6 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
     """
     Compile the version of Nimsuggest bundled with NimLime.
     """
-    requires_nim = True
     st2_compatible = False
 
     @send_self
@@ -50,15 +48,16 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
         window = sublime.active_window()
 
         # Retrieve and check the destination path for the Nimsuggest executable
-        exe_dir = yield window.show_input_panel(
+        exe_output_dir = yield window.show_input_panel(
             'Path to copy nimsuggest to? (Blank for home directory)', '',
             this.send, None, None
         )
 
-        exe_dir = exe_dir or os.path.expanduser('~')
-        debug_print('exe_dir: ', exe_dir)
+        exe_output_dir = exe_output_dir or os.path.expanduser('~')
+        debug_print('exe_dir: ', exe_output_dir)
 
-        if not (os.path.exists(exe_dir) or not os.path.isdir(exe_dir)):
+        if not (os.path.exists(exe_output_dir) or not os.path.isdir(
+            exe_output_dir)):
             sublime.error_message('Invalid path for nimsuggest executable.')
             yield
 
@@ -66,25 +65,25 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
         frames = ['Compiling Internal Nimsuggest' + f for f in busy_frames]
         stop_status_loop = loop_status_msg(frames, 0.15)
 
+        # Generate the paths needed to extract and compile Nimsuggest
         temp_dir = mkdtemp()
-
+        nimsuggest_source_dir = os.path.join(temp_dir, 'nimsuggest')
         nimlime_dir = os.path.dirname(NimLime.__file__)
-        nimsuggest_tmp_exe = os.path.join(temp_dir, 'nimsuggest', 'nimsuggest')
+        exe_output_file = os.path.join(exe_output_dir, 'nimsuggest')
 
         if configuration.on_windows:
-            nimsuggest_tmp_exe += '.exe'
+            exe_output_file += '.exe'
 
         debug_print('temp_dir: ', temp_dir)
         debug_print('nimlime_dir: ', nimlime_dir)
-        debug_print('nimsuggest_tmp_exe: ', nimsuggest_tmp_exe)
+        debug_print('exe_output_file: ', exe_output_file)
 
+        # Extract the Nimsuggest source
         if configuration.is_zipped:
             # We're in a zipped package, so we need to extract the tarball
             # from our package file, then extract the tarball
             debug_print('Extracting nimsuggest tarball to temp_dir')
-
-            package_file = ZipFile(nimlime_dir)
-            package_file.extract('nimsuggest.tar.gz', temp_dir)
+            ZipFile(nimlime_dir).extract('nimsuggest.tar.gz', temp_dir)
             tarfile.open(
                 os.path.join(temp_dir, 'nimsuggest.tar.gz')
             ).extractall(temp_dir)
@@ -92,55 +91,40 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
             # We're an actual directory, so we just need to copy the source
             # tree to the temp directory.
             debug_print('Copying nimsuggest source to', temp_dir)
-
             copytree(
                 os.path.join(nimlime_dir, 'nimsuggest'),
-                os.path.join(temp_dir, 'nimsuggest')
+                nimsuggest_source_dir
             )
 
-        # Now that the nimsuggest source has been extracted to a temporary
-        # directory, compile it.
-        data = yield run_process(
-            [configuration.nim_executable, 'c', '-d:release', 'nimsuggest.nim'],
-            cwd=os.path.join(temp_dir, 'nimsuggest'),
-            callback=this.send,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT
-        )
-
+        # Compile the nimsuggest source
         debug_print('Compiling with Nim exe: ', configuration.nim_exe)
-
+        process, stdout, _, error = yield run_process(
+            [configuration.nim_exe, 'c', '--out:' + exe_output_file,
+             '-d:release',
+             'nimsuggest.nim'],
+            cwd=nimsuggest_source_dir, callback=this.send,
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        )
         yield stop_status_loop(get_next_method(this))
 
-        # Now check if the compilation was successful
-        if data[0].poll() != 0:
-            # If not, print the output and show the user an error message.
-            debug_print('Compilation unsuccessful.')
-            print(data[1])
+        # Handle possible errors
+        if handle_process_error(error, "Nimsuggest setup failed", "Nim"):
+            yield
+        elif process.poll() != 0:
             sublime.error_message(setup_error_msg)
-        else:
-            try:
-                # Copy the executable to the destination directory.
-                debug_print('Copying from: ', nimsuggest_tmp_exe)
-                debug_print('Copying to: ', exe_dir)
+            debug_print('Compilation unsuccessful.')
+            print(stdout)
 
-                shutil.copy(nimsuggest_tmp_exe, exe_dir)
-
-                # Tell the user the process was successful, and remind them
-                # to set the nimsuggest settings.
-                sublime.status_message('Nimsuggest compiled and copied.')
-                sublime.run_command('open_file', {
-                    "file": "${packages}/User/NimLime/NimLime.sublime-settings"
-                })
-                sublime.message_dialog(
-                    "Please make sure to set the 'nimsuggest.exe' setting!"
-                )
-                start_file(exe_dir)
-            except Exception:
-                # There was an error in the copying process
-                debug_print('Copy unsuccessful.')
-                traceback.print_exc()
-                sublime.error_message(setup_error_msg)
+        # Tell the user the process was successful, and remind them
+        # to set the nimsuggest settings.
+        sublime.status_message('Nimsuggest compiled and copied.')
+        sublime.run_command('open_file', {
+            "file": "${packages}/User/NimLime/NimLime.sublime-settings"
+        })
+        sublime.message_dialog(
+            "Please make sure to set the 'nimsuggest.executable' setting!"
+        )
+        start_file(exe_output_dir)
         yield
 
 
@@ -207,7 +191,6 @@ class NimShowDefinition(NimIdeCommand):
     @send_self
     @catch_errors
     def run(self):
-        global flags
         this = yield
         window = sublime.active_window()
         view = window.active_view()
@@ -290,6 +273,9 @@ class NimFindUsages(NimIdeCommand):
 
 
 class NimFindUsagesInCurrentFile(NimIdeCommand):
+    """
+    Find usages of a symbol in the current file.
+    """
     settings_selector = 'idetools.find_current_file_usages'
     requires_nim_syntax = True
 
@@ -331,6 +317,7 @@ class NimFindUsagesInCurrentFile(NimIdeCommand):
 
 
 class NimGetSuggestions(NimIdeCommand):
+    """Get suggestions"""
     settings_selector = 'idetools.get_suggestions'
     requires_nim_syntax = True
 
@@ -354,4 +341,4 @@ class NimGetSuggestions(NimIdeCommand):
         yield view.show_popup_menu([e[2] for e in entries], this.send)
         yield
 
-# class NimOutputInvokation(NimIdeCommand):
+# class NimOutputInvocation(NimIdeCommand):

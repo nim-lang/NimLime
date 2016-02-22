@@ -183,12 +183,40 @@ def escape_shell(s):
     return s
 
 
+if sys.version_info >= (3, 0):
+    ExeNotFound = FileNotFoundError
+else:
+    ExeNotFound = IOError
+
+
+def handle_process_error(error, action, exe_name):
+    """
+    Handle an error passed to a callback from run_process.
+    :type error: Exception
+    :type action: str
+    :type exe_name: str
+    :rtype: bool
+    """
+    result = False
+    message = ''
+    if isinstance(error, ExeNotFound):
+        message = "{0}: {1} executable could not be found."
+        result = True
+    elif error is not None:
+        message = "{0}: Unable to start {1} executable."
+        result = True
+
+    if result:
+        sublime.status_message(message.format(action, exe_name))
+    return result
+
+
 def run_process(cmd, callback=None, timeout=0, *args, **kwargs):
     """
     Run the given process in another thread. The callback, if given, will be
     passed the process and its output when the process finishes.
     :type cmd: list[str]|tuple
-    :type callback: (subprocess.Popen, bytearray)
+    :type callback: (tuple) -> None
     :type timeout: int|float
     :type args: Any
     :type kwargs: Any
@@ -208,23 +236,34 @@ def _run_process_worker(cmd, callback, timeout, args, kwargs):
         kwargs = kwargs.copy()
         kwargs['creationflags'] = 0x08000000
 
-    process = subprocess.Popen(
-        cmd,
-        universal_newlines=True,
-        *args,
-        **kwargs
-    )
+    error = None
+    process = None
+    stdout = None
+    stderr = None
+    try:
+        process = subprocess.Popen(
+            cmd,
+            universal_newlines=True,
+            *args,
+            **kwargs
+        )
 
-    if timeout:
-        def kill_process():
-            if process.poll() is None:
-                process.kill()
+        if timeout:
+            def _kill_process():
+                if process.poll() is None:
+                    process.kill()
 
-        sublime.set_timeout(kill_process, int(timeout * 1000))
+            sublime.set_timeout(_kill_process, int(timeout * 1000))
 
-    stdout, stderr = process.communicate()
+        stdout, stderr = process.communicate()
+    except Exception as e:
+        error = e
+
     if callback is not None:
-        sublime.set_timeout(lambda: callback((process, stdout, stderr)), 0)
+        sublime.set_timeout(
+            lambda: callback((process, stdout, stderr, error)),
+            0
+        )
 
 
 def run_in_thread(function, callback, *args, **kwargs):
@@ -293,6 +332,6 @@ def exec_(code, global_dict=None, local_dict=None):
         ld = frame.f_globals
 
     if sys.version_info > (3, 0):
-        exec (code, gd, ld)
+        exec(code, gd, ld)
     else:
-        exec ("exec code in gd, ld")
+        exec('exec code in gd, ld')

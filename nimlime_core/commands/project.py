@@ -28,14 +28,10 @@ class SetProjectCommand(NimLimeMixin, WindowCommand):
             active_view = self.window.active_view()
             filename = active_view.file_name()
 
-            try:
-                directory = os.path.dirname(st_project)
-                relative_path = os.path.relpath(filename, directory)
+            directory = os.path.dirname(st_project)
+            relative_path = os.path.relpath(filename, directory)
 
-                # Set input file
-                name, extension = os.path.splitext(relative_path)
-                if extension.lower() == ".nim":
-                    set_nim_project(st_project, relative_path)
-
-            except:
-                pass
+            # Set input file
+            name, extension = os.path.splitext(relative_path)
+            if extension.lower() == ".nim":
+                set_nim_project(st_project, relative_path)

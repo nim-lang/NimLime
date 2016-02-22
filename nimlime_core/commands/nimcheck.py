@@ -11,7 +11,7 @@ from nimlime_core import configuration
 from nimlime_core.utils.error_handler import catch_errors
 from nimlime_core.utils.misc import (
     view_has_nim_syntax, send_self, busy_frames, get_next_method,
-    loop_status_msg, trim_region, run_process)
+    loop_status_msg, trim_region, run_process, handle_process_error)
 from nimlime_core.utils.mixins import NimLimeMixin, NimLimeOutputMixin
 from sublime_plugin import ApplicationCommand, EventListener
 
@@ -51,7 +51,6 @@ class NimClearErrors(NimLimeMixin, ApplicationCommand):
 class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
     """ Checks the current Nim file for errors. """
     requires_nim_syntax = True
-    requires_nim = True
 
     settings_selector = 'check.current_file'
     setting_entries = (
@@ -82,19 +81,22 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
 
         # Run 'nim check' on the current view and retrieve the output.
         # project_file = get_nim_project(window, view) or view.file_name()
-        process, output, err = yield run_nimcheck(
+        process, stdout, stderr, error = yield run_nimcheck(
             view.file_name(), this.send, self.verbosity
         )
-        messages = parse_nimcheck_output(output)
-
         yield stop_status_loop(get_next_method(this))
+
+        if handle_process_error(error, "Nim Check Failed", "Nim"):
+            yield
+
+        messages = parse_nimcheck_output(stdout)
         sublime.status_message("Nim Check Finished.")
 
         self.highlight_and_list_messages(messages, window, view)
 
         if self.send_output:
             if self.raw_output:
-                content = output
+                content = stdout
             else:
                 gen = (m[5] for m in messages if view_name == m[0])
                 content = "\n".join(gen)
@@ -102,6 +104,12 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         yield
 
     def highlight_and_list_messages(self, messages, window, view):
+        """
+        Highlight and list messages gathered from `nim check` output.
+        :type messages: list[str]
+        :type window: Any
+        :type view: Any
+        """
         view_name = os.path.split(view.file_name() or view.name())[1]
 
         # For listing
@@ -187,6 +195,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
 
 
 class NimCheckOnSaveListener(NimCheckCurrentView, EventListener):
+    """Runs the Nim Check command when the current file is saved."""
     settings_selector = 'check.on_save'
 
     def on_post_save(self, view):
@@ -197,7 +206,6 @@ class NimCheckOnSaveListener(NimCheckCurrentView, EventListener):
 class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
     """ Check an external nim file """
     requires_nim_syntax = True
-    requires_nim = True
 
     settings_selector = 'check.external_file'
     setting_entries = (
@@ -226,29 +234,32 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
         )
         self.last_entry = path
 
-        # Run 'nim check' on the external file.
-        frames = ['Checking external file' + f for f in busy_frames]
-        stop_status_loop = loop_status_msg(frames, 0.25)
-
-        if os.path.isfile(path):
-            process, output, errors = yield run_nimcheck(
-                path, this.send, self.verbosity
-            )
-        else:
+        if not os.path.isfile(path):
             sublime.error_message(
                 "File '{0}' does not exist, or isn't a file.".format(path)
             )
             yield
 
-        error_list = parse_nimcheck_output(output)
+        # Run 'nim check' on the external file.
+        frames = ['Checking External File' + f for f in busy_frames]
+        stop_status_loop = loop_status_msg(frames, 0.25)
+
+        process, stdout, stderr, error = yield run_nimcheck(
+            path, this.send, self.verbosity
+        )
+        yield stop_status_loop(get_next_method(this))
+
+        if handle_process_error(error, "Nim Check Failed", "Nim"):
+            yield
+
         # Prepare output
+        error_list = parse_nimcheck_output(stdout)
         error_output = '\n'.join(
             [error[5] for error in error_list]
         )
 
         # Stop the status loop
-        yield stop_status_loop(get_next_method(this))
-        sublime.status_message("External file checked.")
+        sublime.status_message("External File Checked.")
 
         # Print to the output view
         if self.send_output or True:
@@ -259,13 +270,18 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
 
 # Utility functions
 def run_nimcheck(file_path, callback, verbosity=2):
+    """
+    Run the Nim compiler in 'check' mode.
+    :type file_path: str
+    :type callback: (tuple) -> None
+    :type verbosity: int
+    :rtype: Any
+    """
     # Prepare the regex's
     verbosity_str = '--verbosity:' + str(verbosity)
-    run_process(
+    return run_process(
         (configuration.nim_exe, 'check', verbosity_str, file_path),
-        callback,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
+        callback, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
     )
 
 

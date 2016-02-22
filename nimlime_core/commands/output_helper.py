@@ -7,12 +7,11 @@ from sublime_plugin import TextCommand
 
 
 class NimlimeOutputCommand(TextCommand):
+    """
+    Convenience commands that allows other commands to easily modify a view
+    in Sublime Text 3.
+    """
     def run(self, *pargs, **kwargs):
-        """
-        :type edit_obj: Any
-        :type action: str
-        :type args: Any
-        """
         edit_obj, action, args = pargs
         if action == 'insert':
             self.view.insert(edit_obj, *args)

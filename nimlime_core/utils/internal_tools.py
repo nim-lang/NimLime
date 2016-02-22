@@ -2,7 +2,7 @@
 """
 Internal tools for NimLime development & testing.
 """
-from pprint import pprint, pformat
+from pprint import pformat
 
 import sublime
 from nimlime_core import configuration
@@ -29,7 +29,6 @@ def debug_print(*args):
     """
     Print when debugging.
     :type args: Any
-    :type kwargs: Any
     """
     if configuration.in_debug_mode:
         res = []

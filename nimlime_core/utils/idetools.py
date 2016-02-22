@@ -11,12 +11,11 @@ from threading import Thread
 import sublime
 from nimlime_core import configuration
 
-try:
-    from Queue import Queue, Empty
-except ImportError:
-    from queue import Queue, Empty  # python 3.x
+if sys.version_info < (3, 0):
+    from Queue import Queue
+else:
+    from queue import Queue  # python 3.x
 
-sys.path.append("C:\\Users\\Clay\\Apps\\winpdb-1.4.8\\")
 ON_POSIX = 'posix' in sys.builtin_module_names
 DOUBLE_NEWLINE_BYTE = '\r\n\r\n'.encode()
 ANSWER_REGEX = r"""

@@ -72,7 +72,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         view = window.active_view()
         view_name = os.path.split(view.file_name() or view.name())[1]
 
-        frames = ["Running Nim Check" + f for f in busy_frames]
+        frames = ['Running Nim Check' + f for f in busy_frames]
         stop_status_loop = loop_status_msg(frames, 0.15)
 
         # Save view text
@@ -86,11 +86,11 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         )
         yield stop_status_loop(get_next_method(this))
 
-        if handle_process_error(error, "Nim Check Failed", "Nim"):
+        if handle_process_error(error, 'Nim Check Failed', 'Nim'):
             yield
 
         messages = parse_nimcheck_output(stdout)
-        sublime.status_message("Nim Check Finished.")
+        sublime.status_message('Nim Check Finished.')
 
         self.highlight_and_list_messages(messages, window, view)
 
@@ -99,7 +99,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
                 content = stdout
             else:
                 gen = (m[5] for m in messages if view_name == m[0])
-                content = "\n".join(gen)
+                content = '\n'.join(gen)
             self.write_to_output(content, window, view)
         yield
 
@@ -136,7 +136,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
             message_point = view.text_point(row, column)
             message_region = trim_region(view, view.line(message_point))
 
-            if kind == "Error":
+            if kind == 'Error':
                 # For listing
                 if self.list_errors:
                     if self.include_context:
@@ -210,9 +210,9 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
     settings_selector = 'check.external_file'
     setting_entries = (
         NimLimeOutputMixin.setting_entries,
-        ('show_output', "{0}.show_output", True),
-        ('remember_input', "{0}.remember_input", True),
-        ('include_context', "{0}.output.include_context", True)
+        ('show_output', '{0}.show_output', True),
+        ('remember_input', '{0}.remember_input', True),
+        ('include_context', '{0}.output.include_context', True)
     )
 
     last_entry = ''
@@ -230,13 +230,13 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
             initial_text = self.last_entry
 
         path = yield window.show_input_panel(
-            "File to check?", initial_text, this.send, None, None
+            'File to check?', initial_text, this.send, None, None
         )
         self.last_entry = path
 
         if not os.path.isfile(path):
             sublime.error_message(
-                "File '{0}' does not exist, or isn't a file.".format(path)
+                'File \'{0}\' does not exist, or isn\'t a file.'.format(path)
             )
             yield
 
@@ -249,7 +249,7 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
         )
         yield stop_status_loop(get_next_method(this))
 
-        if handle_process_error(error, "Nim Check Failed", "Nim"):
+        if handle_process_error(error, 'Nim Check Failed', 'Nim'):
             yield
 
         # Prepare output
@@ -259,7 +259,7 @@ class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
         )
 
         # Stop the status loop
-        sublime.status_message("External File Checked.")
+        sublime.status_message('External File Checked.')
 
         # Print to the output view
         if self.send_output or True:

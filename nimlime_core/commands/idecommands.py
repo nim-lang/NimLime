@@ -108,7 +108,7 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
         yield stop_status_loop(get_next_method(this))
 
         # Handle possible errors
-        if handle_process_error(error, "Nimsuggest setup failed", "Nim"):
+        if handle_process_error(error, 'Nimsuggest setup failed', 'Nim'):
             yield
         elif process.poll() != 0:
             sublime.error_message(setup_error_msg)
@@ -119,10 +119,10 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
         # to set the nimsuggest settings.
         sublime.status_message('Nimsuggest compiled and copied.')
         sublime.run_command('open_file', {
-            "file": "${packages}/User/NimLime/NimLime.sublime-settings"
+            'file': '${packages}/User/NimLime/NimLime.sublime-settings'
         })
         sublime.message_dialog(
-            "Please make sure to set the 'nimsuggest.executable' setting!"
+            'Please make sure to set the \'nimsuggest.executable\' setting!'
         )
         start_file(exe_output_dir)
         yield
@@ -206,8 +206,8 @@ class NimShowDefinition(NimIdeCommand):
         def printer(n, ret=None):
             def _printer(*args, **kwargs):
                 print(n)
-                print("Positional args: ", repr(args))
-                print("Keyword args: ", repr(kwargs))
+                print('Positional args: ', repr(args))
+                print('Keyword args: ', repr(kwargs))
                 print()
                 return ret
 
@@ -337,7 +337,7 @@ class NimGetSuggestions(NimIdeCommand):
             nim_file, dirty_file, line, column, this.send
         )
         output, entries = data
-        print("This:", repr(data))
+        print('This:', repr(data))
         yield view.show_popup_menu([e[2] for e in entries], this.send)
         yield
 

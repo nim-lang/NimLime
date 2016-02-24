@@ -11,8 +11,8 @@ from nimlime_core import settings
 from nimlime_core.utils.idetools import Nimsuggest
 
 SUBLIME_VERSION = int(sublime.version())
-EXE_NOT_FOUND_MSG = ("Unable to run command, the following executables could "
-                     "not be found: ")
+EXE_NOT_FOUND_MSG = ('Unable to run command, the following executables could '
+                     'not be found: ')
 
 
 class NimLimeMixin(object):
@@ -81,7 +81,7 @@ class NimLimeMixin(object):
                 for sub_entry in entry:
                     _load_entry(sub_entry)
             else:
-                raise Exception("Bad setting entry type")
+                raise Exception('Bad setting entry type')
 
         _load_entry(self.setting_entries)
 
@@ -91,7 +91,7 @@ class NimLimeMixin(object):
         syntax = view.settings().get('syntax', '')
 
         result = True
-        if self.requires_nim_syntax and not syntax.find("Nim."):
+        if self.requires_nim_syntax and not syntax.find('Nim.'):
             result = False
         elif (2 <= SUBLIME_VERSION < 3) and not self.st2_compatible:
             result = False
@@ -103,7 +103,7 @@ class NimLimeMixin(object):
     def is_visible(self):
         result = self.is_enabled()
         if not isinstance(result, bool):
-            print("Return type for is_visible is {0}".format(type(result)))
+            print('Return type for is_visible is {0}'.format(type(result)))
         return self.is_enabled()
 
     def description(self, *args, **kwargs):
@@ -192,7 +192,7 @@ class NimLimeOutputMixin(NimLimeMixin):
         # Show the view
         if self.output_method == 'console':
             tag = view.settings().get('output_tag')
-            window.run_command("show_panel", {"panel": "output." + tag})
+            window.run_command('show_panel', {'panel': 'output.' + tag})
         elif self.output_method == 'grouped':
             window.focus_view(view)
 

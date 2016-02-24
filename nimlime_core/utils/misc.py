@@ -22,7 +22,7 @@ def format_msg(message):
     :rtype: str
     """
     message = re.sub('\\\\n\n *', '\\\\n', message)
-    message = re.sub('\n\s*', " ", message)
+    message = re.sub('\n\s*', ' ', message)
     message = message.replace('\\n', '\n')
     return message.strip()
 
@@ -179,7 +179,7 @@ def escape_shell(s):
     :type s: str
     :rtype: str
     """
-    "'" + s.replace("'", "'\"'\"'") + "'"
+    '\'' + s.replace('\'', "'\"'\"'") + "'"
     return s
 
 
@@ -200,10 +200,10 @@ def handle_process_error(error, action, exe_name):
     result = False
     message = ''
     if isinstance(error, ExeNotFound):
-        message = "{0}: {1} executable could not be found."
+        message = '{0}: {1} executable could not be found.'
         result = True
     elif error is not None:
-        message = "{0}: Unable to start {1} executable."
+        message = '{0}: Unable to start {1} executable.'
         result = True
 
     if result:
@@ -232,7 +232,7 @@ def run_process(cmd, callback=None, timeout=0, *args, **kwargs):
 
 
 def _run_process_worker(cmd, callback, timeout, args, kwargs):
-    if platform.system() == "Windows":
+    if platform.system() == 'Windows':
         kwargs = kwargs.copy()
         kwargs['creationflags'] = 0x08000000
 
@@ -308,12 +308,12 @@ def start_file(path):
     :type path: str
     :rtype: None
     """
-    if platform.system() == "Windows":
+    if platform.system() == 'Windows':
         os.startfile(path)
-    elif platform.system() == "Darwin":
-        subprocess.Popen(["open", path])
+    elif platform.system() == 'Darwin':
+        subprocess.Popen(['open', path])
     else:
-        subprocess.Popen(["xdg-open", path])
+        subprocess.Popen(['xdg-open', path])
 
 
 def exec_(code, global_dict=None, local_dict=None):

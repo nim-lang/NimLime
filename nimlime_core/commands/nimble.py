@@ -59,7 +59,7 @@ class NimbleUpdateCommand(NimbleMixin, ApplicationCommand):
         self.write_to_output(stdout, window, view)
 
         if process.poll() == 0:
-            sublime.status_message("Nimble Package List Updated")
+            sublime.status_message('Nimble Package List Updated')
         else:
             sublime.status_message('Nimble Update Failed')
 
@@ -139,7 +139,7 @@ class NimbleSearchCommand(NimLimeOutputMixin, ApplicationCommand):
 
         # Get user input
         search_term = yield window.show_input_panel(
-            "Package Search Term?", '', this.send, None, None
+            'Package Search Term?', '', this.send, None, None
         )
 
         # Setup the loading notice
@@ -174,7 +174,7 @@ class NimbleSearchCommand(NimLimeOutputMixin, ApplicationCommand):
         self.write_to_output(stdout, window, view)
 
         if process.poll() == 0:
-            sublime.status_message("Listing Nimble Packages")
+            sublime.status_message('Listing Nimble Packages')
         else:
             sublime.status_message('Nimble Package List Retrieval Failed')
         yield
@@ -200,7 +200,7 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
         if self.preemptive_search:
             # Get user input
             search_term = yield window.show_input_panel(
-                "Package to install?", '', this.send, None, None
+                'Package to install?', '', this.send, None, None
             )
 
             loading_notice = 'Searching Package List'
@@ -253,7 +253,7 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
         target_name = items[selection][0]
 
         # Setup the loading notice
-        frames = ["Installing Package" + f for f in busy_frames]
+        frames = ['Installing Package' + f for f in busy_frames]
         stop_status_loop = loop_status_msg(frames, 0.15)
 
         # Run the install command
@@ -263,13 +263,13 @@ class NimbleInstallCommand(NimbleMixin, ApplicationCommand):
         )
         yield stop_status_loop(get_next_method(this))
 
-        if handle_process_error(error, "Nimble Package Install Failed",
-                                "Nimble"):
+        if handle_process_error(error, 'Nimble Package Install Failed',
+                                'Nimble'):
             yield
 
         self.write_to_output(stdout, window, view)
         if process.poll() == 0:
-            sublime.status_message("Installed Nimble Package")
+            sublime.status_message('Installed Nimble Package')
         else:
             sublime.status_message('Nimble Package Installation Failed')
         yield
@@ -279,7 +279,7 @@ class NimbleUninstallCommand(NimLimeOutputMixin, ApplicationCommand):
     """
     Search Nimble Packages
     """
-    settings_selector = "nimble.uninstall"
+    settings_selector = 'nimble.uninstall'
 
     @send_self
     @catch_errors
@@ -304,13 +304,13 @@ class NimbleUninstallCommand(NimLimeOutputMixin, ApplicationCommand):
                                 'Nimble'):
             yield
         elif process.poll() != 0:
-            sublime.status_message("Nimble Installed Package Listing Failed")
+            sublime.status_message('Nimble Installed Package Listing Failed')
             yield
 
         # Parse the package descriptions
         packages = parse_package_descriptions(stdout)
         if len(packages) == 0:
-            sublime.status_message("No Installed Packages Found")
+            sublime.status_message('No Installed Packages Found')
             yield
 
         items = []
@@ -329,7 +329,7 @@ class NimbleUninstallCommand(NimLimeOutputMixin, ApplicationCommand):
         target_name = items[selection][0]
 
         # Setup the loading notice
-        frames = ["Uninstalling Package" + f for f in busy_frames]
+        frames = ['Uninstalling Package' + f for f in busy_frames]
         stop_status_loop = loop_status_msg(frames, 0.15)
 
         # Run the install command
@@ -341,7 +341,7 @@ class NimbleUninstallCommand(NimLimeOutputMixin, ApplicationCommand):
         yield stop_status_loop(get_next_method(this))
 
         # Handle errors
-        if handle_process_error(error, "Nimble Package Uninstallation Failed",
+        if handle_process_error(error, 'Nimble Package Uninstallation Failed',
                                 'Nimble'):
             yield
 
@@ -349,7 +349,7 @@ class NimbleUninstallCommand(NimLimeOutputMixin, ApplicationCommand):
         self.write_to_output(stdout, window, view)
 
         if process.poll() == 0:
-            sublime.status_message("Uninstalled Nimble Package")
+            sublime.status_message('Uninstalled Nimble Package')
         else:
             sublime.status_message(
                 'Nimble Package Uninstallation Failed')
@@ -371,10 +371,10 @@ def parse_package_descriptions(descriptions):
                 current_package = None
 
         elif current_package is None:
-            current_package = {'name': row.split(":", 1)[0]}
+            current_package = {'name': row.split(':', 1)[0]}
 
         else:
-            info = row.split(":", 1)
+            info = row.split(':', 1)
             if len(info) == 2:
                 current_package[info[0].strip()] = info[1].strip()
 

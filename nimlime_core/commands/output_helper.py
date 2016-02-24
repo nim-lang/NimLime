@@ -22,4 +22,4 @@ class NimlimeOutputCommand(TextCommand):
             region = sublime.Region(args[0], args[1])
             self.view.replace(edit_obj, region, args[2])
         else:
-            raise Exception("Bad edit action")
+            raise Exception('Bad edit action')

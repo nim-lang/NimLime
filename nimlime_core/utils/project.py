@@ -24,7 +24,7 @@ def _get_project_file(win_id):
     )
     regular_session_path = os.path.join(
         sublime.packages_path(),
-        "..",
+        '..',
         'Settings',
         'Session.sublime_session'
     )
@@ -41,10 +41,10 @@ def _get_project_file(win_id):
         return None
 
     # Find the window data corresponding with the given ID
-    project = _find_project_in_data(session_data, win_id) or ""
+    project = _find_project_in_data(session_data, win_id) or ''
 
     # Throw out empty project names
-    if re.match(".*\\.sublime-project", project) or os.path.exists(project):
+    if re.match('.*\\.sublime-project', project) or os.path.exists(project):
         return project
 
     return None
@@ -57,9 +57,9 @@ def _find_project_in_data(session_data, win_id):
     for window in session_data.get('windows', ()):
         if window.get('window_id') == win_id and 'workspace_name' in window:
             project = window['workspace_name']
-            if platform.system() == "Windows":
+            if platform.system() == 'Windows':
                 project = os.path.normpath(
-                    project.lstrip("/").replace("/", ":/", 1)
+                    project.lstrip('/').replace('/', ':/', 1)
                 )
             return project
 
@@ -73,9 +73,9 @@ def set_nim_project(st_project, nim_path):
     :type nim_path: str
     """
     if st_project is not None:
-        with open(st_project, "r+") as project_file:
+        with open(st_project, 'r+') as project_file:
             data = json.loads(project_file.read())
-            data['settings']['nim-project'] = nim_path.replace("\\", "/")
+            data['settings']['nim-project'] = nim_path.replace('\\', '/')
 
             project_file.seek(0)
             project_file.truncate()
@@ -102,7 +102,7 @@ def get_nim_project(window, view):
 
                 # Get full path
                 directory = os.path.dirname(st_project)
-                path = path.replace("/", os.sep)
+                path = path.replace('/', os.sep)
                 result = os.path.join(directory, path)
             except IOError:
                 pass

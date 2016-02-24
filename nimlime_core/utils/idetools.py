@@ -16,7 +16,6 @@ if sys.version_info < (3, 0):
 else:
     from queue import Queue  # python 3.x
 
-ON_POSIX = 'posix' in sys.builtin_module_names
 DOUBLE_NEWLINE_BYTE = '\r\n\r\n'.encode()
 ANSWER_REGEX = r"""
 (?P<answer_type>[^\t]*)\t
@@ -81,7 +80,7 @@ def _nimsuggest_handler(input_queue, process_args):
         output = raw_output.decode('utf-8')
         entries = re.findall(ANSWER_REGEX, output, re.X)
         if len(entries) == 0:
-            print("No entries found. Output:")
+            print('No entries found. Output:')
             print(output)
 
         # Run the callback
@@ -111,7 +110,7 @@ class Nimsuggest(object):
 
         # Information needed to start a nimsuggest process
         self.environment = os.environ.copy()
-        self.environment['PATH'] = "{0};{1}".format(
+        self.environment['PATH'] = '{0};{1}'.format(
             os.path.dirname(configuration.nim_exe),
             self.environment['PATH']
         )

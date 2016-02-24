@@ -5,8 +5,8 @@ Document comment continuation feature.
 from nimlime_core.utils.mixins import NimLimeMixin
 from sublime_plugin import EventListener
 
-COMMENT_SCOPE = "comment.line.number-sign.doc-comment"
-EMPTY_COMMENT_SUFFIX = ".empty"
+COMMENT_SCOPE = 'comment.line.number-sign.doc-comment'
+EMPTY_COMMENT_SUFFIX = '.empty'
 
 
 class CommentListener(NimLimeMixin, EventListener):
@@ -53,9 +53,9 @@ class CommentListener(NimLimeMixin, EventListener):
             # Stage 1 Checks
             # Checks if the last history action was a newline insertion.
             command, args, repeats = view.command_history(0, False)
-            if command == "insert" and args["characters"] == '\n':
+            if command == 'insert' and args['characters'] == '\n':
                 pass
-            elif command != "paste":
+            elif command != 'paste':
                 self.already_running = False
                 continue
 

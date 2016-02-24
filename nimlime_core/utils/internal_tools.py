@@ -21,7 +21,7 @@ except ImportError:
 
 debug_on = False
 if debug_on:
-    sublime.message_dialog("NimLime running in debug mode.")
+    sublime.message_dialog('NimLime running in debug mode.')
 
 
 # Debug printer

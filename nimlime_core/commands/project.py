@@ -33,5 +33,5 @@ class SetProjectCommand(NimLimeMixin, WindowCommand):
 
             # Set input file
             name, extension = os.path.splitext(relative_path)
-            if extension.lower() == ".nim":
+            if extension.lower() == '.nim':
                 set_nim_project(st_project, relative_path)

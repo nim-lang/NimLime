@@ -120,7 +120,7 @@ class Nimsuggest(object):
             args=['nimsuggest', 'stdin', '--interactive:false', project_file],
             env=self.environment,
             universal_newlines=False,
-            creationflags=0x08000000,
+            creationflags=(configuration.on_windows and 0x08000000) or None,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,

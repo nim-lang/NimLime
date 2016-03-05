@@ -12,12 +12,27 @@
 	<key>patterns</key>
 	<array>
 		<dict>
+			<key>begin</key>
+			<string>(\#\[\s*(TODO|todo)?)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.multi-comment.nim</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal.TODO.nim</string>
+				</dict>
+			</dict>
 			<key>comment</key>
-			<string>An empty documentation comment.</string>
-			<key>match</key>
-			<string>(##\s*)$\n?</string>
+			<string>A multiline comment.</string>
+			<key>end</key>
+			<string>(.*]\#)</string>
 			<key>name</key>
-			<string>comment.line.number-sign.doc-comment.empty.nim</string>
+			<string>comment.line.number-sign.multi-comment.nim</string>
 		</dict>
 		<dict>
 			<key>captures</key>
@@ -25,7 +40,7 @@
 				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>punctuation.definition.comment.nim</string>
+					<string>punctuation.definition.doc-comment.nim</string>
 				</dict>
 				<key>2</key>
 				<dict>
@@ -39,6 +54,22 @@
 			<string>(##\s*(TODO|todo)?).+$\n?</string>
 			<key>name</key>
 			<string>comment.line.number-sign.doc-comment.nim</string>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.doc-comment.empty.nim</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>An empty documentation comment.</string>
+			<key>match</key>
+			<string>(##\s*)$\n?</string>
+			<key>name</key>
+			<string>comment.line.number-sign.doc-comment.empty.nim</string>
 		</dict>
 		<dict>
 			<key>captures</key>

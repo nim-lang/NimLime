@@ -6,16 +6,26 @@ fileTypes: ["nim", "nims"]
 uuid: fa6f2c1c-dd3f-4bcd-b2be-d05312be4080
 
 patterns:
-- comment: An empty documentation comment.
-  name: comment.line.number-sign.doc-comment.empty.nim
-  match: (##\s*)$\n?
+- comment: A multiline comment.
+  name: comment.line.number-sign.multi-comment.nim
+  begin: (\#\[\s*(TODO|todo)?)
+  end: (.*]\#)
+  captures:
+    '1': {name: punctuation.definition.multi-comment.nim}
+    '2': {name: invalid.illegal.TODO.nim}
 
 - comment: A documentation comment.
   name: comment.line.number-sign.doc-comment.nim
   match: (##\s*(TODO|todo)?).+$\n?
   captures:
-    '1': {name: punctuation.definition.comment.nim}
+    '1': {name: punctuation.definition.doc-comment.nim}
     '2': {name: invalid.illegal.TODO.nim}
+
+- comment: An empty documentation comment.
+  name: comment.line.number-sign.doc-comment.empty.nim
+  match: (##\s*)$\n?
+  captures:
+    '1': {name: punctuation.definition.doc-comment.empty.nim}
 
 - comment: A regular comment
   name: comment.line.number-sign.comment.nim

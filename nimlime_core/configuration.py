@@ -44,7 +44,7 @@ def _update_nimble_value():
 
 def _update_nim_value():
     global nim_exe
-    nim_exe = settings.get('nimble.executable', 'nimble')
+    nim_exe = settings.get('nim.executable', 'nim')
 
 
 def _update_nimsuggest_value():

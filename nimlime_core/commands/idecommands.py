@@ -83,10 +83,7 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
             # We're in a zipped package, so we need to extract the tarball
             # from our package file, then extract the tarball
             debug_print('Extracting nimsuggest tarball to temp_dir')
-            ZipFile(nimlime_dir).extract('nimsuggest.tar.gz', temp_dir)
-            tarfile.open(
-                os.path.join(temp_dir, 'nimsuggest.tar.gz')
-            ).extractall(temp_dir)
+            ZipFile(nimlime_dir).extractall(temp_dir)
         else:
             # We're an actual directory, so we just need to copy the source
             # tree to the temp directory.
@@ -114,6 +111,7 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
             sublime.error_message(setup_error_msg)
             debug_print('Compilation unsuccessful.')
             print(stdout)
+            yield
 
         # Tell the user the process was successful, and remind them
         # to set the nimsuggest settings.

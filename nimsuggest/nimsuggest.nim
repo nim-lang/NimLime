@@ -80,7 +80,7 @@ method mainCommand(data: ModeData) {.base.} =
 # Import and add nimsuggest modes
 let modes = newTable[string, ModeInitializer]()
 
-import modes/tcpMode, modes/stdinMode, modes/epcmode
+import modes/tcpMode, modes/stdinMode, modes/epcMode
 tcpMode.addModes(modes)
 stdinMode.addModes(modes)
 epcmode.addModes(modes)

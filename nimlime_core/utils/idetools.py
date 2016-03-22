@@ -16,7 +16,8 @@ if sys.version_info < (3, 0):
 else:
     from queue import Queue  # python 3.x
 
-DOUBLE_NEWLINE_BYTE = '\r\n\r\n'.encode()
+DOUBLE_NEWLINE_BYTE = (os.linesep * 2).encode()
+NEWLINE_BYTE = os.linesep.encode()
 ANSWER_REGEX = r"""
 (?P<answer_type>[^\t]*)\t
 (?P<symbol_type>[^\t]*)\t

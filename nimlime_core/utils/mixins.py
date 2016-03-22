@@ -9,6 +9,7 @@ from tempfile import mkstemp
 import sublime
 from nimlime_core import settings
 from nimlime_core.utils.idetools import Nimsuggest
+from nimlime_core.utils.internal_tools import debug_print
 
 SUBLIME_VERSION = int(sublime.version())
 EXE_NOT_FOUND_MSG = ('Unable to run command, the following executables could '
@@ -164,9 +165,13 @@ class NimLimeOutputMixin(NimLimeMixin):
         :type window: sublime.Window
         :type view: sublime.View
         """
+        debug_print("write_to_output invoked.")
+        debug_print("self.send_output:", self.send_output)
         if not self.send_output:
             return
 
+        debug_print("Writing to output.")
+        debug_print("Self: ", dir(self))
         tag = self.output_tag.format(
             view_id=view.id(),
             buffer_id=view.id(),
@@ -174,6 +179,7 @@ class NimLimeOutputMixin(NimLimeMixin):
             view_name=view.name(),
             window_id=window.id()
         )
+        debug_print("Formatted tag: ", tag)
 
         # Then, get the window and view
         output_window, output_view = self._get_output_view(tag, window, view)

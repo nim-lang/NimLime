@@ -243,6 +243,6 @@ class IdetoolMixin(object):
         canonical_project = os.path.normcase(os.path.normpath(project_file))
         instance = self.nimsuggest_instances.get(canonical_project)
         if instance is None:
-            instance = Nimsuggest(canonical_project)
+            instance = Nimsuggest(canonical_project, 10)
             self.nimsuggest_instances[canonical_project] = instance
         return instance

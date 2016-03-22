@@ -4,6 +4,8 @@ Internal tools for NimLime development & testing.
 """
 from pprint import pformat
 
+import sys
+
 import sublime
 from nimlime_core import configuration
 
@@ -31,13 +33,14 @@ def debug_print(*args):
     :type args: Any
     """
     if configuration.in_debug_mode:
+        module_name = sys._getframe(0).f_globals['__name__']
         res = []
         for o in args:
             if isinstance(o, str):
                 res.append(o)
             else:
                 res.append(pformat(o))
-        print(''.join(res))
+        print(module_name, ':', ''.join(res))
 
 
 # Profiling functions

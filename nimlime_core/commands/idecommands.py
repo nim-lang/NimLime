@@ -4,7 +4,6 @@ Commands and code to expose nimsuggest functionality to the user.
 """
 import os
 import subprocess
-import tarfile
 from shutil import copytree
 from tempfile import mkdtemp
 from zipfile import ZipFile
@@ -13,6 +12,7 @@ import NimLime
 import sublime
 from nimlime_core import configuration
 from nimlime_core.utils.error_handler import catch_errors
+from nimlime_core.utils.idetools import Nimsuggest
 from nimlime_core.utils.internal_tools import debug_print
 from nimlime_core.utils.misc import (send_self, get_next_method, samefile,
                                      run_process, busy_frames, format_msg,
@@ -22,17 +22,41 @@ from nimlime_core.utils.mixins import (NimLimeOutputMixin, IdetoolMixin,
                                        NimLimeMixin)
 from sublime_plugin import ApplicationCommand
 
+setup_error_msg = format_msg("""
+Nimsuggest doesn't appear to have been setup correctly.\\n
+Please look at the output of the debug console (ctrl+`) for more information.
+""")
+
 
 class NimIdeCommand(NimLimeOutputMixin, IdetoolMixin, ApplicationCommand):
     """A Nimsuggest command."""
     requires_nim_syntax = True
     st2_compatible = False
 
+    nimsuggest_function = None
 
-setup_error_msg = format_msg("""
-Nimsuggest doesn't appear to have been setup correctly.\\n
-Please look at the output of the debug console (ctrl+`) for more information.
-""")
+    @send_self
+    @catch_errors
+    def run(self):
+        this = yield
+        window = sublime.active_window()
+        view = window.active_view()
+
+        nimsuggest = self.get_nimsuggest_instance(view.file_name())
+        ide_params = self.get_ide_parameters(window, view)
+        nim_file, dirty_file, line, column = ide_params
+
+        output, entries = yield self.nimsuggest_function(
+            nimsuggest, nim_file, dirty_file, line, column, this.send
+        )
+        if entries is None:
+            sublime.status_message("Error: Nimsuggest exited unexpectedly.")
+            yield
+
+        yield self.process_entries(window, view, output, entries)
+
+    def process_entries(self, window, view, output, entries):
+        raise NotImplementedError()
 
 
 class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
@@ -126,42 +150,27 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
         yield
 
 
+# Here
 class NimGotoDefinition(NimIdeCommand):
     """
-    Goto definition of symbol at cursor.
+    Goto the definition of a symbol at the cursor.
     """
-    settings_selector = 'idetools.find_definition'
-    setting_entries = (
-        NimLimeOutputMixin.setting_entries,
-        ('ask_on_multiple_results', '{0}.ask_on_multiple_results', True)
-    )
+
+    nimsuggest_function = staticmethod(Nimsuggest.find_definition)
 
     @send_self
     @catch_errors
-    def run(self):
+    def process_entries(self, window, view, output, entries):
         this = yield
-        window = sublime.active_window()
-        view = window.active_view()
-
-        nimsuggest = self.get_nimsuggest_instance(view.file_name())
-        ide_params = self.get_ide_parameters(window, view)
-        nim_file, dirty_file, line, column = ide_params
-
-        output, entries = yield nimsuggest.find_definition(
-            nim_file, dirty_file, line, column, this.send
-        )
-
-        # Get the correct definition entry
-        index = 0
-
         if len(entries) == 0:
-            sublime.status_message(
-                'NimLime: No definition found in project files.'
-            )
+            sublime.status_message("No definition found.")
             yield
-        elif len(entries) > 1 and not self.ask_on_multiple_results:
-            input_list = [[e[5] + ', ' + e[6] + ': ' + e[3], e[4]] for e in
-                          entries]
+
+        index = 0
+        if len(entries) > 1:
+            input_list = [
+                ['{5}, {6}: {3}'.format(*e), e[4]] for e in entries
+                ]
             index = yield window.show_quick_panel(input_list, this.send)
             if index == -1:
                 yield
@@ -170,126 +179,80 @@ class NimGotoDefinition(NimIdeCommand):
         entry = entries[index]
         target_view = window.open_file(entry[4])
         while target_view.is_loading():
-            yield sublime.set_timeout(get_next_method(this), 1000)
+            yield sublime.set_timeout(get_next_method(this), 100)
 
         target_view.show_at_center(
             target_view.text_point(int(entry[5]), int(entry[6]))
         )
 
-        yield
-
 
 class NimShowDefinition(NimIdeCommand):
     """
-    Show definition of symbol at cursor.
+    Show the definition of a symbol in a popup.
     """
-    settings_selector = 'idetools.find_definition'
-    requires_nim_syntax = True
+
+    nimsuggest_function = staticmethod(Nimsuggest.find_definition)
+
+    @catch_errors
+    def process_entries(self, window, view, output, entries):
+        if len(entries) == 0:
+            sublime.status_message("No definition found.")
+            return
+
+        popup_text = '\n'.join([e[3] for e in entries])
+        popup_location = view.word(view.sel()[0])
+        width = (
+            view.viewport_extent()[0] -
+            view.text_to_layout(popup_location.a)[0]
+        )
+
+        view.show_popup(
+            popup_text, flags=2, max_width=width,
+            location=popup_location.a
+        )
+
+
+class NimShowDefinitionInStatus(NimIdeCommand):
+    """
+    Show the definition of a symbol in the status bar.
+    """
+
+    nimsuggest_function = staticmethod(Nimsuggest.find_definition)
+
+    @catch_errors
+    def process_entries(self, window, view, output, entries):
+        if len(entries) == 0:
+            return
+
+        popup_text = ''.join([e[3] for e in entries])
+        sublime.status_message(popup_text)
+
+
+class NimHighlightUsages(NimIdeCommand):
+    """
+    Highlight uses of the symbol in the current file.
+    """
 
     @send_self
     @catch_errors
-    def run(self):
-        this = yield
-        window = sublime.active_window()
-        view = window.active_view()
-        nimsuggest = self.get_nimsuggest_instance(view.file_name())
-        ide_params = self.get_ide_parameters(window, view)
-        nim_file, dirty_file, line, column = ide_params
-
-        data = yield nimsuggest.find_definition(
-            nim_file, dirty_file, line, column, this.send
-        )
-
-        # Get the file and open it.
-        def printer(n, ret=None):
-            def _printer(*args, **kwargs):
-                print(n)
-                print('Positional args: ', repr(args))
-                print('Keyword args: ', repr(kwargs))
-                print()
-                return ret
-
-            return _printer
-
-        if len(data[1]) > 0:
-            output, entries = data
-            yield view.show_popup(entries[0][3], flags=2,
-                                  on_hide=printer('a'),
-                                  on_navigate=printer('b')
-                                  )
-
-        yield
+    def process_entries(self, window, view, output, entries):
+        if len(entries) == 0:
+            sublime.status_message("No definition found.")
+            yield
 
 
-class NimFindUsages(NimIdeCommand):
+class NimListUsagesInFile(NimIdeCommand):
     """
-    Find usages of symbol at cursor.
+    List uses of the symbol in the current file.
     """
-    settings_selector = 'idetools.find_usages'
-    requires_nim_syntax = True
-
-    # requires_nimsuggest = True
 
     @send_self
     @catch_errors
-    def run(self):
+    def process_entries(self, window, view, output, entries):
         this = yield
-        window = sublime.active_window()
-        view = window.active_view()
-
-        nimsuggest = self.get_nimsuggest_instance(view.file_name())
-        ide_params = self.get_ide_parameters(window, view)
-        nim_file, dirty_file, line, column = ide_params
-
-        output, entries = yield nimsuggest.find_definition(
-            nim_file, dirty_file, line, column, this.send
-        )
-
-        # Get the file and open it.
-        if len(entries):
-            # Retrieve the correct entry
-            index = 0
-            if len(entries) > 1:
-                input_list = [
-                    [e[5] + ', ' + e[6] + ': ' + e[3], e[4]] for e in entries
-                    ]
-                index = yield window.show_quick_panel(input_list, this.send)
-                if index == -1:
-                    yield
-
-            # Open the entry file and go to the point
-            entry = entries[index]
-            view = window.open_file(entry[4], sublime.TRANSIENT)
-            while view.is_loading():
-                yield sublime.set_timeout(get_next_method(this), 1000)
-            view.show_at_center(view.text_point(int(entry[5]), int(entry[6])))
-        else:
-            sublime.status_message('NimLime: No definition found in project '
-                                   'files.')
-
-        yield
-
-
-class NimFindUsagesInCurrentFile(NimIdeCommand):
-    """
-    Find usages of a symbol in the current file.
-    """
-    settings_selector = 'idetools.find_current_file_usages'
-    requires_nim_syntax = True
-
-    @send_self
-    @catch_errors
-    def run(self):
-        this = yield
-        window = sublime.active_window()
-        view = window.active_view()
-        nimsuggest = self.get_nimsuggest_instance(view.file_name())
-
-        nim_file, dirty_file, line, column = self.get_ide_parameters(window,
-                                                                     view)
-        output, entries = yield nimsuggest.find_usages(
-            nim_file, dirty_file, line, column, this.send
-        )
+        if len(entries) == 0:
+            sublime.status_message("No definition found.")
+            yield
 
         index = 0
         while index < len(entries):
@@ -314,29 +277,42 @@ class NimFindUsagesInCurrentFile(NimIdeCommand):
         yield
 
 
-class NimGetSuggestions(NimIdeCommand):
-    """Get suggestions"""
-    settings_selector = 'idetools.get_suggestions'
-    requires_nim_syntax = True
-
-    # requires_nimsuggest = True
+class NimListUsages(NimIdeCommand):
+    """
+    List uses of the symbol in the current file.
+    """
+    pass
 
     @send_self
     @catch_errors
-    def run(self):
-        this = yield
-        window = sublime.active_window()
-        view = window.active_view()
-        nimsuggest = self.get_nimsuggest_instance(view.file_name())
+    def process_entries(self, window, view, output, entries):
+        if len(entries) == 0:
+            sublime.status_message("No definition found.")
+            yield
 
-        nim_file, dirty_file, line, column = self.get_ide_parameters(window,
-                                                                     view)
-        data = yield nimsuggest.get_suggestions(
-            nim_file, dirty_file, line, column, this.send
-        )
-        output, entries = data
-        print('This:', repr(data))
-        yield view.show_popup_menu([e[2] for e in entries], this.send)
-        yield
 
-# class NimOutputInvocation(NimIdeCommand):
+class NimShowSuggestions(NimIdeCommand):
+    """
+    Show a popup with suggested symbols
+    """
+    pass
+
+
+class NimShowContext(NimIdeCommand):
+    pass
+
+
+class NimShowHighlights(NimIdeCommand):
+    pass
+
+
+class NimShowOutline(NimIdeCommand):
+    pass
+
+
+class NimRenameSymbol(NimIdeCommand):
+    pass
+
+
+class NimMoveSymbol(NimIdeCommand):
+    pass

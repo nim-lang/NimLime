@@ -57,6 +57,10 @@
         "command": "nim_show_definition"
     },
     {
+        "caption": "Nim: Show Definition In Status",
+        "command": "nim_show_definition_in_status"
+    },
+    {
         "caption": "Nim: Find Usages",
         "command": "nim_find_usages"
     },

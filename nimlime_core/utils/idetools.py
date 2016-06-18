@@ -7,17 +7,22 @@ import re
 import subprocess
 import sys
 from threading import Thread, Lock
+from collections import namedtuple
 
 import sublime
 from nimlime_core import configuration
 from nimlime_core.utils.internal_tools import debug_print
+
 
 if sys.version_info < (3, 0):
     from Queue import Queue, Empty
 else:
     from queue import Queue  # python 3.x
 
-DOUBLE_NEWLINE_BYTE = '\r\n\r\n'.encode()
+
+TAB_BYTE = '\t'.encode()
+DOUBLE_NEWLINE_BYTE = (os.linesep*2).encode()
+NEWLINE_BYTE = os.linesep.encode()
 EXIT_REQUEST = object()
 ANSWER_REGEX = r"""
 (?P<answer_type>[^\t]*)\t
@@ -29,6 +34,14 @@ ANSWER_REGEX = r"""
 (?P<column>[^\t]*)\t
 (?P<docstring>[^\t]*)\n?
 """
+NimsuggestEntry = namedtuple(
+    "NimsuggestEntry",
+    (
+        'answer_type', 'symbol_type', 'name',
+        'declaration', 'file_path', 'line',
+        'column', 'docstring'
+    )
+)
 
 
 class Nimsuggest(object):

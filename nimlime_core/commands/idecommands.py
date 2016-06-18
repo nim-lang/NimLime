@@ -20,6 +20,7 @@ from nimlime_core.utils.misc import (send_self, get_next_method, samefile,
                                      handle_process_error)
 from nimlime_core.utils.mixins import (NimLimeOutputMixin, IdetoolMixin,
                                        NimLimeMixin)
+from nimlime_core.utils.project import get_nim_project
 from sublime_plugin import ApplicationCommand
 
 setup_error_msg = format_msg("""
@@ -34,6 +35,7 @@ class NimIdeCommand(NimLimeOutputMixin, IdetoolMixin, ApplicationCommand):
     st2_compatible = False
 
     nimsuggest_function = None
+    not_found_msg = ""
 
     @send_self
     @catch_errors
@@ -42,7 +44,7 @@ class NimIdeCommand(NimLimeOutputMixin, IdetoolMixin, ApplicationCommand):
         window = sublime.active_window()
         view = window.active_view()
 
-        nimsuggest = self.get_nimsuggest_instance(view.file_name())
+        nimsuggest = self.get_nimsuggest_instance(get_nim_project(window, view))
         ide_params = self.get_ide_parameters(window, view)
         nim_file, dirty_file, line, column = ide_params
 
@@ -51,6 +53,9 @@ class NimIdeCommand(NimLimeOutputMixin, IdetoolMixin, ApplicationCommand):
         )
         if entries is None:
             sublime.status_message("Error: Nimsuggest exited unexpectedly.")
+            yield
+        elif len(entries) == 0:
+            sublime.status_message(self.not_found_msg)
             yield
 
         yield self.process_entries(window, view, output, entries)
@@ -157,14 +162,12 @@ class NimGotoDefinition(NimIdeCommand):
     """
 
     nimsuggest_function = staticmethod(Nimsuggest.find_definition)
+    not_found_msg = "No definition found."
 
     @send_self
     @catch_errors
     def process_entries(self, window, view, output, entries):
         this = yield
-        if len(entries) == 0:
-            sublime.status_message("No definition found.")
-            yield
 
         index = 0
         if len(entries) > 1:
@@ -192,13 +195,10 @@ class NimShowDefinition(NimIdeCommand):
     """
 
     nimsuggest_function = staticmethod(Nimsuggest.find_definition)
+    not_found_msg = "No definition found."
 
     @catch_errors
     def process_entries(self, window, view, output, entries):
-        if len(entries) == 0:
-            sublime.status_message("No definition found.")
-            return
-
         popup_text = '\n'.join([e[3] for e in entries])
         popup_location = view.word(view.sel()[0])
         width = (
@@ -218,12 +218,10 @@ class NimShowDefinitionInStatus(NimIdeCommand):
     """
 
     nimsuggest_function = staticmethod(Nimsuggest.find_definition)
+    not_found_msg = "No definition found."
 
     @catch_errors
     def process_entries(self, window, view, output, entries):
-        if len(entries) == 0:
-            return
-
         popup_text = ''.join([e[3] for e in entries])
         sublime.status_message(popup_text)
 
@@ -233,18 +231,21 @@ class NimHighlightUsages(NimIdeCommand):
     Highlight uses of the symbol in the current file.
     """
 
-    @send_self
+    nimsuggest_function = staticmethod(Nimsuggest.find_usages)
+    not_found_msg = "No uses found."
+
     @catch_errors
     def process_entries(self, window, view, output, entries):
-        if len(entries) == 0:
-            sublime.status_message("No definition found.")
-            yield
+        pass
 
 
 class NimListUsagesInFile(NimIdeCommand):
     """
     List uses of the symbol in the current file.
     """
+
+    nimsuggest_function = staticmethod(Nimsuggest.find_usages)
+    not_found_msg = "No uses found."
 
     @send_self
     @catch_errors
@@ -281,37 +282,23 @@ class NimListUsages(NimIdeCommand):
     """
     List uses of the symbol in the current file.
     """
-    pass
 
-    @send_self
+    nimsuggest_function = staticmethod(Nimsuggest.find_usages)
+    not_found_msg = "No uses found."
+
     @catch_errors
     def process_entries(self, window, view, output, entries):
-        if len(entries) == 0:
-            sublime.status_message("No definition found.")
-            yield
-
-
-class NimShowSuggestions(NimIdeCommand):
-    """
-    Show a popup with suggested symbols
-    """
-    pass
-
-
-class NimShowContext(NimIdeCommand):
-    pass
-
-
-class NimShowHighlights(NimIdeCommand):
-    pass
-
-
-class NimShowOutline(NimIdeCommand):
-    pass
+        yield
 
 
 class NimRenameSymbol(NimIdeCommand):
-    pass
+    nimsuggest_function = staticmethod(Nimsuggest.find_usages)
+    not_found_msg = "Symbol not found."
+
+    def process_entries(self, window, view, output, entries):
+        # First, aggregate the entries into changes associated with a file.
+        # for entry in entries:
+        pass
 
 
 class NimMoveSymbol(NimIdeCommand):

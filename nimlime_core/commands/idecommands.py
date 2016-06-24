@@ -29,7 +29,7 @@ Please look at the output of the debug console (ctrl+`) for more information.
 """)
 
 
-class NimIdeCommand(NimLimeOutputMixin, IdetoolMixin, ApplicationCommand):
+class NimIdeCommand(NimLimeOutputMixin, IdetoolMixin):
     """A Nimsuggest command."""
     requires_nim_syntax = True
     st2_compatible = False
@@ -68,6 +68,8 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
     """
     Compile the version of Nimsuggest bundled with NimLime.
     """
+    settings_selector = 'compile_nimsuggest'
+
     st2_compatible = False
 
     @send_self
@@ -155,11 +157,11 @@ class NimCompileInternalNimsuggest(NimLimeMixin, ApplicationCommand):
         yield
 
 
-# Here
-class NimGotoDefinition(NimIdeCommand):
+class NimGotoDefinition(NimIdeCommand, ApplicationCommand):
     """
     Goto the definition of a symbol at the cursor.
     """
+    settings_selector = "nimsuggest.goto_definition"
 
     nimsuggest_function = staticmethod(Nimsuggest.find_definition)
     not_found_msg = "No definition found."
@@ -189,10 +191,12 @@ class NimGotoDefinition(NimIdeCommand):
         )
 
 
-class NimShowDefinition(NimIdeCommand):
+class NimShowDefinition(NimIdeCommand, ApplicationCommand):
     """
     Show the definition of a symbol in a popup.
     """
+
+    settings_selector = "nimsuggest.show_definition"
 
     nimsuggest_function = staticmethod(Nimsuggest.find_definition)
     not_found_msg = "No definition found."
@@ -212,10 +216,12 @@ class NimShowDefinition(NimIdeCommand):
         )
 
 
-class NimShowDefinitionInStatus(NimIdeCommand):
+class NimShowDefinitionInStatus(NimIdeCommand, ApplicationCommand):
     """
     Show the definition of a symbol in the status bar.
     """
+
+    settings_selector = "nimsuggest.show_definition_in_status"
 
     nimsuggest_function = staticmethod(Nimsuggest.find_definition)
     not_found_msg = "No definition found."
@@ -226,10 +232,12 @@ class NimShowDefinitionInStatus(NimIdeCommand):
         sublime.status_message(popup_text)
 
 
-class NimHighlightUsages(NimIdeCommand):
+class NimHighlightUsages(NimIdeCommand, ApplicationCommand):
     """
     Highlight uses of the symbol in the current file.
     """
+
+    settings_selector = "nimsuggest.highlight_usages"
 
     nimsuggest_function = staticmethod(Nimsuggest.find_usages)
     not_found_msg = "No uses found."
@@ -239,10 +247,12 @@ class NimHighlightUsages(NimIdeCommand):
         pass
 
 
-class NimListUsagesInFile(NimIdeCommand):
+class NimListUsagesInFile(NimIdeCommand, ApplicationCommand):
     """
     List uses of the symbol in the current file.
     """
+
+    settings_selector = "nimsuggest.highlight_usages_in_file"
 
     nimsuggest_function = staticmethod(Nimsuggest.find_usages)
     not_found_msg = "No uses found."
@@ -278,20 +288,10 @@ class NimListUsagesInFile(NimIdeCommand):
         yield
 
 
-class NimListUsages(NimIdeCommand):
-    """
-    List uses of the symbol in the current file.
-    """
+class NimSuggestRenameSymbol(NimIdeCommand, ApplicationCommand):
 
-    nimsuggest_function = staticmethod(Nimsuggest.find_usages)
-    not_found_msg = "No uses found."
+    settings_selector = "nimsuggest.rename"
 
-    @catch_errors
-    def process_entries(self, window, view, output, entries):
-        yield
-
-
-class NimRenameSymbol(NimIdeCommand):
     nimsuggest_function = staticmethod(Nimsuggest.find_usages)
     not_found_msg = "Symbol not found."
 
@@ -301,5 +301,6 @@ class NimRenameSymbol(NimIdeCommand):
         pass
 
 
-class NimMoveSymbol(NimIdeCommand):
-    pass
+class NimSuggestMoveSymbol(NimIdeCommand, ApplicationCommand):
+    settings_selector = "nimsuggest.move"
+

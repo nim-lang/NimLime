@@ -5,13 +5,13 @@ This file loads and verifies the more global and complex aspects of NimLime's
 settings and configuration.
 """
 import os
-from subprocess import Popen
 
 import sublime
 from nimlime_core import settings
 
 
 # Package state
+in_debug_mode = False
 def _check_debug_value():
     global in_debug_mode
     in_debug_mode = settings.get('debug_mode', False)

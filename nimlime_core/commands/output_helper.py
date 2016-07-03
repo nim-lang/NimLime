@@ -11,8 +11,7 @@ class NimlimeOutputCommand(TextCommand):
     Convenience commands that allows other commands to easily modify a view
     in Sublime Text 3.
     """
-    def run(self, *pargs, **kwargs):
-        edit_obj, action, args = pargs
+    def run(self, edit_obj, action, args):
         if action == 'insert':
             self.view.insert(edit_obj, *args)
         elif action == 'erase':

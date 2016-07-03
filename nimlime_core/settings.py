@@ -77,9 +77,10 @@ def get(key, default=None):
     :type key: str
     """
     if _settings is None:
-        return default
+        result = default
     else:
-        return _settings.get(key, default)
+        result = _settings.get(key, default)
+    return result
 
 
 _load()

@@ -6,18 +6,23 @@ import os
 import re
 import subprocess
 import sys
-from threading import Thread
+from threading import Thread, Lock
+from collections import namedtuple
 
 import sublime
 from nimlime_core import configuration
+from nimlime_core.configuration import debug_print
 
 if sys.version_info < (3, 0):
-    from Queue import Queue
+    from Queue import Queue, Empty
 else:
     from queue import Queue  # python 3.x
 
-DOUBLE_NEWLINE_BYTE = (os.linesep * 2).encode()
+
+TAB_BYTE = '\t'.encode()
+DOUBLE_NEWLINE_BYTE = (os.linesep*2).encode()
 NEWLINE_BYTE = os.linesep.encode()
+EXIT_REQUEST = object()
 ANSWER_REGEX = r"""
 (?P<answer_type>[^\t]*)\t
 (?P<symbol_type>[^\t]*)\t
@@ -28,97 +33,51 @@ ANSWER_REGEX = r"""
 (?P<column>[^\t]*)\t
 (?P<docstring>[^\t]*)\n?
 """
-
-
-def check_process(process, args, failure_count):
-    """
-    Check if the process is alive, if it isn't, restart it.
-    :type process: subprocess.Popen|None
-    :type args:
-    :type failure_count:
-    :rtype:
-    """
-    if process is None or process.poll() is not None:
-        process = subprocess.Popen(**args)
-    return process, failure_count
-
-
-def _nimsuggest_handler(input_queue, process_args):
-    process, fail_count = check_process(None, process_args, -1)
-    input_queue.nimsuggest_process = process
-
-    while input_queue.nim_running:
-        process, fail_count = check_process(process, process_args, fail_count)
-        input_queue.nimsuggest_process = process
-        if fail_count > 10:
-            break
-
-        input_data, callback = input_queue.get()
-        process.stdin.write(input_data)
-        process.stdin.flush()
-
-        # Assigned to later
-        entries = None
-
-        raw_output = bytearray()
-        while True:
-            process.stdout.flush()
-            output_char = process.stdout.read(1)
-            if output_char == b'':
-                wrapped_callback = lambda: callback((raw_output, None))
-                break
-
-            raw_output.extend(output_char)
-            newline_found = raw_output.find(
-                DOUBLE_NEWLINE_BYTE,
-                len(raw_output) - len(DOUBLE_NEWLINE_BYTE)
-            )
-            if newline_found != -1:
-                wrapped_callback = lambda: callback((raw_output, entries))
-                break
-
-        # Parse the data
-        output = raw_output.decode('utf-8')
-        entries = re.findall(ANSWER_REGEX, output, re.X)
-        if len(entries) == 0:
-            print('No entries found. Output:')
-            print(output)
-
-        # Run the callback
-        input_queue.task_done()
-        sublime.set_timeout(wrapped_callback, 0)
-
-    # Cleanup
-    if process.poll() is None:
-        process.kill()
+NimsuggestEntry = namedtuple(
+    "NimsuggestEntry",
+    (
+        'answer_type', 'symbol_type', 'name',
+        'declaration', 'file_path', 'line',
+        'column', 'docstring'
+    )
+)
 
 
 class Nimsuggest(object):
     """
     Used to retrieve suggestions, completions, and other IDE-like information
-    using a pool of nimsuggest instances.
+    for a Nim project.
     """
 
-    def __init__(self, project_file):
+    def __init__(self, project_file, max_failures):
         """
         Create a Nimsuggest instance using the given project file path.
         :type project_file: str
         """
+        self.max_failures = max_failures
+        self.current_failures = -1
+        self.running = False
 
         # Nimsuggest process handlers
-        self.input_queue = None
-        self.nimsuggest_handler = None
+        self.input_queue = Queue()
+        self.state_transition_lock = Lock()  # Used for shutdown of server
+        # thread.
+        self.server_thread = None
 
         # Information needed to start a nimsuggest process
-        self.environment = os.environ.copy()
-        self.environment['PATH'] = '{0};{1}'.format(
-            os.path.dirname(configuration.nim_exe),
-            self.environment['PATH']
-        )
+        self.environment = os.environ
+        if os.path.isfile(configuration.nim_exe):
+            self.environment = os.environ.copy()
+            self.environment['PATH'] = '{0};{1}'.format(
+                os.path.dirname(configuration.nim_exe),
+                self.environment['PATH']
+            )
 
         self.process_args = dict(
-            executable=configuration.nimsuggest_exe,
-            args=['nimsuggest', 'stdin', '--interactive:false', project_file],
+            args=[configuration.nimsuggest_exe,
+                  '--nimpath:"C:\\x64\\Nim\\"',
+                  'stdin', '--interactive:false',
+                  project_file],
             env=self.environment,
             universal_newlines=False,
             creationflags=(configuration.on_windows and 0x08000000) or None,
@@ -127,31 +86,123 @@ class Nimsuggest(object):
             stderr=subprocess.STDOUT,
         )
 
-    def start_nimsuggest(self):
+    def start(self):
         """
         Start the internal nimsuggest process
         """
-        # Create input/output queues
-        self.input_queue = Queue()
-        self.input_queue.nim_running = True
+        if self.running:
+            raise Exception("Nimsuggest instance already running.")
+        self.server_thread = Thread(target=self.run)
+        self.server_thread.daemon = True
+        self.server_thread.start()
 
-        # Start request handler
-        self.nimsuggest_handler = Thread(
-            target=_nimsuggest_handler,
-            args=(self.input_queue, self.process_args)
-        )
-
-        self.nimsuggest_handler.daemon = True  # thread dies with the program
-        self.nimsuggest_handler.start()
-
-    def stop_nimsuggest(self):
+    def stop(self):
         """
         Stop the internal nimsuggest process.
         """
         # We use the input_queue to signal to the handler thread to cleanup.
-        if self.input_queue is not None:
-            self.input_queue.nim_running = False
-        self.nimsuggest_handler = None
+        if not self.running:
+            raise Exception("Nimsuggest instance already stopped.")
+        self.input_queue.put(EXIT_REQUEST)
+
+    def check_process(self, process):
+        result = process
+        if process is None or process.poll() is not None:
+            try:
+                result = subprocess.Popen(**self.process_args)
+                self.current_failures += 1
+            except OSError:
+                self.current_failures = self.max_failures
+                result = None
+        return result
+
+    def run(self):
+        self.running = True
+        self.current_failures = -1
+        process = self.check_process(None)
+
+        if self.current_failures >= self.max_failures:
+            self.running = False
+            sublime.set_timeout(
+                lambda: sublime.status_message(
+                    "Error: Nimsuggest process couldn't be started."
+                ), 0
+            )
+            self.input_queue = Queue()
+
+        while self.running:
+            # Retrieve the next request and send it to the process.
+            request = self.input_queue.get()
+            debug_print("Got request", request)
+            if request is EXIT_REQUEST:
+                break
+
+            # Check up on the process
+            process = self.check_process(process)
+            if self.current_failures >= self.max_failures:
+                sublime.set_timeout(
+                    lambda: sublime.status_message(
+                        "Nimsuggest process failure limit reached."
+                    )
+                )
+                break
+
+            input_data, callback = request
+            process.stdin.write(input_data)
+            process.stdin.flush()
+
+            # Get output from Nimsuggest.
+            incomplete_data = False
+            raw_output = bytearray()
+            while True:
+                # Get the next byte
+                process.stdout.flush()
+                output_char = process.stdout.read(1)
+
+                # The process returns nothing if it has exited
+                if output_char == b'':
+                    incomplete_data = True
+                    break
+
+                raw_output.extend(output_char)
+                newline_found = raw_output.find(
+                    DOUBLE_NEWLINE_BYTE,
+                    len(raw_output) - len(DOUBLE_NEWLINE_BYTE)
+                )
+                if newline_found != -1:
+                    break
+
+            # Parse the data
+            entries = None
+            output = raw_output.decode('utf-8')
+            if not incomplete_data:
+                entries = re.findall(ANSWER_REGEX, output, re.X)
+                if len(entries) == 0:
+                    print('No entries found. Output:')
+                    print(output)
+            else:
+                debug_print("Nimsuggest process pipe was closed.")
+                print(output)
+
+            # Run the callback
+            self.input_queue.task_done()
+            debug_print("Finished request, ", len(entries), " entries found.")
+            sublime.set_timeout(lambda: callback((raw_output, entries)), 0)
+
+        # Cleanup
+        with self.state_transition_lock:
+            while True:
+                try:
+                    callback = self.input_queue.get_nowait()
+                    sublime.set_timeout(lambda: callback('', None), 0)
+                    self.input_queue.task_done()
+                except Empty:
+                    break
+
+            if process is not None and process.poll() is None:
+                process.kill()
+
+            self.running = False
 
     def run_command(self, command, nim_file, dirty_file, line, column, cb):
         # First, check that the process and thread are active
@@ -164,26 +215,20 @@ class Nimsuggest(object):
         :type column: int
         :type cb: (str, list[Any]) -> None
         """
-        alive = (
-            self.nimsuggest_handler is not None and
-            self.input_queue.nimsuggest_process is not None and
-            self.nimsuggest_handler.is_alive() and
-            self.input_queue.nimsuggest_process.poll() is None
-        )
-        if not alive:
-            self.stop_nimsuggest()
-            self.start_nimsuggest()
+        with self.state_transition_lock:
+            if not self.running:
+                self.start()
 
-        # Next, prepare the command
-        if dirty_file:
-            formatted_command = '{0}\t"{1}";"{2}":{3}:{4}\r\n'.format(
-                command, nim_file, dirty_file, line, column
-            ).encode('utf-8')
-        else:
-            formatted_command = '{0}\t"{1}":{2}:{3}\r\n'.format(
-                command, nim_file, line, column
-            ).encode('utf-8')
-        self.input_queue.put((formatted_command, cb))
+            # Next, prepare the command
+            if dirty_file:
+                formatted_command = '{0}\t"{1}";"{2}":{3}:{4}\r\n'.format(
+                    command, nim_file, dirty_file, line, column
+                ).encode('utf-8')
+            else:
+                formatted_command = '{0}\t"{1}":{2}:{3}\r\n'.format(
+                    command, nim_file, line, column
+                ).encode('utf-8')
+            self.input_queue.put((formatted_command, cb))
 
     def __del__(self):
         pass
@@ -194,11 +239,17 @@ class Nimsuggest(object):
     def find_usages(self, nim_file, dirty_file, line, column, cb):
         self.run_command('use', nim_file, dirty_file, line, column, cb)
 
-    def find_d_usages(self, nim_file, dirty_file, line, column, cb):
+    def find_dot_usages(self, nim_file, dirty_file, line, column, cb):
         self.run_command('dus', nim_file, dirty_file, line, column, cb)
 
     def get_suggestions(self, nim_file, dirty_file, line, column, cb):
         self.run_command('sug', nim_file, dirty_file, line, column, cb)
+
+    def get_context(self, nim_file, dirty_file, line, column, cb):
+        self.run_command('context', nim_file, dirty_file, line, column, cb)
+
+    def get_highlights(self, nim_file, dirty_file, line, column, cb):
+        self.run_command('highlight', nim_file, dirty_file, line, column, cb)
 
     def get_outline(self, nim_file, dirty_file, line, column, cb):
         self.run_command('outline', nim_file, dirty_file, line, column, cb)

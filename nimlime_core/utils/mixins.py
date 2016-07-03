@@ -2,19 +2,23 @@
 """
 Mixins used to give common functionality to NimLime commands.
 """
+import inspect
 import os
 from os import fdopen
 from tempfile import mkstemp
 
 import sublime
 from nimlime_core import settings
+from nimlime_core import configuration
+from nimlime_core.configuration import debug_print
 from nimlime_core.utils.idetools import Nimsuggest
 from nimlime_core.utils.internal_tools import debug_print
 
 SUBLIME_VERSION = int(sublime.version())
 EXE_NOT_FOUND_MSG = ('Unable to run command, the following executables could '
                      'not be found: ')
-
+NO_SETTINGS_SELECTOR_MSG = ("NimLime command {0} in {1} has no settings "
+                            "selector.")
 
 class NimLimeMixin(object):
     """
@@ -54,19 +58,24 @@ class NimLimeMixin(object):
     def get_setting(self, key, default):
         """
         Retrieve the setting value associated with the given key,
-        returning the
-        given default if the setting doesn't exist. The key must have a
-        format
-        specifier of '{0}'!
+        returning the given default if the setting doesn't exist. The key
+        must have a format specifier of '{0}'!
         :type key: str
         :type default: Any
         :rtype: Any
         """
+        if self.settings_selector is None:
+            raise Exception(NO_SETTINGS_SELECTOR_MSG.format(
+                self.__class__.__name__, inspect.getfile(self.__class__)
+            ))
         formatted_key = key.format(self.settings_selector)
         result = settings.get(formatted_key, default)
         return result
 
     def _load_settings(self):
+        # Recursively load settings
+        debug_print(self.__class__.__name__, 'is loading settings')
+
         def _is_setting_entry(entry):
             return (
                 len(entry) == 3 and
@@ -76,8 +85,7 @@ class NimLimeMixin(object):
 
         def _load_entry(entry):
             if _is_setting_entry(entry):
-                setattr(self, entry[0],
-                        self.get_setting(entry[1], entry[2]))
+                setattr(self, entry[0], self.get_setting(entry[1], entry[2]))
             elif isinstance(entry, tuple):
                 for sub_entry in entry:
                     _load_entry(sub_entry)
@@ -249,6 +257,6 @@ class IdetoolMixin(object):
         canonical_project = os.path.normcase(os.path.normpath(project_file))
         instance = self.nimsuggest_instances.get(canonical_project)
         if instance is None:
-            instance = Nimsuggest(canonical_project)
+            instance = Nimsuggest(canonical_project, 10)
             self.nimsuggest_instances[canonical_project] = instance
         return instance

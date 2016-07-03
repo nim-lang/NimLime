@@ -11,8 +11,7 @@ from collections import namedtuple
 
 import sublime
 from nimlime_core import configuration
-from nimlime_core.utils.internal_tools import debug_print
-
+from nimlime_core.configuration import debug_print
 
 if sys.version_info < (3, 0):
     from Queue import Queue, Empty

@@ -5,21 +5,16 @@ This file loads and verifies the more global and complex aspects of NimLime's
 settings and configuration.
 """
 import os
+import sys
+from pprint import pformat
 
 import sublime
 from nimlime_core import settings
 
 
 # Package state
-in_debug_mode = False
-def _check_debug_value():
-    global in_debug_mode
-    in_debug_mode = settings.get('debug_mode', False)
-
 
 is_zipped = not os.path.isfile(__file__)
-in_debug_mode = False
-settings.run_on_load_and_change('debug_mode', _check_debug_value)
 
 # OS Conditionals
 on_windows = False
@@ -59,3 +54,31 @@ settings.run_on_load_and_change('nimble.executable', _update_nimble_value)
 settings.run_on_load_and_change('nim.executable', _update_nim_value)
 settings.run_on_load_and_change('nimsuggest.executable',
                                 _update_nimsuggest_value)
+
+# Debug mode
+in_debug_mode = False
+
+
+def _check_debug_value():
+    global in_debug_mode
+    in_debug_mode = settings.get('debug_mode', False)
+
+settings.run_on_load_and_change('debug_mode', _check_debug_value)
+
+
+def debug_print(*args):
+    """
+    Print when debugging.
+    :type args: Any
+    """
+    if in_debug_mode:
+        module_name = sys._getframe(0).f_globals['__name__']
+        res = []
+        for o in args:
+            if isinstance(o, str):
+                res.append(o)
+            else:
+                res.append(pformat(o))
+        print(module_name, ':', ' '.join(res))
+
+

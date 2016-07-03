@@ -13,7 +13,7 @@ import sublime
 from nimlime_core import configuration
 from nimlime_core.utils.error_handler import catch_errors
 from nimlime_core.utils.idetools import Nimsuggest
-from nimlime_core.utils.internal_tools import debug_print
+from nimlime_core.configuration import debug_print
 from nimlime_core.utils.misc import (send_self, get_next_method, samefile,
                                      run_process, busy_frames, format_msg,
                                      loop_status_msg, start_file,
@@ -252,7 +252,7 @@ class NimListUsagesInFile(NimIdeCommand, ApplicationCommand):
     List uses of the symbol in the current file.
     """
 
-    settings_selector = "nimsuggest.highlight_usages_in_file"
+    settings_selector = "nimsuggest.list_usages_in_file"
 
     nimsuggest_function = staticmethod(Nimsuggest.find_usages)
     not_found_msg = "No uses found."

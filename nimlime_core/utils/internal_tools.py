@@ -2,12 +2,8 @@
 """
 Internal tools for NimLime development & testing.
 """
-from pprint import pformat
-
-import sys
 
 import sublime
-from nimlime_core import configuration
 
 try:
     from cProfile import Profile
@@ -20,27 +16,6 @@ try:
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
-
-debug_on = False
-if debug_on:
-    sublime.message_dialog('NimLime running in debug mode.')
-
-
-# Debug printer
-def debug_print(*args):
-    """
-    Print when debugging.
-    :type args: Any
-    """
-    if configuration.in_debug_mode:
-        module_name = sys._getframe(0).f_globals['__name__']
-        res = []
-        for o in args:
-            if isinstance(o, str):
-                res.append(o)
-            else:
-                res.append(pformat(o))
-        print(module_name, ':', ''.join(res))
 
 
 # Profiling functions

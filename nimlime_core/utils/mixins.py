@@ -10,6 +10,7 @@ from tempfile import mkstemp
 import sublime
 from nimlime_core import settings
 from nimlime_core import configuration
+from nimlime_core.configuration import debug_print
 from nimlime_core.utils.idetools import Nimsuggest
 
 SUBLIME_VERSION = int(sublime.version())
@@ -72,8 +73,7 @@ class NimLimeMixin(object):
 
     def _load_settings(self):
         # Recursively load settings
-        if configuration.in_debug_mode:
-            print('{0}: Loading settings'.format(self.__class__.__name__))
+        debug_print(self.__class__.__name__, 'is loading settings')
 
         def _is_setting_entry(entry):
             return (

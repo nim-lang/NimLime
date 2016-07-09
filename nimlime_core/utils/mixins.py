@@ -12,7 +12,6 @@ from nimlime_core import settings
 from nimlime_core import configuration
 from nimlime_core.configuration import debug_print
 from nimlime_core.utils.idetools import Nimsuggest
-from nimlime_core.utils.internal_tools import debug_print
 
 SUBLIME_VERSION = int(sublime.version())
 EXE_NOT_FOUND_MSG = ('Unable to run command, the following executables could '

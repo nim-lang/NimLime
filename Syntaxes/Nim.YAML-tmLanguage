@@ -207,7 +207,7 @@ patterns:
   - {include: source.nim}
 
 - comment: Import syntax
-  match: ((import)\s+[\/\w]+,?)
+  match: ((import)\s+[\.|\w|\/]+,?)
   captures:
     '2': { name: keyword.control.nim }
 - match: (from)\s+[\/\w]+\s+(?=import)

@@ -572,7 +572,7 @@
 			<key>comment</key>
 			<string>Import syntax</string>
 			<key>match</key>
-			<string>((import)\s+[\/\w]+,?)</string>
+			<string>((import)\s+[\.|\w|\/]+,?)</string>
 		</dict>
 		<dict>
 			<key>captures</key>

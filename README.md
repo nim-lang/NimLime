@@ -1,7 +1,7 @@
 NimLime
 =======
 
-Super Nim Plugin for Sublime Text 2/3
+Nim Programming Language plugin for Sublime Text 2/3
 
 Features
 --------

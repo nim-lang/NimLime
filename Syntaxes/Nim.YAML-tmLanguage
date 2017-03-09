@@ -230,7 +230,7 @@ patterns:
 
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(((uint|int|float)(8|16|32|64)?)|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr|any|untyped|typed)(?![\w\x{80}-\x{10FFFF}])
+  match: (?<![\w\x{80}-\x{10FFFF}])(((uint|int|float)(8|16|32|64)?)|clong|culong|cchar|cschar|cshort|cint|csize|clonglong|cfloat|cdouble|clongdouble|cuchar|cushort|cuint|culonglong|cstringArray|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr|any|untyped|typed)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Built-in, generic types.
   name: storage.type.generic.nim

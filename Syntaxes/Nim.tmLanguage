@@ -622,7 +622,7 @@
 			<key>comment</key>
 			<string>Built-in, concrete types.</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(((uint|int|float)(8|16|32|64)?)|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr|any|untyped|typed)(?![\w\x{80}-\x{10FFFF}])</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(((uint|int|float)(8|16|32|64)?)|clong|culong|cchar|cschar|cshort|cint|csize|clonglong|cfloat|cdouble|clongdouble|cuchar|cushort|cuint|culonglong|cstringArray|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr|any|untyped|typed)(?![\w\x{80}-\x{10FFFF}])</string>
 			<key>name</key>
 			<string>storage.type.concrete.nim</string>
 		</dict>

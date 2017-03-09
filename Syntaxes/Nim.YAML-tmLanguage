@@ -225,16 +225,16 @@ patterns:
   match: ((?<![\w\x{80}-\x{10FFFF}])(generic|interface|lambda|out|shared|with|without)(?![\w\x{80}-\x{10FFFF}]))
 
 - comment: Common functions
-  name: support.function.any-method.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(len|high|low)(?![\w\x{80}-\x{10FFFF}])
+  name: keyword.other.common.function.nim
+  match: (?<![\w\x{80}-\x{10FFFF}])(new|GC_ref|GC_unref|assert|echo|defined|declared|newException|countup|countdown|len|high|low)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Built-in, concrete types.
   name: storage.type.concrete.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(((uint|int|float)(8|16|32|64)?)|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr|any)(?![\w\x{80}-\x{10FFFF}])
+  match: (?<![\w\x{80}-\x{10FFFF}])(((uint|int|float)(8|16|32|64)?)|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr|any|untyped|typed)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Built-in, generic types.
   name: storage.type.generic.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(range|array|seq|tuple|natural|set|ref|ptr)(?![\w\x{80}-\x{10FFFF}])
+  match: (?<![\w\x{80}-\x{10FFFF}])(range|array|seq|tuple|natural|set|ref|ptr|pointer)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Function types
   name: storage.type.function.nim
@@ -243,6 +243,18 @@ patterns:
 - comment: Special types.
   name: storage.type.generic.nim
   match: (?<![\w\x{80}-\x{10FFFF}])(openarray|varargs|void)(?![\w\x{80}-\x{10FFFF}])
+
+- comment: Other constants.
+  name: support.constant.nim
+  match: (?<![\w\x{80}-\x{10FFFF}])([A-Z][A-Z0-9_]+)(?![\w\x{80}-\x{10FFFF}])
+
+- comment: Other types.
+  name: support.type.nim
+  match: (?<![\w\x{80}-\x{10FFFF}])([A-Z]\w+)(?![\w\x{80}-\x{10FFFF}])
+
+- comment: Function call.
+  name: support.function.any-method.nim
+  match: (?<![\w\x{80}-\x{10FFFF}])(\w+)(?![\w\x{80}-\x{10FFFF}])(?=\()
 
 - comment: (Raw) Triple Quoted String
   name: string.quoted.triple.nim

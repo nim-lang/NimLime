@@ -614,15 +614,15 @@
 			<key>comment</key>
 			<string>Common functions</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(len|high|low)(?![\w\x{80}-\x{10FFFF}])</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(new|GC_ref|GC_unref|assert|echo|defined|declared|newException|countup|countdown|len|high|low)(?![\w\x{80}-\x{10FFFF}])</string>
 			<key>name</key>
-			<string>support.function.any-method.nim</string>
+			<string>keyword.other.common.function.nim</string>
 		</dict>
 		<dict>
 			<key>comment</key>
 			<string>Built-in, concrete types.</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(((uint|int|float)(8|16|32|64)?)|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr|any)(?![\w\x{80}-\x{10FFFF}])</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(((uint|int|float)(8|16|32|64)?)|clong|culong|cchar|cschar|cshort|cint|csize|clonglong|cfloat|cdouble|clongdouble|cuchar|cushort|cuint|culonglong|cstringArray|bool|string|auto|cstring|char|byte|tobject|typedesc|stmt|expr|any|untyped|typed)(?![\w\x{80}-\x{10FFFF}])</string>
 			<key>name</key>
 			<string>storage.type.concrete.nim</string>
 		</dict>
@@ -630,7 +630,7 @@
 			<key>comment</key>
 			<string>Built-in, generic types.</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(range|array|seq|tuple|natural|set|ref|ptr)(?![\w\x{80}-\x{10FFFF}])</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(range|array|seq|tuple|natural|set|ref|ptr|pointer)(?![\w\x{80}-\x{10FFFF}])</string>
 			<key>name</key>
 			<string>storage.type.generic.nim</string>
 		</dict>
@@ -649,6 +649,30 @@
 			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(openarray|varargs|void)(?![\w\x{80}-\x{10FFFF}])</string>
 			<key>name</key>
 			<string>storage.type.generic.nim</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Other constants.</string>
+			<key>match</key>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])([A-Z][A-Z0-9_]+)(?![\w\x{80}-\x{10FFFF}])</string>
+			<key>name</key>
+			<string>support.constant.nim</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Other types.</string>
+			<key>match</key>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])([A-Z]\w+)(?![\w\x{80}-\x{10FFFF}])</string>
+			<key>name</key>
+			<string>support.type.nim</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Function call.</string>
+			<key>match</key>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(\w+)(?![\w\x{80}-\x{10FFFF}])(?=\()</string>
+			<key>name</key>
+			<string>support.function.any-method.nim</string>
 		</dict>
 		<dict>
 			<key>begin</key>

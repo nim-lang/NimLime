@@ -16,6 +16,20 @@
                         "children":
                         [
                             {
+                                "caption": "NimLime",
+                                "id": "nimlime",
+                                "children":
+                                [
+                                    {
+                                        "command": "nim_lime_open_support",
+                                        "caption": "Support/Issue Tracker"
+                                    }
+                                ]
+                            },
+
+                            { "caption": "-" },
+                            
+                            {
                                 "command": "open_file", "args":
                                 {
                                     "file": "${packages}/NimLime/NimLime.sublime-settings"
@@ -29,6 +43,7 @@
                                 },
                                 "caption": "Settings – User"
                             },
+
                             { "caption": "-" },
 
 
@@ -84,17 +99,6 @@
                         ]
                     }
                 ]
-            }
-        ]
-    },
-    {
-        "caption": "NimLime",
-        "id": "nimlime",
-        "children":
-        [
-            {
-                "command": "nim_lime_open_support",
-                "caption": "Support/Issue Tracker"
             }
         ]
     }

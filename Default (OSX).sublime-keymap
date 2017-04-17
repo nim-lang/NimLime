@@ -1,21 +1,53 @@
 [
-    {"keys": ["shift+alt+d"], "command": "gotodef", "context":
-        [
+    {"keys": ["f12"], "command": "gotodef", "context":
+    	[
             { "key": "selector", "operator": "equal", "operand": "source.nim" },
-            { "key": "selector", "operator": "equal", "operand": "source.nims" }
-        ]
-    },
+    		{ "key": "selector", "operator": "equal", "operand": "source.nims" }
+    	]
+	},
     {"keys": ["shift+alt+i"], "command": "lookup", "context":
         [
             { "key": "selector", "operator": "equal", "operand": "source.nim" },
             { "key": "selector", "operator": "equal", "operand": "source.nims" }
         ]
     },
-    { "keys": ["shift+space"], "command": "nim_update_completions", "context":
+    { "keys": ["ctrl+space"], "command": "nim_update_completions", "context":
         [
             { "key": "auto_complete_visible" },
             { "key": "selector", "operator": "equal", "operand": "source.nim" },
             { "key": "selector", "operator": "equal", "operand": "source.nims" }
+        ]
+    },
+
+    // Doc-comment completion
+    { "keys": ["enter"], "command": "insert_snippet", "args": {"contents": "\n## $0"}, "context":
+        [
+            { "key": "setting.doccontinue.enabled", "operand": true },
+            { "key": "selection_empty",             "operand": true },
+            { "key": "selector",                    "operand": "comment.line.number-sign.doc-comment.nim" }
+        ]
+    },
+    { "keys": ["enter"], "command": "insert_snippet", "args": {"contents": "\n## $0"}, "context":
+        [
+            { "key": "setting.doccontinue.enabled",  "operand": true },
+            { "key": "setting.doccontinue.autostop", "operand": false },
+            { "key": "selector",                     "operand": "comment.line.number-sign.doc-comment.empty.nim"}
+        ]
+    },
+
+    // Multi-line doc-comment completion
+    { "keys": ["["], "command": "insert_snippet", "args": {"contents": "[ $0 ]#"}, "context":
+        [
+            { "key": "selector", "operator":"equal", "operand": "punctuation.definition.comment.nim"}
+        ]
+    },
+
+    // Pragma completion
+    { "keys": ["."], "command": "insert_snippet", "args": {"contents": ".$0."}, "context":
+        [
+            { "key": "selector",       "operand":  "source.nim" },
+            { "key": "preceding_text", "operator": "regex_contains", "operand": "{$"},
+            { "key": "following_text", "operator": "regex_contains", "operand": "^}"}
         ]
     }
 ]

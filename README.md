@@ -15,7 +15,7 @@ Features
 Installation
 ------------
 
-###Latest/Unstable
+### Latest/Unstable
 
 Note that the latest version comes directly from the repository, and thus may be broken at any time!
 Thus, it is only recommended for those who wish to either help develop NimLime, or can work around bugs.
@@ -24,7 +24,7 @@ Thus, it is only recommended for those who wish to either help develop NimLime, 
 * Enter the project's URL (https://github.com/Varriount/NimLime)
 * Install `NimLime` through Package Control
 
-###Stable
+### Stable
 
 * Install `NimLime` through Package Control (this version is usually older than the one here)
 

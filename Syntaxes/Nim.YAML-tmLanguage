@@ -284,7 +284,7 @@ patterns:
       match: \\n
     - include: '#escaped_char'
     - name: invalid.illegal.character.nim
-      match: ([^\']{2,}?)   #' highlight-flaw-fixer-comment
+      match: ([^\'][^\']+?)   #' highlight-flaw-fixer-comment
 
 - comment: Call syntax
   begin: ([\w\x{80}-\x{10FFFF}\`]+)\s*(?=\(|\[.+?\]\s*\()

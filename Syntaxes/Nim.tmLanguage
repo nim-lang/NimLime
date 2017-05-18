@@ -741,7 +741,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>([^\']{2,}?)</string>
+					<string>([^\'][^\']+?)</string>
 					<key>name</key>
 					<string>invalid.illegal.character.nim</string>
 				</dict>

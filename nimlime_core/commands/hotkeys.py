@@ -6,7 +6,9 @@ from sublime_plugin import EventListener
 import sublime
 from nimlime_core import settings
 
+
 sync_list = {}
+
 
 def gen_sync_settings(key, default):
     global sync_list
@@ -19,6 +21,9 @@ def gen_sync_settings(key, default):
     settings.run_on_load_and_change(key, sync_settings)  
 
 
+gen_sync_settings("doccontinue.enabled", True)
+gen_sync_settings("doccontinue.autostop", True)
+    
 
 class HotkeySyncer(EventListener):
     def sync(self):

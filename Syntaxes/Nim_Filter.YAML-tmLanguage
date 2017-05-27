@@ -15,7 +15,7 @@ patterns:
       match: \b((\d[_\d]*\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*))('[fF](32|64))?
 
     - name: constant.numeric.integer.hexadecimal.nim_filter
-      match: \b(0[xX]\h[_\h]*)('[iIuU](8|16|32|64))?
+      match: \b(0[xX][0-9A-Fa-f][_0-9A-Fa-f]*)('[iIuU](8|16|32|64))?
 
     - comment: For simplicity's sake, we don't enforce floats only having 32 and
                64 prefix types.
@@ -89,7 +89,7 @@ patterns:
       begin: (\w[_\w]*)?\"
       end: \"
       patterns:
-      - match: (\\([abenrclftv]|["']|[0-9])|x\h\h)
+      - match: (\\([abenrclftv]|["']|[0-9])|x[0-9A-Fa-f]{2})
 
     - comment: Single quoted character literal
       name: string.quoted.single.nim_filter

@@ -362,7 +362,7 @@
 			<key>comment</key>
 			<string>A hexadecimal literal</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0[xX]\h[_\h]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0[xX][0-9A-Fa-f][_0-9A-Fa-f]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.hexadecimal.nim</string>
 		</dict>
@@ -1806,7 +1806,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\\[xX]\h\h</string>
+					<string>\\[xX][0-9A-Fa-f]{2}</string>
 					<key>name</key>
 					<string>constant.character.escape.hex.nim</string>
 				</dict>

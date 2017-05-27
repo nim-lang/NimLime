@@ -36,7 +36,7 @@
 						</dict>
 						<dict>
 							<key>match</key>
-							<string>\b(0[xX]\h[_\h]*)('[iIuU](8|16|32|64))?</string>
+							<string>\b(0[xX][0-9A-Fa-f][_0-9A-Fa-f]*)('[iIuU](8|16|32|64))?</string>
 							<key>name</key>
 							<string>constant.numeric.integer.hexadecimal.nim_filter</string>
 						</dict>
@@ -188,7 +188,7 @@
 							<array>
 								<dict>
 									<key>match</key>
-									<string>(\\([abenrclftv]|["']|[0-9])|x\h\h)</string>
+									<string>(\\([abenrclftv]|["']|[0-9])|x[0-9A-Fa-f]{2})</string>
 								</dict>
 							</array>
 						</dict>

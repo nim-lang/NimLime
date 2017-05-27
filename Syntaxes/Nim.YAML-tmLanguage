@@ -129,7 +129,7 @@ patterns:
 
 - comment: A hexadecimal literal
   name: constant.numeric.integer.hexadecimal.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(0[xX]\h[_\h]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (?<![\w\x{80}-\x{10FFFF}])(0[xX][0-9A-Fa-f][_0-9A-Fa-f]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: A base-8 integer literal
   name: constant.numeric.integer.octal.nim
@@ -592,7 +592,7 @@ repository:
     - name: constant.character.escape.escape.nim
       match: \\[eE]
     - name: constant.character.escape.hex.nim
-      match: \\[xX]\h\h
+      match: \\[xX][0-9A-Fa-f]{2}
     - name: constant.character.escape.backslash.nim
       match: \\\\
 ...

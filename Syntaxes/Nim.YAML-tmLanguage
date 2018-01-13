@@ -14,6 +14,14 @@ patterns:
     '1': {name: punctuation.definition.multi-comment.nim}
     '2': {name: invalid.illegal.TODO.nim}
 
+- comment: A multiline documentation comment.
+  name: comment.line.number-sign.multi-doc-comment.nim
+  begin: (\#\#\[\s*(TODO|todo)?)
+  end: (.*]\#\#)
+  captures:
+    '1': {name: punctuation.definition.multi-doc-comment.nim}
+    '2': {name: invalid.illegal.TODO.nim}
+
 - comment: A documentation comment.
   name: comment.line.number-sign.doc-comment.nim
   match: (##\s*(TODO|todo)?).+$\n?

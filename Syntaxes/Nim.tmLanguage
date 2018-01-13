@@ -35,6 +35,29 @@
 			<string>comment.line.number-sign.multi-comment.nim</string>
 		</dict>
 		<dict>
+			<key>begin</key>
+			<string>(\#\#\[\s*(TODO|todo)?)</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.multi-doc-comment.nim</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>invalid.illegal.TODO.nim</string>
+				</dict>
+			</dict>
+			<key>comment</key>
+			<string>A multiline documentation comment.</string>
+			<key>end</key>
+			<string>(.*]\#\#)</string>
+			<key>name</key>
+			<string>comment.line.number-sign.multi-doc-comment.nim</string>
+		</dict>
+		<dict>
 			<key>captures</key>
 			<dict>
 				<key>1</key>

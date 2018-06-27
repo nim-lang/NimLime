@@ -226,7 +226,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(?&lt;![\w\x{80}-\x{10FFFF}])(proc|method|template|macro|iterator|converter)\s+((\`[^\s\`]+\`)|([\w\x{80}-\x{10FFFF}]+))(\*)?</string>
+					<string>(?&lt;![\w\x{80}-\x{10FFFF}])(proc|func|method|template|macro|iterator|converter)\s+((\`[^\s\`]+\`)|([\w\x{80}-\x{10FFFF}]+))(\*)?</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -534,7 +534,7 @@
 			<key>comment</key>
 			<string>Other keywords.</string>
 			<key>match</key>
-			<string>((?&lt;![\w\x{80}-\x{10FFFF}])(addr|as|atomic|bind|cast|const|converter|defer|discard|distinct|div|enum|export|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|var)(?![\w\x{80}-\x{10FFFF}]))</string>
+			<string>((?&lt;![\w\x{80}-\x{10FFFF}])(addr|as|atomic|bind|cast|concept|const|converter|defer|discard|distinct|div|enum|export|from|import|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|using|var)(?![\w\x{80}-\x{10FFFF}]))</string>
 			<key>name</key>
 			<string>keyword.other.nim</string>
 		</dict>
@@ -607,7 +607,7 @@
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>(from)\s+[\/\w]+\s+(?=import)</string>
+			<string>(from)\s+[\/\w]+(?:\s+(?:as)\s+[\/\w]+)?\s+(?=import)</string>
 		</dict>
 		<dict>
 			<key>begin</key>
@@ -661,7 +661,7 @@
 			<key>comment</key>
 			<string>Function types</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(proc|iterator|method|template|macro)(?![\w\x{80}-\x{10FFFF}])</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(proc|func|iterator|method|template|macro)(?![\w\x{80}-\x{10FFFF}])</string>
 			<key>name</key>
 			<string>storage.type.function.nim</string>
 		</dict>

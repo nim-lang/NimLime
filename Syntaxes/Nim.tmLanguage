@@ -699,7 +699,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>r?\"\"\"</string>
+			<string>\w*\"\"\"</string>
 			<key>comment</key>
 			<string>(Raw) Triple Quoted String</string>
 			<key>end</key>
@@ -709,7 +709,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>r\"</string>
+			<string>\w+\"</string>
 			<key>comment</key>
 			<string>Raw Double Quoted String</string>
 			<key>end</key>

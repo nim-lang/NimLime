@@ -196,7 +196,7 @@ patterns:
 
 - comment: Other keywords.
   name: keyword.other.nim
-  match: ((?<![\w\x{80}-\x{10FFFF}])(addr|as|atomic|bind|cast|concept|const|converter|defer|discard|distinct|div|enum|export|from|import|include|let|mixin|object|of|ptr|ref|shl|shr|static|type|using|var)(?![\w\x{80}-\x{10FFFF}]))
+  match: ((?<![\w\x{80}-\x{10FFFF}])(addr|as|bind|cast|concept|const|converter|defer|discard|distinct|div|enum|export|from|import|include|let|mixin|object|of|out|ptr|ref|shl|shr|static|type|using|var)(?![\w\x{80}-\x{10FFFF}]))
 
 - comment: Generic operators for expressions.
   name: keyword.operator.nim
@@ -230,7 +230,7 @@ patterns:
 
 - comment: Invalid and unused keywords.
   name: keyword.invalid.nim
-  match: ((?<![\w\x{80}-\x{10FFFF}])(generic|interface|lambda|out|shared|with|without)(?![\w\x{80}-\x{10FFFF}]))
+  match: ((?<![\w\x{80}-\x{10FFFF}])(interface)(?![\w\x{80}-\x{10FFFF}]))
 
 - comment: Common functions
   name: keyword.other.common.function.nim
@@ -242,7 +242,7 @@ patterns:
 
 - comment: Built-in, generic types.
   name: storage.type.generic.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(range|array|seq|tuple|natural|set|ref|ptr|pointer)(?![\w\x{80}-\x{10FFFF}])
+  match: (?<![\w\x{80}-\x{10FFFF}])(range|array|seq|tuple|Natural|set|ref|ptr|pointer)(?![\w\x{80}-\x{10FFFF}])
 
 - comment: Function types
   name: storage.type.function.nim

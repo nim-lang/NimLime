@@ -280,7 +280,7 @@ def run_nimcheck(file_path, callback, verbosity=2):
     # Prepare the regex's
     verbosity_str = '--verbosity:' + str(verbosity)
     return run_process(
-        (configuration.nim_exe, 'check', verbosity_str, file_path),
+        (configuration.nim_exe, 'check', verbosity_str, '-d:NimLime', file_path),
         callback, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
     )
 

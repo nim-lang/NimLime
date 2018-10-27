@@ -288,8 +288,6 @@ patterns:
   begin: \'
   end: \'
   patterns:
-    - name: invalid.illegal.character.nim
-      match: \\n
     - include: '#escaped_char'
     - name: invalid.illegal.character.nim
       match: ([^\'][^\']+?)   #' highlight-flaw-fixer-comment

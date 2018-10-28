@@ -753,12 +753,6 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key>
-					<string>\\n</string>
-					<key>name</key>
-					<string>invalid.illegal.character.nim</string>
-				</dict>
-				<dict>
 					<key>include</key>
 					<string>#escaped_char</string>
 				</dict>

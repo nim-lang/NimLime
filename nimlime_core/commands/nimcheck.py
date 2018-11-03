@@ -124,6 +124,8 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
             warn_region_list = []
 
         for file_name, row, column, kind, message, all_msg in messages:
+            # TODO: more robust in case multiple names are allowed, PENDING https://github.com/nim-lang/Nim/pull/8614
+            file_name = os.path.basename(file_name)
             if file_name.lower() != view_name.lower():
                 continue
 

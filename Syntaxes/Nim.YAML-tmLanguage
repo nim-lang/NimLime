@@ -266,12 +266,12 @@ patterns:
 
 - comment: (Raw) Triple Quoted String
   name: string.quoted.triple.nim
-  begin: r?\"\"\"
+  begin: \w*\"\"\"
   end: \"\"\"[^\"]
 
 - comment: Raw Double Quoted String
   name: string.quoted.double.raw.nim
-  begin: r\"
+  begin: \w+\"
   end: \"
   patterns:
   - match: \"\"

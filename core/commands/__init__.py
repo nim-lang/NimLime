@@ -8,9 +8,11 @@ import sys
 from pkgutil import iter_modules
 
 import sublime
-from nimlime_core.utils.misc import format_msg
 from sublime_plugin import ApplicationCommand, WindowCommand, TextCommand, \
-    EventListener
+    EventListener, ViewEventListener
+
+from NimLime.core.utils.misc import format_msg
+
 
 __all__ = []
 collision_message = format_msg("""
@@ -31,7 +33,8 @@ def load_submodules():
     Load all submodules, adding all commands and event listeners to this
     module's global namespace.
     """
-    for module_data in iter_modules(__path__, __name__ + '.'):
+    # TODO: Why isn't __path__ the same as myself.__path__?
+    for module_data in iter_modules(__path__, __package__ + '.'):
         loader, module_name, is_pkg = module_data
 
         if not is_pkg and module_name != __name__:
@@ -47,7 +50,10 @@ def load_submodules():
                         is_child_class(class_def, ApplicationCommand) or
                         is_child_class(class_def, WindowCommand) or
                         is_child_class(class_def, TextCommand) or
-                        is_child_class(class_def, EventListener)
+                        is_child_class(class_def, EventListener) or
+                        is_child_class(class_def, ViewEventListener)
+                        # is_child_class(class_def, TextInputHandler) or
+                        # is_child_class(class_def, ListInputHandler)
                     )
                     if valid_command:
                         if class_name in __all__:

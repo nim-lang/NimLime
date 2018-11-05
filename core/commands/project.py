@@ -4,14 +4,16 @@ User commands for setting the Nim project file.
 """
 import os
 
-from nimlime_core.utils.error_handler import catch_errors
-from nimlime_core.utils.mixins import NimLimeMixin
-from nimlime_core.utils.project import _get_project_file, set_nim_project
 from sublime_plugin import WindowCommand
+
+from NimLime.core.utils.error_handler import catch_errors
+from NimLime.core.utils.mixins import NimLimeMixin
+from NimLime.core.utils.project import _get_project_file, set_nim_project
 
 
 class SetProjectCommand(NimLimeMixin, WindowCommand):
-    """ Sets the main Nim file for the current Sublime Text project. """
+    """Sets the main Nim file for the current Sublime Text project."""
+
     enabled = True
     settings_selector = 'project'
 

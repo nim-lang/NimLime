@@ -1,11 +1,22 @@
-# coding=utf-8
-"""
-Stub file for loading the NimLime plugin.
-See __init__.py for the actual code.
-"""
-import os
-import sys
+# # coding=utf-8
+# """
+# Pseudo-root for the NimLime plugin.
+# This adds the actual NimLime root to the python module path list.
+# """
+# import os
 
-root_dir = os.path.dirname(os.path.abspath(__file__))
-if sys.version_info < (3, 0):
-    execfile('__init__.py')
+# root_dir = os.path.dirname(os.path.abspath(__file__))
+
+# try:
+#     # Try using the sys_path mechanism provided by package control
+#     from package_control import sys_path
+
+#     sys_path.add(root_dir)
+# except ImportError:
+#     import sys
+
+#     sys_path = sys.path
+#     print("NimLime: Warning, couldn't import package_control.sys_path")
+#     sys.path.append(root_dir)
+
+from NimLime.core.commands import *

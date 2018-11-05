@@ -106,6 +106,7 @@ def run_nimcheck(file_path, callback, verbosity, disabled_hints, extra_args):
         command, this.send,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
+        cwd=os.path.dirname(file_path)
     )
 
     if error:

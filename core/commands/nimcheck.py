@@ -1,19 +1,20 @@
 # coding=utf-8
-"""
-Commands and code to check Nim files for errors.
-"""
+"""Commands and code to check Nim files for errors."""
 import os.path
 import re
 import subprocess
+from collections import namedtuple
 
 import sublime
-from nimlime_core import configuration
-from nimlime_core.utils.error_handler import catch_errors
-from nimlime_core.utils.misc import (
-    view_has_nim_syntax, send_self, busy_frames, get_next_method,
-    loop_status_msg, trim_region, run_process, handle_process_error)
-from nimlime_core.utils.mixins import NimLimeMixin, NimLimeOutputMixin
 from sublime_plugin import ApplicationCommand, EventListener
+
+from NimLime.core import configuration
+from NimLime.core.utils.error_handler import catch_errors
+from NimLime.core.utils.misc import (
+    busy_frames, display_process_error, get_next_method, loop_status_msg,
+    run_process, send_self, trim_region, view_has_nim_syntax
+)
+from NimLime.core.utils.mixins import NimLimeMixin, NimLimeOutputMixin
 
 # Constants
 ERROR_REGION_TAG = 'NimCheckError'
@@ -21,41 +22,189 @@ WARN_REGION_TAG = 'NimCheckWarn'
 ERROR_REGION_MARK = 'dot'
 ERROR_REGION_STYLE = sublime.DRAW_OUTLINED
 ERROR_MSG_FORMAT = '({0},{1}): {2}: {3}'.format
+MAX_CONTEXT_LINES = 3
+
 MESSAGE_REGEX = re.compile(
     (r"""
         ^
-        (?P<file_name> .+)      \(          # File Name
-        (?P<line_number> \d+)   ,\s         # Line Number
-        (?P<column_number> \d+) \)\s*       # Column Number
-        (?P<message_type> \w+)  \s*:\s*     # Message Type
-        (?P<content> .+)        \n          # Message Content
-        (?P<context> .* \n\s*   \^)?        # Message Context
-    """),
+        # File Name
+        (?P<file_name> {ANYTHING}+)
+
+        # Line and Column Number
+        {SPACE}*
+        \(
+            (?P<line_number>   {INTEGER}+)
+            {SPACE}* {COMMA} {SPACE}+
+            (?P<column_number> {INTEGER}+)
+        \)
+
+        # Message Type and Content
+        {SPACE}*
+            (?P<message_type>  {LETTER}+)
+            {SPACE}* {COLON} {SPACE}*
+            (?P<message>       {ANYTHING}+)
+
+        # Optional Context
+        (?P<context> (\n {SPACE}+ {ANYTHING}+)*)
+    """.format(
+        SPACE    = r'\s',
+        INTEGER  = r'\d',
+        ANYTHING = r'.',
+        COMMA    = r',',
+        LETTER   = r'\w',
+        COLON    = r':',
+    )),
     flags=re.MULTILINE | re.IGNORECASE | re.VERBOSE
 )
 
 
+# ## Functions ## #
+NimCheckEntry = namedtuple(
+    'NimCheckEntry',
+    [
+        'file_name',
+        'line_number',
+        'column_number',
+        'message_type',
+        'message',
+        'entire',
+    ]
+)
+
+
+# Functions to run "nim check"
+def parse_nimcheck(output):
+    entry_list = []
+    for match in MESSAGE_REGEX.finditer(output):
+        entry = NimCheckEntry(
+            file_name     = match.group('file_name'),
+            line_number   = int(match.group('line_number')) - 1,
+            column_number = int(match.group('column_number')) - 1,
+            message_type  = match.group('message_type'),
+            message       = match.group('message'),
+            entire        = match.group(0),
+        )
+        entry_list.append(entry)
+    return entry_list
+
+
+@send_self
+@catch_errors
+def run_nimcheck(file_path, callback, verbosity, disabled_hints, extra_args):
+    this = yield
+    verbosity_opt = '--verbosity:{}'.format(verbosity)
+    hint_opts = (
+        '--hint[{}]:off'.format(x) for x in disabled_hints
+    )
+
+    command = [configuration.nim_exe, 'check', verbosity_opt]
+    command.extend(hint_opts)
+    command.extend(extra_args)
+    command.append(file_path)
+
+    process, stdout, stderr, error = yield run_process(
+        command, this.send,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+
+    if error:
+        display_process_error(error, 'Nim Check Failed', 'Nim')
+        yield callback(None)
+
+    entries = parse_nimcheck(stdout)
+    sublime.status_message('Nim Check Finished.')
+
+    yield callback(entries)
+
+
+# Functions to store "nim check" results
+class NimCheckViewEntries(EventListener):
+    """Contains and cleans up regions created by the 'nim check' commands."""
+
+    entries = {}
+
+    def on_close(self, view):
+        self.entries.pop(view.id(), None)
+
+
+def store_nimcheck_entries(view, errors, warnings):
+    view_id = view.id()
+
+    entry_store = {}
+    if errors is not None:
+        for entry in errors:
+            entry_store[entry.line_number] = entry
+    if warnings is not None:
+        for entry in warnings:
+            entry_store[entry.line_number] = entry
+
+    NimCheckViewEntries.entries[view_id] = entry_store
+
+
+def retrieve_nimcheck_entries(view):
+    return NimCheckViewEntries.entries.get(view.id())
+
+
+def remove_nimcheck_entries(view):
+    view.erase_regions(ERROR_REGION_TAG)
+    view.erase_regions(WARN_REGION_TAG)
+    NimCheckViewEntries.entries.pop(view.id(), None)
+
+
 # Commands
 class NimClearErrors(NimLimeMixin, ApplicationCommand):
-    """ Clears error and warning marks generated by the Nim check commands. """
+    """Clears error and warning marks generated by the Nim check commands."""
+
     settings_selector = 'check.clear_errors'
+    requires_nim_syntax = False
+
+    def __init__(self, *args, **kwargs):
+        ApplicationCommand.__init__(self, *args, **kwargs)
+        NimLimeMixin.__init__(self, *args, **kwargs)
 
     @catch_errors
     def run(self, *args, **varargs):
-        current_view = sublime.active_window().active_view()
-        current_view.erase_regions(ERROR_REGION_TAG)
-        current_view.erase_regions(WARN_REGION_TAG)
+        view = sublime.active_window().active_view()
+        remove_nimcheck_entries(view)
         sublime.status_message('Cleared Nim Check Errors & Hints')
 
 
+class NimDisplayErrorInStatus(EventListener):
+    """Displays errors/warnings in the status bar, when a region is clicked."""
+
+    def get_current_entry(self, view):
+        selections = view.sel()
+        if len(selections) > 1:
+            return None
+
+        entries = retrieve_nimcheck_entries(view)
+        if entries is None:
+            return None
+
+        selected_point = selections[0].end()
+        line_number = view.rowcol(selected_point)[0]
+        return entries.get(line_number)
+
+    def on_selection_modified(self, view):
+        view = sublime.active_window().active_view()
+        entry = self.get_current_entry(view)
+        if entry is not None:
+            message = "NimCheck: " + entry.message
+            sublime.status_message(message)
+
+
 class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
-    """ Checks the current Nim file for errors. """
+    """Checks the current Nim file for errors."""
+
     requires_nim_syntax = True
 
     settings_selector = 'check.current_file'
     setting_entries = (
         NimLimeOutputMixin.setting_entries,
         ('verbosity', '{0}.verbosity', 2),
+        ('disabled_hints', '{0}.disabled_hints', []),
+        ('extra_args', '{0}.extra_args', []),
         ('highlight_errors', '{0}.highlight_errors', True),
         ('highlight_warnings', '{0}.highlight_warnings', True),
         ('include_context', '{0}.list.include_context', True),
@@ -68,9 +217,12 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
     @catch_errors
     def run(self, *args, **varargs):
         this = yield
+
         window = sublime.active_window()
         view = window.active_view()
         view_name = os.path.split(view.file_name() or view.name())[1]
+
+        remove_nimcheck_entries(view)
 
         frames = ['Running Nim Check' + f for f in busy_frames]
         stop_status_loop = loop_status_msg(frames, 0.15)
@@ -81,87 +233,105 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
 
         # Run 'nim check' on the current view and retrieve the output.
         # project_file = get_nim_project(window, view) or view.file_name()
-        process, stdout, stderr, error = yield run_nimcheck(
-            view.file_name(), this.send, self.verbosity
+        entries = yield run_nimcheck(
+            file_path      = view.file_name(),
+            callback       = this.send,
+            verbosity      = self.verbosity,
+            disabled_hints = self.disabled_hints,
+            extra_args     = self.extra_args
         )
         yield stop_status_loop(get_next_method(this))
 
-        if handle_process_error(error, 'Nim Check Failed', 'Nim'):
+        if entries is None:
+            sublime.status_message('Nim Check Failed.')
             yield
-
-        messages = parse_nimcheck_output(stdout)
         sublime.status_message('Nim Check Finished.')
 
-        self.highlight_and_list_messages(messages, window, view)
+        self.highlight_and_list_entries(entries, window, view)
 
         if self.send_output:
-            if self.raw_output:
-                content = stdout
-            else:
-                gen = (m[5] for m in messages if view_name == m[0])
-                content = '\n'.join(gen)
-            self.write_to_output(content, window, view)
+            gen = (m[5] for m in entries if view_name == m[0])
+            content = '\n'.join(gen)
+            self.write_to_output(content, view)
         yield
 
-    def highlight_and_list_messages(self, messages, window, view):
-        """
-        Highlight and list messages gathered from `nim check` output.
-        :type messages: list[str]
-        :type window: Any
-        :type view: Any
-        """
+    def display_entries(self, view,
+                        quick_message_list, point_list,
+                        list_entries, highlight_entries):
+        entries = []
+        region_list = []
+
+        while True:
+            entry = yield
+            if entry is None:
+                yield entries, region_list
+
+            entry_point = view.text_point(
+                entry.line_number,
+                entry.column_number
+            )
+
+            if list_entries:
+                quick_message = entry.entire.split('\n')
+                if self.include_context:
+                    line_count = len(quick_message)
+                    del quick_message[MAX_CONTEXT_LINES:line_count]
+                    for i in range(line_count, MAX_CONTEXT_LINES):
+                        quick_message.append('')
+                else:
+                    quick_message = quick_message[0]
+
+                entries.append(entry)
+                point_list.append(entry_point)
+                quick_message_list.append(quick_message)
+
+            # For highlighting
+            if highlight_entries:
+                message_region = trim_region(view, view.line(entry_point))
+                region_list.append(message_region)
+
+    def highlight_and_list_entries(self, entries, window, view):
+        """Highlight and list entries gathered from `nim check` output."""
         view_name = os.path.split(view.file_name() or view.name())[1]
 
-        # For listing
+        # Instantiate entry list containers
         if self.list_errors or self.list_warnings:
             quick_message_list = []
             point_list = []
 
-        # For highlighting
-        if self.highlight_errors:
-            error_region_list = []
-        if self.highlight_warnings:
-            warn_region_list = []
+        error_entries = self.display_entries(
+            view=view,
+            quick_message_list=quick_message_list,
+            point_list=point_list,
+            list_entries=self.list_errors,
+            highlight_entries=self.highlight_errors
+        )
+        warn_entries = self.display_entries(
+            view=view,
+            quick_message_list=quick_message_list,
+            point_list=point_list,
+            list_entries=self.list_warnings,
+            highlight_entries=self.highlight_warnings
+        )
 
-        for file_name, row, column, kind, message, all_msg in messages:
-            # TODO: more robust in case multiple names are allowed, PENDING https://github.com/nim-lang/Nim/pull/8614
-            file_name = os.path.basename(file_name)
-            if file_name.lower() != view_name.lower():
+        # Instantiate entry highlighting errors
+        error_entries.send(None)
+        warn_entries.send(None)
+        for entry in entries:
+            if entry.file_name.lower() != view_name.lower():
                 continue
 
-            # For listing
-            if self.list_errors or self.list_warnings:
-                point = view.text_point(row, column)
-                point_list.append(point)
-
-            # For highlighting
-            message_point = view.text_point(row, column)
-            message_region = trim_region(view, view.line(message_point))
-
-            if kind == 'Error':
-                # For listing
-                if self.list_errors:
-                    if self.include_context:
-                        quick_message_list.append(all_msg.split('\n'))
-                    else:
-                        quick_message_list.append(all_msg.split('\n')[0])
-
-                # For highlighting
-                if self.highlight_errors:
-                    error_region_list.append(message_region)
+            # Determine whether the entry should be highlighted/listed
+            if entry.message_type == 'Error':
+                error_entries.send(entry)
             else:
-                # For listing
-                if self.list_warnings:
-                    if self.include_context:
-                        quick_message_list.append(all_msg.split('\n'))
-                    else:
-                        quick_message_list.append(all_msg.split('\n')[0])
+                warn_entries.send(entry)
 
-                # For highlighting
-                if self.highlight_warnings:
-                    warn_region_list.append(message_region)
+        error_entries, error_region_list = error_entries.send(None)
+        warn_entries, warn_region_list = warn_entries.send(None)
+        store_nimcheck_entries(view, warn_entries, error_entries)
 
-        if self.highlight_errors:
+        if error_region_list:
             view.add_regions(
                 ERROR_REGION_TAG,
                 error_region_list,
@@ -170,7 +340,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
                 ERROR_REGION_STYLE
             )
 
-        if self.highlight_warnings:
+        if warn_region_list:
             view.add_regions(
                 WARN_REGION_TAG,
                 warn_region_list,
@@ -188,125 +358,19 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
                         view.sel().clear()
                         view.sel().add(sublime.Region(chosen_point))
 
+            flag = 0
             if self.include_context:
-                window.show_quick_panel(
-                    quick_message_list, _goto_error, sublime.MONOSPACE_FONT
-                )
-            else:
-                window.show_quick_panel(quick_message_list, _goto_error)
+                flag = sublime.MONOSPACE_FONT
+
+            window.show_quick_panel(quick_message_list, _goto_error, flag)
 
 
 class NimCheckOnSaveListener(NimCheckCurrentView, EventListener):
     """Runs the Nim Check command when the current file is saved."""
+
     settings_selector = 'check.on_save'
 
     def on_post_save(self, view):
+        view = sublime.active_window().active_view()
         if self.enabled and view_has_nim_syntax(view):
             self.run()
-
-
-class NimCheckFile(NimLimeOutputMixin, ApplicationCommand):
-    """ Check an external nim file """
-    requires_nim_syntax = True
-
-    settings_selector = 'check.external_file'
-    setting_entries = (
-        NimLimeOutputMixin.setting_entries,
-        ('show_output', '{0}.show_output', True),
-        ('remember_input', '{0}.remember_input', True),
-        ('include_context', '{0}.output.include_context', True)
-    )
-
-    last_entry = ''
-
-    @send_self
-    @catch_errors
-    def run(self, *args, **varargs):
-        this = yield
-        window = sublime.active_window()
-        view = window.active_view()
-
-        # Retrieve user input
-        initial_text = ''
-        if self.remember_input:
-            initial_text = self.last_entry
-
-        path = yield window.show_input_panel(
-            'File to check?', initial_text, this.send, None, None
-        )
-        self.last_entry = path
-
-        if not os.path.isfile(path):
-            sublime.error_message(
-                'File \'{0}\' does not exist, or isn\'t a file.'.format(path)
-            )
-            yield
-
-        # Run 'nim check' on the external file.
-        frames = ['Checking External File' + f for f in busy_frames]
-        stop_status_loop = loop_status_msg(frames, 0.25)
-
-        process, stdout, stderr, error = yield run_nimcheck(
-            path, this.send, self.verbosity
-        )
-        yield stop_status_loop(get_next_method(this))
-
-        if handle_process_error(error, 'Nim Check Failed', 'Nim'):
-            yield
-
-        # Prepare output
-        error_list = parse_nimcheck_output(stdout)
-        error_output = '\n'.join(
-            [error[5] for error in error_list]
-        )
-
-        # Stop the status loop
-        sublime.status_message('External File Checked.')
-
-        # Print to the output view
-        if self.send_output or True:
-            self.write_to_output(error_output, window, view)
-
-        yield
-
-
-# Utility functions
-def run_nimcheck(file_path, callback, verbosity=2):
-    """
-    Run the Nim compiler in 'check' mode.
-    :type file_path: str
-    :type callback: (tuple) -> None
-    :type verbosity: int
-    :rtype: Any
-    """
-    # Prepare the regex's
-    verbosity_str = '--verbosity:' + str(verbosity)
-    return run_process(
-        (configuration.nim_exe, 'check', verbosity_str, '-d:NimLime', file_path),
-        callback, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-    )
-
-
-def parse_nimcheck_output(output):
-    # Retrieve and convert the matches
-    """
-    Parse output of `nim check`
-    :param output:
-    :type output:
-    :return:
-    :rtype:
-    """
-    message_list = []
-    for match in MESSAGE_REGEX.finditer(output):
-        message_list.append((
-            match.group('file_name'),
-            int(match.group('line_number')) - 1,
-            int(match.group('column_number')) - 1,
-            match.group('message_type'),
-            match.group('content'),
-            match.group(0),
-        ))
-
-    # Sort the error list by line
-    message_list.sort(key=lambda item: item[1])
-    return message_list

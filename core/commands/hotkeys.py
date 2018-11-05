@@ -1,41 +1,41 @@
 # coding=utf-8
 """
-Hotkey wiring for NimLime
+Hotkey wiring for NimLime.
+
+This file selectively turns off hotkeys
 """
-from sublime_plugin import EventListener
 import sublime
-from nimlime_core import settings
+from sublime_plugin import EventListener
 
+from NimLime.core import settings
 
-sync_list = {}
-
-
-def gen_sync_settings(key, default):
-    global sync_list
-    
-    def sync_settings():
-        v = sublime.active_window().active_view()
-        v.settings().set(key, settings.get(key, default))
-        
-    sync_list[key] = sync_settings
-    settings.run_on_load_and_change(key, sync_settings)  
-
-
-gen_sync_settings("doccontinue.enabled", True)
-gen_sync_settings("doccontinue.autostop", True)
-    
 
 class HotkeySyncer(EventListener):
-    def sync(self):
-        global sync_list
-        for callback in sync_list.values():
-            callback()
-            
+    """Synchronizes certain settings keys with view settings."""
+
+    setting_entries = (
+        ("doccontinue.enabled", True),
+        ("doccontinue.autostop", True)
+    )
+
+    def sync_on_change(self):
+        view = sublime.active_window().active_view()
+        self.sync(view)
+
+    def sync(self, view):
+        view_settings = view.settings()
+        for key, default in self.setting_entries:
+            value = settings.get(key, default)
+            view_settings.set(key, value)
+
     def on_new(self, view):
-        self.sync()
+        self.sync(view)
+
+    def on_activated(self, view):
+        self.sync(view)
 
     def on_clone(self, view):
-        self.sync()
+        self.sync(view)
 
     def on_load(self, view):
-        self.sync()
+        self.sync(view)

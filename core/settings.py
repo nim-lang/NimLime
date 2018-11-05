@@ -1,86 +1,96 @@
-# coding=utf-8
-"""
-This module handles loading settings for the NimLime plugin
-"""
-from collections import defaultdict
+import weakref
+from inspect import ismethod
 
 import sublime
 
 _settings = None
-
-add_on_change_callbacks = defaultdict(set)
-run_on_load_callbacks = set()
-
-
-def _load():
-    global _settings, add_on_change_callbacks, run_on_load_callbacks
-    if _settings is not None:
-        return
-
-    s = sublime.load_settings('NimLime.sublime-settings')
-    if s.get('nimlime.has_loaded', True) is None:
-        sublime.set_timeout(_load, 1000)
-        return
-
-    # Settings have loaded
-    _settings = s
-    for callback in run_on_load_callbacks:
-        callback()
-    for key in add_on_change_callbacks:
-        for callback in add_on_change_callbacks[key]:
-            s.add_on_change(key, callback)
-
-    # Cleanup functions and variables
-    add_on_change_callbacks = None
-    run_on_load_callbacks = None
+_subscribers = []
+_plugin_loaded = False
 
 
-def run_on_load(callback):
-    """
-    Run the given callback when settings are loaded.
-    :type callback: () -> None
-    """
+def plugin_loaded():
+    global _settings, _plugin_loaded
+    # print('Loaded')
+    _plugin_loaded = True
+    _settings = sublime.load_settings('NimLime.sublime-settings')
+    _settings.add_on_change(__name__, _notify_subscribers)
+    _notify_subscribers()
+
+
+class MethodProxy(object):
+    __slots__ = ['_object_ref', '_method_ref']
+
+    def __init__(self, method):
+        self._object_ref = weakref.ref(
+            method.__self__,
+            _cleanup_subscribers
+        )
+        self._method_ref = weakref.ref(
+            method.__func__,
+            _cleanup_subscribers
+        )
+
+    def __call__(self):
+        object_deref = self._object_ref()
+        method_deref = self._method_ref()
+
+        if object_deref is None or method_deref is None:
+            return
+        else:
+            return method_deref(object_deref)
+
+    def is_valid(self):
+        return (
+            self._object_ref() is not None and
+            self._method_ref() is not None
+        )
+
+
+def _notify_subscribers():
+    global _subscribers
+    # print('Notifying subscribers')
+    for subscriber in _subscribers:
+        if isinstance(subscriber, MethodProxy):
+            subscriber()
+        else:
+            real_subscriber = subscriber()
+            if real_subscriber is not None:
+                real_subscriber()
+
+    _cleanup_subscribers()
+
+
+def _cleanup_subscribers(subscriber_wr=None):
+    global _subscribers
+    i = len(_subscribers) - 1
+    while i >= 0:
+        subscriber = _subscribers[i]
+        pop_subscriber = False
+        if isinstance(subscriber, MethodProxy):
+            pop_subscriber = not subscriber.is_valid()
+        else:
+            pop_subscriber = (subscriber() is None)
+
+        if pop_subscriber:
+            _subscribers.pop(i)
+            i -= 1
+        i -= 1
+
+
+def get(name, default):
+    global _settings
+    # import traceback;traceback.print_stack()
     if _settings is None:
-        run_on_load_callbacks.add(callback)
+        # print("Retrieving dummy value from setting", name)
+        return default
     else:
-        callback()
+        # print("Retrieving value (default {}) from {}: {}".format(default, name, _settings.get(name, default)))
+        return _settings.get(name, default)
 
 
-def add_on_change(key, callback):
-    """
-    Sets the callback to run when the given settings key changes.
-    :type key: str
-    :type callback: () -> None
-    """
-    if _settings is None:
-        add_on_change_callbacks[key].add(callback)
+def notify_on_change(callback):
+    global _subscribers
+    if ismethod(callback):
+        _subscribers.append(MethodProxy(callback))
     else:
-        _settings.add_on_change(key, callback)
-
-
-def run_on_load_and_change(key, callback):
-    """
-    Runs the given callback when settings are loaded,
-    then again whenever the given settings key changes.
-    :type key: str
-    :type callback: () -> None
-    """
-    run_on_load(callback)
-    add_on_change(key, callback)
-
-
-def get(key, default=None):
-    """
-    Gets the given setting, returning the given default if the setting key
-    doesn't exist.
-    :type default: Any
-    :type key: str
-    """
-    if _settings is None:
-        result = default
-    else:
-        result = _settings.get(key, default)
-    return result
-
-
-_load()
+        _subscribers.append(weakref.ref(callback))

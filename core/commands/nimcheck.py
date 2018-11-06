@@ -114,7 +114,7 @@ def run_nimcheck(file_path, callback, verbosity, disabled_hints, extra_args):
         yield callback(None)
 
     entries = parse_nimcheck(stdout)
-    sublime.status_message('Nim Check Finished.')
+    sublime.status_message('run_nimcheck:Nim Check Finished.')
 
     yield callback(entries)
 
@@ -246,7 +246,7 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         if entries is None:
             sublime.status_message('Nim Check Failed.')
             yield
-        sublime.status_message('Nim Check Finished.')
+        sublime.status_message('run:Nim Check Finished.')
 
         self.highlight_and_list_entries(entries, window, view)
 
@@ -319,7 +319,14 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         error_entries.send(None)
         warn_entries.send(None)
         for entry in entries:
-            if entry.file_name.lower() != view_name.lower():
+
+            # makes it work when `--listFullPaths` is in user config
+            # TODO: Make this more robust if/when multiple names are allowed,
+            # PENDING https://github.com/nim-lang/Nim/pull/8614
+            file_name = entry.file_name
+            file_name = os.path.basename(file_name)
+
+            if file_name.lower() != view_name.lower():
                 continue
 
             # Determine whether the entry should be highlighted/listed

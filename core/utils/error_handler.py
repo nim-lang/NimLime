@@ -45,7 +45,7 @@ Warning: The NimLime plugin's error handling mechanism is unable to log errors
 to:
 \\n\\n'{0}'.\\n\\n
 Please make sure either that the directory containing the
-NimLime plugin is writeable, or that the 'error_handler.logpath' setting in
+NimLime plugin is writeable, or that the 'error_handler.logfile_path' setting in
 NimLime's settings file is set to a writeable directory.\\n
 To completely suppress this error message in the future, change the
 'error_handler.enabled' setting in NimLime's settings file to 'False'.

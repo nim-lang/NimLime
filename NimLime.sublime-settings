@@ -5,7 +5,7 @@
     // (if it's in the PATH environment variable)
     "nim.executable": "nim",
     "error_handler.enabled": true,
-    "error_handler.logpath": "",
+    "error_handler.logfile_path": "",
 
     "translate_tabs_to_spaces": true,
 

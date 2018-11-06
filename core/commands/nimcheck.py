@@ -321,7 +321,8 @@ class NimCheckCurrentView(NimLimeOutputMixin, ApplicationCommand):
         for entry in entries:
 
             # makes it work when `--listFullPaths` is in user config
-            # TODO: more robust in case multiple names are allowed, PENDING https://github.com/nim-lang/Nim/pull/8614
+            # TODO: Make this more robust if/when multiple names are allowed,
+            # PENDING https://github.com/nim-lang/Nim/pull/8614
             file_name = entry.file_name
             file_name = os.path.basename(file_name)
 

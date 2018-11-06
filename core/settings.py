@@ -10,7 +10,6 @@ _plugin_loaded = False
 
 def plugin_loaded():
     global _settings, _plugin_loaded
-    # print('Loaded')
     _plugin_loaded = True
     _settings = sublime.load_settings('NimLime.sublime-settings')
     _settings.add_on_change(__name__, _notify_subscribers)

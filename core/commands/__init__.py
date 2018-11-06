@@ -4,8 +4,8 @@ This package automatically exports all commands found in immediate submodules
 This used by the root NimLime plugin to automatically export
 """
 import inspect
-import sys
 from pkgutil import iter_modules
+from importlib import import_module
 
 import sublime
 from sublime_plugin import ApplicationCommand, WindowCommand, TextCommand, \
@@ -38,12 +38,9 @@ def load_submodules():
         loader, module_name, is_pkg = module_data
 
         if not is_pkg and module_name != __name__:
-            # We look in sys.modules to avoid importing a module twice
-            # (causing a reload)
-            module = (
-                sys.modules.get(module_name) or
-                loader.find_module(module_name).load_module(module_name)
-            )
+            # TODO Check if we need to use reload as well
+            # loader.find_module isn't used, as it bypasses sys.meta_path
+            module = import_module(module_name)
             for class_name, class_def in inspect.getmembers(module):
                 if inspect.isclass(class_def):
                     valid_command = (

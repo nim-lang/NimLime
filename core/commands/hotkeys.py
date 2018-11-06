@@ -7,7 +7,7 @@ This file selectively turns off hotkeys
 import sublime
 from sublime_plugin import EventListener
 
-from NimLime.core import settings
+from ...core import settings
 
 
 class HotkeySyncer(EventListener):
@@ -23,6 +23,7 @@ class HotkeySyncer(EventListener):
         self.sync(view)
 
     def sync(self, view):
+        print('Hello!')
         view_settings = view.settings()
         for key, default in self.setting_entries:
             value = settings.get(key, default)

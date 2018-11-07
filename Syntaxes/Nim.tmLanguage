@@ -6,6 +6,7 @@
 	<array>
 		<string>nim</string>
 		<string>nims</string>
+		<string>nimble</string>
 	</array>
 	<key>name</key>
 	<string>Nim</string>

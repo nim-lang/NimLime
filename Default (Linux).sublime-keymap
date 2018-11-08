@@ -24,14 +24,15 @@
         [
             { "key": "setting.doccontinue.enabled", "operand": true },
             { "key": "selection_empty",             "operand": true },
-            { "key": "selector",                    "operand": "comment.line.number-sign.doc-comment.nim" }
+            { "key": "selector",                    "operand": "comment.line.number-sign.doc-comment.body.nim" }
         ]
     },
     { "keys": ["enter"], "command": "insert_snippet", "args": {"contents": "\n## $0"}, "context":
         [
             { "key": "setting.doccontinue.enabled",  "operand": true },
             { "key": "setting.doccontinue.autostop", "operand": false },
-            { "key": "selector",                     "operand": "comment.line.number-sign.doc-comment.empty.nim"}
+            { "key": "selector",                     "operand": "comment.line.number-sign.doc-comment.nim" },
+            { "key": "selector",                     "operand": "punctuation.definition.doc-comment.nim", "operator": "not_equal" }
         ]
     },
 

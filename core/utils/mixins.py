@@ -27,8 +27,6 @@ class NimLimeMixin(object):
     # the command should only be visible/enabled when the stated condition is
     # true
     requires_nim_syntax = False  # The current view must be using Nim syntax.
-    st2_compatible = True  # Runs on Sublime Text 2.
-    st3_compatible = True  # Runs on Sublime Text 3.
 
     # Setting entries associated with the command or event listener.
     # Each entry should either be a tuple of the form
@@ -98,10 +96,6 @@ class NimLimeMixin(object):
         syntax = view.settings().get('syntax', '')
         result = True
         if self.requires_nim_syntax and not syntax.find('Nim.'):
-            result = False
-        elif (2 <= SUBLIME_VERSION < 3) and not self.st2_compatible:
-            result = False
-        elif (3 <= SUBLIME_VERSION) and not self.st3_compatible:
             result = False
 
         return result

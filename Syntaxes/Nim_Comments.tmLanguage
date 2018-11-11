@@ -106,7 +106,7 @@
 			<key>comment</key>
 			<string>A documentation comment.</string>
 			<key>match</key>
-			<string>(?i)(##)\s*(todo\b)?(.*$\n?)</string>
+			<string>(?i)(##\s*)(todo\b)?(.*$\n?)</string>
 			<key>name</key>
 			<string>comment.line.number-sign.doc-comment.nim</string>
 		</dict>
@@ -132,7 +132,7 @@
 			<key>comment</key>
 			<string>A regular comment</string>
 			<key>match</key>
-			<string>(?i)(#)\s*(todo\b)?(.*$\n?)</string>
+			<string>(?i)(#\s*)(todo\b)?(.*$\n?)</string>
 			<key>name</key>
 			<string>comment.line.number-sign.comment.nim</string>
 		</dict>

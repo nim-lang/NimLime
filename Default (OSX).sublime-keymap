@@ -36,10 +36,16 @@
         ]
     },
 
-    // Multi-line doc-comment completion
+    // Multi-line comment completion
     { "keys": ["["], "command": "insert_snippet", "args": {"contents": "[\n$0\n]#"}, "context":
         [
             { "key": "selector", "operator":"equal", "operand": "punctuation.definition.comment.nim"}
+        ]
+    },
+    // Multi-line doc-comment completion
+    { "keys": ["["], "command": "insert_snippet", "args": {"contents": "[\n$0\n]##"}, "context":
+        [
+            { "key": "selector", "operator":"equal", "operand": "punctuation.definition.doc-comment.nim"}
         ]
     },
 

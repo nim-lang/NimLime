@@ -30,8 +30,9 @@
                             {
                                 "command": "edit_settings", "args":
                                 {
-                                    "file": "${packages}/NimLime/Default ($platform).sublime-keymap",
-                                    "platform": "OSX"
+                                    "base_file": "${packages}/NimLime/Default ($platform).sublime-keymap",
+                                    // TODO: is this correct? not sure when / how this is used
+                                    "default": "{\n\t$0\n}\n"
                                 },
                                 "caption": "Key Bindings"
                             }

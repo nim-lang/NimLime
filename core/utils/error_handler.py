@@ -25,8 +25,8 @@ import traceback
 from time import strftime
 
 import sublime
-from nimlime_core import settings
-from nimlime_core.utils.misc import exec_, format_msg
+
+from NimLime.core.utils.misc import exec_, format_msg
 
 error_msg = format_msg("""\
 The NimLime plugin has encountered an error. Please go to 
@@ -45,38 +45,16 @@ Warning: The NimLime plugin's error handling mechanism is unable to log errors
 to:
 \\n\\n'{0}'.\\n\\n
 Please make sure either that the directory containing the
-NimLime plugin is writeable, or that the 'error_handler.logpath' setting in
+NimLime plugin is writeable, or that the 'error_handler.logfile_path' setting in
 NimLime's settings file is set to a writeable directory.\\n
 To completely suppress this error message in the future, change the
 'error_handler.enabled' setting in NimLime's settings file to 'False'.
 """)
 
 default_logfile_path = tempfile.gettempdir()
-
-enabled = True
-logfile_path = default_logfile_path
 notified_user = False
+enabled = True
 
-
-def _load():
-    global notified_user, enabled, logfile_path
-    notified_user = False
-    enabled = settings.get('error_handler.enabled', True)
-    if not enabled:
-        return
-
-    logfile_path = settings.get('error_handler.logfile_path')
-    logfile_path = logfile_path or default_logfile_path
-
-    logfile_path = os.path.join(logfile_path, 'NimLime-Log.txt')
-    try:
-        open(logfile_path, 'a+').close()
-    except Exception:
-        notified_user = True
-        sublime.error_message(critical_error_msg.format(logfile_path))
-
-
-settings.run_on_load_and_change('error_handler.logfile_path', _load)
 
 # These are needed because 'yield from' was only introduced in Python 3.3
 # Trying to use 'yield from' in Python 2.6 causes a syntax error, which can't
@@ -124,7 +102,17 @@ else:
 
 
 def _handle_error():
-    global notified_user, error_msg, critical_error_msg
+    global notified_user, error_msg, critical_error_msg, enabled
+    settings = sublime.load_settings('NimLime.sublime-settings')
+
+    enabled = settings.get('error_handler.enabled', True)
+    if not enabled:
+        return
+
+    logfile_path = settings.get('error_handler.logfile_path')
+    logfile_path = logfile_path or default_logfile_path
+    logfile_path = os.path.join(logfile_path, 'NimLime-Log.txt')
+
     try:
         with open(logfile_path, 'a+') as logfile:
             logfile.write(strftime("\n\n%Y-%m-%d: %H:%M:%S\n"))

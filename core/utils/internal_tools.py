@@ -3,14 +3,15 @@
 Internal tools for NimLime development & testing.
 """
 
+from functools import wraps
+from pstats import Stats
+
 import sublime
 
 try:
     from cProfile import Profile
 except ImportError:
     from profile import Profile
-from functools import wraps
-from pstats import Stats
 
 try:
     from StringIO import StringIO

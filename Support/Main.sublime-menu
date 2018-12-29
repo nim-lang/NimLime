@@ -1,13 +1,9 @@
 [
     {
-        "caption": "Preferences",
-        "mnemonic": "n",
         "id": "preferences",
         "children":
         [
             {
-                "caption": "Package Settings",
-                "mnemonic": "P",
                 "id": "package-settings",
                 "children":
                 [
@@ -16,85 +12,29 @@
                         "children":
                         [
                             {
-                                "caption": "NimLime",
-                                "id": "nimlime",
-                                "children":
-                                [
-                                    {
-                                        "command": "nim_lime_open_support",
-                                        "caption": "Support/Issue Tracker"
-                                    }
-                                ]
-                            },
-
-                            { "caption": "-" },
-                            
-                            {
-                                "command": "open_file", "args":
-                                {
-                                    "file": "${packages}/NimLime/NimLime.sublime-settings"
-                                },
-                                "caption": "Settings – Default"
-                            },
-                            {
-                                "command": "open_file", "args":
-                                {
-                                    "file": "${packages}/User/NimLime.sublime-settings"
-                                },
-                                "caption": "Settings – User"
+                                "command": "nim_lime_open_support",
+                                "caption": "Support/Issue Tracker"
                             },
 
                             { "caption": "-" },
 
-
                             {
-                                "command": "open_file", "args":
+                                "command": "edit_settings", "args":
                                 {
-                                    "file": "${packages}/NimLime/Default (OSX).sublime-keymap",
-                                    "platform": "OSX"
+                                    "base_file": "${packages}/NimLime/NimLime.sublime-settings",
+                                    "default": "{\n\t$0\n}\n"
                                 },
-                                "caption": "Key Bindings – Default"
-                            },
-                            {
-                                "command": "open_file", "args":
-                                {
-                                    "file": "${packages}/NimLime/Default (Linux).sublime-keymap",
-                                    "platform": "Linux"
-                                },
-                                "caption": "Key Bindings – Default"
-                            },
-                            {
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/NimLime/Default (Windows).sublime-keymap",
-                                    "platform": "Windows"
-                                },
-                                "caption": "Key Bindings – Default"
+                                "caption": "Settings"
                             },
 
                             {
-                                "command": "open_file", "args":
+                                "command": "edit_settings", "args":
                                 {
-                                    "file": "${packages}/User/Default (OSX).sublime-keymap",
-                                    "platform": "OSX"
+                                    "base_file": "${packages}/NimLime/Default ($platform).sublime-keymap",
+                                    // TODO: is this correct? not sure when / how this is used
+                                    "default": "{\n\t$0\n}\n"
                                 },
-                                "caption": "Key Bindings – User"
-                            },
-                            {
-                                "command": "open_file", "args":
-                                {
-                                    "file": "${packages}/User/Default (Linux).sublime-keymap",
-                                    "platform": "Linux"
-                                },
-                                "caption": "Key Bindings – User"
-                            },
-                            {
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/User/Default (Windows).sublime-keymap",
-                                    "platform": "Windows"
-                                },
-                                "caption": "Key Bindings – User"
+                                "caption": "Key Bindings"
                             }
                         ]
                     }

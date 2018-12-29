@@ -10,6 +10,7 @@ from sublime_plugin import ApplicationCommand
 
 
 class NimLimeOpenSupport(ApplicationCommand):
-    "Open NimLime's Support Page"
+    """Open NimLime's Support Page."""
+
     def run(self):
         webbrowser.open("https://github.com/Varriount/NimLime/issues", 2)

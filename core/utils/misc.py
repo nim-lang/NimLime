@@ -1,7 +1,5 @@
 # coding=utf-8
-"""
-Misc. functions that don't really fit anywhere else.
-"""
+"""Misc. functions that don't really fit anywhere else."""
 import os
 import platform
 import re
@@ -15,11 +13,10 @@ import sublime
 
 
 def format_msg(message):
-    """
+    r"""
     Used to format user messages.
+
     Replaces newline characters with spaces, '\\n' with newlines, etc.
-    :type message: str
-    :rtype: str
     """
     message = re.sub('\\\\n\n *', '\\\\n', message)
     message = re.sub('\n\s*', ' ', message)
@@ -28,12 +25,7 @@ def format_msg(message):
 
 
 def get_next_method(generator_instance):
-    """
-    Cross-platform function that retrieves the 'next' method from a generator
-    instance.
-    :type generator_instance: Any
-    :rtype: () -> Any
-    """
+    """Function that retrieves the 'next' method from a generator instance."""
     if sys.version_info > (3, 0):
         return generator_instance.__next__
     else:
@@ -41,8 +33,10 @@ def get_next_method(generator_instance):
 
 
 def send_self(use_proxy):
-    """ A decorator which sends a generator a reference to itself via the first
-    'yield' used.
+    """
+    A decorator which sends a generator a reference to itself.
+
+    The first yield statement will emit the reference.
     Useful for creating generators that can leverage callback-based functions
     in a linear style, by passing their 'send' method as callbacks.
 
@@ -87,8 +81,11 @@ busy_frames = ['.', '..', '...']
 
 
 def loop_status_msg(frames, speed, view=None, key=''):
-    """ Creates and runs a generator which continually sets the status
-    text to a series of strings. Returns a function which, when called,
+    """
+    Display an "animated" status message.
+
+    Create and run a generator which continually sets the status
+    text to a series of strings. Return a function which, when called,
     stops the generator.
     Useful for creating 'animations' in the status bar.
 
@@ -115,7 +112,6 @@ def loop_status_msg(frames, speed, view=None, key=''):
         self = yield
 
         # Get the correct status function
-        set_timeout = sublime.set_timeout
         if view is None:
             set_status = sublime.status_message
         else:
@@ -125,7 +121,10 @@ def loop_status_msg(frames, speed, view=None, key=''):
         while not flag.flag:
             for frame in frames:
                 set_status(frame)
-                yield set_timeout(get_next_method(self), int(speed * 1000))
+                yield sublime.set_timeout(
+                    get_next_method(self),
+                    int(speed * 1000)
+                )
         if callable(flag.flag):
             flag.flag()
         yield
@@ -138,11 +137,7 @@ def loop_status_msg(frames, speed, view=None, key=''):
 
 
 class _FlagObject(object):
-    """
-    Used with loop_status_msg to signal when a status message loop should end.
-    """
-    __slots__ = ['flag']
-
+    """Used with loop_status_msg to signal when a status message loop should end."""
     def __init__(self):
         self.flag = False
 
@@ -189,32 +184,28 @@ else:
     ExeNotFound = IOError
 
 
-def handle_process_error(error, action, exe_name):
+def display_process_error(error, action, exe_name):
     """
-    Handle an error passed to a callback from run_process.
+    Display an error passed to a callback from run_process.
     :type error: Exception
     :type action: str
     :type exe_name: str
-    :rtype: bool
     """
-    result = False
     message = ''
     if isinstance(error, ExeNotFound):
         message = '{0}: {1} executable could not be found.'
-        result = True
     elif error is not None:
         message = '{0}: Unable to start {1} executable.'
-        result = True
 
-    if result:
-        sublime.status_message(message.format(action, exe_name))
-    return result
+    # print(message.format(action, exe_name))
+    sublime.status_message(message.format(action, exe_name))
 
 
 def run_process(cmd, callback=None, timeout=0, *args, **kwargs):
     """
     Run the given process in another thread. The callback, if given, will be
     passed the process and its output when the process finishes.
+
     :type cmd: list[str]|tuple
     :type callback: (tuple) -> None
     :type timeout: int|float
@@ -222,54 +213,44 @@ def run_process(cmd, callback=None, timeout=0, *args, **kwargs):
     :type kwargs: Any
     :rtype: Thread
     """
-    result = Thread(
-        target=_run_process_worker,
-        args=(cmd, callback, timeout, args, kwargs)
-    )
-    result.daemon = False
-    result.start()
-    return result
-
-
-def _run_process_worker(cmd, callback, timeout, args, kwargs):
+    # Ensures that the subprocess doesn't create a Window
     if platform.system() == 'Windows':
-        kwargs = kwargs.copy()
+        kwargs = kwargs.copy() 
         kwargs['creationflags'] = 0x08000000
 
-    error = None
-    process = None
-    stdout = None
-    stderr = None
-    try:
-        process = subprocess.Popen(
-            cmd,
-            universal_newlines=True,
-            *args,
-            **kwargs
-        )
+    # Open the process
+    process = subprocess.Popen(
+        cmd,
+        universal_newlines=True,
+        *args, **kwargs
+    )
 
-        if timeout:
-            def _kill_process():
-                if process.poll() is None:
-                    process.kill()
+    # Run the watchdog, if required
+    if timeout:
+        def _kill_process():
+            if process.poll() is None:
+                process.kill()
 
-            sublime.set_timeout(_kill_process, int(timeout * 1000))
+        sublime.set_timeout(_kill_process, int(timeout * 1000))
 
-        stdout, stderr = process.communicate()
-    except Exception as e:
-        error = e
+    # Collect the output and return
+    def collecter():
+        error = stdout = stderr = None
+        try:
+            stdout, stderr = process.communicate()
+        except Exception as e:
+            error = e
 
-    if callback is not None:
-        sublime.set_timeout(
-            lambda: callback((process, stdout, stderr, error)),
-            0
-        )
+        return process, stdout, stderr, error
+
+    result = run_in_thread(collecter, callback)
 
 
 def run_in_thread(function, callback, *args, **kwargs):
     """
     Run the given function in a thread, calling the callback when the function
     completes.
+
     :type function: Any
     :type callback: Any
     :type args: Any

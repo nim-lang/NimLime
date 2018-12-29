@@ -1,18 +1,13 @@
 {
     // Misc. Settings //
-    "nim.executable": "nim",
     // Executable paths.
     // These *must* be in absolute form, or the name of the executable
     // (if it's in the PATH environment variable)
-    "nimble.executable": "nimble",
-    "nimsuggest.executable": "nimsuggest",
+    "nim.executable": "nim",
     "error_handler.enabled": true,
-    "error_handler.logpath": "",
+    "error_handler.logfile_path": "",
 
     "translate_tabs_to_spaces": true,
-    "enable_nim_completions": true,
-    "provide_immediate_nim_completions": false,
-    "auto_complete_triggers": [ {"selector": "source.nim", "characters": "."} ],
 
     // Below are settings for various commands and features.
     //
@@ -23,7 +18,7 @@
     //   'output.send':
     //      Toggles sending output to an output view.
     //
-    //   'output.clear':
+    // '  output.clear':
     //      Toggles clearing previous output when writing the command's output
     //      to the output view. Has no effect when 'output.send' is false.
     //
@@ -69,72 +64,6 @@
     "doccontinue.autostop": true,
 
 
-    //// Nimble Interface Settings ////
-    // Unique settings suffixes:
-    //   'preemptive_search':
-    //     Perform an initial search using user input. May reduce memory/cpu
-    //     usage when searching via the quickpanel, as not all results are
-    //     loaded.
-
-    // Settings for the 'nimble update' command
-    "nimble.update.enabled": false,
-
-    "nimble.update.output.send": false,
-    "nimble.update.output.show": false,
-    "nimble.update.output.clear": false,
-    "nimble.update.output.name": "Nimble Update Output",
-    "nimble.update.output.method": "grouped",
-    "nimble.update.output.tag": "nimble",
-    "nimble.update.output.raw": false,
-
-    // Settings for the 'nimble list' command
-    "nimble.list.enabled": true,
-    "nimble.list.quickpanel.send": true,
-
-    "nimble.list.output.send": false,
-    "nimble.list.output.show": false,
-    "nimble.list.output.clear": false,
-    "nimble.list.output.name": "Nimble List Output",
-    "nimble.list.output.method": "grouped",
-    "nimble.list.output.tag": "nimble",
-    "nimble.list.output.raw": false,
-
-    // Settings for the 'nimble search' command
-    "nimble.search.enabled": true,
-    "nimble.search.quickpanel.send": true,
-
-    "nimble.search.output.send": false,
-    "nimble.search.output.show": false,
-    "nimble.search.output.clear": false,
-    "nimble.search.output.name": "Nimble Search Output",
-    "nimble.search.output.method": "grouped",
-    "nimble.search.output.tag": "nimble",
-    "nimble.search.output.raw": false,
-
-    // Settings for the 'nimble install' command
-    "nimble.install.enabled": true,
-    "nimble.install.preemptive_search": false,
-
-    "nimble.install.output.send": false,
-    "nimble.install.output.show": false,
-    "nimble.install.output.clear": false,
-    "nimble.install.output.name": "Nimble Install Output",
-    "nimble.install.output.method": "grouped",
-    "nimble.install.output.tag": "nimble",
-    "nimble.install.output.raw": false,
-
-    // Settings for the 'nimble uninstall' command
-    "nimble.uninstall.enabled": true,
-
-    "nimble.uninstall.output.send": false,
-    "nimble.uninstall.output.show": false,
-    "nimble.uninstall.output.clear": false,
-    "nimble.uninstall.output.name": "Nimble Uninstall Output",
-    "nimble.uninstall.output.method": "grouped",
-    "nimble.uninstall.output.tag": "nimble",
-    "nimble.uninstall.output.raw": false,
-
-
     //// Nim Check Settings ////
     // Unique settings suffixes:
     //   'highlight_errors':
@@ -173,9 +102,7 @@
 
     "check.on_save.output.send": false,
     "check.on_save.output.show": false,
-    "check.on_save.output.name": "Nim Check - Current File",
-    "check.on_save.output.method": "grouped",
-    "check.on_save.output.clear": false,
+    // "check.on_save.output.clear": false,
     "check.on_save.output.tag": "Nim Check",
     "check.on_save.output.raw": false,
 
@@ -193,9 +120,7 @@
 
     "check.current_file.output.send": false,
     "check.current_file.output.show": false,
-    "check.current_file.output.clear": false,
-    "check.current_file.output.name": "Nim Check - Current File",
-    "check.current_file.output.method": "grouped",
+    // "check.current_file.output.clear": false,
     "check.current_file.output.tag": "Nim Check",
     "check.current_file.output.raw": false,
 
@@ -205,19 +130,10 @@
 
     "check.external_file.output.send": true,
     "check.external_file.output.show": true,
-    "check.external_file.output.clear": true,
-    "check.external_file.output.name": "Nim Check - External File",
-    "check.external_file.output.method": "grouped",
-    "check.external_file.output.include_context": true,
+    // "check.external_file.output.clear": true,
     "check.external_file.output.tag": "Nim Check",
     "check.external_file.output.raw": false,
 
     // Settings for the 'clear errors' command
-    "check.clear_errors.enabled": true,
-
-    // IDE Tool Settings //
-    "idetools.find_definition.enabled": true,
-    "idetools.find_usages.enabled": true,
-    "idetools.find_current_file_usages.enabled": true,
-    "idetools.get_suggestions.enabled": true
+    "check.clear_errors.enabled": true
 }

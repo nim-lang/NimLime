@@ -7,10 +7,8 @@ from sublime_plugin import TextCommand
 
 
 class NimlimeOutputCommand(TextCommand):
-    """
-    Convenience commands that allows other commands to easily modify a view
-    in Sublime Text 3.
-    """
+    """Command that allows other commands to easily modify a views."""
+
     def run(self, edit_obj, action, args):
         if action == 'insert':
             self.view.insert(edit_obj, *args)

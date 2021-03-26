@@ -251,7 +251,15 @@ patterns:
 
 - comment: Single quoted character literal
   name: string.quoted.single.nim
-  match: \'(.|\\\w)\'
+  match: \'([^\\]|\\x[0-9A-Fa-f][0-9A-Fa-f]|\\\d+|\\[abceflnrtv\\\"\'])\'
+
+- comment: Flawed single quoted character literal escaped
+  name: invalid.illegal.character.nim
+  match: \'\\[^abceflnrtv\\\"\']\'
+
+- comment: Flawed single quoted character literal other adjacent
+  name: invalid.illegal.character.nim
+  match: \'[A-Fa-f0-9\x{80}-\x{10FFFF}][A-Fa-f0-9\x{80}-\x{10FFFF}]+\'
 
 - comment: Call syntax
   begin: ([\w\x{80}-\x{10FFFF}\`]+)\s*(?=\(|\[.+?\]\s*\()

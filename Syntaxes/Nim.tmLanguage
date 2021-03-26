@@ -646,9 +646,25 @@
 			<key>comment</key>
 			<string>Single quoted character literal</string>
 			<key>match</key>
-			<string>\'(.|\\\w)\'</string>
+			<string>\'([^\\]|\\x[0-9A-Fa-f][0-9A-Fa-f]|\\\d+|\\[abceflnrtv\\\"\'])\'</string>
 			<key>name</key>
 			<string>string.quoted.single.nim</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Flawed single quoted character literal escaped</string>
+			<key>match</key>
+			<string>\'\\[^abceflnrtv\\\"\']\'</string>
+			<key>name</key>
+			<string>invalid.illegal.character.nim</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Flawed single quoted character literal other adjacent</string>
+			<key>match</key>
+			<string>\'[A-Fa-f0-9\x{80}-\x{10FFFF}][A-Fa-f0-9\x{80}-\x{10FFFF}]+\'</string>
+			<key>name</key>
+			<string>invalid.illegal.character.nim</string>
 		</dict>
 		<dict>
 			<key>begin</key>

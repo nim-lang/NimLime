@@ -99,23 +99,23 @@ patterns:
 
 - comment: A float literal
   name: constant.numeric.float.decimal.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([fF](32|64|128))|[fFdD])?   #' highlight-flaw-fixer-comment
+  match: (?<![\w\x{80}-\x{10FFFF}])(\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([a-zA-Z\x{80}-\x{10FFFF}][\w\x{80}-\x{10FFFF}]*)|[fFdD])?   #' highlight-flaw-fixer-comment
 
 - comment: A hexadecimal literal
   name: constant.numeric.integer.hexadecimal.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(0[xX][0-9A-Fa-f][_0-9A-Fa-f]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (?<![\w\x{80}-\x{10FFFF}])(0[xX][0-9A-Fa-f][_0-9A-Fa-f]*)('?(([a-zA-Z\x{80}-\x{10FFFF}][\w\x{80}-\x{10FFFF}]*)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: A base-8 integer literal
   name: constant.numeric.integer.octal.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(0[ocC][0-7][_0-7]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (?<![\w\x{80}-\x{10FFFF}])(0[ocC][0-7][_0-7]*)('?(([a-zA-Z\x{80}-\x{10FFFF}][\w\x{80}-\x{10FFFF}]*)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: A base-2 integer literal
   name: constant.numeric.integer.binary.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(0(b|B)[01][_01]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (?<![\w\x{80}-\x{10FFFF}])(0(b|B)[01][_01]*)('?(([a-zA-Z\x{80}-\x{10FFFF}][\w\x{80}-\x{10FFFF}]*)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: A base-10 integer literal
   name: constant.numeric.integer.decimal.nim
-  match: (?<![\w\x{80}-\x{10FFFF}])(\d[_\d]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?   #' highlight-flaw-fixer-comment
+  match: (?<![\w\x{80}-\x{10FFFF}])(\d[_\d]*)('?(([a-zA-Z\x{80}-\x{10FFFF}][\w\x{80}-\x{10FFFF}]*)|[uUfFdD]))?   #' highlight-flaw-fixer-comment
 
 - comment: Language Constants.
   name: constant.language.nim
@@ -251,12 +251,7 @@ patterns:
 
 - comment: Single quoted character literal
   name: string.quoted.single.nim
-  begin: \'
-  end: \'
-  patterns:
-    - include: '#escaped_char'
-    - name: invalid.illegal.character.nim
-      match: ([^\'][^\']+?)   #' highlight-flaw-fixer-comment
+  match: \'(.|\\\w)\'
 
 - comment: Call syntax
   begin: ([\w\x{80}-\x{10FFFF}\`]+)\s*(?=\(|\[.+?\]\s*\()

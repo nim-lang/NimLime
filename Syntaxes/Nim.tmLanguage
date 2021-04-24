@@ -278,7 +278,7 @@
 			<key>comment</key>
 			<string>A float literal</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([fF](32|64|128))|[fFdD])?</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(\d[_\d]*((\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*)))('?([a-zA-Z\x{80}-\x{10FFFF}][\w\x{80}-\x{10FFFF}]*)|[fFdD])?</string>
 			<key>name</key>
 			<string>constant.numeric.float.decimal.nim</string>
 		</dict>
@@ -286,7 +286,7 @@
 			<key>comment</key>
 			<string>A hexadecimal literal</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0[xX][0-9A-Fa-f][_0-9A-Fa-f]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0[xX][0-9A-Fa-f][_0-9A-Fa-f]*)('?(([a-zA-Z\x{80}-\x{10FFFF}][\w\x{80}-\x{10FFFF}]*)|[uUfFdD]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.hexadecimal.nim</string>
 		</dict>
@@ -294,7 +294,7 @@
 			<key>comment</key>
 			<string>A base-8 integer literal</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0[ocC][0-7][_0-7]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0[ocC][0-7][_0-7]*)('?(([a-zA-Z\x{80}-\x{10FFFF}][\w\x{80}-\x{10FFFF}]*)|[uUfFdD]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.octal.nim</string>
 		</dict>
@@ -302,7 +302,7 @@
 			<key>comment</key>
 			<string>A base-2 integer literal</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0(b|B)[01][_01]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(0(b|B)[01][_01]*)('?(([a-zA-Z\x{80}-\x{10FFFF}][\w\x{80}-\x{10FFFF}]*)|[uUfFdD]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.binary.nim</string>
 		</dict>
@@ -310,7 +310,7 @@
 			<key>comment</key>
 			<string>A base-10 integer literal</string>
 			<key>match</key>
-			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(\d[_\d]*)('?(([iIuUfF](8|16|32|64))|[uUfFdD]))?</string>
+			<string>(?&lt;![\w\x{80}-\x{10FFFF}])(\d[_\d]*)('?(([a-zA-Z\x{80}-\x{10FFFF}][\w\x{80}-\x{10FFFF}]*)|[uUfFdD]))?</string>
 			<key>name</key>
 			<string>constant.numeric.integer.decimal.nim</string>
 		</dict>
@@ -643,27 +643,28 @@
 			</array>
 		</dict>
 		<dict>
-			<key>begin</key>
-			<string>\'</string>
 			<key>comment</key>
 			<string>Single quoted character literal</string>
-			<key>end</key>
-			<string>\'</string>
+			<key>match</key>
+			<string>\'([^\\]|\\x[0-9A-Fa-f][0-9A-Fa-f]|\\\d+|\\[abceflnrtv\\\"\'])\'</string>
 			<key>name</key>
 			<string>string.quoted.single.nim</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>include</key>
-					<string>#escaped_char</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>([^\'][^\']+?)</string>
-					<key>name</key>
-					<string>invalid.illegal.character.nim</string>
-				</dict>
-			</array>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Flawed single quoted character literal escaped</string>
+			<key>match</key>
+			<string>\'\\[^abceflnrtv\\\"\']\'</string>
+			<key>name</key>
+			<string>invalid.illegal.character.nim</string>
+		</dict>
+		<dict>
+			<key>comment</key>
+			<string>Flawed single quoted character literal other adjacent</string>
+			<key>match</key>
+			<string>\'[A-Fa-f0-9\x{80}-\x{10FFFF}][A-Fa-f0-9\x{80}-\x{10FFFF}]+\'</string>
+			<key>name</key>
+			<string>invalid.illegal.character.nim</string>
 		</dict>
 		<dict>
 			<key>begin</key>

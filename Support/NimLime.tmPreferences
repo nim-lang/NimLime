@@ -38,6 +38,24 @@
         <key>value</key>
         <string># </string>
       </dict>
+      <dict>
+        <key>name</key>
+        <string>TM_COMMENT_START_2</string>
+        <key>value</key>
+        <value>#[</value>
+      </dict>
+      <dict>
+        <key>name</key>
+        <string>TM_COMMENT_END_2</string>
+        <key>value</key>
+        <value>]#</value>
+      </dict>
+      <dict>
+        <key>name</key>
+        <string>TM_COMMENT_MODE_2</string>
+        <key>value</key>
+        <value>block</value>
+      </dict>
     </array>
   </dict>
 </dict>

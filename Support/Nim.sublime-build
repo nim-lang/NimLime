@@ -1,5 +1,5 @@
 {
-    "cmd": ["nim", "c", "--parallelBuild:1", "$file"],
+    "cmd": ["nim", "c", "$file"],
     "selector": "source.nim",
     "file_regex": "^(.+.nim)\\((\\d+), (\\d+)\\) (.*)",
     "line_regex": "Error:",
@@ -7,7 +7,6 @@
     "variants": [
         {
             "cmd": ["nim", "c", "-r", "--verbosity:0", "--hints:off", "$file"],
-            "selector": "source.nim",
             "name": "Run"
         }
     ]

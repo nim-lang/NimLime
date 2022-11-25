@@ -134,6 +134,7 @@ contexts:
     - match: '\{'
       scope: punctuation.section.braces.begin.nim
       push:
+        - meta_scope: meta.braces.nim
         - match: '}'
           scope: punctuation.section.braces.end.nim
           pop: true
@@ -142,6 +143,7 @@ contexts:
     - match: '\('
       scope: punctuation.section.parens.begin.nim
       push:
+        - meta_scope: meta.parens.nim
         - match: '\)'
           scope: punctuation.section.parens.end.nim
           pop: true
@@ -151,6 +153,7 @@ contexts:
     - match: '\['
       scope: punctuation.section.brackets.begin.nim
       push:
+        - meta_scope: meta.brackets.nim
         - match: ']'
           scope: punctuation.section.brackets.end.nim
           pop: true

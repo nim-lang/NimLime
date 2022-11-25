@@ -360,6 +360,8 @@
 							<string>punctuation.section.braces.end.nim</string>
 						</dict>
 					</dict>
+					<key>name</key>
+					<string>meta.braces.nim</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -389,6 +391,8 @@
 							<string>punctuation.section.parens.end.nim</string>
 						</dict>
 					</dict>
+					<key>name</key>
+					<string>meta.parens.nim</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -2344,6 +2348,8 @@
 							<string>punctuation.section.brackets.end.nim</string>
 						</dict>
 					</dict>
+					<key>name</key>
+					<string>meta.brackets.nim</string>
 					<key>patterns</key>
 					<array>
 						<dict>

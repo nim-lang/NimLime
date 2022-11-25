@@ -88,6 +88,7 @@ repository:
         end: '}'
         endCaptures:
           '0': {name: punctuation.section.braces.end.nim}
+        name: meta.braces.nim
         patterns:
           - include: '$self'
 
@@ -97,6 +98,7 @@ repository:
         end: '\)'
         endCaptures:
           '0': {name: punctuation.section.parens.end.nim}
+        name: meta.parens.nim
         patterns:
           - include: '$self'
 
@@ -108,6 +110,7 @@ repository:
         end: ']'
         endCaptures:
           '0': {name: punctuation.section.brackets.end.nim}
+        name: meta.brackets.nim
         patterns:
           - include: '$self'
 

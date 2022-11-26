@@ -582,7 +582,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>'(?:[^\\']|(\\(?:[ABCEFLNRTVabceflnrtv'\\]|\d+|[Xx]\h{2})))'</string>
+					<string>'(?:[^\\']|(\\(?:[ABCEFLNRTVabceflnrtv"'\\]|\d+|[Xx]\h{2})))'</string>
 				</dict>
 				<dict>
 					<key>match</key>

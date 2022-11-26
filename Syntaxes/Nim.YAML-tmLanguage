@@ -718,7 +718,7 @@ repository:
 
   characters:
     patterns:
-      - match: '''(?:[^\\'']|(\\(?:[ABCEFLNRTVabceflnrtv''\\]|\d+|[Xx]\h{2})))'''
+      - match: '''(?:[^\\'']|(\\(?:[ABCEFLNRTVabceflnrtv"''\\]|\d+|[Xx]\h{2})))'''
         captures:
           '0': {name: constant.character.nim}
           '1': {name: constant.character.escape.nim}

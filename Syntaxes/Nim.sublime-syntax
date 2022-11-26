@@ -719,7 +719,7 @@ contexts:
         2: constant.numeric.suffix.nim
 
   characters:
-    - match: '''(?:[^\\'']|(\\(?:[ABCEFLNRTVabceflnrtv''\\]|\d+|[Xx]\h{2})))'''
+    - match: '''(?:[^\\'']|(\\(?:[ABCEFLNRTVabceflnrtv"''\\]|\d+|[Xx]\h{2})))'''
       captures:
         0: constant.character.nim
         1: constant.character.escape.nim

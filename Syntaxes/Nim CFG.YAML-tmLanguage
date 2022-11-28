@@ -2,77 +2,210 @@
 ---
 name: Nim Config
 scopeName: source.nimcfg
-fileTypes: ["cfg"]
-uuid: 8fb54f5c-6f67-4d13-9dcc-52650ea4cb3e
+fileTypes: ["nimcfg"]
 
 patterns:
-- name: comment.line.number-sign.nimcfg
-  match: (#\s*(TODO|todo)?).*$\n?
-  captures:
-    '1': {name: punctuation.definition.comment.nimcfg}
-    '2': {name: invalid.illegal.TODO.nimcfg}
+  - include: '#comments'
+  - include: '#directives'
+  - include: '#assignements'
 
-- comment: Section declarations
-  name: support.type.nimcfg
-  match: \[.+\]
 
-- comment: Keywords that affect program control flow or scope.
-  begin: \@\b(if|elif|else)\b
-  end: \@\b(end)
-  captures:
-    '0': {name: keyword.control.nimcfg}
-  patterns:
-  - {include: source.nimcfg}
-
-- comment: Key declarations
-  begin: ([a-zA-Z0-9_\.]+)\s*(\=)
-  end: \n
-  patterns:
-
-  - name: constant.numeric.float.decimal.nimcfg
-    match: \b((\d[_\d]*\.[_\d]+([eE][\+\-]?\d[_\d]*)?)|([eE][\+\-]?\d[_\d]*))('[fF](32|64))?
-
-  - name: constant.numeric.integer.hexadecimal.nimcfg
-    match: \b(0[xX][0-9A-Fa-f][_0-9A-Fa-f]*)('[iIuU](8|16|32|64))?
-
-  - comment: For simplicity's sake, we don't enforce floats only having 32 and
-             64 prefix types.
-    name: constant.numeric.integer.octal.nimcfg
-    match: \b(0o[0-7][_0-7]*)
-
-  - name: constant.numeric.integer.binary.nimcfg
-    match: \b(0(b|B)[01][_01]*)
-
-  - name: constant.numeric.integer.decimal.nimcfg
-    match: \b(\d[_\d]*)
-
-  - comment: Language Constants.
-    name: constant.language.nimcfg
-    match: \b(true|false)\b
-
-  - comment: Raw Double Quoted String
-    name: string.quoted.double.raw.nimcfg
-    begin: r\"
-    end: \"
+repository:
+  comments:
     patterns:
-    - match: \"\"
+      - begin: '(#)(?: *(TODO|todo)\b)?'
+        beginCaptures:
+          '1': {name: punctuation.definition.comment.ncfg}
+          '2': {name: invalid.deprecated.ncfg}
+        end: '$\n?'
+        name: comment.line.number-sign.ncfg
 
-  - comment: Double Quoted String
-    name: string.quoted.double.nimcfg
-    begin: \"
-    end: \"
-    captures:
-      '1': {name: storage.type.function.nimcfg}
+  directives:
     patterns:
-    - match: (\\([abenrclftv\\]|["']|[0-9])|x[0-9A-Fa-f]{2})
+      - include: '#if-stmt'
+      - match: '(@)(else) *(:)?'
+        captures:
+          '1': {name: punctuation.definition.keyword.ncfg}
+          '2': {name: keyword.control.conditional.else.ncfg}
+          '3': {name: punctuation.section.block.begin.ncfg}
+      - match: '(@)(end)'
+        captures:
+          '1': {name: punctuation.definition.keyword.ncfg}
+          '2': {name: keyword.control.conditional.end.ncfg}
+      - include: '#env-stmt'
 
-  - comment: Single quoted character literal
-    name: string.quoted.single.nimcfg
-    match: \'(\\\d{1,3}|\\?[^\n]?)\'
+  assignements:
+    patterns:
+      - begin: (--?)?[A-Za-z]\w*
+        beginCaptures:
+          '1': {name: punctuation.definition.variable.ncfg}
+        end: '(?:(\[)([A-Za-z]\w*)(]))? *(?=:|%?=)|$\n?'
+        endCaptures:
+          '1': {name: punctuation.section.brackets.begin.ncfg}
+          '2': {name: entity.other.attribute-name.ncfg}
+          '3': {name: punctuation.section.brackets.end.ncfg}
+        patterns:
+          - include: '#comments'
+          - match: '(\.)[A-Za-z]\w*'
+            captures:
+              '1': {name: punctuation.accessor.dot.ncfg}
+      - begin: ':|%?='
+        beginCaptures:
+          '0': {name: punctuation.separator.key-value.ncfg}
+        end: $\n?
+        patterns:
+          - include: '#comments'
+          - include: '#exprs'
+          - match: '&'
+            name: keyword.operator.ncfg
+          - match: '[:=]'
+            name: punctuation.separator.key-value.ncfg
 
-  - comment: Value declarations
-    match: \b(.+)\b
-    captures:
-      '1': {name: string.raw.nimcfg}
+  if-stmt:
+    patterns:
+      - begin: '(@)(?:(elif)|(if))\b'
+        beginCaptures:
+          '1': {name: punctuation.definition.keyword.ncfg}
+          '2': {name: keyword.control.conditional.elseif.ncfg}
+          '3': {name: keyword.control.conditional.if.ncfg}
+        end: '(:)|$'
+        endCaptures:
+          '1': {name: punctuation.section.block.begin.ncfg}
+        patterns:
+          - include: '#cond-expr'
 
-...
+  cond-expr:
+    patterns:
+      - include: '#groups'
+      - include: '#language-constants'
+      - match: '(?:and|or|not)\b'
+        name: keyword.operator.logical.ncfg
+      - match: '[A-Za-z]\w*'
+
+  groups:
+    patterns:
+      - begin: '\('
+        beginCaptures:
+          '0': {name: punctuation.section.group.begin.ncfg}
+        end: '\)'
+        name: meta.group.ncfg
+        endCaptures:
+          '0': {name: punctuation.section.group.end.ncfg}
+        patterns:
+          - include: '#cond-expr'
+
+  env-stmt:
+    patterns:
+      - begin: '(@)((?:put|append|prepend)[Ee]nv|write)\b'
+        beginCaptures:
+          '1': {name: punctuation.definition.keyword.ncfg}
+          '2': {name: keyword.other.ncfg}
+        end: '$\n?'
+        patterns:
+          - include: '#exprs'
+
+  exprs:
+    patterns:
+      - include: '#str-lits'
+      - include: '#numbers'
+      - include: '#language-constants'
+      - match: '[A-Za-z]\w*'
+        name: string.unquoted.ncfg
+
+  str-lits:
+    patterns:
+    - include: '#triplestr-lit'
+    - include: '#rstr-lit'
+    - include: '#str-lit'
+
+  triplestr-lit:
+    patterns:
+      - begin: '([Rr])?(""")'
+        beginCaptures:
+          '1': {name: storage.type.ncfg}
+          '2': {name: string.quoted.triple.ncfg punctuation.definition.string.begin.ncfg}
+        end: '"""(?!")'
+        endCaptures:
+          '0': {name: string.quoted.triple.ncfg punctuation.definition.string.end.ncfg}
+        contentName: string.quoted.triple.ncfg
+
+  rstr-lit:
+    patterns:
+      - begin: '([Rr])(")'
+        beginCaptures:
+          '1': {name: storage.type.ncfg}
+          '2': {name: string.quoted.double.ncfg punctuation.definition.string.begin.ncfg}
+        end: '("(?!"))|(\n)'
+        endCaptures:
+          '1': {name: string.quoted.double.ncfg punctuation.definition.string.end.ncfg}
+          '2': {name: string.quoted.double.ncfg invalid.illegal.unclosed-string.ncfg}
+        contentName: string.quoted.double.ncfg
+        patterns:
+          - match: '""'
+            name: constant.character.escape.ncfg
+  
+  str-lit:
+    patterns:
+      - begin: '"'
+        beginCaptures:
+          '0': {name: punctuation.definition.string.begin.ncfg}
+        end: '(")|(\n)'
+        endCaptures:
+          '1': {name: punctuation.definition.string.end.ncfg}
+          '2': {name: invalid.illegal.ncfg}
+        name: string.quoted.double.ncfg
+        patterns:
+          - match: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
+            name: constant.character.escape.ncfg
+          - match: \\
+            name: invalid.illegal.lone-escape.ncfg
+
+  numbers:
+    patterns:
+      - match: '(?x:
+          \b(0[Xx])
+          (\h(?:_?\h)*)
+          (''?[Ii](?:8|16|32|64))?
+        )'
+        captures:
+          '0': {name: meta.number.integer.hexadecimal.ncfg}
+          '1': {name: constant.numeric.base.ncfg}
+          '2': {name: constant.numeric.value.ncfg}
+          '3': {name: constant.numeric.suffix.ncfg}
+
+      - match: '(?x:
+          \b(0o)
+          ([0-7](?:_?[0-7])*)
+          (''?[Ii](?:8|16|32|64))?
+        )'
+        captures:
+          '0': {name: meta.number.integer.octal.ncfg}
+          '1': {name: constant.numeric.base.ncfg}
+          '2': {name: constant.numeric.value.ncfg}
+          '3': {name: constant.numeric.suffix.ncfg}
+
+      - match: '(?x:
+          \b(0[Bb])
+          ([01](?:_?[01])*)
+          (''?[Ii](?:8|16|32|64))?
+        )'
+        captures:
+          '0': {name: meta.number.integer.binary.ncfg}
+          '1': {name: constant.numeric.base.ncfg}
+          '2': {name: constant.numeric.value.ncfg}
+          '3': {name: constant.numeric.suffix.ncfg}
+
+      - match: '(?x:
+          \b(\d(?:_?\d)*)
+          (''?[Ii](?:8|16|32|64))?
+        )'
+        captures:
+          '0': {name: meta.number.integer.decimal.ncfg}
+          '1': {name: constant.numeric.value.ncfg}
+          '2': {name: constant.numeric.suffix.ncfg}
+
+  language-constants:
+    patterns:
+      - match: '\b(?:true|false|on|off)\b'
+        name: constant.language.boolean.ncfg
+

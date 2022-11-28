@@ -1,0 +1,589 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/syntax.html
+version: 2
+name: Nim CFG
+file_extensions:
+  - nim.cfg
+scope: source.nimcfg
+contexts:
+  # Rule: assignements
+  assignements|0:
+    - match: '(\.)[A-Za-z]\w*'
+      captures:
+        1: punctuation.accessor.dot.nimcfg
+    - match: '(?:(\[)([A-Za-z]\w*)(]))? *(:|%?=)'
+      captures:
+        1: punctuation.section.brackets.begin.nimcfg
+        2: entity.other.attribute-name.nimcfg
+        3: punctuation.section.brackets.end.nimcfg
+        4: punctuation.separator.key-value.nimcfg
+      push: assignements|1
+      pop: true
+    - match: '(?=\S)'
+      pop: true
+  # Rule: assignements
+  assignements|1:
+    - match: '([Rr])?(""")'
+      captures:
+        0: meta.string.nimcfg
+        1: storage.type.string.nimcfg
+        2: string.quoted.double.block.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [assignements|2, triplestr-lit-inner|0]
+      pop: true
+    - match: '([Rr])(")'
+      captures:
+        0: meta.string.nimcfg
+        1: storage.type.string.nimcfg
+        2: string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [assignements|2, rstr-lit-inner|0]
+      pop: true
+    - match: '"'
+      scope: meta.string.nimcfg string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [assignements|2, str-lit|0]
+      pop: true
+    - match: '\b(0[Xx])(\h(?:_?\h)*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.hexadecimal.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: assignements|2
+      pop: true
+    - match: '\b(0o)([0-7](?:_?[0-7])*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.octal.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: assignements|2
+      pop: true
+    - match: '\b(0[Bb])([01](?:_?[01])*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.binary.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: assignements|2
+      pop: true
+    - match: '\b(\d(?:_?\d)*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.decimal.nimcfg
+        1: constant.numeric.value.nimcfg
+        2: constant.numeric.suffix.nimcfg
+      push: assignements|2
+      pop: true
+    - match: '(?:true|false|on|off)\b'
+      scope: constant.language.nimcfg
+      push: assignements|2
+      pop: true
+    - match: '[A-Za-z]\w*'
+      scope: string.unquoted.nimcfg
+      push: assignements|2
+      pop: true
+    - match: '(?=\S)'
+      pop: true
+  # Rule: assignements
+  assignements|2:
+    - match: '[:=]'
+      scope: punctuation.separator.key-value.nimcfg
+      push: concat-expr|0
+      pop: true
+    - match: '&'
+      scope: keyword.operator.nimcfg
+      push: concat-expr|0
+      pop: true
+    - match: '(?=\S)'
+      pop: true
+  # Rule: block
+  block|0:
+    - meta_content_scope: meta.block.nimcfg
+    - match: '(@)(elif\b)'
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.control.conditional.elseif.nimcfg
+      push: elif-stmt|0
+    - match: '(@)(else) *(:)?'
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.control.conditional.else.nimcfg
+        3: punctuation.section.block.begin.nimcfg
+      push: else-stmt|0
+    - match: '(@)(if\b)'
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.control.conditional.if.nimcfg
+      push: if-stmt|0
+    - match: '(@)((?:put|append|prepend)[Ee]nv\b)'
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.other.nimcfg
+      push: env-stmt|0
+    - match: '(@)(write\b)'
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.other.nimcfg
+      push: expr|0
+    - match: '(--?)?[A-Za-z]\w*'
+      captures:
+        1: punctuation.definition.variable.nimcfg
+      push: assignements|0
+    - match: '(@)(end\b)'
+      scope: meta.block.nimcfg
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.control.block.conditional.nimcfg
+      pop: true
+  # Rule: bool-bin-expr
+  bool-bin-expr|0:
+    - match: '(?:and|or)\b'
+      scope: keyword.operator.logical.nimcfg
+      push: bool-bin-expr|1
+      pop: true
+    - match: '(?=\S)'
+      pop: true
+  # Rule: bool-bin-expr
+  bool-bin-expr|1:
+    - match: '(?:true|false|on|off)\b'
+      scope: constant.language.nimcfg
+      push: bool-bin-expr|0
+      pop: true
+    - match: 'not\b'
+      scope: keyword.operator.logical.nimcfg
+      push: [bool-bin-expr|0, bool-bin-expr|1]
+      pop: true
+    - match: '[A-Za-z]\w*'
+      push: bool-bin-expr|0
+      pop: true
+    - match: '\('
+      scope: meta.group.nimcfg punctuation.section.group.begin.nimcfg
+      push: [bool-bin-expr|0, group|0]
+      pop: true
+    - match: '\S'
+      scope: invalid.illegal.nimcfg
+      pop: true
+  # Rule: comment
+  comment|0:
+    - meta_content_scope: comment.line.number-sign.nimcfg
+    - match: '$\n?'
+      scope: comment.line.number-sign.nimcfg
+      pop: true
+  # Rule: concat-expr
+  concat-expr|0:
+    - match: '([Rr])?(""")'
+      captures:
+        0: meta.string.nimcfg
+        1: storage.type.string.nimcfg
+        2: string.quoted.double.block.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [concat-expr|1, triplestr-lit-inner|0]
+      pop: true
+    - match: '([Rr])(")'
+      captures:
+        0: meta.string.nimcfg
+        1: storage.type.string.nimcfg
+        2: string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [concat-expr|1, rstr-lit-inner|0]
+      pop: true
+    - match: '"'
+      scope: meta.string.nimcfg string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [concat-expr|1, str-lit|0]
+      pop: true
+    - match: '\b(0[Xx])(\h(?:_?\h)*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.hexadecimal.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '\b(0o)([0-7](?:_?[0-7])*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.octal.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '\b(0[Bb])([01](?:_?[01])*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.binary.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '\b(\d(?:_?\d)*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.decimal.nimcfg
+        1: constant.numeric.value.nimcfg
+        2: constant.numeric.suffix.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '(?:true|false|on|off)\b'
+      scope: constant.language.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '[A-Za-z]\w*'
+      scope: string.unquoted.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '(?=\S)'
+      pop: true
+  # Rule: concat-expr
+  concat-expr|1:
+    - match: '&'
+      scope: keyword.operator.nimcfg
+      push: concat-expr|2
+      pop: true
+    - match: '(?=\S)'
+      pop: true
+  # Rule: concat-expr
+  concat-expr|2:
+    - match: '([Rr])?(""")'
+      captures:
+        0: meta.string.nimcfg
+        1: storage.type.string.nimcfg
+        2: string.quoted.double.block.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [concat-expr|1, triplestr-lit-inner|0]
+      pop: true
+    - match: '([Rr])(")'
+      captures:
+        0: meta.string.nimcfg
+        1: storage.type.string.nimcfg
+        2: string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [concat-expr|1, rstr-lit-inner|0]
+      pop: true
+    - match: '"'
+      scope: meta.string.nimcfg string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [concat-expr|1, str-lit|0]
+      pop: true
+    - match: '\b(0[Xx])(\h(?:_?\h)*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.hexadecimal.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '\b(0o)([0-7](?:_?[0-7])*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.octal.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '\b(0[Bb])([01](?:_?[01])*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.binary.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '\b(\d(?:_?\d)*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.decimal.nimcfg
+        1: constant.numeric.value.nimcfg
+        2: constant.numeric.suffix.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '(?:true|false|on|off)\b'
+      scope: constant.language.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '[A-Za-z]\w*'
+      scope: string.unquoted.nimcfg
+      push: concat-expr|1
+      pop: true
+    - match: '\S'
+      scope: invalid.illegal.nimcfg
+      pop: true
+  # Rule: elif-stmt
+  elif-stmt|0:
+    - match: '(?:true|false|on|off)\b'
+      scope: constant.language.nimcfg
+      push: [elif-stmt|1, bool-bin-expr|0]
+      pop: true
+    - match: 'not\b'
+      scope: keyword.operator.logical.nimcfg
+      push: [elif-stmt|1, bool-bin-expr|0, bool-bin-expr|1]
+      pop: true
+    - match: '[A-Za-z]\w*'
+      push: [elif-stmt|1, bool-bin-expr|0]
+      pop: true
+    - match: '\('
+      scope: meta.group.nimcfg punctuation.section.group.begin.nimcfg
+      push: [elif-stmt|1, bool-bin-expr|0, group|0]
+      pop: true
+    - match: '\S'
+      scope: invalid.illegal.nimcfg
+      pop: true
+  # Rule: elif-stmt
+  elif-stmt|1:
+    - match: ':'
+      scope: punctuation.section.block.begin.nimcfg
+      pop: true
+    - match: '\S'
+      scope: invalid.illegal.nimcfg
+      pop: true
+  # Rule: else-stmt
+  else-stmt|0:
+    - match: '(@)(if\b)'
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.control.conditional.if.nimcfg
+      push: if-stmt|0
+    - match: '(@)((?:put|append|prepend)[Ee]nv\b)'
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.other.nimcfg
+      push: env-stmt|0
+    - match: '(@)(write\b)'
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.other.nimcfg
+      push: expr|0
+    - match: '(--?)?[A-Za-z]\w*'
+      captures:
+        1: punctuation.definition.variable.nimcfg
+      push: assignements|0
+    - match: '(?=@end\b)'
+      pop: true
+  # Rule: env-stmt
+  env-stmt|0:
+    - match: '([Rr])?(""")'
+      captures:
+        0: meta.string.nimcfg
+        1: storage.type.string.nimcfg
+        2: string.quoted.double.block.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [expr|0, triplestr-lit-inner|0]
+      pop: true
+    - match: '([Rr])(")'
+      captures:
+        0: meta.string.nimcfg
+        1: storage.type.string.nimcfg
+        2: string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [expr|0, rstr-lit-inner|0]
+      pop: true
+    - match: '"'
+      scope: meta.string.nimcfg string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg
+      push: [expr|0, str-lit|0]
+      pop: true
+    - match: '\b(0[Xx])(\h(?:_?\h)*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.hexadecimal.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: expr|0
+      pop: true
+    - match: '\b(0o)([0-7](?:_?[0-7])*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.octal.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: expr|0
+      pop: true
+    - match: '\b(0[Bb])([01](?:_?[01])*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.binary.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      push: expr|0
+      pop: true
+    - match: '\b(\d(?:_?\d)*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.decimal.nimcfg
+        1: constant.numeric.value.nimcfg
+        2: constant.numeric.suffix.nimcfg
+      push: expr|0
+      pop: true
+    - match: '(?:true|false|on|off)\b'
+      scope: constant.language.nimcfg
+      push: expr|0
+      pop: true
+    - match: '[A-Za-z]\w*'
+      scope: string.unquoted.nimcfg
+      push: expr|0
+      pop: true
+    - match: '(?=\S)'
+      pop: true
+  # Rule: expr
+  expr|0:
+    - match: '([Rr])?(""")'
+      captures:
+        0: meta.string.nimcfg
+        1: storage.type.string.nimcfg
+        2: string.quoted.double.block.nimcfg punctuation.definition.string.begin.nimcfg
+      push: triplestr-lit-inner|0
+      pop: true
+    - match: '([Rr])(")'
+      captures:
+        0: meta.string.nimcfg
+        1: storage.type.string.nimcfg
+        2: string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg
+      push: rstr-lit-inner|0
+      pop: true
+    - match: '"'
+      scope: meta.string.nimcfg string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg
+      push: str-lit|0
+      pop: true
+    - match: '\b(0[Xx])(\h(?:_?\h)*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.hexadecimal.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      pop: true
+    - match: '\b(0o)([0-7](?:_?[0-7])*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.octal.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      pop: true
+    - match: '\b(0[Bb])([01](?:_?[01])*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.binary.nimcfg
+        1: constant.numeric.base.nimcfg
+        2: constant.numeric.value.nimcfg
+        3: constant.numeric.suffix.nimcfg
+      pop: true
+    - match: '\b(\d(?:_?\d)*)(''?[Ii](?:8|16|32|64))?'
+      captures:
+        0: meta.number.integer.decimal.nimcfg
+        1: constant.numeric.value.nimcfg
+        2: constant.numeric.suffix.nimcfg
+      pop: true
+    - match: '(?:true|false|on|off)\b'
+      scope: constant.language.nimcfg
+      pop: true
+    - match: '[A-Za-z]\w*'
+      scope: string.unquoted.nimcfg
+      pop: true
+    - match: '(?=\S)'
+      pop: true
+  # Rule: group
+  group|0:
+    - meta_content_scope: meta.group.nimcfg
+    - match: '(?:true|false|on|off)\b'
+      scope: constant.language.nimcfg
+      push: [group|1, bool-bin-expr|0]
+      pop: true
+    - match: 'not\b'
+      scope: keyword.operator.logical.nimcfg
+      push: [group|1, bool-bin-expr|0, bool-bin-expr|1]
+      pop: true
+    - match: '[A-Za-z]\w*'
+      push: [group|1, bool-bin-expr|0]
+      pop: true
+    - match: '\('
+      scope: meta.group.nimcfg punctuation.section.group.begin.nimcfg
+      push: [group|1, bool-bin-expr|0, group|0]
+      pop: true
+    - match: '\S'
+      scope: invalid.illegal.nimcfg
+      pop: true
+  # Rule: group
+  group|1:
+    - meta_content_scope: meta.group.nimcfg
+    - match: '\)'
+      scope: meta.group.nimcfg punctuation.section.group.end.nimcfg
+      pop: true
+    - match: '\S'
+      scope: invalid.illegal.nimcfg
+      pop: true
+  # Rule: if-stmt
+  if-stmt|0:
+    - match: '(?:true|false|on|off)\b'
+      scope: constant.language.nimcfg
+      push: [if-stmt|1, bool-bin-expr|0]
+      pop: true
+    - match: 'not\b'
+      scope: keyword.operator.logical.nimcfg
+      push: [if-stmt|1, bool-bin-expr|0, bool-bin-expr|1]
+      pop: true
+    - match: '[A-Za-z]\w*'
+      push: [if-stmt|1, bool-bin-expr|0]
+      pop: true
+    - match: '\('
+      scope: meta.group.nimcfg punctuation.section.group.begin.nimcfg
+      push: [if-stmt|1, bool-bin-expr|0, group|0]
+      pop: true
+    - match: '\S'
+      scope: invalid.illegal.nimcfg
+      pop: true
+  # Rule: if-stmt
+  if-stmt|1:
+    - match: ':'
+      scope: punctuation.section.block.begin.nimcfg
+      push: block|0
+      pop: true
+    - match: '\S'
+      scope: invalid.illegal.nimcfg
+      pop: true
+  # Rule: main
+  main:
+    - match: '(@)(if\b)'
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.control.conditional.if.nimcfg
+      push: if-stmt|0
+    - match: '(@)((?:put|append|prepend)[Ee]nv\b)'
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.other.nimcfg
+      push: env-stmt|0
+    - match: '(@)(write\b)'
+      captures:
+        1: punctuation.definition.keyword.nimcfg
+        2: keyword.other.nimcfg
+      push: expr|0
+    - match: '(--?)?[A-Za-z]\w*'
+      captures:
+        1: punctuation.definition.variable.nimcfg
+      push: assignements|0
+  # Rule: prototype
+  prototype:
+    - match: '(#)(?: *(TODO|todo)\b)?'
+      scope: comment.line.number-sign.nimcfg
+      captures:
+        1: punctuation.definition.comment.nimcfg
+        2: invalid.deprecated.nimcfg
+      push: comment|0
+  # Rule: rstr-lit-inner
+  rstr-lit-inner|0:
+    - meta_content_scope: meta.string.nimcfg string.quoted.double.nimcfg
+    - meta_include_prototype: false
+    - match: '""'
+      scope: constant.character.escape.nimcfg
+    - match: '"'
+      scope: meta.string.nimcfg string.quoted.double.nimcfg punctuation.definition.string.end.nimcfg
+      pop: true
+    - match: '\n'
+      scope: meta.string.nimcfg string.quoted.double.nimcfg invalid.illegal.nimcfg
+      pop: true
+  # Rule: str-lit
+  str-lit|0:
+    - meta_content_scope: meta.string.nimcfg string.quoted.double.nimcfg
+    - meta_include_prototype: false
+    - match: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
+      scope: constant.character.escape.nimcfg
+    - match: '\\'
+      scope: invalid.illegal.lone-escape.nimcfg
+    - match: '"'
+      scope: meta.string.nimcfg string.quoted.double.nimcfg punctuation.definition.string.end.nimcfg
+      pop: true
+    - match: '\n'
+      scope: meta.string.nimcfg string.quoted.double.nimcfg invalid.illegal.nimcfg
+      pop: true
+  # Rule: triplestr-lit-inner
+  triplestr-lit-inner|0:
+    - meta_content_scope: meta.string.nimcfg string.quoted.double.block.nimcfg
+    - meta_include_prototype: false
+    - match: '"""(?!")'
+      scope: meta.string.nimcfg string.quoted.double.block.nimcfg punctuation.definition.string.end.nimcfg
+      pop: true

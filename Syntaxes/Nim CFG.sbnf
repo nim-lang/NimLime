@@ -1,0 +1,218 @@
+EXTENSIONS = 'nim.cfg'
+SCOPE = 'source.nimcfg'
+SCOPE_POSTFIX = `nimcfg`
+
+SYMBOL = '[A-Za-z]\w*'
+
+prototype:
+  (~comment)*
+;
+
+main:
+  (~(
+      directives
+    | assignements
+  ))*
+;
+
+comment{comment.line.number-sign}:
+  '(#)(?: *(TODO|todo)\b)?'{
+    1: punctuation.definition.comment,
+    2: invalid.deprecated
+  }
+  ~'$\n?'
+;
+
+directives:
+    if-stmt
+  | env-stmt
+  | write-stmt
+;
+
+if-stmt:
+  '(@)(if\b)'{
+    1: punctuation.definition.keyword,
+    2: keyword.control.conditional.if
+  }
+  bool-bin-expr `:`{punctuation.section.block.begin}
+  block
+;
+
+elif-stmt:
+  '(@)(elif\b)'{
+    1: punctuation.definition.keyword,
+    2: keyword.control.conditional.elseif
+  }
+  bool-bin-expr `:`{punctuation.section.block.begin}
+;
+
+else-stmt:
+  '(@)(else) *(:)?'{
+    1: punctuation.definition.keyword,
+    2: keyword.control.conditional.else,
+    3: punctuation.section.block.begin
+  }
+  ~(main)*
+  ~'(?=@end\b)'
+;
+
+bool-expr:
+    language-constants
+  | 'not\b'{keyword.operator.logical} bool-bin-expr
+  | SYMBOL
+  | group
+;
+
+bool-bin-expr:
+  bool-expr ('(?:and|or)\b'{keyword.operator.logical}  bool-bin-expr)?
+;
+
+group{meta.group}:
+  `(`{punctuation.section.group.begin}
+  bool-bin-expr
+  `)`{punctuation.section.group.end}
+;
+
+block{meta.block}:
+  (~(
+      elif-stmt
+    | else-stmt
+    | main
+  ))*
+  ~'(@)(end\b)'{
+    1: punctuation.definition.keyword,
+    2: keyword.control.block.conditional
+  }
+;
+
+env-stmt:
+  '(@)((?:put|append|prepend)[Ee]nv\b)'{
+    1: punctuation.definition.keyword,
+    2: keyword.other
+  }
+  (expr expr?)?
+;
+
+write-stmt:
+  '(@)(write\b)'{
+    1: punctuation.definition.keyword,
+    2: keyword.other
+  }
+  expr?
+;
+
+assignements:
+  '(--?)?#[SYMBOL]'{1: punctuation.definition.variable}
+  (~'(\.)#[SYMBOL]'{1: punctuation.accessor.dot})*
+  ~('(?:(\[)(#[SYMBOL])(]))? *(:|%?=)' {
+      1: punctuation.section.brackets.begin,
+      2: entity.other.attribute-name,
+      3: punctuation.section.brackets.end,
+      4: punctuation.separator.key-value
+    }
+    (
+      expr
+      (
+        (
+          '[:=]'{punctuation.separator.key-value}
+        | '&'{keyword.operator}
+        )
+        concat-expr?
+      )?
+    )?
+    |
+    '(?=\S)'
+  )
+;
+
+concat-expr:
+ expr ('&'{keyword.operator} concat-expr)?
+;
+
+expr:
+    str-lits
+  | numbers
+  | language-constants
+  | SYMBOL{string.unquoted}
+;
+
+str-lits:
+      triplestr-lit
+    | rstr-lit
+    | str-lit
+;
+
+triplestr-lit:
+  '([Rr])?(""")'{
+    0: meta.string,
+    1: storage.type.string,
+    2: string.quoted.double.block punctuation.definition.string.begin
+  }
+  triplestr-lit-inner
+;
+
+triplestr-lit-inner{meta.string string.quoted.double.block, include-prototype: false}:
+  ~'"""(?!")'{punctuation.definition.string.end}
+;
+
+rstr-lit:
+  '([Rr])(")'{
+    0: meta.string,
+    1: storage.type.string,
+    2: string.quoted.double punctuation.definition.string.begin
+  }
+  rstr-lit-inner
+;
+
+rstr-lit-inner{meta.string string.quoted.double, include-prototype: false}:
+  (~'""'{constant.character.escape})*
+  ~(
+    `"`{punctuation.definition.string.end}
+    | '\n'{invalid.illegal}
+  )
+;
+
+str-lit{meta.string string.quoted.double, include-prototype: false}:
+  `"`{punctuation.definition.string.begin}
+  (~(
+        '\\(?:[ABCEFLNPRTVabceflnprtv"\'\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'{constant.character.escape}
+      | '\\'{invalid.illegal.lone-escape}
+    ))*
+  ~(
+      `"`{punctuation.definition.string.end}
+    | '\n'{invalid.illegal}
+  )
+;
+
+numbers:
+  '\b(0[Xx])(\h(?:_?\h)*)(\'?[Ii](?:8|16|32|64))?'{
+      0: meta.number.integer.hexadecimal,
+      1: constant.numeric.base,
+      2: constant.numeric.value,
+      3: constant.numeric.suffix
+  }
+  |
+  '\b(0o)([0-7](?:_?[0-7])*)(\'?[Ii](?:8|16|32|64))?'{
+      0: meta.number.integer.octal,
+      1: constant.numeric.base,
+      2: constant.numeric.value,
+      3: constant.numeric.suffix
+  }
+  |
+  '\b(0[Bb])([01](?:_?[01])*)(\'?[Ii](?:8|16|32|64))?'{
+      0: meta.number.integer.binary,
+      1: constant.numeric.base,
+      2: constant.numeric.value,
+      3: constant.numeric.suffix
+  }
+  |
+  '\b(\d(?:_?\d)*)(\'?[Ii](?:8|16|32|64))?'{
+      0: meta.number.integer.decimal,
+      1: constant.numeric.value,
+      2: constant.numeric.suffix
+  }
+;
+
+language-constants:
+  '(?:true|false|on|off)\b'{constant.language}
+;

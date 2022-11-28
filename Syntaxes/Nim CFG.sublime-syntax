@@ -74,7 +74,7 @@ contexts:
       push: assignements|2
       pop: true
     - match: '(?:true|false|on|off)\b'
-      scope: constant.language.nimcfg
+      scope: constant.language.boolean.nimcfg
       push: assignements|2
       pop: true
     - match: '[A-Za-z]\w*'
@@ -132,7 +132,7 @@ contexts:
       scope: meta.block.nimcfg
       captures:
         1: punctuation.definition.keyword.nimcfg
-        2: keyword.control.block.conditional.nimcfg
+        2: keyword.control.conditional.end.nimcfg
       pop: true
   # Rule: bool-bin-expr
   bool-bin-expr|0:
@@ -145,7 +145,7 @@ contexts:
   # Rule: bool-bin-expr
   bool-bin-expr|1:
     - match: '(?:true|false|on|off)\b'
-      scope: constant.language.nimcfg
+      scope: constant.language.boolean.nimcfg
       push: bool-bin-expr|0
       pop: true
     - match: 'not\b'
@@ -220,7 +220,7 @@ contexts:
       push: concat-expr|1
       pop: true
     - match: '(?:true|false|on|off)\b'
-      scope: constant.language.nimcfg
+      scope: constant.language.boolean.nimcfg
       push: concat-expr|1
       pop: true
     - match: '[A-Za-z]\w*'
@@ -289,7 +289,7 @@ contexts:
       push: concat-expr|1
       pop: true
     - match: '(?:true|false|on|off)\b'
-      scope: constant.language.nimcfg
+      scope: constant.language.boolean.nimcfg
       push: concat-expr|1
       pop: true
     - match: '[A-Za-z]\w*'
@@ -302,7 +302,7 @@ contexts:
   # Rule: elif-stmt
   elif-stmt|0:
     - match: '(?:true|false|on|off)\b'
-      scope: constant.language.nimcfg
+      scope: constant.language.boolean.nimcfg
       push: [elif-stmt|1, bool-bin-expr|0]
       pop: true
     - match: 'not\b'
@@ -402,7 +402,7 @@ contexts:
       push: expr|0
       pop: true
     - match: '(?:true|false|on|off)\b'
-      scope: constant.language.nimcfg
+      scope: constant.language.boolean.nimcfg
       push: expr|0
       pop: true
     - match: '[A-Za-z]\w*'
@@ -459,7 +459,7 @@ contexts:
         2: constant.numeric.suffix.nimcfg
       pop: true
     - match: '(?:true|false|on|off)\b'
-      scope: constant.language.nimcfg
+      scope: constant.language.boolean.nimcfg
       pop: true
     - match: '[A-Za-z]\w*'
       scope: string.unquoted.nimcfg
@@ -470,7 +470,7 @@ contexts:
   group|0:
     - meta_content_scope: meta.group.nimcfg
     - match: '(?:true|false|on|off)\b'
-      scope: constant.language.nimcfg
+      scope: constant.language.boolean.nimcfg
       push: [group|1, bool-bin-expr|0]
       pop: true
     - match: 'not\b'
@@ -499,7 +499,7 @@ contexts:
   # Rule: if-stmt
   if-stmt|0:
     - match: '(?:true|false|on|off)\b'
-      scope: constant.language.nimcfg
+      scope: constant.language.boolean.nimcfg
       push: [if-stmt|1, bool-bin-expr|0]
       pop: true
     - match: 'not\b'

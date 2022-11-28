@@ -81,7 +81,7 @@ block{meta.block}:
   ))*
   ~'(@)(end\b)'{
     1: punctuation.definition.keyword,
-    2: keyword.control.block.conditional
+    2: keyword.control.conditional.end
   }
 ;
 
@@ -214,5 +214,5 @@ numbers:
 ;
 
 language-constants:
-  '(?:true|false|on|off)\b'{constant.language}
+  '(?:true|false|on|off)\b'{constant.language.boolean}
 ;

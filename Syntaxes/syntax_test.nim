@@ -29,11 +29,18 @@ proc f =
 # Literals
 ##########
 
- "Valid escape characters forms: \n, \N, \x42, \u4532 or \u{90211234}"
-#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.string.nim string.quoted.double.nim
+ "Escape chars\: \'\n, \N, \x420, \u45328 or \u{90211234}\""
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.string.nim string.quoted.double.nim
 #^ punctuation.definition.string.begin.nim
-#                                ^^ constant.character.escape.nim
-#                                                                    ^ punctuation.definition.string.end.nim
+#             ^ invalid.illegal.lone-escape.nim
+#                ^^ constant.character.escape.nim
+#                  ^^ constant.character.escape.nim
+#                      ^^ constant.character.escape.nim
+#                          ^^^^ constant.character.escape.nim
+#                                 ^^^^^^ constant.character.escape.nim
+#                                            ^^^^^^^^^^^^ constant.character.escape.nim
+#                                                        ^^ constant.character.escape.nim
+#                                                          ^ punctuation.definition.string.end.nim
  "unclosed
 #^^^^^^^^^ meta.string.nim string.quoted.double.nim
 #^ punctuation.definition.string.begin.nim
@@ -42,7 +49,6 @@ proc f =
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.string.nim
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.double.nim
 # ^ punctuation.definition.string.begin.nim
-#                       ^^ constant.character.escape.double-quote.nim
 #                             ^^ constant.character.escape.double-quote.nim
 #                               ^ punctuation.definition.string.end.nim
  """

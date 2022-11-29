@@ -37,7 +37,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.variable.ncfg</string>
+							<string>punctuation.definition.variable.nimcfg</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -47,17 +47,17 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.brackets.begin.ncfg</string>
+							<string>punctuation.section.brackets.begin.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>entity.other.attribute-name.ncfg</string>
+							<string>entity.other.attribute-name.nimcfg</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.brackets.end.ncfg</string>
+							<string>punctuation.section.brackets.end.nimcfg</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -72,7 +72,7 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.accessor.dot.ncfg</string>
+									<string>punctuation.accessor.dot.nimcfg</string>
 								</dict>
 							</dict>
 							<key>match</key>
@@ -88,7 +88,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.separator.key-value.ncfg</string>
+							<string>punctuation.separator.key-value.nimcfg</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -107,13 +107,13 @@
 							<key>match</key>
 							<string>&amp;</string>
 							<key>name</key>
-							<string>keyword.operator.ncfg</string>
+							<string>keyword.operator.nimcfg</string>
 						</dict>
 						<dict>
 							<key>match</key>
 							<string>[:=]</string>
 							<key>name</key>
-							<string>punctuation.separator.key-value.ncfg</string>
+							<string>punctuation.separator.key-value.nimcfg</string>
 						</dict>
 					</array>
 				</dict>
@@ -169,18 +169,18 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.ncfg</string>
+							<string>punctuation.definition.comment.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>invalid.deprecated.ncfg</string>
+							<string>invalid.deprecated.nimcfg</string>
 						</dict>
 					</dict>
 					<key>end</key>
 					<string>$\n?</string>
 					<key>name</key>
-					<string>comment.line.number-sign.ncfg</string>
+					<string>comment.line.number-sign.nimcfg</string>
 				</dict>
 			</array>
 		</dict>
@@ -200,7 +200,7 @@
 					<key>match</key>
 					<string>(?:and|or|not)\b</string>
 					<key>name</key>
-					<string>keyword.operator.logical.ncfg</string>
+					<string>keyword.operator.logical.nimcfg</string>
 				</dict>
 				<dict>
 					<key>match</key>
@@ -222,17 +222,17 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.keyword.ncfg</string>
+							<string>punctuation.definition.keyword.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.conditional.else.ncfg</string>
+							<string>keyword.control.conditional.else.nimcfg</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.begin.ncfg</string>
+							<string>punctuation.section.block.begin.nimcfg</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -244,12 +244,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.keyword.ncfg</string>
+							<string>punctuation.definition.keyword.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.conditional.end.ncfg</string>
+							<string>keyword.control.conditional.end.nimcfg</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -273,12 +273,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.keyword.ncfg</string>
+							<string>punctuation.definition.keyword.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.other.ncfg</string>
+							<string>keyword.other.nimcfg</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -313,7 +313,7 @@
 					<key>match</key>
 					<string>[A-Za-z]\w*</string>
 					<key>name</key>
-					<string>string.unquoted.ncfg</string>
+					<string>string.unquoted.nimcfg</string>
 				</dict>
 			</array>
 		</dict>
@@ -329,7 +329,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.group.begin.ncfg</string>
+							<string>punctuation.section.group.begin.nimcfg</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -339,11 +339,11 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.group.end.ncfg</string>
+							<string>punctuation.section.group.end.nimcfg</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>meta.group.ncfg</string>
+					<string>meta.group.nimcfg</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -366,17 +366,17 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.keyword.ncfg</string>
+							<string>punctuation.definition.keyword.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.conditional.elseif.ncfg</string>
+							<string>keyword.control.conditional.elseif.nimcfg</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.conditional.if.ncfg</string>
+							<string>keyword.control.conditional.if.nimcfg</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -386,7 +386,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.begin.ncfg</string>
+							<string>punctuation.section.block.begin.nimcfg</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -407,7 +407,7 @@
 					<key>match</key>
 					<string>\b(?:true|false|on|off)\b</string>
 					<key>name</key>
-					<string>constant.language.boolean.ncfg</string>
+					<string>constant.language.boolean.nimcfg</string>
 				</dict>
 			</array>
 		</dict>
@@ -421,22 +421,22 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.integer.hexadecimal.ncfg</string>
+							<string>meta.number.integer.hexadecimal.nimcfg</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.base.ncfg</string>
+							<string>constant.numeric.base.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.ncfg</string>
+							<string>constant.numeric.value.nimcfg</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.ncfg</string>
+							<string>constant.numeric.suffix.nimcfg</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -448,22 +448,22 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.integer.octal.ncfg</string>
+							<string>meta.number.integer.octal.nimcfg</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.base.ncfg</string>
+							<string>constant.numeric.base.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.ncfg</string>
+							<string>constant.numeric.value.nimcfg</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.ncfg</string>
+							<string>constant.numeric.suffix.nimcfg</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -475,22 +475,22 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.integer.binary.ncfg</string>
+							<string>meta.number.integer.binary.nimcfg</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.base.ncfg</string>
+							<string>constant.numeric.base.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.ncfg</string>
+							<string>constant.numeric.value.nimcfg</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.ncfg</string>
+							<string>constant.numeric.suffix.nimcfg</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -502,17 +502,17 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.integer.decimal.ncfg</string>
+							<string>meta.number.integer.decimal.nimcfg</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.ncfg</string>
+							<string>constant.numeric.value.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.ncfg</string>
+							<string>constant.numeric.suffix.nimcfg</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -532,16 +532,16 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.ncfg</string>
+							<string>storage.type.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.ncfg punctuation.definition.string.begin.ncfg</string>
+							<string>string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg</string>
 						</dict>
 					</dict>
 					<key>contentName</key>
-					<string>string.quoted.double.ncfg</string>
+					<string>string.quoted.double.nimcfg</string>
 					<key>end</key>
 					<string>("(?!"))|(\n)</string>
 					<key>endCaptures</key>
@@ -549,12 +549,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.ncfg punctuation.definition.string.end.ncfg</string>
+							<string>string.quoted.double.nimcfg punctuation.definition.string.end.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.ncfg invalid.illegal.unclosed-string.ncfg</string>
+							<string>string.quoted.double.nimcfg invalid.illegal.unclosed-string.nimcfg</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -563,7 +563,7 @@
 							<key>match</key>
 							<string>""</string>
 							<key>name</key>
-							<string>constant.character.escape.ncfg</string>
+							<string>constant.character.escape.nimcfg</string>
 						</dict>
 					</array>
 				</dict>
@@ -581,7 +581,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.string.begin.ncfg</string>
+							<string>punctuation.definition.string.begin.nimcfg</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -591,29 +591,29 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.string.end.ncfg</string>
+							<string>punctuation.definition.string.end.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>invalid.illegal.ncfg</string>
+							<string>invalid.illegal.nimcfg</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>string.quoted.double.ncfg</string>
+					<string>string.quoted.double.nimcfg</string>
 					<key>patterns</key>
 					<array>
 						<dict>
 							<key>match</key>
 							<string>\\(?:[ABCEFLNPRTVabceflnprtv"'\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))</string>
 							<key>name</key>
-							<string>constant.character.escape.ncfg</string>
+							<string>constant.character.escape.nimcfg</string>
 						</dict>
 						<dict>
 							<key>match</key>
 							<string>\\</string>
 							<key>name</key>
-							<string>invalid.illegal.lone-escape.ncfg</string>
+							<string>invalid.illegal.lone-escape.nimcfg</string>
 						</dict>
 					</array>
 				</dict>
@@ -649,16 +649,16 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.ncfg</string>
+							<string>storage.type.nimcfg</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.triple.ncfg punctuation.definition.string.begin.ncfg</string>
+							<string>string.quoted.triple.nimcfg punctuation.definition.string.begin.nimcfg</string>
 						</dict>
 					</dict>
 					<key>contentName</key>
-					<string>string.quoted.triple.ncfg</string>
+					<string>string.quoted.triple.nimcfg</string>
 					<key>end</key>
 					<string>"""(?!")</string>
 					<key>endCaptures</key>
@@ -666,7 +666,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.triple.ncfg punctuation.definition.string.end.ncfg</string>
+							<string>string.quoted.triple.nimcfg punctuation.definition.string.end.nimcfg</string>
 						</dict>
 					</dict>
 				</dict>

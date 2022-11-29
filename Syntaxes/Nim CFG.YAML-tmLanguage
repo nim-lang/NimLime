@@ -2,7 +2,7 @@
 ---
 name: Nim Config
 scopeName: source.nimcfg
-fileTypes: ["nimcfg"]
+fileTypes: ["nim.cfg"]
 
 patterns:
   - include: '#comments'

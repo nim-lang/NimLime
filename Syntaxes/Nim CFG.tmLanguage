@@ -4,7 +4,7 @@
 <dict>
 	<key>fileTypes</key>
 	<array>
-		<string>nimcfg</string>
+		<string>nim.cfg</string>
 	</array>
 	<key>name</key>
 	<string>Nim Config</string>

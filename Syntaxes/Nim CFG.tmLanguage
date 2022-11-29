@@ -119,10 +119,48 @@
 				</dict>
 			</array>
 		</dict>
+		<key>block-comments</key>
+		<array>
+			<dict>
+				<key>begin</key>
+				<string>#\[</string>
+				<key>beginCaptures</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>name</key>
+						<string>punctuation.definition.comment.begin.nimcfg</string>
+					</dict>
+				</dict>
+				<key>end</key>
+				<string>]#</string>
+				<key>endCaptures</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>name</key>
+						<string>punctuation.definition.comment.end.nimcfg</string>
+					</dict>
+				</dict>
+				<key>name</key>
+				<string>comment.block.nimcfg</string>
+				<key>patterns</key>
+				<array>
+					<dict>
+						<key>include</key>
+						<string>#block-comments</string>
+					</dict>
+				</array>
+			</dict>
+		</array>
 		<key>comments</key>
 		<dict>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>include</key>
+					<string>#block-comments</string>
+				</dict>
 				<dict>
 					<key>begin</key>
 					<string>(#)(?: *(TODO|todo)\b)?</string>

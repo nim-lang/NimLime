@@ -5,7 +5,7 @@ SCOPE_POSTFIX = `nimcfg`
 SYMBOL = '[A-Za-z]\w*'
 
 prototype:
-  (~comment)*
+  (~( block-comment | line-comment ))*
 ;
 
 main:
@@ -15,12 +15,18 @@ main:
   ))*
 ;
 
-comment{comment.line.number-sign}:
+line-comment{comment.line.number-sign}:
   '(#)(?: *(TODO|todo)\b)?'{
     1: punctuation.definition.comment,
     2: invalid.deprecated
   }
   ~'$\n?'
+;
+
+block-comment{comment.block}:
+  '(#\[)'{punctuation.definition.comment.begin}
+  (~block-comment)*
+  ~']#'{punctuation.definition.comment.end}
 ;
 
 directives:

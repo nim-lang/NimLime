@@ -13,12 +13,24 @@ patterns:
 repository:
   comments:
     patterns:
+      - include: '#block-comments'
       - begin: '(#)(?: *(TODO|todo)\b)?'
         beginCaptures:
           '1': {name: punctuation.definition.comment.ncfg}
           '2': {name: invalid.deprecated.ncfg}
         end: '$\n?'
         name: comment.line.number-sign.ncfg
+
+  block-comments:
+      - begin: '#\['
+        beginCaptures:
+          '0': {name: punctuation.definition.comment.begin.nimcfg}
+        end: ']#'
+        endCaptures:
+          '0': {name: punctuation.definition.comment.end.nimcfg}
+        name: comment.block.nimcfg
+        patterns:
+          - include: '#block-comments'
 
   directives:
     patterns:

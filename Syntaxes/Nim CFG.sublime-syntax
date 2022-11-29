@@ -95,6 +95,15 @@ contexts:
       pop: true
     - match: '(?=\S)'
       pop: true
+  # Rule: block-comment
+  block-comment|0:
+    - meta_content_scope: comment.block.nimcfg
+    - match: '(#\[)'
+      scope: comment.block.nimcfg punctuation.definition.comment.begin.nimcfg
+      push: block-comment|0
+    - match: ']#'
+      scope: comment.block.nimcfg punctuation.definition.comment.end.nimcfg
+      pop: true
   # Rule: block
   block|0:
     - meta_content_scope: meta.block.nimcfg
@@ -161,12 +170,6 @@ contexts:
       pop: true
     - match: '\S'
       scope: invalid.illegal.nimcfg
-      pop: true
-  # Rule: comment
-  comment|0:
-    - meta_content_scope: comment.line.number-sign.nimcfg
-    - match: '$\n?'
-      scope: comment.line.number-sign.nimcfg
       pop: true
   # Rule: concat-expr
   concat-expr|0:
@@ -525,6 +528,12 @@ contexts:
     - match: '\S'
       scope: invalid.illegal.nimcfg
       pop: true
+  # Rule: line-comment
+  line-comment|0:
+    - meta_content_scope: comment.line.number-sign.nimcfg
+    - match: '$\n?'
+      scope: comment.line.number-sign.nimcfg
+      pop: true
   # Rule: main
   main:
     - match: '(@)(if\b)'
@@ -548,12 +557,15 @@ contexts:
       push: assignements|0
   # Rule: prototype
   prototype:
+    - match: '(#\[)'
+      scope: comment.block.nimcfg punctuation.definition.comment.begin.nimcfg
+      push: block-comment|0
     - match: '(#)(?: *(TODO|todo)\b)?'
       scope: comment.line.number-sign.nimcfg
       captures:
         1: punctuation.definition.comment.nimcfg
         2: invalid.deprecated.nimcfg
-      push: comment|0
+      push: line-comment|0
   # Rule: rstr-lit-inner
   rstr-lit-inner|0:
     - meta_content_scope: meta.string.nimcfg string.quoted.double.nimcfg

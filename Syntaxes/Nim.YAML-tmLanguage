@@ -9,21 +9,22 @@ patterns:
 - include: source.nim.comment
 
 # Sub-Syntax selectors
-- comment: C
-  name:    source.c.embedded.nim
-  patterns:
-  - begin: \{\.(emit:) ?(\"\"\")
-    end:   (\"\"\")\.?
-    captures:
-      '1': {name: keyword.other.nim}
-      '2': {name: comment.syntax.nim}
-    endCaptures:
-      '1': {name: comment.syntax.nim}
-    patterns:
-    - name: keyword.operator.nim
-      begin: \`
-      end: \`
-    - {include: source.c}
+
+# - comment: C
+#   name:    source.c.embedded.nim
+#   patterns:
+#   - begin: \{\.(emit:) ?(\"\"\")
+#     end:   (\"\"\")\.?
+#     captures:
+#       '1': {name: keyword.other.nim}
+#       '2': {name: comment.syntax.nim}
+#     endCaptures:
+#       '1': {name: comment.syntax.nim}
+#     patterns:
+#     - name: keyword.operator.nim
+#       begin: \`
+#       end: \`
+#     - {include: source.c}
 
 - comment: assembly
   name: source.asm.embedded.nim

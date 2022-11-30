@@ -2,34 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>name</key>
-  <string>comments</string>
   <key>scope</key>
   <string>source.nim, source.nimcfg</string>
   <key>settings</key>
   <dict>
-    <key>decreaseIndentPattern</key>
-    <string>(?xm)(
-
-      # Normal de-indent pattern
-      ^\s*(elif|else|except|finally|of)\b.*:\s*$
-
-      )</string>
-    <key>increaseIndentPattern</key>
-    <string>(?x)^\s*(
-
-        # Handle if/else/etc
-        (elif|else|except|finally|for|of|if|try|when|while)\b.*:
-
-        # Handle case
-        |case\b.*
-
-        # Handle type/proc/method
-        |(type|proc|method|template|macro|iterator|converter)\b.*
-
-      )\s*$</string>
-    <key>disableIndentNextLinePattern</key>
-    <string></string>
     <key>shellVariables</key>
     <array>
       <dict>
@@ -42,19 +18,19 @@
         <key>name</key>
         <string>TM_COMMENT_START_2</string>
         <key>value</key>
-        <value>#[</value>
+        <string>#[</string>
       </dict>
       <dict>
         <key>name</key>
         <string>TM_COMMENT_END_2</string>
         <key>value</key>
-        <value>]#</value>
+        <string>]#</string>
       </dict>
       <dict>
         <key>name</key>
         <string>TM_COMMENT_MODE_2</string>
         <key>value</key>
-        <value>block</value>
+        <string>block</string>
       </dict>
     </array>
   </dict>

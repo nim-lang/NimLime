@@ -1648,44 +1648,6 @@
 				</dict>
 			</array>
 		</dict>
-		<key>name</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>(?=[`A-Za-z\x80-\xff]|_\b)</string>
-					<key>contentName</key>
-					<string>entity.name.function.nim</string>
-					<key>end</key>
-					<string>(:)| *(\*)|(?&lt;=[`\w\x{80}-\x{ff}])</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.separator.annotation.return.nim</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#builtins</string>
-						</dict>
-						<dict>
-							<key>match</key>
-							<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
 		<key>numbers</key>
 		<dict>
 			<key>patterns</key>
@@ -2227,17 +2189,27 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(?:proc|func|method|template|macro|iterator|converter)\b</string>
+					<string>(?x: (?:proc|template|iterator|func|method|macro|converter)\b (?:[ ]*([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(\*))?)? )</string>
 					<key>beginCaptures</key>
 					<dict>
-						<key>0</key>
+						<key>1</key>
 						<dict>
 							<key>name</key>
 							<string>storage.type.function.nim</string>
 						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>entity.name.function.nim</string>
+						</dict>
+						<key>3</key>
+						<dict>
+							<key>name</key>
+							<string>storage.modifier.nim</string>
+						</dict>
 					</dict>
 					<key>end</key>
-					<string>(:)|(?=[^#\(\[:_`A-Za-z\x{80}-\x{ff}\s])</string>
+					<string>(:)|(?=[^#\(\[:\s])</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>1</key>
@@ -2253,10 +2225,6 @@
 						<dict>
 							<key>include</key>
 							<string>#comments</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>#name</string>
 						</dict>
 						<dict>
 							<key>include</key>

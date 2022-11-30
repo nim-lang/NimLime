@@ -217,32 +217,23 @@ repository:
 
   routines:
     patterns:
-      - begin: (?:proc|func|method|template|macro|iterator|converter)\b
+      - begin: '(?x:
+          (?:proc|template|iterator|func|method|macro|converter)\b
+          (?:[ ]*([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(\*))?)?
+        )'
         beginCaptures:
-          '0': {name: storage.type.function.nim}
-        end: (:)|(?=[^#\(\[:_`A-Za-z\x{80}-\x{ff}\s])
+          '1': {name: storage.type.function.nim}
+          '2': {name: entity.name.function.nim}
+          '3': {name: storage.modifier.nim}
+        end: (:)|(?=[^#\(\[:\s])
         endCaptures:
           '1': {name: punctuation.separator.annotation.nim}
         name: meta.function.nim
         patterns:
           - include: '#comments'
-          - include: '#name'
           - include: '#patterns'
           - include: '#generic-param-list'
           - include: '#param-list'
-
-  name:
-    patterns:
-      - begin: (?=[`A-Za-z\x80-\xff]|_\b)
-        end: '(:)| *(\*)|(?<=[`\w\x{80}-\x{ff}])'
-        endCaptures:
-          '1': {name: punctuation.separator.annotation.return.nim}
-          '2': {name: storage.modifier.nim}
-        contentName: entity.name.function.nim
-        patterns:
-          - include: '#builtins'
-          - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
-
 
   patterns:
     patterns:

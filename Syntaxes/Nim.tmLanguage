@@ -16,57 +16,59 @@
 			<key>include</key>
 			<string>source.nim.comment</string>
 		</dict>
-		<dict>
-			<key>comment</key>
-			<string>C</string>
-			<key>name</key>
-			<string>source.c.embedded.nim</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>\{\.(emit:) ?(\"\"\")</string>
-					<key>captures</key>
+		<!--
+			<dict>
+				<key>comment</key>
+				<string>C</string>
+				<key>name</key>
+				<string>source.c.embedded.nim</string>
+				<key>patterns</key>
+				<array>
 					<dict>
-						<key>1</key>
+						<key>begin</key>
+						<string>\{\.(emit:) ?(\"\"\")</string>
+						<key>captures</key>
 						<dict>
-							<key>name</key>
-							<string>keyword.other.nim</string>
+							<key>1</key>
+							<dict>
+								<key>name</key>
+								<string>keyword.other.nim</string>
+							</dict>
+							<key>2</key>
+							<dict>
+								<key>name</key>
+								<string>comment.syntax.nim</string>
+							</dict>
 						</dict>
-						<key>2</key>
+						<key>end</key>
+						<string>(\"\"\")\.?</string>
+						<key>endCaptures</key>
 						<dict>
-							<key>name</key>
-							<string>comment.syntax.nim</string>
+							<key>1</key>
+							<dict>
+								<key>name</key>
+								<string>comment.syntax.nim</string>
+							</dict>
 						</dict>
+						<key>patterns</key>
+						<array>
+							<dict>
+								<key>begin</key>
+								<string>\`</string>
+								<key>end</key>
+								<string>\`</string>
+								<key>name</key>
+								<string>keyword.operator.nim</string>
+							</dict>
+							<dict>
+								<key>include</key>
+								<string>source.c</string>
+							</dict>
+						</array>
 					</dict>
-					<key>end</key>
-					<string>(\"\"\")\.?</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>comment.syntax.nim</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>begin</key>
-							<string>\`</string>
-							<key>end</key>
-							<string>\`</string>
-							<key>name</key>
-							<string>keyword.operator.nim</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>source.c</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
+				</array>
+			</dict>
+                -->
 		<dict>
 			<key>comment</key>
 			<string>assembly</string>

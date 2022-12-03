@@ -107,28 +107,28 @@ contexts:
   # Rule: block
   block|0:
     - meta_content_scope: meta.block.nimcfg
-    - match: '(@)(elif\b)'
+    - match: '(@) *(elif\b)'
       captures:
         1: punctuation.definition.keyword.nimcfg
         2: keyword.control.conditional.elseif.nimcfg
       push: elif-stmt|0
-    - match: '(@)(else) *(:)?'
+    - match: '(@) *(else)(?: *(:))?'
       captures:
         1: punctuation.definition.keyword.nimcfg
         2: keyword.control.conditional.else.nimcfg
         3: punctuation.section.block.begin.nimcfg
       push: else-stmt|0
-    - match: '(@)(if\b)'
+    - match: '(@) *(if\b)'
       captures:
         1: punctuation.definition.keyword.nimcfg
         2: keyword.control.conditional.if.nimcfg
       push: if-stmt|0
-    - match: '(@)((?:put|append|prepend)[Ee]nv\b)'
+    - match: '(@) *((?:put|append|prepend)[Ee]nv\b)'
       captures:
         1: punctuation.definition.keyword.nimcfg
         2: keyword.other.nimcfg
       push: env-stmt|0
-    - match: '(@)(write\b)'
+    - match: '(@) *(write\b)'
       captures:
         1: punctuation.definition.keyword.nimcfg
         2: keyword.other.nimcfg
@@ -137,7 +137,7 @@ contexts:
       captures:
         1: punctuation.definition.variable.nimcfg
       push: assignements|0
-    - match: '(@)(end\b)'
+    - match: '(@) *(end\b)'
       scope: meta.block.nimcfg
       captures:
         1: punctuation.definition.keyword.nimcfg
@@ -332,17 +332,17 @@ contexts:
       pop: true
   # Rule: else-stmt
   else-stmt|0:
-    - match: '(@)(if\b)'
+    - match: '(@) *(if\b)'
       captures:
         1: punctuation.definition.keyword.nimcfg
         2: keyword.control.conditional.if.nimcfg
       push: if-stmt|0
-    - match: '(@)((?:put|append|prepend)[Ee]nv\b)'
+    - match: '(@) *((?:put|append|prepend)[Ee]nv\b)'
       captures:
         1: punctuation.definition.keyword.nimcfg
         2: keyword.other.nimcfg
       push: env-stmt|0
-    - match: '(@)(write\b)'
+    - match: '(@) *(write\b)'
       captures:
         1: punctuation.definition.keyword.nimcfg
         2: keyword.other.nimcfg
@@ -351,7 +351,7 @@ contexts:
       captures:
         1: punctuation.definition.variable.nimcfg
       push: assignements|0
-    - match: '(?=@end\b)'
+    - match: '(?=@ *end\b)'
       pop: true
   # Rule: env-stmt
   env-stmt|0:
@@ -536,17 +536,17 @@ contexts:
       pop: true
   # Rule: main
   main:
-    - match: '(@)(if\b)'
+    - match: '(@) *(if\b)'
       captures:
         1: punctuation.definition.keyword.nimcfg
         2: keyword.control.conditional.if.nimcfg
       push: if-stmt|0
-    - match: '(@)((?:put|append|prepend)[Ee]nv\b)'
+    - match: '(@) *((?:put|append|prepend)[Ee]nv\b)'
       captures:
         1: punctuation.definition.keyword.nimcfg
         2: keyword.other.nimcfg
       push: env-stmt|0
-    - match: '(@)(write\b)'
+    - match: '(@) *(write\b)'
       captures:
         1: punctuation.definition.keyword.nimcfg
         2: keyword.other.nimcfg

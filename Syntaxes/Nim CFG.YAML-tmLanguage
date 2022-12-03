@@ -35,12 +35,12 @@ repository:
   directives:
     patterns:
       - include: '#if-stmt'
-      - match: '(@)(else) *(:)?'
+      - match: '(@) *(else)(?: *(:))?'
         captures:
           '1': {name: punctuation.definition.keyword.nimcfg}
           '2': {name: keyword.control.conditional.else.nimcfg}
           '3': {name: punctuation.section.block.begin.nimcfg}
-      - match: '(@)(end)'
+      - match: '(@) *(end)'
         captures:
           '1': {name: punctuation.definition.keyword.nimcfg}
           '2': {name: keyword.control.conditional.end.nimcfg}
@@ -108,7 +108,7 @@ repository:
 
   env-stmt:
     patterns:
-      - begin: '(@)((?:put|append|prepend)[Ee]nv|write)\b'
+      - begin: '(@) *((?:put|append|prepend)[Ee]nv|write)\b'
         beginCaptures:
           '1': {name: punctuation.definition.keyword.nimcfg}
           '2': {name: keyword.other.nimcfg}

@@ -236,7 +236,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(@)(else) *(:)?</string>
+					<string>(@) *(else)(?: *(:))?</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -253,7 +253,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(@)(end)</string>
+					<string>(@) *(end)</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -267,7 +267,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(@)((?:put|append|prepend)[Ee]nv|write)\b</string>
+					<string>(@) *((?:put|append|prepend)[Ee]nv|write)\b</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>

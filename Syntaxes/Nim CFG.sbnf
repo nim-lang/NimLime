@@ -36,7 +36,7 @@ directives:
 ;
 
 if-stmt:
-  '(@)(if\b)'{
+  '(@) *(if\b)'{
     1: punctuation.definition.keyword,
     2: keyword.control.conditional.if
   }
@@ -45,7 +45,7 @@ if-stmt:
 ;
 
 elif-stmt:
-  '(@)(elif\b)'{
+  '(@) *(elif\b)'{
     1: punctuation.definition.keyword,
     2: keyword.control.conditional.elseif
   }
@@ -53,13 +53,13 @@ elif-stmt:
 ;
 
 else-stmt:
-  '(@)(else) *(:)?'{
+  '(@) *(else)(?: *(:))?'{
     1: punctuation.definition.keyword,
     2: keyword.control.conditional.else,
     3: punctuation.section.block.begin
   }
   ~(main)*
-  ~'(?=@end\b)'
+  ~'(?=@ *end\b)'
 ;
 
 bool-expr:
@@ -85,14 +85,14 @@ block{meta.block}:
     | else-stmt
     | main
   ))*
-  ~'(@)(end\b)'{
+  ~'(@) *(end\b)'{
     1: punctuation.definition.keyword,
     2: keyword.control.conditional.end
   }
 ;
 
 env-stmt:
-  '(@)((?:put|append|prepend)[Ee]nv\b)'{
+  '(@) *((?:put|append|prepend)[Ee]nv\b)'{
     1: punctuation.definition.keyword,
     2: keyword.other
   }
@@ -100,7 +100,7 @@ env-stmt:
 ;
 
 write-stmt:
-  '(@)(write\b)'{
+  '(@) *(write\b)'{
     1: punctuation.definition.keyword,
     2: keyword.other
   }

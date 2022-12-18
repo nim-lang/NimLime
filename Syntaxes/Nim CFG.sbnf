@@ -65,6 +65,7 @@ else-stmt:
 bool-expr:
     language-constants
   | 'not\b'{keyword.operator.logical} bool-bin-expr
+  | '(?:and|or)\b'{invalid.illegal}
   | SYMBOL
   | group
 ;

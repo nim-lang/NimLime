@@ -161,6 +161,10 @@ contexts:
       scope: keyword.operator.logical.nimcfg
       push: [bool-bin-expr|0, bool-bin-expr|1]
       pop: true
+    - match: '(?:and|or)\b'
+      scope: invalid.illegal.nimcfg
+      push: bool-bin-expr|0
+      pop: true
     - match: '[A-Za-z]\w*'
       push: bool-bin-expr|0
       pop: true
@@ -311,6 +315,10 @@ contexts:
     - match: 'not\b'
       scope: keyword.operator.logical.nimcfg
       push: [elif-stmt|1, bool-bin-expr|0, bool-bin-expr|1]
+      pop: true
+    - match: '(?:and|or)\b'
+      scope: invalid.illegal.nimcfg
+      push: [elif-stmt|1, bool-bin-expr|0]
       pop: true
     - match: '[A-Za-z]\w*'
       push: [elif-stmt|1, bool-bin-expr|0]
@@ -480,6 +488,10 @@ contexts:
       scope: keyword.operator.logical.nimcfg
       push: [group|1, bool-bin-expr|0, bool-bin-expr|1]
       pop: true
+    - match: '(?:and|or)\b'
+      scope: invalid.illegal.nimcfg
+      push: [group|1, bool-bin-expr|0]
+      pop: true
     - match: '[A-Za-z]\w*'
       push: [group|1, bool-bin-expr|0]
       pop: true
@@ -508,6 +520,10 @@ contexts:
     - match: 'not\b'
       scope: keyword.operator.logical.nimcfg
       push: [if-stmt|1, bool-bin-expr|0, bool-bin-expr|1]
+      pop: true
+    - match: '(?:and|or)\b'
+      scope: invalid.illegal.nimcfg
+      push: [if-stmt|1, bool-bin-expr|0]
       pop: true
     - match: '[A-Za-z]\w*'
       push: [if-stmt|1, bool-bin-expr|0]

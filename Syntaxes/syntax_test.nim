@@ -77,6 +77,8 @@ proc f =
 # ^^ constant.character.escape.nim
  '\L'
 # ^^ constant.character.escape.nim
+ '\"'
+# ^^ constant.character.escape.nim
  '\'
 #^^^ invalid.illegal.nim
  'chars'
@@ -244,11 +246,6 @@ var
 #          ^ punctuation.section.parens.end.nim
 #            ^^ keyword.control.loop.for.in.nim
 #                   ^ punctuation.section.block.begin.nim
-    for i
-#   ^^^ keyword.control.loop.for.nim
-      in 1..10:
-#     ^^ keyword.control.loop.for.in.nim
-#             ^ punctuation.section.block.begin.nim
     let a = d[0]
 #   ^^^ storage.modifier.nim keyword.declaration.variable.nim
 #       ^ entity.name.variable.nim
@@ -265,4 +262,48 @@ var
 #^^^^ storage.type.function.nim keyword.declaration.function.nim
 #     ^ entity.name.function.nim
 #      ^ punctuation.separator.annotation.return.nim
+  proc m =
+# ^^^^^^^ meta.function.nim
+# ^^^^ storage.type.function.nim keyword.declaration.function.nim
+#      ^ entity.name.function.nim
+#        ^ keyword.operator.assignment.nim
 
+proc m(`in` = 1, b, c: int; `in`=1, in = 1)
+#^^^^^ meta.function.nim
+#^^^ storage.type.function.nim keyword.declaration.function.nim
+#    ^ entity.name.function.nim
+#     ^ meta.function.parameters.nim punctuation.section.parameters.begin.nim
+#      ^^^^ variable.parameter.nim
+#          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function.parameters.nim
+#           ^ keyword.operator.assignment.nim
+#             ^ meta.number.integer.decimal.nim constant.numeric.value.nim
+#              ^ punctuation.separator.parameters.nim
+#                ^ variable.parameter.nim
+#                 ^ punctuation.separator.parameters.nim
+#                   ^ variable.parameter.nim
+#                    ^ punctuation.separator.annotation.parameter.nim
+#                      ^^^ storage.type.primitive.nim
+#                         ^ punctuation.separator.parameters.nim
+#                           ^^^^ variable.parameter.nim
+#                               ^ keyword.operator.assignment.nim
+#                                ^ meta.number.integer.decimal.nim constant.numeric.value.nim
+#                                 ^ punctuation.separator.parameters.nim
+#                                   ^^ invalid.illegal.nim
+#                                      ^ keyword.operator.assignment.nim
+#                                        ^ meta.number.integer.decimal.nim constant.numeric.value.nim
+#                                         ^ invalid.illegal.nim
+
+ foo(if b: c = d else: d, in = 1)
+#^^^ meta.function-call.nim variable.function.nim
+#   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.function-call.arguments.nim
+#   ^ punctuation.section.arguments.begin.nim
+#    ^^ keyword.control.conditional.if.nim
+#        ^ punctuation.section.block.begin.nim
+#            ^ keyword.operator.assignment.nim
+#                ^^^^ keyword.control.conditional.else.nim
+#                    ^ punctuation.section.block.conditional.else.nim
+#                       ^ punctuation.separator.nim
+#                         ^^ keyword.operator.word.nim
+#                            ^ keyword.operator.assignment.nim
+#                              ^ meta.number.integer.decimal.nim constant.numeric.value.nim
+#                               ^ punctuation.section.arguments.end.nim

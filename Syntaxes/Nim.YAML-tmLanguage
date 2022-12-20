@@ -840,7 +840,7 @@ repository:
             )
           )
         )'
-        end: '(?=[^\[\(`\w\x{80}-\x{ff}])|(?<=\))'
+        end: '(?=[^\[\(`\w\x{80}-\x{ff}])|(?<=["\)])'
         patterns:
           - begin: '(?=[`_A-Za-z\x80-\xff])'
             end: '(?=[^`_A-Za-z\x80-\xff])'
@@ -866,16 +866,36 @@ repository:
               '1': {name: punctuation.section.arguments.end.nim}
             name: meta.function-call.arguments.nim
             patterns:
-              - match: '(?=(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) *[:=](?![-=+*/<>@$~&%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]))(?:((?x:addr|asm|bind|block|break|case|cast|concept|const|continue|converter
-                |defer|discard|distinct|do|elif|else|end|enum|except|export|finally|for
-                |from|func|if|import|include|interface|iterator|let|macro|method|mixin
-                |object|of|out|proc|ptr|raise|ref|return|static|template|try|tuple|type
-                |using|var|when|while|yield)\b)|([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`))(?: *(:))?'
+              - match: '(?x:
+                  (?=
+                    (?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)
+                    [ ]*
+                    [:=](?![-=+*/<>@$~&%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])
+                  )
+                  (?!(?x:addr|asm|bind|block|break|case|cast|concept|const|continue|converter
+                    |defer|discard|distinct|do|elif|else|end|enum|except|export|finally|for
+                    |from|func|if|import|include|interface|iterator|let|macro|method|mixin
+                    |object|of|out|proc|ptr|raise|ref|return|static|template|try|tuple|type
+                    |using|var|when|while|yield)\b
+                  )
+                  ([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(:))?
+                )'
                 captures:
-                  '1': {name: invalid.illegal.nim}
-                  '2': {name: variable.parameter.nim}
-                  '3': {name: punctuation.separator.key-value.nim}
+                  '1': {name: variable.parameter.nim}
+                  '2': {name: punctuation.separator.key-value.nim}
               - include: $self
+          - include: '#triplestr_lit'
+          - begin: '"'
+            beginCaptures:
+              '0': {name: punctuation.definition.string.begin.nim}
+            end: '("(?!"))|(\n)'
+            endCaptures:
+              '1': {name: punctuation.definition.string.end.nim}
+              '2': {name: invalid.illegal.unclosed-string.nim}
+            name: string.quoted.double.nim
+            patterns:
+              - match: '""'
+                name: constant.character.escape.nim
 
   types:
     patterns:

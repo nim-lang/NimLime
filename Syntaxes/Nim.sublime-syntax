@@ -12,15 +12,12 @@ variables:
   pragma_start: '\{\.(?!\.})'
   string_escape_chars: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
   OPR: '-=\+\*/<>@\$~&%\|!\?\^\.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔'
-  disallowed_keyw: '(?x:as|asm|and|bind|break|concept|const|continue|converter
+  disallowed_keyws: '(?x:as|asm|and|bind|break|concept|const|continue|converter
     |defer|discard|distinct|elif|else|end|except|export|finally|from|import
     |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of
     |raise|sh[lr]|template|using|while|yield|x?or)'
-  keyw: '(?x:addr|asm|bind|block|break|case|cast|concept|const|continue|converter
-    |defer|discard|distinct|do|elif|else|end|enum|except|export|finally|for
-    |from|func|if|import|include|interface|iterator|let|macro|method|mixin
-    |object|of|out|proc|ptr|raise|ref|return|static|template|try|tuple|type
-    |using|var|when|while|yield)'
+  keyws: '(?x:{{disallowed_keyws}}|addr|block|case|cast|do|enum|for|func|if|iterator
+    |object|out|proc|ptr|ref|return|static|try|tuple|type|var|when)'
   builtin_vars: '(?x:
     ATOMIC_(?:ACQ_REL|ACQUIRE|CONSUME|RELAXED|RELEASE|SEQ_CST)|errorMessageWriter
     |(?:global|local)RaiseHook|nimThreadDestructionHandlers|onUnhandledException
@@ -215,7 +212,7 @@ contexts:
         - include: main
 
   const-name:
-    - match: '({{keyw}}\b)(?: *(\*))?'
+    - match: '({{keyws}}\b)(?: *(\*))?'
       captures:
         1: invalid.illegal.nim
         2: storage.modifier.nim
@@ -232,9 +229,10 @@ contexts:
             1: punctuation.separator.annotation.nim
             2: keyword.operator.assignment.nim
           pop: true
-        - match: \S
+        - match: ','
           scope: invalid.illegal.nim
           pop: true
+        - include: else-pop
     - match: '\('
       scope: punctuation.section.parens.begin.nim
       set:
@@ -242,13 +240,11 @@ contexts:
           scope: punctuation.section.parens.end.nim
           set:
             - include: comments
-            - match: '='
-              scope: keyword.operator.assignment.nim
-              pop: true
-            - match: \S
+            - match: ':'
               scope: invalid.illegal.nim
               pop: true
-        - match: '({{keyw}}\b)(?: *(\*))?'
+            - include: else-pop
+        - match: '({{keyws}}\b)(?: *(\*))?'
           captures:
             1: invalid.illegal.nim
             2: storage.modifier.nim
@@ -284,26 +280,59 @@ contexts:
       set:
         - match: '\)'
           scope: punctuation.section.parens.end.nim
+          set:
+            - include: comments
+            - match: ':'
+              scope: invalid.illegal.nim
+              pop: true
+            - include: else-pop
         - include: var-name-0
-    - include: var-name-0
-
-  var-name-0:
-    - match: '({{keyw}}\b)(?: *(\*))?'
-      captures:
-        1: invalid.illegal.nim
-        2: storage.modifier.nim
-    - match: '({{symbol}})(?: *(\*))?'
+    - match: '(?!{{keyws}}\b)({{symbol}})(?: *(\*))?'
       captures:
         1: entity.name.variable.nim
         2: storage.modifier.nim
-    - match: ','
-      scope: punctuation.separator.nim
+      push:
+        - match: ','
+          scope: punctuation.separator.nim
+          set:
+            - include: doc-comments
+            - include: comments
+            - match: (?=[^ ])
+              pop: true
+        - include: pragmas
+        - include: comments
+        - match: '{{symbol}}'
+          scope: invalid.illegal.nim
+          pop: true
+        - match: (?=[^ ])
+          pop: true
     - match: ':'
       scope: punctuation.separator.annotation.nim
       pop: true
-    - include: pragmas
-    - include: doc-comments
-    - include: comments
+    - match: (?=[^ ])
+      pop: true
+
+  var-name-0:
+    - match: '(?!{{keyws}}\b)({{symbol}})(?: *(\*))?'
+      captures:
+        1: entity.name.variable.nim
+        2: storage.modifier.nim
+      push:
+        - match: ','
+          scope: punctuation.separator.nim
+          set:
+            - include: doc-comments
+            - include: comments
+            - include: else-pop
+        - include: pragmas
+        - include: comments
+        - match: '{{symbol}}'
+          scope: invalid.illegal.nim
+          pop: true
+        - include: else-pop
+    - match: ':'
+      scope: punctuation.separator.annotation.nim
+      pop: true
     - include: else-pop
 
   do-stmts:
@@ -341,7 +370,7 @@ contexts:
             (?:
               [_\d"''`\[\(]
               |(?!\.|(?:\* *)?[:=]|=[^=])[{{OPR}}]+[^{{OPR}}\s]
-              |(?!{{disallowed_keyw}}){{letter}}
+              |(?!{{disallowed_keyws}}){{letter}}
               |\{(?!\.)
             )
           )
@@ -376,14 +405,27 @@ contexts:
         - match: '\)'
           scope: punctuation.section.arguments.end.nim
           pop: true
-        - match: ','
-          scope: punctuation.separator.nim
-        - match: '(?=(?:{{symbol}}) *[:=](?![{{OPR}}]))(?:({{keyw}}\b)|({{symbol}}))(?: *(:))?'
+        - match: '(?x:
+            (?=
+              (?:{{symbol}})
+              [ ]*
+              [:=](?![{{OPR}}])
+            )
+            (?!{{keyws}}\b)({{symbol}})
+            (?:[ ]*(:))?
+            |
+            (?=\S)
+          )'
           captures:
-            1: invalid.illegal.nim
-            2: variable.parameter.nim
-            3: punctuation.separator.key-value.nim
-        - include: main
+            1: variable.parameter.nim
+            2: punctuation.separator.key-value.nim
+          push:
+            - match: (?=\))
+              pop: true
+            - match: ','
+              scope: punctuation.separator.nim
+              pop: true
+            - include: main
     - match: '"""'
       scope: meta.string.nim string.quoted.double.block.nim punctuation.definition.string.begin.nim
       set: triplestr_lit_inner
@@ -402,7 +444,7 @@ contexts:
       scope: punctuation.section.block.begin.nim
     - match: \.(?![{{OPR}}])
       scope: punctuation.accessor.dot.nim
-    - match: '(\*) *(:|(?==|,|#|\{\.))'
+    - match: '(\*) *(:|(?=,|#|\{\.))'
       captures:
         1: storage.modifier.nim
         2: punctuation.separator.annotation.nim
@@ -861,7 +903,7 @@ contexts:
 
   routine-1:
     - meta_content_scope: entity.name.function.nim
-    - match: '{{keyw}}\b'
+    - match: '{{keyws}}\b'
       scope: invalid.illegal.nim
     - include: builtins
     - match: '{{symbol}}'
@@ -895,6 +937,9 @@ contexts:
       scope: meta.function.parameters.nim punctuation.section.parameters.begin.nim
       set:
         - meta_content_scope: meta.function.parameters.nim
+        - match: '{{keyws}}\b'
+          scope: invalid.illegal.nim
+          pop: true
         - match: '{{symbol}}'
           scope: meta.function.parameters.nim variable.parameter.nim
           set: [routine-5, param-list, decl-col-eq-1]
@@ -920,7 +965,7 @@ contexts:
 
   generic-param-list-0:
     - meta_scope: meta.generic.nim
-    - match: '{{keyw}}\b'
+    - match: '{{keyws}}\b'
       scope: invalid.illegal.nim
     - match: '{{symbol}}'
       scope: variable.parameter.nim
@@ -957,6 +1002,9 @@ contexts:
     - include: else-pop
 
   decl-col-eq-0:
+    - match: '{{keyws}}\b'
+      scope: invalid.illegal.nim
+      pop: true
     - match: '{{symbol}}'
       scope: variable.parameter.nim
       set: decl-col-eq-1
@@ -990,6 +1038,9 @@ contexts:
     - include: else-pop
 
   decl-col-eq-3:
+    - match: '{{keyws}}\b'
+      scope: invalid.illegal.nim
+      pop: true
     - match: '{{symbol}}'
       scope: variable.parameter.nim
       set: pragma-0
@@ -1054,10 +1105,13 @@ contexts:
               pop: true
             - include: else-pop
         - include: for-stmt-1
+        - include: else-pop
     - match: '\bin\b'
       scope: keyword.control.loop.for.in.nim
       pop: true
     - include: for-stmt-1
+    - match: '(?=[^ ])'
+      pop: true
 
   for-stmt-1:
     - match: ','
@@ -1065,7 +1119,6 @@ contexts:
     - match: '{{symbol}}'
     - include: pragmas
     - include: comments
-    - include: else-pop
 
   operators:
     - match: '\b(?:and|not|x?or)\b'

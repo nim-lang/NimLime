@@ -2226,7 +2226,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(?x: (?:proc|template|iterator|func|method|macro|converter)\b (?:[ ]*([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(\*))?)? )</string>
+					<string>(?x: (proc|template|iterator|func|method|macro|converter)\b (?:[ ]*([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(\*))?)? )</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>

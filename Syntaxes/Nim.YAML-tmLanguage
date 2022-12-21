@@ -218,7 +218,7 @@ repository:
   routines:
     patterns:
       - begin: '(?x:
-          (?:proc|template|iterator|func|method|macro|converter)\b
+          (proc|template|iterator|func|method|macro|converter)\b
           (?:[ ]*([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(\*))?)?
         )'
         beginCaptures:

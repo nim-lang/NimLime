@@ -1,0 +1,20 @@
+%YAML 1.2
+---
+version: 2
+name: Nim Source Code Filter
+scope: source.nim_filter
+file_extensions: [nimf]
+
+contexts:
+  main:
+    - match: '^ *#'
+      push:
+        - match: '(end) (proc|func|method|template|macro|iterator|converter)\b'
+          captures:
+            1: keyword.control.flow.nimf
+            2: keyword.declaration.function.nimf
+        - include: scope:source.nim
+      with_prototype:
+        - match: '^ *#'
+        - match: ^(?! *#)
+          pop: true

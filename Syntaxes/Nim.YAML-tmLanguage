@@ -124,7 +124,7 @@ repository:
         name: punctuation.section.block.begin.nim
       - match: '\.(?![-=+*/<>@$~&%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])'
         name: punctuation.accessor.dot.nim
-      - match: '(\*) *(:|(?==|,|#|\{\.))'
+      - match: '(\*) *(:|(?=,|#|\{\.))'
         captures:
           '1': {name: storage.modifier.nim}
           '2': {name: punctuation.separator.annotation.nim}
@@ -386,11 +386,10 @@ repository:
       - begin: \b(const) +(?=[A-Za-z\x80-\xff]|\(|`|_\b)
         beginCaptures:
           '1': {name: storage.modifier.nim}
-        end: '([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(if\b)|(?=[^\(])'
+        end: '([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])'
         endCaptures:
           '1': {name: entity.name.constant.expl}
           '2': {name: storage.modifier.expl}
-          '3': {name: invalid.illegal.nim}
         patterns:
           - include: '#const-name'
 
@@ -400,11 +399,10 @@ repository:
         end: ^(?!  |$)
         patterns:
           - begin: '^  (?=[A-Za-z\x80-\xff]|\(|`|_\b)'
-            end: '(if\b)|([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])'
+            end: '([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])'
             endCaptures:
-              '1': {name: invalid.illegal.nim}
-              '2': {name: entity.name.constant.expl}
-              '3': {name: storage.modifier.expl}
+              '1': {name: entity.name.constant.expl}
+              '2': {name: storage.modifier.expl}
             patterns:
               - include: '#const-name'
           - include: $self
@@ -418,8 +416,6 @@ repository:
         endCaptures:
           '1': {name: punctuation.section.parens.end.nim}
         patterns:
-          - match: if\b
-            name: invalid.illegal.nim
           - match: '([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?'
             captures:
               '1': {name: entity.name.constant.expl}
@@ -465,8 +461,6 @@ repository:
 
   var-name-0:
     patterns:
-      - match: if\b
-        name: invalid.illegal.nim
       - match: '([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?'
         captures:
           '1': {name: variable.other.expl}
@@ -491,8 +485,6 @@ repository:
 
   generic-param-list-0:
     patterns:
-      - match: 'if\b'
-        name: invalid.illegal.nim
       - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
         name: variable.parameter.nim
       - match: '[,;]'

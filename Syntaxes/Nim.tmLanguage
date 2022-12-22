@@ -659,7 +659,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(if\b)|(?=[^\(])</string>
+					<string>([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>1</key>
@@ -671,11 +671,6 @@
 						<dict>
 							<key>name</key>
 							<string>storage.modifier.expl</string>
-						</dict>
-						<key>3</key>
-						<dict>
-							<key>name</key>
-							<string>invalid.illegal.nim</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -705,20 +700,15 @@
 							<key>begin</key>
 							<string>^  (?=[A-Za-z\x80-\xff]|\(|`|_\b)</string>
 							<key>end</key>
-							<string>(if\b)|([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])</string>
+							<string>([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])</string>
 							<key>endCaptures</key>
 							<dict>
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>invalid.illegal.nim</string>
-								</dict>
-								<key>2</key>
-								<dict>
-									<key>name</key>
 									<string>entity.name.constant.expl</string>
 								</dict>
-								<key>3</key>
+								<key>2</key>
 								<dict>
 									<key>name</key>
 									<string>storage.modifier.expl</string>
@@ -767,12 +757,6 @@
 					</dict>
 					<key>patterns</key>
 					<array>
-						<dict>
-							<key>match</key>
-							<string>if\b</string>
-							<key>name</key>
-							<string>invalid.illegal.nim</string>
-						</dict>
 						<dict>
 							<key>captures</key>
 							<dict>
@@ -1257,12 +1241,6 @@
 		<dict>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>match</key>
-					<string>if\b</string>
-					<key>name</key>
-					<string>invalid.illegal.nim</string>
-				</dict>
 				<dict>
 					<key>match</key>
 					<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
@@ -2210,7 +2188,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(\*) *(:|(?==|,|#|\{\.))</string>
+					<string>(\*) *(:|(?=,|#|\{\.))</string>
 				</dict>
 				<dict>
 					<key>match</key>
@@ -2745,12 +2723,6 @@
 		<dict>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>match</key>
-					<string>if\b</string>
-					<key>name</key>
-					<string>invalid.illegal.nim</string>
-				</dict>
 				<dict>
 					<key>captures</key>
 					<dict>

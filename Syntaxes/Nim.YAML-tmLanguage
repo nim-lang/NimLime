@@ -473,7 +473,7 @@ repository:
 
   generic-param-list:
     patterns:
-      - begin: \b *(\[)
+      - begin: (?<=[`*\w\x{80}-\x{ff}]) *(\[)
         beginCaptures:
           '1': {name: punctuation.section.generic.begin.nim}
         end: '(])|(?=[^#_`:=,;A-Za-z\x80-\xff\s])'

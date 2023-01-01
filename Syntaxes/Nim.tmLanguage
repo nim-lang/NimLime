@@ -1206,7 +1206,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>\b *(\[)</string>
+					<string>(?&lt;=[`*\w\x{80}-\x{ff}]) *(\[)</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>

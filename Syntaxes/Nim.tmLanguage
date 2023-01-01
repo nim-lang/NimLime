@@ -2015,6 +2015,10 @@
 								</dict>
 							</array>
 						</dict>
+						<dict>
+							<key>include</key>
+							<string>#comments</string>
+						</dict>
 					</array>
 				</dict>
 			</array>

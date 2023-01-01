@@ -424,7 +424,9 @@ contexts:
               pop: true
             - match: ','
               scope: punctuation.separator.nim
-              pop: true
+              set:
+                - include: comments
+                - include: else-pop
             - include: main
     - match: '"""'
       scope: meta.string.nim string.quoted.double.block.nim punctuation.definition.string.begin.nim
@@ -995,7 +997,7 @@ contexts:
     - clear_scopes: 1
     - match: '[,;]'
       scope: punctuation.separator.parameters.nim
-      push: [decl-col-eq-0]
+      push: [decl-col-eq-0, comment]
     - match: '\)'
       scope: meta.function.parameters.nim punctuation.section.parameters.end.nim
       pop: true

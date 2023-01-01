@@ -17,7 +17,7 @@ variables:
     |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of
     |raise|sh[lr]|template|using|while|yield|x?or)'
   keyws: '(?x:{{disallowed_keyws}}|addr|block|case|cast|do|enum|for|func|if|iterator
-    |object|out|proc|ptr|ref|return|static|try|tuple|type|var|when)'
+    |object|out|proc|ptr|ref|return|static|try|tuple|type|var|when)\b'
   builtin_vars: '(?x:
     ATOMIC_(?:ACQ_REL|ACQUIRE|CONSUME|RELAXED|RELEASE|SEQ_CST)|errorMessageWriter
     |(?:global|local)RaiseHook|nimThreadDestructionHandlers|onUnhandledException
@@ -212,7 +212,7 @@ contexts:
         - include: main
 
   const-name:
-    - match: '({{keyws}}\b)(?: *(\*))?'
+    - match: '({{keyws}})(?: *(\*))?'
       captures:
         1: invalid.illegal.nim
         2: storage.modifier.nim
@@ -244,7 +244,7 @@ contexts:
               scope: invalid.illegal.nim
               pop: true
             - include: else-pop
-        - match: '({{keyws}}\b)(?: *(\*))?'
+        - match: '({{keyws}})(?: *(\*))?'
           captures:
             1: invalid.illegal.nim
             2: storage.modifier.nim
@@ -287,7 +287,7 @@ contexts:
               pop: true
             - include: else-pop
         - include: var-name-0
-    - match: '(?!{{keyws}}\b)({{symbol}})(?: *(\*))?'
+    - match: '(?!{{keyws}})({{symbol}})(?: *(\*))?'
       captures:
         1: entity.name.variable.nim
         2: storage.modifier.nim
@@ -313,7 +313,7 @@ contexts:
       pop: true
 
   var-name-0:
-    - match: '(?!{{keyws}}\b)({{symbol}})(?: *(\*))?'
+    - match: '(?!{{keyws}})({{symbol}})(?: *(\*))?'
       captures:
         1: entity.name.variable.nim
         2: storage.modifier.nim
@@ -370,7 +370,7 @@ contexts:
             (?:
               [_\d"''`\[\(]
               |(?!\.|(?:\* *)?[:=]|=[^=])[{{OPR}}]+[^{{OPR}}\s]
-              |(?!{{disallowed_keyws}}){{letter}}
+              |(?!{{disallowed_keyws}}\b){{letter}}
               |\{(?!\.)
             )
           )
@@ -411,7 +411,7 @@ contexts:
               [ ]*
               [:=](?![{{OPR}}])
             )
-            (?!{{keyws}}\b)({{symbol}})
+            (?!{{keyws}})({{symbol}})
             (?:[ ]*(:))?
             |
             (?=\S)
@@ -903,7 +903,7 @@ contexts:
 
   routine-1:
     - meta_content_scope: entity.name.function.nim
-    - match: '{{keyws}}\b'
+    - match: '{{keyws}}'
       scope: invalid.illegal.nim
     - include: builtins
     - match: '{{symbol}}'
@@ -937,7 +937,7 @@ contexts:
       scope: meta.function.parameters.nim punctuation.section.parameters.begin.nim
       set:
         - meta_content_scope: meta.function.parameters.nim
-        - match: '{{keyws}}\b'
+        - match: '{{keyws}}'
           scope: invalid.illegal.nim
           pop: true
         - match: '{{symbol}}'
@@ -965,7 +965,7 @@ contexts:
 
   generic-param-list-0:
     - meta_scope: meta.generic.nim
-    - match: '{{keyws}}\b'
+    - match: '{{keyws}}'
       scope: invalid.illegal.nim
     - match: '{{symbol}}'
       scope: variable.parameter.nim
@@ -1002,7 +1002,7 @@ contexts:
     - include: else-pop
 
   decl-col-eq-0:
-    - match: '{{keyws}}\b'
+    - match: '{{keyws}}'
       scope: invalid.illegal.nim
       pop: true
     - match: '{{symbol}}'
@@ -1038,7 +1038,7 @@ contexts:
     - include: else-pop
 
   decl-col-eq-3:
-    - match: '{{keyws}}\b'
+    - match: '{{keyws}}'
       scope: invalid.illegal.nim
       pop: true
     - match: '{{symbol}}'

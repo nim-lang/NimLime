@@ -129,6 +129,10 @@ proc f =
 #^^^ meta.number.float.decimal.nim constant.numeric.value.nim
 # ^ punctuation.separator.decimal.nim
 #   ^ keyword.operator.nim
+ 0xDEADBEEF
+#^^^^^^^^^^ meta.number.integer.hexadecimal.nim
+#^^ constant.numeric.base.nim
+#  ^^^^^^^^ constant.numeric.value.nim
 
 const c = false
 #^^^^ storage.modifier.nim keyword.declaration.constant.nim

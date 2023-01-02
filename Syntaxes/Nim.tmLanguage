@@ -1739,7 +1739,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?x: \b(0[Xx]) (\h(?:_?\h)*) ('(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[Ff](?:32|64)|[Dd])) )</string>
+					<string>(?x: \b(0[Xx]) (\h(?:_?\h)*) ('(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|[Ff](?:32|64)) )</string>
 				</dict>
 				<dict>
 					<key>captures</key>

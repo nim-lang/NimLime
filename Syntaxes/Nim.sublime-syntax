@@ -689,7 +689,7 @@ contexts:
     - match: '(?x:
         \b(0[Xx])
         (\h(?:_?\h)*)
-        ({{float_suffix}})
+        (''(?:{{ident}})|[Ff](?:32|64))
       )'
       captures:
         0: meta.number.float.hexadecimal.nim

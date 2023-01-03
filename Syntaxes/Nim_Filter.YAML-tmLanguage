@@ -845,7 +845,7 @@ repository:
                 [_\d"''`\[\(]
                 |(?!\.|(?:\*?[ ]*)[:=]|=[^=])[-=+*/<>@$~&%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+[^\-=+*/<>@$~&%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔\s]
                 |(?!as|asm|and|bind|break|concept|const|continue|converter
-                  |defer|discard|distinct|elif|else|end|except|export|finally|from|import
+                  |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import
                   |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of
                   |raise|sh[lr]|template|using|while|yield|x?or)[A-Za-z\x80-\xff]
                 |\{(?!\.)

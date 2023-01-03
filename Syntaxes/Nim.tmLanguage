@@ -451,7 +451,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(?x: (?= (?: (?!(?:out|ptr|ref|tuple)\b) [A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+` ) (?:\[.*])? (?: \( |" |[ ]+ (?: [_\d"'`\[\(] |(?!\.|(?:\*?[ ]*)[:=]|=[^=])[-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+[^\-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔\s] |(?!as|asm|and|bind|break|concept|const|continue|converter |defer|discard|distinct|elif|else|end|except|export|finally|from|import |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of |raise|sh[lr]|template|using|while|yield|x?or)[A-Za-z\x80-\xff] |\{(?!\.) ) ) ) )</string>
+					<string>(?x: (?= (?: (?!(?:out|ptr|ref|tuple)\b) [A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+` ) (?:\[.*])? (?: \( |" |[ ]+ (?: [_\d"'`\[\(] |(?!\.|(?:\*?[ ]*)[:=]|=[^=])[-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+[^\-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔\s] |(?!as|asm|and|bind|break|concept|const|continue|converter |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of |raise|sh[lr]|template|using|while|yield|x?or)[A-Za-z\x80-\xff] |\{(?!\.) ) ) ) )</string>
 					<key>end</key>
 					<string>(?=[^\[\(`\w\x{80}-\x{ff}])|(?&lt;=["\)])</string>
 					<key>patterns</key>

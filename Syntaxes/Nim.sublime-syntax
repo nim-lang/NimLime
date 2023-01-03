@@ -13,7 +13,7 @@ variables:
   string_escape_chars: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
   OPR: '-=\+\*/<>@\$~&%\|!\?\^\.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔'
   disallowed_keyws: '(?x:as|asm|and|bind|break|concept|const|continue|converter
-    |defer|discard|distinct|elif|else|end|except|export|finally|from|import
+    |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import
     |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of
     |raise|sh[lr]|template|using|while|yield|x?or)'
   keyws: '(?x:{{disallowed_keyws}}|addr|block|case|cast|do|enum|for|func|if|iterator

@@ -296,7 +296,7 @@ repository:
           - begin: '{'
             beginCaptures:
               '0': {name: punctuation.section.embedded.begin.nim}
-            end: '(=?(?: *:[^}]*)?) *(})|(?=")'
+            end: '(=?(?: *:[^}]*)?) *(})|(?="""[^"])'
             endCaptures:
               '1': {name: constant.other.format-spec.nim}
               '2': {name: punctuation.section.embedded.end.nim}

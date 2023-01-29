@@ -575,7 +575,7 @@ contexts:
           push:
             - clear_scopes: 1
             - meta_scope: meta.interpolation.nim
-            - match: '(?=")'
+            - match: '(?="""[^"])'
               pop: true
             - match: '({{format_spec}}) *(})'
               captures:

@@ -331,3 +331,14 @@ proc m(`in` = 1, b, c: int; `in`=1, in = 1)
 #       ^^^ constant.other.format-spec.nim
 #          ^ punctuation.section.interpolation.end.nim
 #           ^ string.quoted.double.nim punctuation.definition.string.end.nim
+ fmt"""{ "abc" }"""
+#^^^ meta.function-call.nim variable.function.nim
+#   ^^^^^^^^^^^^^^^ meta.string.interpolated.nim
+#   ^^^ string.quoted.double.block.nim punctuation.definition.string.begin.nim
+#      ^^^^^^^^^ meta.interpolation.nim
+#      ^ punctuation.section.interpolation.begin.nim
+#        ^^^^^ meta.string.nim string.quoted.double.nim
+#        ^ punctuation.definition.string.begin.nim
+#            ^ punctuation.definition.string.end.nim
+#              ^ punctuation.section.interpolation.end.nim
+#               ^^^ string.quoted.double.block.nim punctuation.definition.string.end.nim

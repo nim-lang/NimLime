@@ -309,7 +309,7 @@ repository:
           - begin: '{'
             beginCaptures:
               '0': {name: punctuation.section.embedded.begin.nim_filter}
-            end: '^(?! *#)|(=?(?: *:[^}]*)?) *(})|(?=")'
+            end: '^(?! *#)|(=?(?: *:[^}]*)?) *(})|(?="""[^"])'
             endCaptures:
               '1': {name: constant.other.format-spec.nim_filter}
               '2': {name: punctuation.section.embedded.end.nim_filter}

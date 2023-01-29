@@ -296,9 +296,10 @@ repository:
           - begin: '{'
             beginCaptures:
               '0': {name: punctuation.section.embedded.begin.nim}
-            end: (})|(?=")
+            end: '(=?(?: *:[^}]*)?) *(})|(?=")'
             endCaptures:
-              '1': {name: punctuation.section.embedded.end.nim}
+              '1': {name: constant.other.format-spec.nim}
+              '2': {name: punctuation.section.embedded.end.nim}
             name: meta.embedded.nim
             patterns:
               - include: $self
@@ -317,10 +318,11 @@ repository:
           - begin: '{'
             beginCaptures:
               '0': {name: punctuation.section.embedded.begin.nim}
-            end: (})|(\n)|(?=")
+            end: '(=?(?: *:[^}]*)?) *(})|(\n)|(?=")'
             endCaptures:
-              '1': {name: punctuation.section.embedded.end.nim}
-              '2': {name: invalid.illegal.nim}
+              '1': {name: constant.other.format-spec.nim}
+              '2': {name: punctuation.section.embedded.end.nim}
+              '3': {name: invalid.illegal.nim}
             name: meta.embedded.nim
             patterns:
               - include: $self
@@ -339,10 +341,11 @@ repository:
           - begin: '{'
             beginCaptures:
               '0': {name: punctuation.section.embedded.begin.nim}
-            end: (})|(\n)|(?=")
+            end: '(=?(?: *:[^}]*)?) *(})|(\n)|(?=")'
             endCaptures:
-              '1': {name: punctuation.section.embedded.end.nim}
-              '2': {name: invalid.illegal.nim}
+              '1': {name: constant.other.format-spec.nim}
+              '2': {name: punctuation.section.embedded.end.nim}
+              '3': {name: invalid.illegal.nim}
             name: meta.embedded.nim
             patterns:
               - match: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'

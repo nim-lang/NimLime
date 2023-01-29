@@ -858,10 +858,15 @@
 								</dict>
 							</dict>
 							<key>end</key>
-							<string>^(?! *#)|(})|(?=")</string>
+							<string>^(?! *#)|(=?(?: *:[^}]*)?) *(})|(?=")</string>
 							<key>endCaptures</key>
 							<dict>
 								<key>1</key>
+								<dict>
+									<key>name</key>
+									<string>constant.other.format-spec.nim_filter</string>
+								</dict>
+								<key>2</key>
 								<dict>
 									<key>name</key>
 									<string>punctuation.section.embedded.end.nim_filter</string>
@@ -932,15 +937,20 @@
 								</dict>
 							</dict>
 							<key>end</key>
-							<string>^(?! *#)|(})|(\n)|(?=")</string>
+							<string>^(?! *#)|(=?(?: *:[^}]*)?) *(})|(\n)|(?=")</string>
 							<key>endCaptures</key>
 							<dict>
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.embedded.end.nim_filter</string>
+									<string>constant.other.format-spec.nim_filter</string>
 								</dict>
 								<key>2</key>
+								<dict>
+									<key>name</key>
+									<string>punctuation.section.embedded.end.nim_filter</string>
+								</dict>
+								<key>3</key>
 								<dict>
 									<key>name</key>
 									<string>invalid.illegal.nim_filter</string>
@@ -1011,15 +1021,20 @@
 								</dict>
 							</dict>
 							<key>end</key>
-							<string>^(?! *#)|(})|(\n)|(?=")</string>
+							<string>^(?! *#)|(=?(?: *:[^}]*)?) *(})|(\n)|(?=")</string>
 							<key>endCaptures</key>
 							<dict>
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.embedded.end.nim_filter</string>
+									<string>constant.other.format-spec.nim_filter</string>
 								</dict>
 								<key>2</key>
+								<dict>
+									<key>name</key>
+									<string>punctuation.section.embedded.end.nim_filter</string>
+								</dict>
+								<key>3</key>
 								<dict>
 									<key>name</key>
 									<string>invalid.illegal.nim_filter</string>

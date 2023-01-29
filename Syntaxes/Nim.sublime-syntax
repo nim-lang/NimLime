@@ -12,6 +12,7 @@ variables:
   pragma_start: '\{\.(?!\.})'
   string_escape_chars: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
   OPR: '-=\+\*/<>@\$~&%\|!\?\^\.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔'
+  format_spec: '=?(?: *:[^}]*)?'
   disallowed_keyws: '(?x:as|asm|and|bind|break|concept|const|continue|converter
     |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import
     |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of
@@ -576,8 +577,10 @@ contexts:
             - meta_scope: meta.interpolation.nim
             - match: '(?=")'
               pop: true
-            - match: '}'
-              scope: punctuation.section.interpolation.end.nim
+            - match: '({{format_spec}}) *(})'
+              captures:
+                1: constant.other.format-spec.nim
+                2: punctuation.section.interpolation.end.nim
               pop: true
             - include: main
         - match: '"""(?!")'
@@ -601,8 +604,10 @@ contexts:
               pop: true
             - match: '(?=")'
               pop: true
-            - match: '}'
-              scope: punctuation.section.interpolation.end.nim
+            - match: '({{format_spec}}) *(})'
+              captures:
+                1: constant.other.format-spec.nim
+                2: punctuation.section.interpolation.end.nim
               pop: true
             - include: main
         - match: '""'
@@ -635,8 +640,10 @@ contexts:
               pop: true
             - match: '(?=")'
               pop: true
-            - match: '}'
-              scope: punctuation.section.interpolation.end.nim
+            - match: '({{format_spec}}) *(})'
+              captures:
+                1: constant.other.format-spec.nim
+                2: punctuation.section.interpolation.end.nim
               pop: true
             - include: main
         - match: '{{string_escape_chars}}'

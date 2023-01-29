@@ -311,3 +311,23 @@ proc m(`in` = 1, b, c: int; `in`=1, in = 1)
 #                            ^ keyword.operator.assignment.nim
 #                              ^ meta.number.integer.decimal.nim constant.numeric.value.nim
 #                               ^ punctuation.section.arguments.end.nim
+
+ fmt"{123.456=:>9.3f}"
+#^^^ meta.function-call.nim variable.function.nim
+#   ^^^^^^^^^^^^^^^^^^ meta.string.interpolated.nim
+#   ^ string.quoted.double.nim punctuation.definition.string.begin.nim
+#    ^^^^^^^^^^^^^^^^ meta.interpolation.nim
+#    ^ punctuation.section.interpolation.begin.nim
+#     ^^^^^^^ meta.number.float.decimal.nim constant.numeric.value.nim
+#            ^^^^^^^ constant.other.format-spec.nim
+#                   ^ punctuation.section.interpolation.end.nim
+#                    ^ string.quoted.double.nim punctuation.definition.string.end.nim
+ fmt"{x = :}"
+#^^^ meta.function-call.nim variable.function.nim
+#   ^^^^^^^^^ meta.string.interpolated.nim
+#   ^ string.quoted.double.nim punctuation.definition.string.begin.nim
+#    ^^^^^^^ meta.interpolation.nim
+#    ^ punctuation.section.interpolation.begin.nim
+#       ^^^ constant.other.format-spec.nim
+#          ^ punctuation.section.interpolation.end.nim
+#           ^ string.quoted.double.nim punctuation.definition.string.end.nim

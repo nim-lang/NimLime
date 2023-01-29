@@ -309,9 +309,10 @@ repository:
           - begin: '{'
             beginCaptures:
               '0': {name: punctuation.section.embedded.begin.nim_filter}
-            end: ^(?! *#)|(})|(?=")
+            end: '^(?! *#)|(=?(?: *:[^}]*)?) *(})|(?=")'
             endCaptures:
-              '1': {name: punctuation.section.embedded.end.nim_filter}
+              '1': {name: constant.other.format-spec.nim_filter}
+              '2': {name: punctuation.section.embedded.end.nim_filter}
             name: meta.embedded.nim_filter
             patterns:
               - include: '#main'
@@ -330,10 +331,11 @@ repository:
           - begin: '{'
             beginCaptures:
               '0': {name: punctuation.section.embedded.begin.nim_filter}
-            end: ^(?! *#)|(})|(\n)|(?=")
+            end: '^(?! *#)|(=?(?: *:[^}]*)?) *(})|(\n)|(?=")'
             endCaptures:
-              '1': {name: punctuation.section.embedded.end.nim_filter}
-              '2': {name: invalid.illegal.nim_filter}
+              '1': {name: constant.other.format-spec.nim_filter}
+              '2': {name: punctuation.section.embedded.end.nim_filter}
+              '3': {name: invalid.illegal.nim_filter}
             name: meta.embedded.nim_filter
             patterns:
               - include: '#main'
@@ -352,10 +354,11 @@ repository:
           - begin: '{'
             beginCaptures:
               '0': {name: punctuation.section.embedded.begin.nim_filter}
-            end: ^(?! *#)|(})|(\n)|(?=")
+            end: '^(?! *#)|(=?(?: *:[^}]*)?) *(})|(\n)|(?=")'
             endCaptures:
-              '1': {name: punctuation.section.embedded.end.nim_filter}
-              '2': {name: invalid.illegal.nim_filter}
+              '1': {name: constant.other.format-spec.nim_filter}
+              '2': {name: punctuation.section.embedded.end.nim_filter}
+              '3': {name: invalid.illegal.nim_filter}
             name: meta.embedded.nim_filter
             patterns:
               - match: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'

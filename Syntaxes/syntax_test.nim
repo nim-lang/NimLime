@@ -342,3 +342,20 @@ proc m(`in` = 1, b, c: int; `in`=1, in = 1)
 #            ^ punctuation.definition.string.end.nim
 #              ^ punctuation.section.interpolation.end.nim
 #               ^^^ string.quoted.double.block.nim punctuation.definition.string.end.nim
+ fmt"""{ "\{(" & x & ")\}" }"""
+#^^^ meta.function-call.nim variable.function.nim
+#   ^^^^^^^^^^^^^^^^^^^^^^^^^^^ meta.string.interpolated.nim
+#   ^^^ string.quoted.double.block.nim punctuation.definition.string.begin.nim
+#      ^^^^^^^^^^^^^^^^^^^^^ meta.interpolation.nim
+#      ^ punctuation.section.interpolation.begin.nim
+#        ^^^^^ meta.string.nim string.quoted.double.nim
+#        ^ punctuation.definition.string.begin.nim
+#         ^^ constant.character.escape.nim
+#            ^ punctuation.definition.string.end.nim
+#              ^ keyword.operator.nim
+#                    ^^^^^ meta.string.nim string.quoted.double.nim
+#                    ^ punctuation.definition.string.begin.nim
+#                      ^^ constant.character.escape.nim
+#                        ^ punctuation.definition.string.end.nim
+#                          ^ punctuation.section.interpolation.end.nim
+#                           ^^^ string.quoted.double.block.nim punctuation.definition.string.end.nim

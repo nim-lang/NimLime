@@ -583,6 +583,9 @@ contexts:
                 2: punctuation.section.interpolation.end.nim
               pop: true
             - include: main
+          with_prototype:
+            - match: '\\{|\\}'
+              scope: constant.character.escape.nim
         - match: '"""(?!")'
           scope: meta.string.interpolated.nim string.quoted.double.block.nim punctuation.definition.string.end.nim
           pop: true
@@ -610,6 +613,9 @@ contexts:
                 2: punctuation.section.interpolation.end.nim
               pop: true
             - include: main
+          with_prototype:
+            - match: '\\{|\\}'
+              scope: constant.character.escape.nim
         - match: '""'
           scope: meta.string.interpolated.nim string.quoted.double.nim constant.character.escape.double-quotes.nim
         - match: \n
@@ -646,6 +652,9 @@ contexts:
                 2: punctuation.section.interpolation.end.nim
               pop: true
             - include: main
+          with_prototype:
+            - match: '\\{|\\}'
+              scope: constant.character.escape.nim
         - match: '{{string_escape_chars}}'
           scope: constant.character.escape.nim
         - match: \\

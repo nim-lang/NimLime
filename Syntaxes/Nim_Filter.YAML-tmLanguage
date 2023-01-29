@@ -9,8 +9,8 @@ patterns:
     patterns:
       - match: '(end) (proc|func|method|template|macro|iterator|converter)\b'
         captures:
-          '1': {name: keyword.control.nimf}
-          '2': {name: storage.type.function.nimf}
+          '1': {name: keyword.control.nim_filter}
+          '2': {name: storage.type.function.nim_filter}
       - include: '#main'
 
 repository:
@@ -47,11 +47,11 @@ repository:
       - match: '^ *#'
       - begin: '##\['
         beginCaptures:
-          '0': {name: punctuation.definition.comment.begin.nim}
+          '0': {name: punctuation.definition.comment.begin.nim_filter}
         end: '^(?! *#)|]##'
         endCaptures:
-          '0': {name: punctuation.definition.comment.end.nim}
-        name: comment.block.documentation.nim
+          '0': {name: punctuation.definition.comment.end.nim_filter}
+        name: comment.block.documentation.nim_filter
         patterns:
           - include: '#block-doc-comments'
 
@@ -60,9 +60,9 @@ repository:
       - match: '^ *#'
       - begin: '##'
         beginCaptures:
-          '0': {name: punctuation.definition.comment.nim}
+          '0': {name: punctuation.definition.comment.nim_filter}
         end: '^(?! *#)|^(?! *#)|$\n?'
-        name: comment.line.documentation.nim
+        name: comment.line.documentation.nim_filter
 
   comments:
     patterns:
@@ -74,11 +74,11 @@ repository:
       - match: '^ *#'
       - begin: '#\['
         beginCaptures:
-          '0': {name: punctuation.definition.comment.begin.nim}
+          '0': {name: punctuation.definition.comment.begin.nim_filter}
         end: '^(?! *#)|]#'
         endCaptures:
-          '0': {name: punctuation.definition.comment.end.nim}
-        name: comment.block.number-sign.nim
+          '0': {name: punctuation.definition.comment.end.nim_filter}
+        name: comment.block.number-sign.nim_filter
         patterns:
           - include: '#block-comments'
 
@@ -87,31 +87,31 @@ repository:
       - match: '^ #'
       - begin: '(#)(?: *(TODO|todo)\b)?'
         beginCaptures:
-          '1': {name: punctuation.definition.comment.nim}
-          '2': {name: invalid.deprecated.nim}
+          '1': {name: punctuation.definition.comment.nim_filter}
+          '2': {name: invalid.deprecated.nim_filter}
         end: '^(?! *#)|$\n?'
-        name: comment.line.number-sign.nim
+        name: comment.line.number-sign.nim_filter
 
   brackets:
     patterns:
       - include: '#square-brackets'
       - begin: '\{'
         beginCaptures:
-          '0': {name: punctuation.section.braces.begin.nim}
+          '0': {name: punctuation.section.braces.begin.nim_filter}
         end: '^(?! *#)|}'
         endCaptures:
-          '0': {name: punctuation.section.braces.end.nim}
-        name: meta.braces.nim
+          '0': {name: punctuation.section.braces.end.nim_filter}
+        name: meta.braces.nim_filter
         patterns:
           - include: '#main'
 
       - begin: '\('
         beginCaptures:
-          '0': {name: punctuation.section.parens.begin.nim}
+          '0': {name: punctuation.section.parens.begin.nim_filter}
         end: '^(?! *#)|\)'
         endCaptures:
-          '0': {name: punctuation.section.parens.end.nim}
-        name: meta.parens.nim
+          '0': {name: punctuation.section.parens.end.nim_filter}
+        name: meta.parens.nim_filter
         patterns:
           - include: '#main'
 
@@ -119,47 +119,47 @@ repository:
     patterns:
       - begin: '\['
         beginCaptures:
-          '0': {name: punctuation.section.brackets.begin.nim}
+          '0': {name: punctuation.section.brackets.begin.nim_filter}
         end: '^(?! *#)|]'
         endCaptures:
-          '0': {name: punctuation.section.brackets.end.nim}
-        name: meta.brackets.nim
+          '0': {name: punctuation.section.brackets.end.nim_filter}
+        name: meta.brackets.nim_filter
         patterns:
           - include: '#main'
 
   punctuations:
     patterns:
       - match: ';'
-        name: punctuation.terminator.statement.nim
+        name: punctuation.terminator.statement.nim_filter
       - match: ','
-        name: punctuation.separator.nim
+        name: punctuation.separator.nim_filter
       - match: ':'
-        name: punctuation.section.block.begin.nim
+        name: punctuation.section.block.begin.nim_filter
       - match: '\.(?![-=+*/<>@$~&%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])'
-        name: punctuation.accessor.dot.nim
+        name: punctuation.accessor.dot.nim_filter
       - match: '(\*) *(:|(?=,|#|\{\.))'
         captures:
-          '1': {name: storage.modifier.nim}
-          '2': {name: punctuation.separator.annotation.nim}
+          '1': {name: storage.modifier.nim_filter}
+          '2': {name: punctuation.separator.annotation.nim_filter}
       - match: '\)|]|}'
-        name: invalid.illegal.nim
+        name: invalid.illegal.nim_filter
 
   for-stmts:
     patterns:
       - begin: for\b
         beginCaptures:
-          '0': {name: keyword.control.loop.for.nim}
+          '0': {name: keyword.control.loop.for.nim_filter}
         end: ^(?! *#)|(in\b)|(?=[^#,{_`A-Za-z\x80-\xff\s])
         endCaptures:
-          '1': {name: keyword.control.loop.for.in.nim}
+          '1': {name: keyword.control.loop.for.in.nim_filter}
         patterns:
           - begin: \(
             beginCaptures:
-              '0': {name: punctuation.section.parens.begin.nim}
+              '0': {name: punctuation.section.parens.begin.nim_filter}
             end: '^(?! *#)|(in\b)|(\))|(?=[^#,{_`A-Za-z\x80-\xff\s])'
             endCaptures:
-              '1': {name: keyword.control.loop.for.in.nim}
-              '2': {name: punctuation.section.parens.end.nim}
+              '1': {name: keyword.control.loop.for.in.nim_filter}
+              '2': {name: punctuation.section.parens.end.nim_filter}
             patterns:
               - include: '#for-stmt-1'
           - include: '#for-stmt-1'
@@ -167,7 +167,7 @@ repository:
   for-stmt-1:
     patterns:
       - match: ','
-        name: punctuation.separator.nim
+        name: punctuation.separator.nim_filter
       - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
       - include: '#pragmas'
       - include: '#comments'
@@ -176,7 +176,7 @@ repository:
     patterns:
       - begin: asm\b
         beginCaptures:
-          '0': {name: keyword.control.flow.nim}
+          '0': {name: keyword.control.flow.nim_filter}
         end: '^(?! *#)|(?=[^"Rr{\s])|(?<=")'
         patterns:
           - include: '#pragmas'
@@ -186,47 +186,47 @@ repository:
     patterns:
       - begin: '([Rr])?(""")'
         captures:
-          '1': {name: storage.type.string.nim}
-          '2': {name: string.quoted.triple.nim punctuation.definition.string.begin.nim}
+          '1': {name: storage.type.string.nim_filter}
+          '2': {name: string.quoted.triple.nim_filter punctuation.definition.string.begin.nim_filter}
         end: '^(?! *#)|"""(?!")'
         endCaptures:
-          '0': {name: string.quoted.triple.nim punctuation.definition.string.end.nim}
-        contentName: string.quoted.triple.nim
+          '0': {name: string.quoted.triple.nim_filter punctuation.definition.string.end.nim_filter}
+        contentName: string.quoted.triple.nim_filter
         patterns:
           - include: '#interpolation'
       - begin: '([Rr])(")'
         beginCaptures:
-          '1': {name: storage.type.string.nim}
-          '2': {name: string.quoted.double.nim punctuation.definition.string.begin.nim}
+          '1': {name: storage.type.string.nim_filter}
+          '2': {name: string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter}
         end: ^(?! *#)|(")|(\n)
         endCaptures:
-          '1': {name: string.quoted.double.nim punctuation.definition.string.begin.nim}
-          '2': {name: invalid.illegal.nim}
-        contentName: string.quoted.double.nim
+          '1': {name: string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter}
+          '2': {name: invalid.illegal.nim_filter}
+        contentName: string.quoted.double.nim_filter
         patterns:
           - include: '#interpolation'
       - begin: '"'
         beginCaptures:
-          '0': {name: punctuation.definition.string.begin.nim}
+          '0': {name: punctuation.definition.string.begin.nim_filter}
         end: ^(?! *#)|(")|(\n)
         endCaptures:
-          '1': {name: string.quoted.double.nim punctuation.definition.string.begin.nim}
-          '2': {name: invalid.illegal.nim}
-        name: string.quoted.double.nim
+          '1': {name: string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter}
+          '2': {name: invalid.illegal.nim_filter}
+        name: string.quoted.double.nim_filter
         patterns:
           - match: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
-            name: constant.character.escape.nim
+            name: constant.character.escape.nim_filter
           - match: \\
-            name: invalid.illegal.lone-escape.nim
+            name: invalid.illegal.lone-escape.nim_filter
           - include: '#interpolation'
 
   interpolation:
     patterns:
       - match: '(`) *(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_) *(`)'
         captures:
-          '0': {name: source.nim.embedded}
-          '1': {name: punctuation.section.embedded.begin.nim}
-          '2': {name: punctuation.section.embedded.end.nim}
+          '0': {name: source.nim_filter.embedded}
+          '1': {name: punctuation.section.embedded.begin.nim_filter}
+          '2': {name: punctuation.section.embedded.end.nim_filter}
 
   routines:
     patterns:
@@ -235,13 +235,13 @@ repository:
           (?:[ ]*([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(\*))?)?
         )'
         beginCaptures:
-          '1': {name: storage.type.function.nim}
-          '2': {name: entity.name.function.nim}
-          '3': {name: storage.modifier.nim}
+          '1': {name: storage.type.function.nim_filter}
+          '2': {name: entity.name.function.nim_filter}
+          '3': {name: storage.modifier.nim_filter}
         end: ^(?! *#)|(:)|(?=[^#\(\[:\s])
         endCaptures:
-          '1': {name: punctuation.separator.annotation.nim}
-        name: meta.function.nim
+          '1': {name: punctuation.separator.annotation.nim_filter}
+        name: meta.function.nim_filter
         patterns:
           - include: '#comments'
           - include: '#patterns'
@@ -252,11 +252,11 @@ repository:
     patterns:
       - begin: '\{(?!\.)'
         beginCaptures:
-          '0': {name: punctuation.section.pattern.begin.nim}
+          '0': {name: punctuation.section.pattern.begin.nim_filter}
         end: '^(?! *#)|}'
         endCaptures:
-          '0': {name: punctuation.section.pattern.end.nim}
-        name: meta.pattern.nim
+          '0': {name: punctuation.section.pattern.end.nim_filter}
+        name: meta.pattern.nim_filter
         patterns:
           - include: '#main'
 
@@ -264,20 +264,20 @@ repository:
     patterns:
       - begin: '\('
         beginCaptures:
-          '0': {name: punctuation.section.parameters.begin.nim}
+          '0': {name: punctuation.section.parameters.begin.nim_filter}
         end: '^(?! *#)|\)'
         endCaptures:
-          '0': {name: punctuation.section.parameters.end.nim}
+          '0': {name: punctuation.section.parameters.end.nim_filter}
         name: meta.function.parameters
         patterns:
           - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
-            name: variable.parameter.nim
+            name: variable.parameter.nim_filter
           - match: '[,;]'
-            name: punctuation.separator.nim
+            name: punctuation.separator.nim_filter
           - begin: '(:)|(=)'
             beginCaptures:
-              '1': {name: punctuation.separator.annotation.nim}
-              '2': {name: keyword.operator.assignment.nim}
+              '1': {name: punctuation.separator.annotation.nim_filter}
+              '2': {name: keyword.operator.assignment.nim_filter}
             end: ^(?! *#)|(?=[,;\)])
             patterns:
               - include: '#main'
@@ -290,106 +290,106 @@ repository:
         |from|func|if|import|include|interface|iterator|let|macro|method|mixin
         |object|of|out|proc|ptr|raise|ref|return|static|template|try|tuple|type
         |using|var|when|while|yield)\b'
-        name: invalid.illegal.nim
+        name: invalid.illegal.nim_filter
 
   fmt-strs:
     patterns:
       - begin: '(?:(fmt)|(&))(""")'
         beginCaptures:
-          '1': {name: meta.function-call.nim variable.function.nim}
-          '2': {name: keyword.operator.nim}
-          '3': {name: string.quoted.triple.nim punctuation.definition.string.begin.nim}
+          '1': {name: meta.function-call.nim_filter variable.function.nim_filter}
+          '2': {name: keyword.operator.nim_filter}
+          '3': {name: string.quoted.triple.nim_filter punctuation.definition.string.begin.nim_filter}
         end: '^(?! *#)|"""(?!")'
         endCaptures:
-          '0': {name: string.quoted.triple.nim punctuation.definition.string.end.nim}
-        contentName: string.quoted.triple.nim
+          '0': {name: string.quoted.triple.nim_filter punctuation.definition.string.end.nim_filter}
+        contentName: string.quoted.triple.nim_filter
         patterns:
           - match: '{{|}}'
-            name: constant.character.escape.nim
+            name: constant.character.escape.nim_filter
           - begin: '{'
             beginCaptures:
-              '0': {name: punctuation.section.embedded.begin.nim}
+              '0': {name: punctuation.section.embedded.begin.nim_filter}
             end: ^(?! *#)|(})|(?=")
             endCaptures:
-              '1': {name: punctuation.section.embedded.end.nim}
-            name: meta.embedded.nim
+              '1': {name: punctuation.section.embedded.end.nim_filter}
+            name: meta.embedded.nim_filter
             patterns:
               - include: '#main'
       - begin: (fmt)(")
         beginCaptures:
-          '1': {name: meta.function-call.nim variable.function.nim}
-          '2': {name: string.quoted.double.nim punctuation.definition.string.begin.nim}
+          '1': {name: meta.function-call.nim_filter variable.function.nim_filter}
+          '2': {name: string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter}
         end: ^(?! *#)|("(?!"))|(\n)
         endCaptures:
-          '1': {name: string.quoted.double.nim punctuation.definition.string.end.nim}
-          '2': {name: invalid.illegal.nim}
-        contentName: string.quoted.triple.nim
+          '1': {name: string.quoted.double.nim_filter punctuation.definition.string.end.nim_filter}
+          '2': {name: invalid.illegal.nim_filter}
+        contentName: string.quoted.triple.nim_filter
         patterns:
           - match: '{{|}}|""'
-            name: constant.character.escape.nim
+            name: constant.character.escape.nim_filter
           - begin: '{'
             beginCaptures:
-              '0': {name: punctuation.section.embedded.begin.nim}
+              '0': {name: punctuation.section.embedded.begin.nim_filter}
             end: ^(?! *#)|(})|(\n)|(?=")
             endCaptures:
-              '1': {name: punctuation.section.embedded.end.nim}
-              '2': {name: invalid.illegal.nim}
-            name: meta.embedded.nim
+              '1': {name: punctuation.section.embedded.end.nim_filter}
+              '2': {name: invalid.illegal.nim_filter}
+            name: meta.embedded.nim_filter
             patterns:
               - include: '#main'
       - begin: (&)(")
         beginCaptures:
-          '1': {name: keyword.operator.nim}
-          '2': {name: string.quoted.double.nim punctuation.definition.string.begin.nim}
+          '1': {name: keyword.operator.nim_filter}
+          '2': {name: string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter}
         end: ^(?! *#)|(")|(\n)
         endCaptures:
-          '1': {name: string.quoted.double.nim punctuation.definition.string.end.nim}
-          '2': {name: invalid.illegal.nim}
-        contentName: string.quoted.double.nim
+          '1': {name: string.quoted.double.nim_filter punctuation.definition.string.end.nim_filter}
+          '2': {name: invalid.illegal.nim_filter}
+        contentName: string.quoted.double.nim_filter
         patterns:
           - match: '{{|}}'
-            name: constant.character.escape.nim
+            name: constant.character.escape.nim_filter
           - begin: '{'
             beginCaptures:
-              '0': {name: punctuation.section.embedded.begin.nim}
+              '0': {name: punctuation.section.embedded.begin.nim_filter}
             end: ^(?! *#)|(})|(\n)|(?=")
             endCaptures:
-              '1': {name: punctuation.section.embedded.end.nim}
-              '2': {name: invalid.illegal.nim}
-            name: meta.embedded.nim
+              '1': {name: punctuation.section.embedded.end.nim_filter}
+              '2': {name: invalid.illegal.nim_filter}
+            name: meta.embedded.nim_filter
             patterns:
               - match: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
-                name: constant.character.escape.nim
+                name: constant.character.escape.nim_filter
               - match: \\
-                name: invalid.illegal.lone-escape.nim
+                name: invalid.illegal.lone-escape.nim_filter
               - include: '#main'
           - match: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
-            name: constant.character.escape.nim
+            name: constant.character.escape.nim_filter
           - match: \\
-            name: invalid.illegal.lone-escape.nim
+            name: invalid.illegal.lone-escape.nim_filter
 
   type-defs:
     patterns:
       - begin: '^ *(type) +(?:(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) *(\.))?([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?'
         beginCaptures:
-          '1': {name: storage.modifier.nim}
-          '2': {name: punctuation.accessor.dot.nim}
-          '3': {name: entity.name.type.nim}
-          '4': {name: storage.modifier.nim}
+          '1': {name: storage.modifier.nim_filter}
+          '2': {name: punctuation.accessor.dot.nim_filter}
+          '3': {name: entity.name.type.nim_filter}
+          '4': {name: storage.modifier.nim_filter}
         end: ^(?! *#)|(?=[^\[ ])
         patterns:
           - include: '#generic-param-list'
 
       - begin: ^type\b
         beginCaptures:
-          '0': {name: keyword.declaration.type.nim}
+          '0': {name: keyword.declaration.type.nim_filter}
         end: ^(?! *#)|^(?!  |$)
         patterns:
           - begin: '^  (?:(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) *(\.))?([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?'
             beginCaptures:
-              '1': {name: punctuation.accessor.dot.nim}
-              '2': {name: entity.name.type.nim}
-              '3': {name: storage.modifier.nim}
+              '1': {name: punctuation.accessor.dot.nim_filter}
+              '2': {name: entity.name.type.nim_filter}
+              '3': {name: storage.modifier.nim_filter}
             end: ^(?! *#)|(?![\[\s])
             patterns:
               - include: '#generic-param-list'
@@ -399,7 +399,7 @@ repository:
     patterns:
       - begin: \b(const) +(?=[A-Za-z\x80-\xff]|\(|`|_\b)
         beginCaptures:
-          '1': {name: storage.modifier.nim}
+          '1': {name: storage.modifier.nim_filter}
         end: '^(?! *#)|([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])'
         endCaptures:
           '1': {name: entity.name.constant.expl}
@@ -409,7 +409,7 @@ repository:
 
       - begin: ^const\b
         beginCaptures:
-          '0': {name: storage.modifier.nim keyword.declaration.constant.nim}
+          '0': {name: storage.modifier.nim_filter keyword.declaration.constant.nim_filter}
         end: ^(?! *#)|^(?!  |$)
         patterns:
           - begin: '^  (?=[A-Za-z\x80-\xff]|\(|`|_\b)'
@@ -425,17 +425,17 @@ repository:
     patterns:
       - begin: '\('
         beginCaptures:
-          '0': {name: punctuation.section.parens.begin.nim}
+          '0': {name: punctuation.section.parens.begin.nim_filter}
         end: '^(?! *#)|(\))|(?=[^{_`,#A-Za-z\x80-\xff\s])'
         endCaptures:
-          '1': {name: punctuation.section.parens.end.nim}
+          '1': {name: punctuation.section.parens.end.nim_filter}
         patterns:
           - match: '([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?'
             captures:
               '1': {name: entity.name.constant.expl}
               '2': {name: storage.modifier.expl}
           - match: ','
-            name: punctuation.separator.nim
+            name: punctuation.separator.nim_filter
           - include: '#pragmas'
           - include: '#doc-comments'
           - include: '#comments'
@@ -444,15 +444,15 @@ repository:
     patterns:
       - begin: '(?:^|(;)) *(var|let|using) +(?=[\(`A-Za-z\x80-\xff]|_\b)'
         beginCaptures:
-          '1': {name: punctuation.terminator.nim}
-          '2': {name: storage.modifier.nim keyword.declaration.variable.nim}
+          '1': {name: punctuation.terminator.nim_filter}
+          '2': {name: storage.modifier.nim_filter keyword.declaration.variable.nim_filter}
         end: '^(?! *#)|(?=[^\({_`,#A-Za-z\x80-\xff\s])'
         patterns:
           - include: '#var-name'
 
       - begin: ^(?:var|let|using)\b
         beginCaptures:
-          '0': {name: storage.type.nim}
+          '0': {name: storage.type.nim_filter}
         end: ^(?! *#)|^(?!  |$)
         patterns:
           - begin: ^  (?=[\(`A-Za-z\x80-\xff]|_\b)
@@ -465,10 +465,10 @@ repository:
     patterns:
       - begin: '\('
         beginCaptures:
-          '0': {name: punctuation.section.parens.begin.nim}
+          '0': {name: punctuation.section.parens.begin.nim_filter}
         end: '^(?! *#)|(\))|(?=[^{_`,#A-Za-z\x80-\xff\s])'
         endCaptures:
-          '1': {name: punctuation.section.parens.end.nim}
+          '1': {name: punctuation.section.parens.end.nim_filter}
         patterns:
           - include: '#var-name-0'
       - include: '#var-name-0'
@@ -480,7 +480,7 @@ repository:
           '1': {name: variable.other.expl}
           '2': {name: storage.modifier.expl}
       - match: ','
-        name: punctuation.separator.nim
+        name: punctuation.separator.nim_filter
       - include: '#pragmas'
       - include: '#doc-comments'
       - include: '#comments'
@@ -489,27 +489,27 @@ repository:
     patterns:
       - begin: (?<=[`*\w\x{80}-\x{ff}]) *(\[)
         beginCaptures:
-          '1': {name: punctuation.section.generic.begin.nim}
+          '1': {name: punctuation.section.generic.begin.nim_filter}
         end: '^(?! *#)|(])|(?=[^#_`:=,;A-Za-z\x80-\xff\s])'
         endCaptures:
-          '1': {name: punctuation.section.generic.end.nim}
-        name: meta.generic.nim
+          '1': {name: punctuation.section.generic.end.nim_filter}
+        name: meta.generic.nim_filter
         patterns:
           - include: '#generic-param-list-0'
 
   generic-param-list-0:
     patterns:
       - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
-        name: variable.parameter.nim
+        name: variable.parameter.nim_filter
       - match: '[,;]'
-        name: punctuation.separator.nim
+        name: punctuation.separator.nim_filter
       - begin: '(:)|(=)'
         beginCaptures:
-          '1': {name: punctuation.separator.annotation.nim}
-          '2': {name: keyword.operator.assignment.nim}
+          '1': {name: punctuation.separator.annotation.nim_filter}
+          '2': {name: keyword.operator.assignment.nim_filter}
         end: '^(?! *#)|([,;])|(?=\])'
         endCaptures:
-          '1': {name: punctuation.separator.nim}
+          '1': {name: punctuation.separator.nim_filter}
         patterns:
           - include: '#main'
       - include: '#comments'
@@ -518,45 +518,45 @@ repository:
     patterns:
       - begin: \{\.(?!\.})
         beginCaptures:
-          '0': {name: punctuation.section.annotation.begin.nim}
+          '0': {name: punctuation.section.annotation.begin.nim_filter}
         end: '^(?! *#)|\.?}'
         endCaptures:
-          '0': {name: punctuation.section.annotation.end.nim}
-        name: meta.annotation.nim
+          '0': {name: punctuation.section.annotation.end.nim_filter}
+        name: meta.annotation.nim_filter
         patterns:
           - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
-            name: entity.other.attribute-name.pragma.nim
+            name: entity.other.attribute-name.pragma.nim_filter
           - include: '#square-brackets'
           - begin: (?=\S)
             end: '^(?! *#)|(,)|(?=\S)'
             endCaptures:
-              '1': {name: punctuation.separator.sequence.nim}
+              '1': {name: punctuation.separator.sequence.nim_filter}
             patterns:
               - begin: ':'
                 beginCaptures:
-                  '0': {name: punctuation.separator.key-value.nim}
+                  '0': {name: punctuation.separator.key-value.nim_filter}
                 end: ^(?! *#)|(,)|(?=\.?})
                 endCaptures:
-                  '1': {name: punctuation.separator.sequence.nim}
+                  '1': {name: punctuation.separator.sequence.nim_filter}
                 patterns:
                   - include: '#main'
 
   operators:
     patterns:
       - match: '\b(?:and|not|x?or)\b'
-        name: keyword.operator.logical.nim
+        name: keyword.operator.logical.nim_filter
       - match: '\b(?:of|(?:not)?in|is(?:not)?)\b'
-        name: keyword.operator.word.nim
+        name: keyword.operator.word.nim_filter
       - match: \bsh[lr]\b
-        name: keyword.operator.bitwise.nim
+        name: keyword.operator.bitwise.nim_filter
       - match: '\b(?:div|mod)\b'
-        name: keyword.operator.arithmetic.nim
+        name: keyword.operator.arithmetic.nim_filter
       - match: '==|<=?|>=?|!='
-        name: keyword.operator.comparison.nim
+        name: keyword.operator.comparison.nim_filter
       - match: '(?:[-+*/@$&%|^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔][-=+*/<>@$~&%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]*)?=(?![-=+*/<>@$~&%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])'
-        name: keyword.operator.assignment.nim
+        name: keyword.operator.assignment.nim_filter
       - match: '[-=+*/<>@$~&%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+'
-        name: keyword.operator.nim
+        name: keyword.operator.nim_filter
 
   literals:
     patterns:
@@ -575,43 +575,43 @@ repository:
     patterns:
       - begin: '([Rr])?(""")'
         beginCaptures:
-          '1': {name: storage.type.nim}
-          '2': {name: string.quoted.triple.nim punctuation.definition.string.begin.nim}
+          '1': {name: storage.type.nim_filter}
+          '2': {name: string.quoted.triple.nim_filter punctuation.definition.string.begin.nim_filter}
         end: '^(?! *#)|"""(?!")'
         endCaptures:
-          '0': {name: string.quoted.triple.nim punctuation.definition.string.end.nim}
-        contentName: string.quoted.triple.nim
+          '0': {name: string.quoted.triple.nim_filter punctuation.definition.string.end.nim_filter}
+        contentName: string.quoted.triple.nim_filter
 
   rstr_lit:
     patterns:
       - begin: '([Rr])(")'
         beginCaptures:
-          '1': {name: storage.type.nim}
-          '2': {name: string.quoted.double.nim punctuation.definition.string.begin.nim}
+          '1': {name: storage.type.nim_filter}
+          '2': {name: string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter}
         end: '^(?! *#)|("(?!"))|(\n)'
         endCaptures:
-          '1': {name: string.quoted.double.nim punctuation.definition.string.end.nim}
-          '2': {name: string.quoted.double.nim invalid.illegal.unclosed-string.nim}
-        contentName: string.quoted.double.nim
+          '1': {name: string.quoted.double.nim_filter punctuation.definition.string.end.nim_filter}
+          '2': {name: string.quoted.double.nim_filter invalid.illegal.unclosed-string.nim_filter}
+        contentName: string.quoted.double.nim_filter
         patterns:
           - match: '""'
-            name: constant.character.escape.nim
+            name: constant.character.escape.nim_filter
 
   str_lit:
     patterns:
       - begin: '"'
         beginCaptures:
-          '0': {name: punctuation.definition.string.begin.nim}
+          '0': {name: punctuation.definition.string.begin.nim_filter}
         end: '^(?! *#)|(")|(\n)'
         endCaptures:
-          '1': {name: punctuation.definition.string.end.nim}
-          '2': {name: invalid.illegal.nim}
-        name: string.quoted.double.nim
+          '1': {name: punctuation.definition.string.end.nim_filter}
+          '2': {name: invalid.illegal.nim_filter}
+        name: string.quoted.double.nim_filter
         patterns:
           - match: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
-            name: constant.character.escape.nim
+            name: constant.character.escape.nim_filter
           - match: \\
-            name: invalid.illegal.lone-escape.nim
+            name: invalid.illegal.lone-escape.nim_filter
 
   numbers:
     patterns:
@@ -628,14 +628,14 @@ repository:
           )
         )'
         captures:
-          '0': {name: meta.number.float.decimal.nim}
-          '1': {name: constant.numeric.value.nim}
-          '2': {name: constant.numeric.value.nim}
-          '3': {name: punctuation.separator.decimal.nim}
-          '4': {name: constant.numeric.value.exponent.nim}
-          '5': {name: constant.numeric.value.exponent.nim}
-          '6': {name: constant.numeric.suffix.nim}
-          '7': {name: constant.numeric.suffix.nim}
+          '0': {name: meta.number.float.decimal.nim_filter}
+          '1': {name: constant.numeric.value.nim_filter}
+          '2': {name: constant.numeric.value.nim_filter}
+          '3': {name: punctuation.separator.decimal.nim_filter}
+          '4': {name: constant.numeric.value.exponent.nim_filter}
+          '5': {name: constant.numeric.value.exponent.nim_filter}
+          '6': {name: constant.numeric.suffix.nim_filter}
+          '7': {name: constant.numeric.suffix.nim_filter}
 
       - match: '(?x:
           \b(0[Xx])
@@ -643,10 +643,10 @@ repository:
           (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|[Ff](?:32|64))
         )'
         captures:
-          '0': {name: meta.number.float.hexadecimal.nim}
-          '1': {name: constant.numeric.base.nim}
-          '2': {name: constant.numeric.value.nim}
-          '3': {name: constant.numeric.suffix.nim}
+          '0': {name: meta.number.float.hexadecimal.nim_filter}
+          '1': {name: constant.numeric.base.nim_filter}
+          '2': {name: constant.numeric.value.nim_filter}
+          '3': {name: constant.numeric.suffix.nim_filter}
 
       - match: '(?x:
           \b(0o)
@@ -654,10 +654,10 @@ repository:
           (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[Ff](?:32|64)|[Dd]))
         )'
         captures:
-          '0': {name: meta.number.float.octal.nim}
-          '1': {name: constant.numeric.base.nim}
-          '2': {name: constant.numeric.value.nim}
-          '3': {name: constant.numeric.suffix.nim}
+          '0': {name: meta.number.float.octal.nim_filter}
+          '1': {name: constant.numeric.base.nim_filter}
+          '2': {name: constant.numeric.value.nim_filter}
+          '3': {name: constant.numeric.suffix.nim_filter}
 
       - match: '(?x:
           \b(0[Bb])
@@ -665,10 +665,10 @@ repository:
           (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[Ff](?:32|64)|[Dd]))
         )'
         captures:
-          '0': {name: meta.number.float.binary.nim}
-          '1': {name: constant.numeric.base.nim}
-          '2': {name: constant.numeric.value.nim}
-          '3': {name: constant.numeric.suffix.nim}
+          '0': {name: meta.number.float.binary.nim_filter}
+          '1': {name: constant.numeric.base.nim_filter}
+          '2': {name: constant.numeric.value.nim_filter}
+          '3': {name: constant.numeric.suffix.nim_filter}
 
 
       - match: '(?x:
@@ -677,10 +677,10 @@ repository:
           (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
         )'
         captures:
-          '0': {name: meta.number.integer.hexadecimal.nim}
-          '1': {name: constant.numeric.base.nim}
-          '2': {name: constant.numeric.value.nim}
-          '3': {name: constant.numeric.suffix.nim}
+          '0': {name: meta.number.integer.hexadecimal.nim_filter}
+          '1': {name: constant.numeric.base.nim_filter}
+          '2': {name: constant.numeric.value.nim_filter}
+          '3': {name: constant.numeric.suffix.nim_filter}
 
       - match: '(?x:
           \b(0o)
@@ -688,10 +688,10 @@ repository:
           (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
         )'
         captures:
-          '0': {name: meta.number.integer.octal.nim}
-          '1': {name: constant.numeric.base.nim}
-          '2': {name: constant.numeric.value.nim}
-          '3': {name: constant.numeric.suffix.nim}
+          '0': {name: meta.number.integer.octal.nim_filter}
+          '1': {name: constant.numeric.base.nim_filter}
+          '2': {name: constant.numeric.value.nim_filter}
+          '3': {name: constant.numeric.suffix.nim_filter}
 
       - match: '(?x:
           \b(0[Bb])
@@ -699,34 +699,34 @@ repository:
           (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
         )'
         captures:
-          '0': {name: meta.number.integer.binary.nim}
-          '1': {name: constant.numeric.base.nim}
-          '2': {name: constant.numeric.value.nim}
-          '3': {name: constant.numeric.suffix.nim}
+          '0': {name: meta.number.integer.binary.nim_filter}
+          '1': {name: constant.numeric.base.nim_filter}
+          '2': {name: constant.numeric.value.nim_filter}
+          '3': {name: constant.numeric.suffix.nim_filter}
 
       - match: '(?x:
           \b(\d(?:_?\d)*)
           (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
         )'
         captures:
-          '0': {name: meta.number.integer.decimal.nim}
-          '1': {name: constant.numeric.value.nim}
-          '2': {name: constant.numeric.suffix.nim}
+          '0': {name: meta.number.integer.decimal.nim_filter}
+          '1': {name: constant.numeric.value.nim_filter}
+          '2': {name: constant.numeric.suffix.nim_filter}
 
   characters:
     patterns:
       - match: '''(?:[^\\'']|(\\(?:[ABCEFLNRTVabceflnrtv"''\\]|\d+|[Xx]\h{2})))'''
         captures:
-          '0': {name: constant.character.nim}
-          '1': {name: constant.character.escape.nim}
+          '0': {name: constant.character.nim_filter}
+          '1': {name: constant.character.escape.nim_filter}
 
       - match: '''[^'']+'''
-        name: invalid.illegal.nim
+        name: invalid.illegal.nim_filter
 
   language-constants:
     patterns:
       - match: '\b(?:true|false|nil)\b'
-        name: constant.language.nim
+        name: constant.language.nim_filter
 
   keywords:
     patterns:
@@ -814,10 +814,10 @@ repository:
     patterns:
       - begin: \bdo\b
         beginCaptures:
-          '0': {name: storage.type.function.nim}
+          '0': {name: storage.type.function.nim_filter}
         end: '^(?! *#)|(->)|(?=[^\-\( ])'
         endCaptures:
-          '1': {name: punctuation.separator.annotation.return.nim}
+          '1': {name: punctuation.separator.annotation.return.nim_filter}
         patterns:
           - include: '#param-list'
 
@@ -850,27 +850,27 @@ repository:
         patterns:
           - begin: '(?=[`_A-Za-z\x80-\xff])'
             end: '^(?! *#)|(?=[^`_A-Za-z\x80-\xff])'
-            name: variable.function.nim
+            name: variable.function.nim_filter
             patterns:
               - include: '#builtins'
               - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
 
           - begin: '\[:?'
             beginCaptures:
-              '0': {name: punctuation.section.generic.begin.nim}
+              '0': {name: punctuation.section.generic.begin.nim_filter}
             end: '^(?! *#)|]'
             endCaptures:
-              '0': {name: punctuation.section.generic.end.nim}
-            name: meta.function-call.nim meta.generic.nim
+              '0': {name: punctuation.section.generic.end.nim_filter}
+            name: meta.function-call.nim_filter meta.generic.nim_filter
             patterns:
               - include: '#main'
           - begin: '\('
             beginCaptures:
-              '0': {name: punctuation.section.arguments.begin.nim}
+              '0': {name: punctuation.section.arguments.begin.nim_filter}
             end: ^(?! *#)|(\))
             endCaptures:
-              '1': {name: punctuation.section.arguments.end.nim}
-            name: meta.function-call.arguments.nim
+              '1': {name: punctuation.section.arguments.end.nim_filter}
+            name: meta.function-call.arguments.nim_filter
             patterns:
               - match: '(?x:
                   (?=
@@ -887,27 +887,27 @@ repository:
                   ([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(:))?
                 )'
                 captures:
-                  '1': {name: variable.parameter.nim}
-                  '2': {name: punctuation.separator.key-value.nim}
+                  '1': {name: variable.parameter.nim_filter}
+                  '2': {name: punctuation.separator.key-value.nim_filter}
               - include: '#main'
           - include: '#triplestr_lit'
           - begin: '"'
             beginCaptures:
-              '0': {name: punctuation.definition.string.begin.nim}
+              '0': {name: punctuation.definition.string.begin.nim_filter}
             end: '^(?! *#)|("(?!"))|(\n)'
             endCaptures:
-              '1': {name: punctuation.definition.string.end.nim}
-              '2': {name: invalid.illegal.unclosed-string.nim}
-            name: string.quoted.double.nim
+              '1': {name: punctuation.definition.string.end.nim_filter}
+              '2': {name: invalid.illegal.unclosed-string.nim_filter}
+            name: string.quoted.double.nim_filter
             patterns:
               - match: '""'
-                name: constant.character.escape.nim
+                name: constant.character.escape.nim_filter
 
   types:
     patterns:
       - begin: \btuple(?=\[)
         beginCaptures:
-          '0': {name: storage.type.primitive.nim}
+          '0': {name: storage.type.primitive.nim_filter}
         end: ^(?! *#)|(?=[^\[ ])
         patterns:
           - include: '#generic-param-list'
@@ -916,13 +916,13 @@ repository:
           |cstring[Aa]rray|iterable|lent|open[Aa]rray|owned|ptr|range|ref|se[qt]
           |sink|static|type(?:[Dd]esc)?|varargs)|([A-Z][\dA-Za-z]+))(\[)'
         beginCaptures:
-          '1': {name: storage.type.primitive.nim}
-          '2': {name: support.type.nim}
-          '3': {name: meta.generic.nim punctuation.section.generic.begin.nim}
+          '1': {name: storage.type.primitive.nim_filter}
+          '2': {name: support.type.nim_filter}
+          '3': {name: meta.generic.nim_filter punctuation.section.generic.begin.nim_filter}
         end: '^(?! *#)|]'
         endCaptures:
-          '0': {name: meta.generic.nim punctuation.section.generic.nim}
-        contentName: meta.generic.nim
+          '0': {name: meta.generic.nim_filter punctuation.section.generic.nim_filter}
+        contentName: meta.generic.nim_filter
         patterns:
           - include: '#main'
 
@@ -932,7 +932,7 @@ repository:
   builtins:
     patterns:
       - match: \bresult\b
-        name: variable.language.nim
+        name: variable.language.nim_filter
 
       - match: '\b(?x:
           abs|add(?:[Ee]scapedChar|Float|Int|QuitProc|Quoted)?|alignof|allocCStringArray|arrayWith

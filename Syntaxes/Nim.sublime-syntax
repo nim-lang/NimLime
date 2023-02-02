@@ -570,6 +570,8 @@ contexts:
         - meta_content_scope: meta.string.interpolated.nim string.quoted.double.block.nim
         - match: '{{|}}'
           scope: constant.character.escape.nim
+        - match: '}'
+          scope: invalid.illegal.nim
         - match: '{'
           scope: punctuation.section.interpolation.begin.nim
           push:
@@ -586,6 +588,8 @@ contexts:
           with_prototype:
             - match: '\\{|\\}'
               scope: constant.character.escape.nim
+            - match: '{'
+              scope: invalid.illegal.nim
         - match: '"""(?!")'
           scope: meta.string.interpolated.nim string.quoted.double.block.nim punctuation.definition.string.end.nim
           pop: true
@@ -597,6 +601,8 @@ contexts:
         - meta_content_scope: meta.string.interpolated.nim string.quoted.double.nim
         - match: '{{|}}'
           scope: constant.character.escape.nim
+        - match: '}'
+          scope: invalid.illegal.nim
         - match: '{'
           scope: punctuation.section.interpolation.begin.nim
           push:
@@ -616,6 +622,8 @@ contexts:
           with_prototype:
             - match: '\\{|\\}'
               scope: constant.character.escape.nim
+            - match: '{'
+              scope: invalid.illegal.nim
         - match: '""'
           scope: meta.string.interpolated.nim string.quoted.double.nim constant.character.escape.double-quotes.nim
         - match: \n
@@ -632,6 +640,8 @@ contexts:
         - meta_content_scope: meta.string.interpolated.nim string.quoted.double.nim
         - match: '{{|}}'
           scope: constant.character.escape.nim
+        - match: '}'
+          scope: invalid.illegal.nim
         - match: '{'
           scope: punctuation.section.interpolation.begin.nim
           push:
@@ -655,6 +665,8 @@ contexts:
           with_prototype:
             - match: '\\{|\\}'
               scope: constant.character.escape.nim
+            - match: '{'
+              scope: invalid.illegal.nim
         - match: '{{string_escape_chars}}'
           scope: constant.character.escape.nim
         - match: \\

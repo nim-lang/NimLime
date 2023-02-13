@@ -1,0 +1,223 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: Nim Config
+scopeName: source.nimcfg
+fileTypes: ["nim.cfg"]
+
+patterns:
+  - include: '#comments'
+  - include: '#directives'
+  - include: '#assignements'
+
+
+repository:
+  comments:
+    patterns:
+      - include: '#block-comments'
+      - begin: '(#)(?: *(TODO|todo)\b)?'
+        beginCaptures:
+          '1': {name: punctuation.definition.comment.nimcfg}
+          '2': {name: invalid.deprecated.nimcfg}
+        end: '$\n?'
+        name: comment.line.number-sign.nimcfg
+
+  block-comments:
+      - begin: '#\['
+        beginCaptures:
+          '0': {name: punctuation.definition.comment.begin.nimcfg}
+        end: ']#'
+        endCaptures:
+          '0': {name: punctuation.definition.comment.end.nimcfg}
+        name: comment.block.nimcfg
+        patterns:
+          - include: '#block-comments'
+
+  directives:
+    patterns:
+      - include: '#if-stmt'
+      - match: '(@) *(else)(?: *(:))?'
+        captures:
+          '1': {name: punctuation.definition.keyword.nimcfg}
+          '2': {name: keyword.control.conditional.else.nimcfg}
+          '3': {name: punctuation.section.block.begin.nimcfg}
+      - match: '(@) *(end)'
+        captures:
+          '1': {name: punctuation.definition.keyword.nimcfg}
+          '2': {name: keyword.control.conditional.end.nimcfg}
+      - include: '#env-stmt'
+
+  assignements:
+    patterns:
+      - begin: (--?)?[A-Za-z]\w*
+        beginCaptures:
+          '1': {name: punctuation.definition.variable.nimcfg}
+        end: '(?:(\[)([A-Za-z]\w*)(]))? *(?=:|%?=)|$\n?'
+        endCaptures:
+          '1': {name: punctuation.section.brackets.begin.nimcfg}
+          '2': {name: entity.other.attribute-name.nimcfg}
+          '3': {name: punctuation.section.brackets.end.nimcfg}
+        patterns:
+          - include: '#comments'
+          - match: '(\.)[A-Za-z]\w*'
+            captures:
+              '1': {name: punctuation.accessor.dot.nimcfg}
+      - begin: ':|%?='
+        beginCaptures:
+          '0': {name: punctuation.separator.key-value.nimcfg}
+        end: $\n?
+        patterns:
+          - include: '#comments'
+          - include: '#exprs'
+          - match: '&'
+            name: keyword.operator.nimcfg
+          - match: '[:=]'
+            name: punctuation.separator.key-value.nimcfg
+
+  if-stmt:
+    patterns:
+      - begin: '(@)(?:(elif)|(if))\b'
+        beginCaptures:
+          '1': {name: punctuation.definition.keyword.nimcfg}
+          '2': {name: keyword.control.conditional.elseif.nimcfg}
+          '3': {name: keyword.control.conditional.if.nimcfg}
+        end: '(:)|$'
+        endCaptures:
+          '1': {name: punctuation.section.block.begin.nimcfg}
+        patterns:
+          - include: '#cond-expr'
+
+  cond-expr:
+    patterns:
+      - include: '#groups'
+      - include: '#language-constants'
+      - match: '(?:and|or|not)\b'
+        name: keyword.operator.logical.nimcfg
+      - match: '[A-Za-z]\w*'
+
+  groups:
+    patterns:
+      - begin: '\('
+        beginCaptures:
+          '0': {name: punctuation.section.group.begin.nimcfg}
+        end: '\)'
+        name: meta.group.nimcfg
+        endCaptures:
+          '0': {name: punctuation.section.group.end.nimcfg}
+        patterns:
+          - include: '#cond-expr'
+
+  env-stmt:
+    patterns:
+      - begin: '(@) *((?:put|append|prepend)[Ee]nv|write)\b'
+        beginCaptures:
+          '1': {name: punctuation.definition.keyword.nimcfg}
+          '2': {name: keyword.other.nimcfg}
+        end: '$\n?'
+        patterns:
+          - include: '#exprs'
+
+  exprs:
+    patterns:
+      - include: '#str-lits'
+      - include: '#numbers'
+      - include: '#language-constants'
+      - match: '[A-Za-z]\w*'
+        name: string.unquoted.nimcfg
+
+  str-lits:
+    patterns:
+    - include: '#triplestr-lit'
+    - include: '#rstr-lit'
+    - include: '#str-lit'
+
+  triplestr-lit:
+    patterns:
+      - begin: '([Rr])?(""")'
+        beginCaptures:
+          '1': {name: storage.type.nimcfg}
+          '2': {name: string.quoted.triple.nimcfg punctuation.definition.string.begin.nimcfg}
+        end: '"""(?!")'
+        endCaptures:
+          '0': {name: string.quoted.triple.nimcfg punctuation.definition.string.end.nimcfg}
+        contentName: string.quoted.triple.nimcfg
+
+  rstr-lit:
+    patterns:
+      - begin: '([Rr])(")'
+        beginCaptures:
+          '1': {name: storage.type.nimcfg}
+          '2': {name: string.quoted.double.nimcfg punctuation.definition.string.begin.nimcfg}
+        end: '("(?!"))|(\n)'
+        endCaptures:
+          '1': {name: string.quoted.double.nimcfg punctuation.definition.string.end.nimcfg}
+          '2': {name: string.quoted.double.nimcfg invalid.illegal.unclosed-string.nimcfg}
+        contentName: string.quoted.double.nimcfg
+        patterns:
+          - match: '""'
+            name: constant.character.escape.nimcfg
+  
+  str-lit:
+    patterns:
+      - begin: '"'
+        beginCaptures:
+          '0': {name: punctuation.definition.string.begin.nimcfg}
+        end: '(")|(\n)'
+        endCaptures:
+          '1': {name: punctuation.definition.string.end.nimcfg}
+          '2': {name: invalid.illegal.nimcfg}
+        name: string.quoted.double.nimcfg
+        patterns:
+          - match: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
+            name: constant.character.escape.nimcfg
+          - match: \\
+            name: invalid.illegal.lone-escape.nimcfg
+
+  numbers:
+    patterns:
+      - match: '(?x:
+          \b(0[Xx])
+          (\h(?:_?\h)*)
+          (''?[Ii](?:8|16|32|64))?
+        )'
+        captures:
+          '0': {name: meta.number.integer.hexadecimal.nimcfg}
+          '1': {name: constant.numeric.base.nimcfg}
+          '2': {name: constant.numeric.value.nimcfg}
+          '3': {name: constant.numeric.suffix.nimcfg}
+
+      - match: '(?x:
+          \b(0o)
+          ([0-7](?:_?[0-7])*)
+          (''?[Ii](?:8|16|32|64))?
+        )'
+        captures:
+          '0': {name: meta.number.integer.octal.nimcfg}
+          '1': {name: constant.numeric.base.nimcfg}
+          '2': {name: constant.numeric.value.nimcfg}
+          '3': {name: constant.numeric.suffix.nimcfg}
+
+      - match: '(?x:
+          \b(0[Bb])
+          ([01](?:_?[01])*)
+          (''?[Ii](?:8|16|32|64))?
+        )'
+        captures:
+          '0': {name: meta.number.integer.binary.nimcfg}
+          '1': {name: constant.numeric.base.nimcfg}
+          '2': {name: constant.numeric.value.nimcfg}
+          '3': {name: constant.numeric.suffix.nimcfg}
+
+      - match: '(?x:
+          \b(\d(?:_?\d)*)
+          (''?[Ii](?:8|16|32|64))?
+        )'
+        captures:
+          '0': {name: meta.number.integer.decimal.nimcfg}
+          '1': {name: constant.numeric.value.nimcfg}
+          '2': {name: constant.numeric.suffix.nimcfg}
+
+  language-constants:
+    patterns:
+      - match: '\b(?:true|false|on|off)\b'
+        name: constant.language.boolean.nimcfg
+

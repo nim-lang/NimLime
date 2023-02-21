@@ -1,6 +1,0 @@
-<snippet>
-    <content><![CDATA[macro ${1:name}(${2})${3} = ]]></content>
-    <tabTrigger>macro</tabTrigger>
-    <scope>source.nim</scope>
-    <description>Create a Nim macro</description>
-</snippet>

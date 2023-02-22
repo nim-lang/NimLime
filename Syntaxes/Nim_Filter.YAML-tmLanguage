@@ -238,7 +238,7 @@ repository:
           '1': {name: storage.type.function.nim_filter}
           '2': {name: entity.name.function.nim_filter}
           '3': {name: storage.modifier.nim_filter}
-        end: ^(?! *#)|(:)|(?=[^#\(\[:\s])
+        end: ^(?! *#)|(:)|(?=[^#\(\[:\s]|##)
         endCaptures:
           '1': {name: punctuation.separator.annotation.nim_filter}
         name: meta.function.nim_filter

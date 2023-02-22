@@ -272,6 +272,13 @@ var
 #      ^ entity.name.function.nim
 #        ^ keyword.operator.assignment.nim
 
+proc
+##[ blah
+#^ comment.block.documentation.nim punctuation.definition.comment.begin.nim
+]##
+#^^ comment.block.documentation.nim punctuation.definition.comment.end.nim
+m =
+
 proc m(`in` = 1, b, c: int; `in`=1, in = 1)
 #^^^^^ meta.function.nim
 #^^^ storage.type.function.nim keyword.declaration.function.nim

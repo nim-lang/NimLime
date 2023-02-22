@@ -466,6 +466,11 @@ contexts:
     - include: comments
     - include: else-pop
 
+  no-doc-comment:
+    - match: '(?=##)'
+      pop: true
+    - include: comment
+
   line-comment:
     - match: '(#)(?: *(TODO|todo))?'
       captures:
@@ -922,7 +927,7 @@ contexts:
   routines:
     - match: '(?:proc|func|method|template|macro|iterator|converter)\b'
       scope: storage.type.function.nim keyword.declaration.function.nim
-      push: [routine-0, comment]
+      push: [routine-0, no-doc-comment]
 
   routine-0:
     - meta_scope: meta.function.nim

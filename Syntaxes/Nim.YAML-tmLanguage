@@ -225,7 +225,7 @@ repository:
           '1': {name: storage.type.function.nim}
           '2': {name: entity.name.function.nim}
           '3': {name: storage.modifier.nim}
-        end: (:)|(?=[^#\(\[:\s])
+        end: (:)|(?=[^#\(\[:\s]|##)
         endCaptures:
           '1': {name: punctuation.separator.annotation.nim}
         name: meta.function.nim

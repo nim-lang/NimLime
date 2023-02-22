@@ -1,0 +1,13 @@
+{
+	"scope": "source.nim",
+
+	"completions": [
+		{ "trigger": "proc", "contents": "proc ${1:name}($2)$3 =\n\t" },
+		{ "trigger": "func", "contents": "func ${1:name}($2)$3 =\n\t" },
+		{ "trigger": "iterator", "contents": "iterator ${1:name}($2)$3 =\n\t" },
+		{ "trigger": "template", "contents": "template ${1:name}($2)$3 =\n\t" },
+		{ "trigger": "macro", "contents": "macro ${1:name}($2)$3 =\n\t" },
+		{ "trigger": "converter", "contents": "converter ${1:name}($2)$3 =\n\t" },
+		{ "trigger": "method", "contents": "method ${1:name}($2)$3 =\n\t" }
+	]
+}

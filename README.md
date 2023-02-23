@@ -1,7 +1,7 @@
 NimLime
 =======
 
-Nim Programming Language plugin for Sublime Text 2/3
+Nim Programming Language plugin for Sublime Text
 
 Features
 --------
@@ -21,7 +21,7 @@ Note that the latest version comes directly from the repository, and thus may be
 Thus, it is only recommended for those who wish to either help develop NimLime, or can work around bugs.
 
 * Summon the command palette and select `Package Control: Add repository`
-* Enter the project's URL (https://github.com/Varriount/NimLime)
+* Enter the project's URL (https://github.com/nim-lang/NimLime)
 * Install `NimLime` through Package Control
 
 ### Stable
@@ -54,7 +54,7 @@ Pull requests are welcome! See DEVELOPMENT.md for an overview of NimLime's desig
 
 Clone the repository in your Sublime package directory.
 
-Install the [AAAPackageDev](https://github.com/SublimeText/AAAPackageDev).
+Install the [PackageDev](https://github.com/SublimeText/PackageDev).
 
 Modify the `.YAML-tmLanguage` files and regenerate the `.tmLanguage` files
 by summoning the command palette and selecting the `Convert (YAML, JSON, PLIST) to...`

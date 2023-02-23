@@ -8,6 +8,10 @@
         {
             "cmd": ["nim", "c", "-r", "--verbosity:0", "--hints:off", "$file"],
             "name": "Run"
+        },
+        {
+            "cmd": ["nim", "c", "-r", "-d:danger", "--verbosity:0", "--hints:off", "$file"],
+            "name": "Run: Danger"
         }
     ]
 }

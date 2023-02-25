@@ -1,21 +1,4 @@
 [
-    {"keys": ["f12"], "command": "gotodef", "context":
-    	[
-            { "key": "selector", "operator": "equal", "operand": "source.nim" },
-    	]
-	},
-    {"keys": ["shift+alt+i"], "command": "lookup", "context":
-        [
-            { "key": "selector", "operator": "equal", "operand": "source.nim" },
-        ]
-    },
-    { "keys": ["ctrl+space"], "command": "nim_update_completions", "context":
-        [
-            { "key": "auto_complete_visible" },
-            { "key": "selector", "operator": "equal", "operand": "source.nim" },
-        ]
-    },
-
     // Doc-comment completion
     { "keys": ["enter"], "command": "insert_snippet", "args": {"contents": "\n## $0"}, "context":
         [

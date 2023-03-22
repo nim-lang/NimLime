@@ -2118,7 +2118,7 @@
 							<key>begin</key>
 							<string>(?=\S)</string>
 							<key>end</key>
-							<string>(,)|(?=\S)</string>
+							<string>(,)|(?=\.?})</string>
 							<key>endCaptures</key>
 							<dict>
 								<key>1</key>

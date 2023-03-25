@@ -417,31 +417,31 @@
 					<key>match</key>
 					<string>\b(?x: abs|add(?:[Ee]scapedChar|Float|Int|QuitProc|Quoted)?|alignof|allocCStringArray|arrayWith |ashr|astToStr|assert |atomic(?:AddFetch|AlwaysLockFree|(?:And|Nand|Or|Sub|Xor)Fetch|Clear |(?:Compare)?ExchangeN?|Dec|Fetch(?:A[dn]d|Nand|Or|Sub|Xor)|Inc |IsLockFree|LoadN?|(?:Signal|Thread)Fence|StoreN?|TestAndSet) |card|cas|chr|clamp|close|cmp(?:Mem)?|compile(?:Option|s)|contains|copyMem |cpuRelax|create(?:(?:Shared)?U?|Thread)|cstringArrayToSeq |dealloc(?:CStringArray|Heap|(?:Shared)?(?:Impl)?)|debugEcho|dec |declared(?:InScope)?|deepCopy|default|defined|del(?:ete)?|dispose|doAssert(?:Raises)?|echo|endOfFile |equalMem|excl|failedAssertImpl|field(?:s|Pairs)|find|finished|flushFile|freeShared |GC_(?:collectZct|disable(?:MarkAndSweep)?|fullCollect|getStatistics|(?:un)?ref) |gcInvariant|getAllocStats |get(?:CurrentException(?:Msg)?|File(?:Pos|Size)|Frame(?:State)? |(?:(?:Free|Occupied|Total)(?:Shared)?|Max)Mem|GCFrame|OsFileHandle |StackTrace(?:Entries)?|TypeInfo|ThreadId) |gorge(?:Ex)?|handle|high|incl?|insert|instantiationInfo|internalNew |isNil|isNotForeign|iterToProc|joinThreads?|len|lines|locals|low|max|min |m?(?:items|pairs)|move(?:Mem)? |new(?:Seq(?:OfCap|Uninitialized)?|String(?:OfCap)?|Exception|WideCString)? |onFailedAssert|onThreadDestruction|open|ord|peek|pinToCpu|pop(?:GcFrame)?|pred |prepareMutation|procCall|protect|pushGcFrame|quit|raiseAssert|raw(?:Env|Proc) |ready|read(?:All|Buffer|Bytes|Chars?|File|Lines?) |(?:re)?alloc(?:Shared)?0?(?:Impl)?|recv|repr(?:Discriminant)?|reset |resize(?:Shared)?|runnableExamples |set(?:ControlCHook|CurrentException|FilePos|Frame(?:State)?|GcFrame|Inheritable|Len|StdIoUnbuffered|upForeignThreadGc) |shallow(?:Copy)?|sizeof|slurp|stackTraceAvailable|static(?:Exec|Read)|stdmsg |substr|succ|swap|tearDownForeignThreadGc |to(?:Biggest?(?:Float|Int)|OpenArray(?:Byte)?|U(?:8|16|32))|try(?:Recv|Send) |typeof|unsafe(?:Addr|New)|unsetControlCHook|wasMoved|writeStackTrace |ze(?:64)?|zero(?:Default|Mem)|count(?:down|up)|varargsLen|closureScope |currentSourcePath|disarm|dumpAllocStats|excl|fence|format(?:ErrorIndexBound|FieldDefect) |incl|offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)? )\b</string>
 					<key>name</key>
-					<string>support.function.builtin.expl</string>
+					<string>support.function.builtin.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>`(?:addr|and|div|is(?:not)?|mod|not|of|sh[lr]|x?or|(?:not)?in|=(?:copy|destroy|sink|trace)|\$|%%|[-*+/&lt;]%?=?|&lt;=%|[&amp;=]=?|\.\.|@|\[]=?)`</string>
 					<key>name</key>
-					<string>support.function.builtin.expl</string>
+					<string>support.function.builtin.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?x:any|array|auto|bool|byte |c(?:double|float|u?(?:long(?:long)?|char|int|short)|longdouble|schar |size(?:_t)?|string(?:[Aa]rray)?) |char|float(?:32|64)?|iterable|lent|open[Aa]rray|owned|pointer|ptr|range|ref|se[qt] |sink|static|string|typed?|type[Dd]esc|u?int(?:8|16|32|64)?|untyped|varargs|void)\b</string>
 					<key>name</key>
-					<string>storage.type.primitive.expl</string>
+					<string>storage.type.primitive.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?x:appType|Compile(?:Date|Time)|(?:big|cpu|little)Endian |fm(Append|Read(?:Write(?:Existing)?)?|Write)|fsp(?:Set|Cur|End) |gc(?:Throughput|Responsiveness|Optimize(?:Space|Time))|host(?:CPU|OS) |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on |Quit(?:Failure|Success)|typeOf(?:Iter|Proc))\b</string>
 					<key>name</key>
-					<string>support.constant.builtin.expl</string>
+					<string>support.constant.builtin.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?x: ATOMIC_(?:ACQ_REL|ACQUIRE|CONSUME|RELAXED|RELEASE|SEQ_CST)|errorMessageWriter |(?:global|local)RaiseHook|nimThreadDestructionHandlers|onUnhandledException |outOfMemHook|programResult|std(?:err|out|in)|unhandledExceptionHook )\b</string>
 					<key>name</key>
-					<string>support.variable.builtin.expl</string>
+					<string>support.variable.builtin.nim</string>
 				</dict>
 			</array>
 		</dict>
@@ -665,12 +665,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>entity.name.constant.expl</string>
+							<string>entity.name.constant.nim</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.expl</string>
+							<string>storage.modifier.nim</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -706,12 +706,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>entity.name.constant.expl</string>
+									<string>entity.name.constant.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>storage.modifier.expl</string>
+									<string>storage.modifier.nim</string>
 								</dict>
 							</dict>
 							<key>patterns</key>
@@ -763,12 +763,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>entity.name.constant.expl</string>
+									<string>entity.name.constant.nim</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>storage.modifier.expl</string>
+									<string>storage.modifier.nim</string>
 								</dict>
 							</dict>
 							<key>match</key>
@@ -1316,13 +1316,13 @@
 					<key>match</key>
 					<string>[A-Z](_?[A-Z\d_])+\b</string>
 					<key>name</key>
-					<string>support.constant.expl</string>
+					<string>support.constant.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>[A-Z][\dA-Za-z]+\b</string>
 					<key>name</key>
-					<string>support.type.expl</string>
+					<string>support.type.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
@@ -1378,7 +1378,7 @@
 					<key>match</key>
 					<string>\b(?:addr|cast)\b</string>
 					<key>name</key>
-					<string>keyword.operator.word.expl</string>
+					<string>keyword.operator.word.nim</string>
 				</dict>
 				<dict>
 					<key>begin</key>
@@ -1388,7 +1388,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.begin.expl</string>
+							<string>punctuation.definition.comment.begin.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -1398,29 +1398,29 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.end.expl</string>
+							<string>punctuation.definition.comment.end.nim</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>comment.block.expl</string>
+					<string>comment.block.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?:distinct|discard)\b</string>
 					<key>name</key>
-					<string>keyword.other.expl</string>
+					<string>keyword.other.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?:asm|end|break|continue|raise|return|yield)\b</string>
 					<key>name</key>
-					<string>keyword.control.flow.expl</string>
+					<string>keyword.control.flow.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?:concept|enum|interface)\b</string>
 					<key>name</key>
-					<string>storage.type.expl</string>
+					<string>storage.type.nim</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1428,12 +1428,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.expl</string>
+							<string>storage.type.nim</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.other.expl</string>
+							<string>keyword.other.nim</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1443,37 +1443,37 @@
 					<key>match</key>
 					<string>\bwhile\b</string>
 					<key>name</key>
-					<string>keyword.control.loop.while.expl</string>
+					<string>keyword.control.loop.while.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\bcase\b</string>
 					<key>name</key>
-					<string>keyword.control.conditional.switch.expl</string>
+					<string>keyword.control.conditional.switch.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>^ *(of)\b</string>
 					<key>name</key>
-					<string>keyword.control.conditional.case.expl</string>
+					<string>keyword.control.conditional.case.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\bif\b</string>
 					<key>name</key>
-					<string>keyword.control.conditional.if.expl</string>
+					<string>keyword.control.conditional.if.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\bwhen\b</string>
 					<key>name</key>
-					<string>keyword.control.conditional.when.expl</string>
+					<string>keyword.control.conditional.when.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\belif\b</string>
 					<key>name</key>
-					<string>keyword.control.conditional.elseif.expl</string>
+					<string>keyword.control.conditional.elseif.nim</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1481,17 +1481,17 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.statement.conditional.else.expl</string>
+							<string>meta.statement.conditional.else.nim</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.conditional.else.expl</string>
+							<string>keyword.control.conditional.else.nim</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.conditional.else.expl</string>
+							<string>punctuation.section.block.conditional.else.nim</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1503,17 +1503,17 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.statement.exception.try.expl</string>
+							<string>meta.statement.exception.try.nim</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.exception.try.expl</string>
+							<string>keyword.control.exception.try.nim</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.exception.expl</string>
+							<string>punctuation.section.block.exception.nim</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1525,17 +1525,17 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.statement.exception.finally.expl</string>
+							<string>meta.statement.exception.finally.nim</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.exception.finally.expl</string>
+							<string>keyword.control.exception.finally.nim</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.exception.finally.expl</string>
+							<string>punctuation.section.block.exception.finally.nim</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1547,12 +1547,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.flow.defer.expl</string>
+							<string>keyword.control.flow.defer.nim</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.begin.expl</string>
+							<string>punctuation.section.block.begin.nim</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1564,12 +1564,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.declaration.block.expl</string>
+							<string>keyword.declaration.block.nim</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.begin.expl</string>
+							<string>punctuation.section.block.begin.nim</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1579,19 +1579,19 @@
 					<key>match</key>
 					<string>\b(?:as|(?:ex|im)port|include|bind|mixin|from|except)\b</string>
 					<key>name</key>
-					<string>keyword.control.expl</string>
+					<string>keyword.control.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?:const|let|using)\b</string>
 					<key>name</key>
-					<string>storage.modifier.expl keyword.declaration.expl</string>
+					<string>storage.modifier.nim keyword.declaration.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\bvar\b</string>
 					<key>name</key>
-					<string>storage.modifier.expl</string>
+					<string>storage.modifier.nim</string>
 				</dict>
 			</array>
 		</dict>
@@ -2635,7 +2635,7 @@
 					<key>match</key>
 					<string>\b(?:out|tuple|ref|ptr)\b</string>
 					<key>name</key>
-					<string>storage.type.primitive.expl</string>
+					<string>storage.type.primitive.nim</string>
 				</dict>
 			</array>
 		</dict>
@@ -2754,12 +2754,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>variable.other.expl</string>
+							<string>variable.other.nim</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.expl</string>
+							<string>storage.modifier.nim</string>
 						</dict>
 					</dict>
 					<key>match</key>

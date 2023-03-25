@@ -548,6 +548,8 @@ repository:
     patterns:
       - match: '\b(?:and|not|x?or)\b'
         name: keyword.operator.logical.nim_filter
+      - match: ^of\b
+        name: keyword.control.conditional.case.nim_filter
       - match: '\b(?:of|(?:not)?in|is(?:not)?)\b'
         name: keyword.operator.word.nim_filter
       - match: \bsh[lr]\b

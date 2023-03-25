@@ -1977,6 +1977,12 @@
 				</dict>
 				<dict>
 					<key>match</key>
+					<string>^of\b</string>
+					<key>name</key>
+					<string>keyword.control.conditional.case.nim_filter</string>
+				</dict>
+				<dict>
+					<key>match</key>
 					<string>\b(?:of|(?:not)?in|is(?:not)?)\b</string>
 					<key>name</key>
 					<string>keyword.operator.word.nim_filter</string>

@@ -418,7 +418,7 @@
 							<key>end</key>
 							<string>^(?! *#)|(?=[^`_A-Za-z\x80-\xff])</string>
 							<key>name</key>
-							<string>variable.function.nim_filter</string>
+							<string>entity.name.function.nim_filter</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -493,7 +493,7 @@
 										<key>1</key>
 										<dict>
 											<key>name</key>
-											<string>variable.parameter.nim_filter</string>
+											<string>variable.parameter.function.nim_filter</string>
 										</dict>
 										<key>2</key>
 										<dict>

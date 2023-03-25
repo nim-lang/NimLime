@@ -840,7 +840,7 @@ repository:
         patterns:
           - begin: '(?=[`_A-Za-z\x80-\xff])'
             end: '(?=[^`_A-Za-z\x80-\xff])'
-            name: variable.function.nim
+            name: entity.name.function.nim
             patterns:
               - include: '#builtins'
               - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
@@ -877,7 +877,7 @@ repository:
                   ([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(:))?
                 )'
                 captures:
-                  '1': {name: variable.parameter.nim}
+                  '1': {name: variable.parameter.function.nim}
                   '2': {name: punctuation.separator.key-value.nim}
               - include: $self
           - include: '#triplestr_lit'

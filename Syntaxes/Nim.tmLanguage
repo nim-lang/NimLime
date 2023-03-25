@@ -462,7 +462,7 @@
 							<key>end</key>
 							<string>(?=[^`_A-Za-z\x80-\xff])</string>
 							<key>name</key>
-							<string>variable.function.nim</string>
+							<string>entity.name.function.nim</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -537,7 +537,7 @@
 										<key>1</key>
 										<dict>
 											<key>name</key>
-											<string>variable.parameter.nim</string>
+											<string>variable.parameter.function.nim</string>
 										</dict>
 										<key>2</key>
 										<dict>

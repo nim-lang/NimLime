@@ -518,7 +518,7 @@ repository:
             name: entity.other.attribute-name.pragma.nim
           - include: '#square-brackets'
           - begin: (?=\S)
-            end: '(,)|(?=\S)'
+            end: '(,)|(?=\.?})'
             endCaptures:
               '1': {name: punctuation.separator.sequence.nim}
             patterns:

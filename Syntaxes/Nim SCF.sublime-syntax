@@ -2,7 +2,7 @@
 ---
 version: 2
 name: Nim Source Code Filter
-scope: source.nim_filter
+scope: source.nimscf
 file_extensions: [nimf]
 
 contexts:
@@ -11,8 +11,8 @@ contexts:
       push:
         - match: '(end) (proc|func|method|template|macro|iterator|converter)\b'
           captures:
-            1: keyword.control.flow.nimf
-            2: keyword.declaration.function.nimf
+            1: keyword.control.flow.nimscf
+            2: keyword.declaration.function.nimscf
         - include: scope:source.nim
       with_prototype:
         - match: '^ *#'

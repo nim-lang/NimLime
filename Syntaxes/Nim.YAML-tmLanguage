@@ -392,8 +392,8 @@ repository:
           '1': {name: storage.modifier.nim}
         end: '([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])'
         endCaptures:
-          '1': {name: entity.name.constant.expl}
-          '2': {name: storage.modifier.expl}
+          '1': {name: entity.name.constant.nim}
+          '2': {name: storage.modifier.nim}
         patterns:
           - include: '#const-name'
 
@@ -405,8 +405,8 @@ repository:
           - begin: '^  (?=[A-Za-z\x80-\xff]|\(|`|_\b)'
             end: '([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])'
             endCaptures:
-              '1': {name: entity.name.constant.expl}
-              '2': {name: storage.modifier.expl}
+              '1': {name: entity.name.constant.nim}
+              '2': {name: storage.modifier.nim}
             patterns:
               - include: '#const-name'
           - include: $self
@@ -422,8 +422,8 @@ repository:
         patterns:
           - match: '([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?'
             captures:
-              '1': {name: entity.name.constant.expl}
-              '2': {name: storage.modifier.expl}
+              '1': {name: entity.name.constant.nim}
+              '2': {name: storage.modifier.nim}
           - match: ','
             name: punctuation.separator.nim
           - include: '#pragmas'
@@ -467,8 +467,8 @@ repository:
     patterns:
       - match: '([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?'
         captures:
-          '1': {name: variable.other.expl}
-          '2': {name: storage.modifier.expl}
+          '1': {name: variable.other.nim}
+          '2': {name: storage.modifier.nim}
       - match: ','
         name: punctuation.separator.nim
       - include: '#pragmas'
@@ -535,6 +535,8 @@ repository:
     patterns:
       - match: '\b(?:and|not|x?or)\b'
         name: keyword.operator.logical.nim
+      - match: ^of\b
+        name: keyword.control.conditional.case.nim
       - match: '\b(?:of|(?:not)?in|is(?:not)?)\b'
         name: keyword.operator.word.nim
       - match: \bsh[lr]\b
@@ -721,84 +723,84 @@ repository:
   keywords:
     patterns:
       - match: '\b(?:addr|cast)\b'
-        name: keyword.operator.word.expl
+        name: keyword.operator.word.nim
 
       - begin: \bdiscard +"""
         beginCaptures:
-          '0': {name: punctuation.definition.comment.begin.expl}
+          '0': {name: punctuation.definition.comment.begin.nim}
         end: '"""(?!")'
         endCaptures:
-          '0': {name: punctuation.definition.comment.end.expl}
-        name: comment.block.expl
+          '0': {name: punctuation.definition.comment.end.nim}
+        name: comment.block.nim
 
       - match: '\b(?:distinct|discard)\b'
-        name: keyword.other.expl
+        name: keyword.other.nim
 
       - match: '\b(?:asm|end|break|continue|raise|return|yield)\b'
-        name: keyword.control.flow.expl
+        name: keyword.control.flow.nim
 
       - match: \b(?:concept|enum|interface)\b
-        name: storage.type.expl
+        name: storage.type.nim
 
       - match: '\b(object)\b(?: *(of)\b)?'
         captures:
-          '1': {name: storage.type.expl}
-          '2': {name: keyword.other.expl}
+          '1': {name: storage.type.nim}
+          '2': {name: keyword.other.nim}
 
       - match: '\bwhile\b'
-        name: keyword.control.loop.while.expl
+        name: keyword.control.loop.while.nim
 
       - match: '\bcase\b'
-        name: keyword.control.conditional.switch.expl
+        name: keyword.control.conditional.switch.nim
 
       - match: '^ *(of)\b'
-        name: keyword.control.conditional.case.expl
+        name: keyword.control.conditional.case.nim
 
       - match: '\bif\b'
-        name: keyword.control.conditional.if.expl
+        name: keyword.control.conditional.if.nim
 
       - match: '\bwhen\b'
-        name: keyword.control.conditional.when.expl
+        name: keyword.control.conditional.when.nim
 
       - match: '\belif\b'
-        name: keyword.control.conditional.elseif.expl
+        name: keyword.control.conditional.elseif.nim
 
       - match: '\b(else)\b(?: *(:))?'
         captures:
-          '0': {name: meta.statement.conditional.else.expl}
-          '1': {name: keyword.control.conditional.else.expl}
-          '2': {name: punctuation.section.block.conditional.else.expl}
+          '0': {name: meta.statement.conditional.else.nim}
+          '1': {name: keyword.control.conditional.else.nim}
+          '2': {name: punctuation.section.block.conditional.else.nim}
 
       - match: '\b(try)\b(?: *(:))?'
         captures:
-          '0': {name: meta.statement.exception.try.expl}
-          '1': {name: keyword.control.exception.try.expl}
-          '2': {name: punctuation.section.block.exception.expl}
+          '0': {name: meta.statement.exception.try.nim}
+          '1': {name: keyword.control.exception.try.nim}
+          '2': {name: punctuation.section.block.exception.nim}
 
       - match: '\b(finally)\b(?: *(:))?'
         captures:
-          '0': {name: meta.statement.exception.finally.expl}
-          '1': {name: keyword.control.exception.finally.expl}
-          '2': {name: punctuation.section.block.exception.finally.expl}
+          '0': {name: meta.statement.exception.finally.nim}
+          '1': {name: keyword.control.exception.finally.nim}
+          '2': {name: punctuation.section.block.exception.finally.nim}
 
       - match: '\b(defer)\b(?: *(:))?'
         captures:
-          '1': {name: keyword.control.flow.defer.expl}
-          '2': {name: punctuation.section.block.begin.expl}
+          '1': {name: keyword.control.flow.defer.nim}
+          '2': {name: punctuation.section.block.begin.nim}
 
       - match: '\b(block)\b(?:(?: *(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`))? *(:))?'
         captures:
-          '1': {name: keyword.declaration.block.expl}
-          '2': {name: punctuation.section.block.begin.expl}
+          '1': {name: keyword.declaration.block.nim}
+          '2': {name: punctuation.section.block.begin.nim}
 
       - match: '\b(?:as|(?:ex|im)port|include|bind|mixin|from|except)\b'
-        name: keyword.control.expl
+        name: keyword.control.nim
 
       - match: '\b(?:const|let|using)\b'
-        name: storage.modifier.expl keyword.declaration.expl
+        name: storage.modifier.nim keyword.declaration.nim
 
       - match: \bvar\b
-        name: storage.modifier.expl
+        name: storage.modifier.nim
 
   do-stmts:
     patterns:
@@ -917,7 +919,7 @@ repository:
           - include: $self
 
       - match: \b(?:out|tuple|ref|ptr)\b
-        name: storage.type.primitive.expl
+        name: storage.type.primitive.nim
 
   builtins:
     patterns:
@@ -958,36 +960,36 @@ repository:
           |currentSourcePath|disarm|dumpAllocStats|excl|fence|format(?:ErrorIndexBound|FieldDefect)
           |incl|offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)?
         )\b'
-        name: support.function.builtin.expl
+        name: support.function.builtin.nim
 
       - match: '`(?:addr|and|div|is(?:not)?|mod|not|of|sh[lr]|x?or|(?:not)?in|=(?:copy|destroy|sink|trace)|\$|%%|[-*+/<]%?=?|<=%|[&=]=?|\.\.|@|\[]=?)`'
-        name: support.function.builtin.expl
+        name: support.function.builtin.nim
 
       - match: '\b(?x:any|array|auto|bool|byte
           |c(?:double|float|u?(?:long(?:long)?|char|int|short)|longdouble|schar
             |size(?:_t)?|string(?:[Aa]rray)?)
           |char|float(?:32|64)?|iterable|lent|open[Aa]rray|owned|pointer|ptr|range|ref|se[qt]
           |sink|static|string|typed?|type[Dd]esc|u?int(?:8|16|32|64)?|untyped|varargs|void)\b'
-        name: storage.type.primitive.expl
+        name: storage.type.primitive.nim
 
       - match: '\b(?x:appType|Compile(?:Date|Time)|(?:big|cpu|little)Endian
           |fm(Append|Read(?:Write(?:Existing)?)?|Write)|fsp(?:Set|Cur|End)
           |gc(?:Throughput|Responsiveness|Optimize(?:Space|Time))|host(?:CPU|OS)
           |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on
           |Quit(?:Failure|Success)|typeOf(?:Iter|Proc))\b'
-        name: support.constant.builtin.expl
+        name: support.constant.builtin.nim
 
       - match: '\b(?x:
           ATOMIC_(?:ACQ_REL|ACQUIRE|CONSUME|RELAXED|RELEASE|SEQ_CST)|errorMessageWriter
           |(?:global|local)RaiseHook|nimThreadDestructionHandlers|onUnhandledException
           |outOfMemHook|programResult|std(?:err|out|in)|unhandledExceptionHook
           )\b'
-        name: support.variable.builtin.expl
+        name: support.variable.builtin.nim
 
   generic-symbols:
     patterns:
       - match: '[A-Z](_?[A-Z\d_])+\b'
-        name: support.constant.expl
+        name: support.constant.nim
       - match: '[A-Z][\dA-Za-z]+\b'
-        name: support.type.expl
+        name: support.type.nim
       - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'

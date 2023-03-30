@@ -645,7 +645,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nimscf keyword.declaration.constant.nimscf</string>
+							<string>storage.modifier.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -1539,13 +1539,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(?:const|let|using)\b</string>
-					<key>name</key>
-					<string>storage.modifier.nimscf keyword.declaration.nimscf</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\bvar\b</string>
+					<string>\b(?:const|let|var|using)\b</string>
 					<key>name</key>
 					<string>storage.modifier.nimscf</string>
 				</dict>
@@ -2569,7 +2563,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.declaration.type.nimscf</string>
+							<string>storage.modifier.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2706,7 +2700,7 @@
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nimscf keyword.declaration.variable.nimscf</string>
+							<string>storage.modifier.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>

@@ -689,7 +689,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim keyword.declaration.constant.nim</string>
+							<string>storage.modifier.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -1583,13 +1583,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(?:const|let|using)\b</string>
-					<key>name</key>
-					<string>storage.modifier.nim keyword.declaration.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\bvar\b</string>
+					<string>\b(?:const|let|var|using)\b</string>
 					<key>name</key>
 					<string>storage.modifier.nim</string>
 				</dict>
@@ -2519,7 +2513,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.declaration.type.nim</string>
+							<string>storage.modifier.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2656,7 +2650,7 @@
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim keyword.declaration.variable.nim</string>
+							<string>storage.modifier.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>

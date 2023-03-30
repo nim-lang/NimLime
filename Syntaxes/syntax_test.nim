@@ -377,3 +377,8 @@ proc m(`in` = 1, b, c: int; `in`=1, in = 1)
 #           ^^^^^^^ string.quoted.double.nim
 #             ^^ constant.character.escape.nim
 #                ^ invalid.illegal.nim
+
+case e
+of A:
+#^ keyword.control.conditional.case.nim
+#   ^ punctuation.section.block.begin.nim

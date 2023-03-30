@@ -23,12 +23,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.nim_filter</string>
+							<string>keyword.control.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.function.nim_filter</string>
+							<string>storage.type.function.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -55,16 +55,16 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.string.nim_filter</string>
+							<string>storage.type.string.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.triple.nim_filter punctuation.definition.string.begin.nim_filter</string>
+							<string>string.quoted.triple.nimscf punctuation.definition.string.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>contentName</key>
-					<string>string.quoted.triple.nim_filter</string>
+					<string>string.quoted.triple.nimscf</string>
 					<key>end</key>
 					<string>^(?! *#)|"""(?!")</string>
 					<key>endCaptures</key>
@@ -72,7 +72,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.triple.nim_filter punctuation.definition.string.end.nim_filter</string>
+							<string>string.quoted.triple.nimscf punctuation.definition.string.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -91,16 +91,16 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.string.nim_filter</string>
+							<string>storage.type.string.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter</string>
+							<string>string.quoted.double.nimscf punctuation.definition.string.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>contentName</key>
-					<string>string.quoted.double.nim_filter</string>
+					<string>string.quoted.double.nimscf</string>
 					<key>end</key>
 					<string>^(?! *#)|(")|(\n)</string>
 					<key>endCaptures</key>
@@ -108,12 +108,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter</string>
+							<string>string.quoted.double.nimscf punctuation.definition.string.begin.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>invalid.illegal.nim_filter</string>
+							<string>invalid.illegal.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -132,7 +132,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.string.begin.nim_filter</string>
+							<string>punctuation.definition.string.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -142,29 +142,29 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter</string>
+							<string>string.quoted.double.nimscf punctuation.definition.string.begin.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>invalid.illegal.nim_filter</string>
+							<string>invalid.illegal.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>string.quoted.double.nim_filter</string>
+					<string>string.quoted.double.nimscf</string>
 					<key>patterns</key>
 					<array>
 						<dict>
 							<key>match</key>
 							<string>\\(?:[ABCEFLNPRTVabceflnprtv"'\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))</string>
 							<key>name</key>
-							<string>constant.character.escape.nim_filter</string>
+							<string>constant.character.escape.nimscf</string>
 						</dict>
 						<dict>
 							<key>match</key>
 							<string>\\</string>
 							<key>name</key>
-							<string>invalid.illegal.lone-escape.nim_filter</string>
+							<string>invalid.illegal.lone-escape.nimscf</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -186,7 +186,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.flow.nim_filter</string>
+							<string>keyword.control.flow.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -221,7 +221,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.begin.nim_filter</string>
+							<string>punctuation.definition.comment.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -231,11 +231,11 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.end.nim_filter</string>
+							<string>punctuation.definition.comment.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>comment.block.number-sign.nim_filter</string>
+					<string>comment.block.number-sign.nimscf</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -262,7 +262,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.begin.nim_filter</string>
+							<string>punctuation.definition.comment.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -272,11 +272,11 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.end.nim_filter</string>
+							<string>punctuation.definition.comment.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>comment.block.documentation.nim_filter</string>
+					<string>comment.block.documentation.nimscf</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -303,7 +303,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.braces.begin.nim_filter</string>
+							<string>punctuation.section.braces.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -313,11 +313,11 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.braces.end.nim_filter</string>
+							<string>punctuation.section.braces.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>meta.braces.nim_filter</string>
+					<string>meta.braces.nimscf</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -334,7 +334,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.parens.begin.nim_filter</string>
+							<string>punctuation.section.parens.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -344,11 +344,11 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.parens.end.nim_filter</string>
+							<string>punctuation.section.parens.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>meta.parens.nim_filter</string>
+					<string>meta.parens.nimscf</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -367,37 +367,37 @@
 					<key>match</key>
 					<string>\bresult\b</string>
 					<key>name</key>
-					<string>variable.language.nim_filter</string>
+					<string>variable.language.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?x: abs|add(?:[Ee]scapedChar|Float|Int|QuitProc|Quoted)?|alignof|allocCStringArray|arrayWith |ashr|astToStr|assert |atomic(?:AddFetch|AlwaysLockFree|(?:And|Nand|Or|Sub|Xor)Fetch|Clear |(?:Compare)?ExchangeN?|Dec|Fetch(?:A[dn]d|Nand|Or|Sub|Xor)|Inc |IsLockFree|LoadN?|(?:Signal|Thread)Fence|StoreN?|TestAndSet) |card|cas|chr|clamp|close|cmp(?:Mem)?|compile(?:Option|s)|contains|copyMem |cpuRelax|create(?:(?:Shared)?U?|Thread)|cstringArrayToSeq |dealloc(?:CStringArray|Heap|(?:Shared)?(?:Impl)?)|debugEcho|dec |declared(?:InScope)?|deepCopy|default|defined|del(?:ete)?|dispose|doAssert(?:Raises)?|echo|endOfFile |equalMem|excl|failedAssertImpl|field(?:s|Pairs)|find|finished|flushFile|freeShared |GC_(?:collectZct|disable(?:MarkAndSweep)?|fullCollect|getStatistics|(?:un)?ref) |gcInvariant|getAllocStats |get(?:CurrentException(?:Msg)?|File(?:Pos|Size)|Frame(?:State)? |(?:(?:Free|Occupied|Total)(?:Shared)?|Max)Mem|GCFrame|OsFileHandle |StackTrace(?:Entries)?|TypeInfo|ThreadId) |gorge(?:Ex)?|handle|high|incl?|insert|instantiationInfo|internalNew |isNil|isNotForeign|iterToProc|joinThreads?|len|lines|locals|low|max|min |m?(?:items|pairs)|move(?:Mem)? |new(?:Seq(?:OfCap|Uninitialized)?|String(?:OfCap)?|Exception|WideCString)? |onFailedAssert|onThreadDestruction|open|ord|peek|pinToCpu|pop(?:GcFrame)?|pred |prepareMutation|procCall|protect|pushGcFrame|quit|raiseAssert|raw(?:Env|Proc) |ready|read(?:All|Buffer|Bytes|Chars?|File|Lines?) |(?:re)?alloc(?:Shared)?0?(?:Impl)?|recv|repr(?:Discriminant)?|reset |resize(?:Shared)?|runnableExamples |set(?:ControlCHook|CurrentException|FilePos|Frame(?:State)?|GcFrame|Inheritable|Len|StdIoUnbuffered|upForeignThreadGc) |shallow(?:Copy)?|sizeof|slurp|stackTraceAvailable|static(?:Exec|Read)|stdmsg |substr|succ|swap|tearDownForeignThreadGc |to(?:Biggest?(?:Float|Int)|OpenArray(?:Byte)?|U(?:8|16|32))|try(?:Recv|Send) |typeof|unsafe(?:Addr|New)|unsetControlCHook|wasMoved|writeStackTrace |ze(?:64)?|zero(?:Default|Mem)|count(?:down|up)|varargsLen|closureScope |currentSourcePath|disarm|dumpAllocStats|excl|fence|format(?:ErrorIndexBound|FieldDefect) |incl|offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)? )\b</string>
 					<key>name</key>
-					<string>support.function.builtin.expl</string>
+					<string>support.function.builtin.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>`(?:addr|and|div|is(?:not)?|mod|not|of|sh[lr]|x?or|(?:not)?in|=(?:copy|destroy|sink|trace)|\$|%%|[-*+/&lt;]%?=?|&lt;=%|[&amp;=]=?|\.\.|@|\[]=?)`</string>
 					<key>name</key>
-					<string>support.function.builtin.expl</string>
+					<string>support.function.builtin.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?x:any|array|auto|bool|byte |c(?:double|float|u?(?:long(?:long)?|char|int|short)|longdouble|schar |size(?:_t)?|string(?:[Aa]rray)?) |char|float(?:32|64)?|iterable|lent|open[Aa]rray|owned|pointer|ptr|range|ref|se[qt] |sink|static|string|typed?|type[Dd]esc|u?int(?:8|16|32|64)?|untyped|varargs|void)\b</string>
 					<key>name</key>
-					<string>storage.type.primitive.expl</string>
+					<string>storage.type.primitive.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?x:appType|Compile(?:Date|Time)|(?:big|cpu|little)Endian |fm(Append|Read(?:Write(?:Existing)?)?|Write)|fsp(?:Set|Cur|End) |gc(?:Throughput|Responsiveness|Optimize(?:Space|Time))|host(?:CPU|OS) |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on |Quit(?:Failure|Success)|typeOf(?:Iter|Proc))\b</string>
 					<key>name</key>
-					<string>support.constant.builtin.expl</string>
+					<string>support.constant.builtin.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?x: ATOMIC_(?:ACQ_REL|ACQUIRE|CONSUME|RELAXED|RELEASE|SEQ_CST)|errorMessageWriter |(?:global|local)RaiseHook|nimThreadDestructionHandlers|onUnhandledException |outOfMemHook|programResult|std(?:err|out|in)|unhandledExceptionHook )\b</string>
 					<key>name</key>
-					<string>support.variable.builtin.expl</string>
+					<string>support.variable.builtin.nimscf</string>
 				</dict>
 			</array>
 		</dict>
@@ -418,7 +418,7 @@
 							<key>end</key>
 							<string>^(?! *#)|(?=[^`_A-Za-z\x80-\xff])</string>
 							<key>name</key>
-							<string>entity.name.function.nim_filter</string>
+							<string>entity.name.function.nimscf</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -439,7 +439,7 @@
 								<key>0</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.generic.begin.nim_filter</string>
+									<string>punctuation.section.generic.begin.nimscf</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -449,11 +449,11 @@
 								<key>0</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.generic.end.nim_filter</string>
+									<string>punctuation.section.generic.end.nimscf</string>
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>meta.function-call.nim_filter meta.generic.nim_filter</string>
+							<string>meta.function-call.nimscf meta.generic.nimscf</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -470,7 +470,7 @@
 								<key>0</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.arguments.begin.nim_filter</string>
+									<string>punctuation.section.arguments.begin.nimscf</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -480,11 +480,11 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.arguments.end.nim_filter</string>
+									<string>punctuation.section.arguments.end.nimscf</string>
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>meta.function-call.arguments.nim_filter</string>
+							<string>meta.function-call.arguments.nimscf</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -493,12 +493,12 @@
 										<key>1</key>
 										<dict>
 											<key>name</key>
-											<string>variable.parameter.function.nim_filter</string>
+											<string>variable.parameter.function.nimscf</string>
 										</dict>
 										<key>2</key>
 										<dict>
 											<key>name</key>
-											<string>punctuation.separator.key-value.nim_filter</string>
+											<string>punctuation.separator.key-value.nimscf</string>
 										</dict>
 									</dict>
 									<key>match</key>
@@ -522,7 +522,7 @@
 								<key>0</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.definition.string.begin.nim_filter</string>
+									<string>punctuation.definition.string.begin.nimscf</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -532,23 +532,23 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.definition.string.end.nim_filter</string>
+									<string>punctuation.definition.string.end.nimscf</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>invalid.illegal.unclosed-string.nim_filter</string>
+									<string>invalid.illegal.unclosed-string.nimscf</string>
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>string.quoted.double.nim_filter</string>
+							<string>string.quoted.double.nimscf</string>
 							<key>patterns</key>
 							<array>
 								<dict>
 									<key>match</key>
 									<string>""</string>
 									<key>name</key>
-									<string>constant.character.escape.nim_filter</string>
+									<string>constant.character.escape.nimscf</string>
 								</dict>
 							</array>
 						</dict>
@@ -566,12 +566,12 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>constant.character.nim_filter</string>
+							<string>constant.character.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.character.escape.nim_filter</string>
+							<string>constant.character.escape.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -581,7 +581,7 @@
 					<key>match</key>
 					<string>'[^']+'</string>
 					<key>name</key>
-					<string>invalid.illegal.nim_filter</string>
+					<string>invalid.illegal.nimscf</string>
 				</dict>
 			</array>
 		</dict>
@@ -611,7 +611,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim_filter</string>
+							<string>storage.modifier.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -621,12 +621,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>entity.name.constant.expl</string>
+							<string>entity.name.constant.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.expl</string>
+							<string>storage.modifier.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -645,7 +645,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim_filter keyword.declaration.constant.nim_filter</string>
+							<string>storage.modifier.nimscf keyword.declaration.constant.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -662,12 +662,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>entity.name.constant.expl</string>
+									<string>entity.name.constant.nimscf</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>storage.modifier.expl</string>
+									<string>storage.modifier.nimscf</string>
 								</dict>
 							</dict>
 							<key>patterns</key>
@@ -698,7 +698,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.parens.begin.nim_filter</string>
+							<string>punctuation.section.parens.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -708,7 +708,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.parens.end.nim_filter</string>
+							<string>punctuation.section.parens.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -719,12 +719,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>entity.name.constant.expl</string>
+									<string>entity.name.constant.nimscf</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>storage.modifier.expl</string>
+									<string>storage.modifier.nimscf</string>
 								</dict>
 							</dict>
 							<key>match</key>
@@ -734,7 +734,7 @@
 							<key>match</key>
 							<string>,</string>
 							<key>name</key>
-							<string>punctuation.separator.nim_filter</string>
+							<string>punctuation.separator.nimscf</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -764,7 +764,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.function.nim_filter</string>
+							<string>storage.type.function.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -774,7 +774,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.separator.annotation.return.nim_filter</string>
+							<string>punctuation.separator.annotation.return.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -813,21 +813,21 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>meta.function-call.nim_filter variable.function.nim_filter</string>
+							<string>meta.function-call.nimscf variable.function.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.operator.nim_filter</string>
+							<string>keyword.operator.nimscf</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.triple.nim_filter punctuation.definition.string.begin.nim_filter</string>
+							<string>string.quoted.triple.nimscf punctuation.definition.string.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>contentName</key>
-					<string>string.quoted.triple.nim_filter</string>
+					<string>string.quoted.triple.nimscf</string>
 					<key>end</key>
 					<string>^(?! *#)|"""(?!")</string>
 					<key>endCaptures</key>
@@ -835,7 +835,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.triple.nim_filter punctuation.definition.string.end.nim_filter</string>
+							<string>string.quoted.triple.nimscf punctuation.definition.string.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -844,7 +844,7 @@
 							<key>match</key>
 							<string>{{|}}</string>
 							<key>name</key>
-							<string>constant.character.escape.nim_filter</string>
+							<string>constant.character.escape.nimscf</string>
 						</dict>
 						<dict>
 							<key>begin</key>
@@ -854,7 +854,7 @@
 								<key>0</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.embedded.begin.nim_filter</string>
+									<string>punctuation.section.embedded.begin.nimscf</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -864,16 +864,16 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>constant.other.format-spec.nim_filter</string>
+									<string>constant.other.format-spec.nimscf</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.embedded.end.nim_filter</string>
+									<string>punctuation.section.embedded.end.nimscf</string>
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>meta.embedded.nim_filter</string>
+							<string>meta.embedded.nimscf</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -892,16 +892,16 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>meta.function-call.nim_filter variable.function.nim_filter</string>
+							<string>meta.function-call.nimscf variable.function.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter</string>
+							<string>string.quoted.double.nimscf punctuation.definition.string.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>contentName</key>
-					<string>string.quoted.triple.nim_filter</string>
+					<string>string.quoted.triple.nimscf</string>
 					<key>end</key>
 					<string>^(?! *#)|("(?!"))|(\n)</string>
 					<key>endCaptures</key>
@@ -909,12 +909,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.nim_filter punctuation.definition.string.end.nim_filter</string>
+							<string>string.quoted.double.nimscf punctuation.definition.string.end.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>invalid.illegal.nim_filter</string>
+							<string>invalid.illegal.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -923,7 +923,7 @@
 							<key>match</key>
 							<string>{{|}}|""</string>
 							<key>name</key>
-							<string>constant.character.escape.nim_filter</string>
+							<string>constant.character.escape.nimscf</string>
 						</dict>
 						<dict>
 							<key>begin</key>
@@ -933,7 +933,7 @@
 								<key>0</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.embedded.begin.nim_filter</string>
+									<string>punctuation.section.embedded.begin.nimscf</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -943,21 +943,21 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>constant.other.format-spec.nim_filter</string>
+									<string>constant.other.format-spec.nimscf</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.embedded.end.nim_filter</string>
+									<string>punctuation.section.embedded.end.nimscf</string>
 								</dict>
 								<key>3</key>
 								<dict>
 									<key>name</key>
-									<string>invalid.illegal.nim_filter</string>
+									<string>invalid.illegal.nimscf</string>
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>meta.embedded.nim_filter</string>
+							<string>meta.embedded.nimscf</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -976,16 +976,16 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.operator.nim_filter</string>
+							<string>keyword.operator.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter</string>
+							<string>string.quoted.double.nimscf punctuation.definition.string.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>contentName</key>
-					<string>string.quoted.double.nim_filter</string>
+					<string>string.quoted.double.nimscf</string>
 					<key>end</key>
 					<string>^(?! *#)|(")|(\n)</string>
 					<key>endCaptures</key>
@@ -993,12 +993,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.nim_filter punctuation.definition.string.end.nim_filter</string>
+							<string>string.quoted.double.nimscf punctuation.definition.string.end.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>invalid.illegal.nim_filter</string>
+							<string>invalid.illegal.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -1007,7 +1007,7 @@
 							<key>match</key>
 							<string>{{|}}</string>
 							<key>name</key>
-							<string>constant.character.escape.nim_filter</string>
+							<string>constant.character.escape.nimscf</string>
 						</dict>
 						<dict>
 							<key>begin</key>
@@ -1017,7 +1017,7 @@
 								<key>0</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.embedded.begin.nim_filter</string>
+									<string>punctuation.section.embedded.begin.nimscf</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1027,34 +1027,34 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>constant.other.format-spec.nim_filter</string>
+									<string>constant.other.format-spec.nimscf</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.embedded.end.nim_filter</string>
+									<string>punctuation.section.embedded.end.nimscf</string>
 								</dict>
 								<key>3</key>
 								<dict>
 									<key>name</key>
-									<string>invalid.illegal.nim_filter</string>
+									<string>invalid.illegal.nimscf</string>
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>meta.embedded.nim_filter</string>
+							<string>meta.embedded.nimscf</string>
 							<key>patterns</key>
 							<array>
 								<dict>
 									<key>match</key>
 									<string>\\(?:[ABCEFLNPRTVabceflnprtv"'\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))</string>
 									<key>name</key>
-									<string>constant.character.escape.nim_filter</string>
+									<string>constant.character.escape.nimscf</string>
 								</dict>
 								<dict>
 									<key>match</key>
 									<string>\\</string>
 									<key>name</key>
-									<string>invalid.illegal.lone-escape.nim_filter</string>
+									<string>invalid.illegal.lone-escape.nimscf</string>
 								</dict>
 								<dict>
 									<key>include</key>
@@ -1066,13 +1066,13 @@
 							<key>match</key>
 							<string>\\(?:[ABCEFLNPRTVabceflnprtv"'\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))</string>
 							<key>name</key>
-							<string>constant.character.escape.nim_filter</string>
+							<string>constant.character.escape.nimscf</string>
 						</dict>
 						<dict>
 							<key>match</key>
 							<string>\\</string>
 							<key>name</key>
-							<string>invalid.illegal.lone-escape.nim_filter</string>
+							<string>invalid.illegal.lone-escape.nimscf</string>
 						</dict>
 					</array>
 				</dict>
@@ -1086,7 +1086,7 @@
 					<key>match</key>
 					<string>,</string>
 					<key>name</key>
-					<string>punctuation.separator.nim_filter</string>
+					<string>punctuation.separator.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
@@ -1114,7 +1114,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.loop.for.nim_filter</string>
+							<string>keyword.control.loop.for.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -1124,7 +1124,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.loop.for.in.nim_filter</string>
+							<string>keyword.control.loop.for.in.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -1137,7 +1137,7 @@
 								<key>0</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.parens.begin.nim_filter</string>
+									<string>punctuation.section.parens.begin.nimscf</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -1147,12 +1147,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.control.loop.for.in.nim_filter</string>
+									<string>keyword.control.loop.for.in.nimscf</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.section.parens.end.nim_filter</string>
+									<string>punctuation.section.parens.end.nimscf</string>
 								</dict>
 							</dict>
 							<key>patterns</key>
@@ -1183,7 +1183,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.generic.begin.nim_filter</string>
+							<string>punctuation.section.generic.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -1193,11 +1193,11 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.generic.end.nim_filter</string>
+							<string>punctuation.section.generic.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>meta.generic.nim_filter</string>
+					<string>meta.generic.nimscf</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -1216,13 +1216,13 @@
 					<key>match</key>
 					<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
 					<key>name</key>
-					<string>variable.parameter.nim_filter</string>
+					<string>variable.parameter.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>[,;]</string>
 					<key>name</key>
-					<string>punctuation.separator.nim_filter</string>
+					<string>punctuation.separator.nimscf</string>
 				</dict>
 				<dict>
 					<key>begin</key>
@@ -1232,12 +1232,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.separator.annotation.nim_filter</string>
+							<string>punctuation.separator.annotation.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.operator.assignment.nim_filter</string>
+							<string>keyword.operator.assignment.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -1247,7 +1247,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.separator.nim_filter</string>
+							<string>punctuation.separator.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -1272,13 +1272,13 @@
 					<key>match</key>
 					<string>[A-Z](_?[A-Z\d_])+\b</string>
 					<key>name</key>
-					<string>support.constant.expl</string>
+					<string>support.constant.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>[A-Z][\dA-Za-z]+\b</string>
 					<key>name</key>
-					<string>support.type.expl</string>
+					<string>support.type.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
@@ -1296,17 +1296,17 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>source.nim_filter.embedded</string>
+							<string>source.nimscf.embedded</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.embedded.begin.nim_filter</string>
+							<string>punctuation.section.embedded.begin.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.embedded.end.nim_filter</string>
+							<string>punctuation.section.embedded.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1322,7 +1322,7 @@
 					<key>match</key>
 					<string>(?x:addr|asm|bind|block|break|case|cast|concept|const|continue|converter |defer|discard|distinct|do|elif|else|end|enum|except|export|finally|for |from|func|if|import|include|interface|iterator|let|macro|method|mixin |object|of|out|proc|ptr|raise|ref|return|static|template|try|tuple|type |using|var|when|while|yield)\b</string>
 					<key>name</key>
-					<string>invalid.illegal.nim_filter</string>
+					<string>invalid.illegal.nimscf</string>
 				</dict>
 			</array>
 		</dict>
@@ -1334,7 +1334,7 @@
 					<key>match</key>
 					<string>\b(?:addr|cast)\b</string>
 					<key>name</key>
-					<string>keyword.operator.word.expl</string>
+					<string>keyword.operator.word.nimscf</string>
 				</dict>
 				<dict>
 					<key>begin</key>
@@ -1344,7 +1344,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.begin.expl</string>
+							<string>punctuation.definition.comment.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -1354,29 +1354,29 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.end.expl</string>
+							<string>punctuation.definition.comment.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>comment.block.expl</string>
+					<string>comment.block.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?:distinct|discard)\b</string>
 					<key>name</key>
-					<string>keyword.other.expl</string>
+					<string>keyword.other.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?:asm|end|break|continue|raise|return|yield)\b</string>
 					<key>name</key>
-					<string>keyword.control.flow.expl</string>
+					<string>keyword.control.flow.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?:concept|enum|interface)\b</string>
 					<key>name</key>
-					<string>storage.type.expl</string>
+					<string>storage.type.nimscf</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1384,12 +1384,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.expl</string>
+							<string>storage.type.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.other.expl</string>
+							<string>keyword.other.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1399,37 +1399,37 @@
 					<key>match</key>
 					<string>\bwhile\b</string>
 					<key>name</key>
-					<string>keyword.control.loop.while.expl</string>
+					<string>keyword.control.loop.while.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\bcase\b</string>
 					<key>name</key>
-					<string>keyword.control.conditional.switch.expl</string>
+					<string>keyword.control.conditional.switch.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>^ *(of)\b</string>
 					<key>name</key>
-					<string>keyword.control.conditional.case.expl</string>
+					<string>keyword.control.conditional.case.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\bif\b</string>
 					<key>name</key>
-					<string>keyword.control.conditional.if.expl</string>
+					<string>keyword.control.conditional.if.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\bwhen\b</string>
 					<key>name</key>
-					<string>keyword.control.conditional.when.expl</string>
+					<string>keyword.control.conditional.when.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\belif\b</string>
 					<key>name</key>
-					<string>keyword.control.conditional.elseif.expl</string>
+					<string>keyword.control.conditional.elseif.nimscf</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1437,17 +1437,17 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.statement.conditional.else.expl</string>
+							<string>meta.statement.conditional.else.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.conditional.else.expl</string>
+							<string>keyword.control.conditional.else.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.conditional.else.expl</string>
+							<string>punctuation.section.block.conditional.else.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1459,17 +1459,17 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.statement.exception.try.expl</string>
+							<string>meta.statement.exception.try.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.exception.try.expl</string>
+							<string>keyword.control.exception.try.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.exception.expl</string>
+							<string>punctuation.section.block.exception.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1481,17 +1481,17 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.statement.exception.finally.expl</string>
+							<string>meta.statement.exception.finally.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.exception.finally.expl</string>
+							<string>keyword.control.exception.finally.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.exception.finally.expl</string>
+							<string>punctuation.section.block.exception.finally.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1503,12 +1503,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.control.flow.defer.expl</string>
+							<string>keyword.control.flow.defer.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.begin.expl</string>
+							<string>punctuation.section.block.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1520,12 +1520,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.declaration.block.expl</string>
+							<string>keyword.declaration.block.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.block.begin.expl</string>
+							<string>punctuation.section.block.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1535,19 +1535,19 @@
 					<key>match</key>
 					<string>\b(?:as|(?:ex|im)port|include|bind|mixin|from|except)\b</string>
 					<key>name</key>
-					<string>keyword.control.expl</string>
+					<string>keyword.control.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?:const|let|using)\b</string>
 					<key>name</key>
-					<string>storage.modifier.expl keyword.declaration.expl</string>
+					<string>storage.modifier.nimscf keyword.declaration.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\bvar\b</string>
 					<key>name</key>
-					<string>storage.modifier.expl</string>
+					<string>storage.modifier.nimscf</string>
 				</dict>
 			</array>
 		</dict>
@@ -1559,7 +1559,7 @@
 					<key>match</key>
 					<string>\b(?:true|false|nil)\b</string>
 					<key>name</key>
-					<string>constant.language.nim_filter</string>
+					<string>constant.language.nimscf</string>
 				</dict>
 			</array>
 		</dict>
@@ -1579,18 +1579,18 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.nim_filter</string>
+							<string>punctuation.definition.comment.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>invalid.deprecated.nim_filter</string>
+							<string>invalid.deprecated.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
 					<string>^(?! *#)|$\n?</string>
 					<key>name</key>
-					<string>comment.line.number-sign.nim_filter</string>
+					<string>comment.line.number-sign.nimscf</string>
 				</dict>
 			</array>
 		</dict>
@@ -1610,13 +1610,13 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.comment.nim_filter</string>
+							<string>punctuation.definition.comment.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
 					<string>^(?! *#)|^(?! *#)|$\n?</string>
 					<key>name</key>
-					<string>comment.line.documentation.nim_filter</string>
+					<string>comment.line.documentation.nimscf</string>
 				</dict>
 			</array>
 		</dict>
@@ -1738,42 +1738,42 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.float.decimal.nim_filter</string>
+							<string>meta.number.float.decimal.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.nim_filter</string>
+							<string>constant.numeric.value.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.nim_filter</string>
+							<string>constant.numeric.value.nimscf</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.separator.decimal.nim_filter</string>
+							<string>punctuation.separator.decimal.nimscf</string>
 						</dict>
 						<key>4</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.exponent.nim_filter</string>
+							<string>constant.numeric.value.exponent.nimscf</string>
 						</dict>
 						<key>5</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.exponent.nim_filter</string>
+							<string>constant.numeric.value.exponent.nimscf</string>
 						</dict>
 						<key>6</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.nim_filter</string>
+							<string>constant.numeric.suffix.nimscf</string>
 						</dict>
 						<key>7</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.nim_filter</string>
+							<string>constant.numeric.suffix.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1785,22 +1785,22 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.float.hexadecimal.nim_filter</string>
+							<string>meta.number.float.hexadecimal.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.base.nim_filter</string>
+							<string>constant.numeric.base.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.nim_filter</string>
+							<string>constant.numeric.value.nimscf</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.nim_filter</string>
+							<string>constant.numeric.suffix.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1812,22 +1812,22 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.float.octal.nim_filter</string>
+							<string>meta.number.float.octal.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.base.nim_filter</string>
+							<string>constant.numeric.base.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.nim_filter</string>
+							<string>constant.numeric.value.nimscf</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.nim_filter</string>
+							<string>constant.numeric.suffix.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1839,22 +1839,22 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.float.binary.nim_filter</string>
+							<string>meta.number.float.binary.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.base.nim_filter</string>
+							<string>constant.numeric.base.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.nim_filter</string>
+							<string>constant.numeric.value.nimscf</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.nim_filter</string>
+							<string>constant.numeric.suffix.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1866,22 +1866,22 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.integer.hexadecimal.nim_filter</string>
+							<string>meta.number.integer.hexadecimal.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.base.nim_filter</string>
+							<string>constant.numeric.base.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.nim_filter</string>
+							<string>constant.numeric.value.nimscf</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.nim_filter</string>
+							<string>constant.numeric.suffix.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1893,22 +1893,22 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.integer.octal.nim_filter</string>
+							<string>meta.number.integer.octal.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.base.nim_filter</string>
+							<string>constant.numeric.base.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.nim_filter</string>
+							<string>constant.numeric.value.nimscf</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.nim_filter</string>
+							<string>constant.numeric.suffix.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1920,22 +1920,22 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.integer.binary.nim_filter</string>
+							<string>meta.number.integer.binary.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.base.nim_filter</string>
+							<string>constant.numeric.base.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.nim_filter</string>
+							<string>constant.numeric.value.nimscf</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.nim_filter</string>
+							<string>constant.numeric.suffix.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1947,17 +1947,17 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.number.integer.decimal.nim_filter</string>
+							<string>meta.number.integer.decimal.nimscf</string>
 						</dict>
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.value.nim_filter</string>
+							<string>constant.numeric.value.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>constant.numeric.suffix.nim_filter</string>
+							<string>constant.numeric.suffix.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -1973,43 +1973,49 @@
 					<key>match</key>
 					<string>\b(?:and|not|x?or)\b</string>
 					<key>name</key>
-					<string>keyword.operator.logical.nim_filter</string>
+					<string>keyword.operator.logical.nimscf</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>^of\b</string>
+					<key>name</key>
+					<string>keyword.control.conditional.case.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?:of|(?:not)?in|is(?:not)?)\b</string>
 					<key>name</key>
-					<string>keyword.operator.word.nim_filter</string>
+					<string>keyword.operator.word.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\bsh[lr]\b</string>
 					<key>name</key>
-					<string>keyword.operator.bitwise.nim_filter</string>
+					<string>keyword.operator.bitwise.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\b(?:div|mod)\b</string>
 					<key>name</key>
-					<string>keyword.operator.arithmetic.nim_filter</string>
+					<string>keyword.operator.arithmetic.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>==|&lt;=?|&gt;=?|!=</string>
 					<key>name</key>
-					<string>keyword.operator.comparison.nim_filter</string>
+					<string>keyword.operator.comparison.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>(?:[-+*/@$&amp;%|^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔][-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]*)?=(?![-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])</string>
 					<key>name</key>
-					<string>keyword.operator.assignment.nim_filter</string>
+					<string>keyword.operator.assignment.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>[-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+</string>
 					<key>name</key>
-					<string>keyword.operator.nim_filter</string>
+					<string>keyword.operator.nimscf</string>
 				</dict>
 			</array>
 		</dict>
@@ -2025,7 +2031,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.parameters.begin.nim_filter</string>
+							<string>punctuation.section.parameters.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2035,7 +2041,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.parameters.end.nim_filter</string>
+							<string>punctuation.section.parameters.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
@@ -2046,13 +2052,13 @@
 							<key>match</key>
 							<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
 							<key>name</key>
-							<string>variable.parameter.nim_filter</string>
+							<string>variable.parameter.nimscf</string>
 						</dict>
 						<dict>
 							<key>match</key>
 							<string>[,;]</string>
 							<key>name</key>
-							<string>punctuation.separator.nim_filter</string>
+							<string>punctuation.separator.nimscf</string>
 						</dict>
 						<dict>
 							<key>begin</key>
@@ -2062,12 +2068,12 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.separator.annotation.nim_filter</string>
+									<string>punctuation.separator.annotation.nimscf</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>keyword.operator.assignment.nim_filter</string>
+									<string>keyword.operator.assignment.nimscf</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -2100,7 +2106,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.pattern.begin.nim_filter</string>
+							<string>punctuation.section.pattern.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2110,11 +2116,11 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.pattern.end.nim_filter</string>
+							<string>punctuation.section.pattern.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>meta.pattern.nim_filter</string>
+					<string>meta.pattern.nimscf</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -2137,7 +2143,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.annotation.begin.nim_filter</string>
+							<string>punctuation.section.annotation.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2147,18 +2153,18 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.annotation.end.nim_filter</string>
+							<string>punctuation.section.annotation.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>meta.annotation.nim_filter</string>
+					<string>meta.annotation.nimscf</string>
 					<key>patterns</key>
 					<array>
 						<dict>
 							<key>match</key>
 							<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
 							<key>name</key>
-							<string>entity.other.attribute-name.pragma.nim_filter</string>
+							<string>entity.other.attribute-name.pragma.nimscf</string>
 						</dict>
 						<dict>
 							<key>include</key>
@@ -2168,13 +2174,13 @@
 							<key>begin</key>
 							<string>(?=\S)</string>
 							<key>end</key>
-							<string>^(?! *#)|(,)|(?=\S)</string>
+							<string>^(?! *#)|(,)|(?=\.?})</string>
 							<key>endCaptures</key>
 							<dict>
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.separator.sequence.nim_filter</string>
+									<string>punctuation.separator.sequence.nimscf</string>
 								</dict>
 							</dict>
 							<key>patterns</key>
@@ -2187,7 +2193,7 @@
 										<key>0</key>
 										<dict>
 											<key>name</key>
-											<string>punctuation.separator.key-value.nim_filter</string>
+											<string>punctuation.separator.key-value.nimscf</string>
 										</dict>
 									</dict>
 									<key>end</key>
@@ -2197,7 +2203,7 @@
 										<key>1</key>
 										<dict>
 											<key>name</key>
-											<string>punctuation.separator.sequence.nim_filter</string>
+											<string>punctuation.separator.sequence.nimscf</string>
 										</dict>
 									</dict>
 									<key>patterns</key>
@@ -2222,25 +2228,25 @@
 					<key>match</key>
 					<string>;</string>
 					<key>name</key>
-					<string>punctuation.terminator.statement.nim_filter</string>
+					<string>punctuation.terminator.statement.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>,</string>
 					<key>name</key>
-					<string>punctuation.separator.nim_filter</string>
+					<string>punctuation.separator.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>:</string>
 					<key>name</key>
-					<string>punctuation.section.block.begin.nim_filter</string>
+					<string>punctuation.section.block.begin.nimscf</string>
 				</dict>
 				<dict>
 					<key>match</key>
 					<string>\.(?![-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])</string>
 					<key>name</key>
-					<string>punctuation.accessor.dot.nim_filter</string>
+					<string>punctuation.accessor.dot.nimscf</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -2248,12 +2254,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim_filter</string>
+							<string>storage.modifier.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.separator.annotation.nim_filter</string>
+							<string>punctuation.separator.annotation.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -2263,7 +2269,7 @@
 					<key>match</key>
 					<string>\)|]|}</string>
 					<key>name</key>
-					<string>invalid.illegal.nim_filter</string>
+					<string>invalid.illegal.nimscf</string>
 				</dict>
 			</array>
 		</dict>
@@ -2279,17 +2285,17 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.function.nim_filter</string>
+							<string>storage.type.function.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>entity.name.function.nim_filter</string>
+							<string>entity.name.function.nimscf</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim_filter</string>
+							<string>storage.modifier.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2299,11 +2305,11 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.separator.annotation.nim_filter</string>
+							<string>punctuation.separator.annotation.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>meta.function.nim_filter</string>
+					<string>meta.function.nimscf</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -2338,16 +2344,16 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.nim_filter</string>
+							<string>storage.type.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.nim_filter punctuation.definition.string.begin.nim_filter</string>
+							<string>string.quoted.double.nimscf punctuation.definition.string.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>contentName</key>
-					<string>string.quoted.double.nim_filter</string>
+					<string>string.quoted.double.nimscf</string>
 					<key>end</key>
 					<string>^(?! *#)|("(?!"))|(\n)</string>
 					<key>endCaptures</key>
@@ -2355,12 +2361,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.nim_filter punctuation.definition.string.end.nim_filter</string>
+							<string>string.quoted.double.nimscf punctuation.definition.string.end.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.double.nim_filter invalid.illegal.unclosed-string.nim_filter</string>
+							<string>string.quoted.double.nimscf invalid.illegal.unclosed-string.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -2369,7 +2375,7 @@
 							<key>match</key>
 							<string>""</string>
 							<key>name</key>
-							<string>constant.character.escape.nim_filter</string>
+							<string>constant.character.escape.nimscf</string>
 						</dict>
 					</array>
 				</dict>
@@ -2387,7 +2393,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.brackets.begin.nim_filter</string>
+							<string>punctuation.section.brackets.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2397,11 +2403,11 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.brackets.end.nim_filter</string>
+							<string>punctuation.section.brackets.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>meta.brackets.nim_filter</string>
+					<string>meta.brackets.nimscf</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -2424,7 +2430,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.string.begin.nim_filter</string>
+							<string>punctuation.definition.string.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2434,29 +2440,29 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.definition.string.end.nim_filter</string>
+							<string>punctuation.definition.string.end.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>invalid.illegal.nim_filter</string>
+							<string>invalid.illegal.nimscf</string>
 						</dict>
 					</dict>
 					<key>name</key>
-					<string>string.quoted.double.nim_filter</string>
+					<string>string.quoted.double.nimscf</string>
 					<key>patterns</key>
 					<array>
 						<dict>
 							<key>match</key>
 							<string>\\(?:[ABCEFLNPRTVabceflnprtv"'\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))</string>
 							<key>name</key>
-							<string>constant.character.escape.nim_filter</string>
+							<string>constant.character.escape.nimscf</string>
 						</dict>
 						<dict>
 							<key>match</key>
 							<string>\\</string>
 							<key>name</key>
-							<string>invalid.illegal.lone-escape.nim_filter</string>
+							<string>invalid.illegal.lone-escape.nimscf</string>
 						</dict>
 					</array>
 				</dict>
@@ -2492,16 +2498,16 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.nim_filter</string>
+							<string>storage.type.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.triple.nim_filter punctuation.definition.string.begin.nim_filter</string>
+							<string>string.quoted.triple.nimscf punctuation.definition.string.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>contentName</key>
-					<string>string.quoted.triple.nim_filter</string>
+					<string>string.quoted.triple.nimscf</string>
 					<key>end</key>
 					<string>^(?! *#)|"""(?!")</string>
 					<key>endCaptures</key>
@@ -2509,7 +2515,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>string.quoted.triple.nim_filter punctuation.definition.string.end.nim_filter</string>
+							<string>string.quoted.triple.nimscf punctuation.definition.string.end.nimscf</string>
 						</dict>
 					</dict>
 				</dict>
@@ -2527,22 +2533,22 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim_filter</string>
+							<string>storage.modifier.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.accessor.dot.nim_filter</string>
+							<string>punctuation.accessor.dot.nimscf</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>entity.name.type.nim_filter</string>
+							<string>entity.name.type.nimscf</string>
 						</dict>
 						<key>4</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim_filter</string>
+							<string>storage.modifier.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2563,7 +2569,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.declaration.type.nim_filter</string>
+							<string>keyword.declaration.type.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2578,17 +2584,17 @@
 								<key>1</key>
 								<dict>
 									<key>name</key>
-									<string>punctuation.accessor.dot.nim_filter</string>
+									<string>punctuation.accessor.dot.nimscf</string>
 								</dict>
 								<key>2</key>
 								<dict>
 									<key>name</key>
-									<string>entity.name.type.nim_filter</string>
+									<string>entity.name.type.nimscf</string>
 								</dict>
 								<key>3</key>
 								<dict>
 									<key>name</key>
-									<string>storage.modifier.nim_filter</string>
+									<string>storage.modifier.nimscf</string>
 								</dict>
 							</dict>
 							<key>end</key>
@@ -2621,7 +2627,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.primitive.nim_filter</string>
+							<string>storage.type.primitive.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2642,21 +2648,21 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.primitive.nim_filter</string>
+							<string>storage.type.primitive.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>support.type.nim_filter</string>
+							<string>support.type.nimscf</string>
 						</dict>
 						<key>3</key>
 						<dict>
 							<key>name</key>
-							<string>meta.generic.nim_filter punctuation.section.generic.begin.nim_filter</string>
+							<string>meta.generic.nimscf punctuation.section.generic.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>contentName</key>
-					<string>meta.generic.nim_filter</string>
+					<string>meta.generic.nimscf</string>
 					<key>end</key>
 					<string>^(?! *#)|]</string>
 					<key>endCaptures</key>
@@ -2664,7 +2670,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>meta.generic.nim_filter punctuation.section.generic.nim_filter</string>
+							<string>meta.generic.nimscf punctuation.section.generic.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -2679,7 +2685,7 @@
 					<key>match</key>
 					<string>\b(?:out|tuple|ref|ptr)\b</string>
 					<key>name</key>
-					<string>storage.type.primitive.expl</string>
+					<string>storage.type.primitive.nimscf</string>
 				</dict>
 			</array>
 		</dict>
@@ -2695,12 +2701,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.terminator.nim_filter</string>
+							<string>punctuation.terminator.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim_filter keyword.declaration.variable.nim_filter</string>
+							<string>storage.modifier.nimscf keyword.declaration.variable.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2721,7 +2727,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>storage.type.nim_filter</string>
+							<string>storage.type.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2761,7 +2767,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.parens.begin.nim_filter</string>
+							<string>punctuation.section.parens.begin.nimscf</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2771,7 +2777,7 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>punctuation.section.parens.end.nim_filter</string>
+							<string>punctuation.section.parens.end.nimscf</string>
 						</dict>
 					</dict>
 					<key>patterns</key>
@@ -2798,12 +2804,12 @@
 						<key>1</key>
 						<dict>
 							<key>name</key>
-							<string>variable.other.expl</string>
+							<string>variable.other.nimscf</string>
 						</dict>
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.expl</string>
+							<string>storage.modifier.nimscf</string>
 						</dict>
 					</dict>
 					<key>match</key>
@@ -2813,7 +2819,7 @@
 					<key>match</key>
 					<string>,</string>
 					<key>name</key>
-					<string>punctuation.separator.nim_filter</string>
+					<string>punctuation.separator.nimscf</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -2831,6 +2837,6 @@
 		</dict>
 	</dict>
 	<key>scopeName</key>
-	<string>source.nim_filter</string>
+	<string>source.nimscf</string>
 </dict>
 </plist>

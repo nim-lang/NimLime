@@ -957,8 +957,8 @@ repository:
           |to(?:Biggest?(?:Float|Int)|OpenArray(?:Byte)?|U(?:8|16|32))|try(?:Recv|Send)
           |typeof|unsafe(?:Addr|New)|unsetControlCHook|wasMoved|writeStackTrace
           |ze(?:64)?|zero(?:Default|Mem)|count(?:down|up)|varargsLen|closureScope
-          |currentSourcePath|disarm|dumpAllocStats|excl|fence|format(?:ErrorIndexBound|FieldDefect)
-          |incl|offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)?
+          |currentSourcePath|disarm|dumpAllocStats|fence|format(?:ErrorIndexBound|FieldDefect)
+          |offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)?
         )\b'
         name: support.function.builtin.nim
 

@@ -47,16 +47,16 @@ variables:
     |dealloc(?:CStringArray|Heap|(?:Shared)?(?:Impl)?)|debugEcho|dec
     |declared(?:InScope)?|deepCopy|default|defined|del(?:ete)?|dispose|doAssert(?:Raises)?|echo|endOfFile
     |equalMem|excl|failedAssertImpl|field(?:s|Pairs)|find|finished|flushFile|freeShared
-    |GC_(?:collectZct|disable(?:MarkAndSweep)?|fullCollect|getStatistics|(?:un)?ref)
+    |GC_(?:collectZct|(?:en|dis)able(?:MarkAndSweep)?|fullCollect|getStatistics|(?:un)?ref)
     |gcInvariant|getAllocStats
     |get(?:CurrentException(?:Msg)?|File(?:Pos|Size)|Frame(?:State)?
-      |(?:(?:Free|Occupied|Total)(?:Shared)?|Max)Mem|GCFrame|OsFileHandle
+      |(?:(?:Free|Occupied|Total)(?:Shared)?|Max)Mem|GcFrame|OsFileHandle
       |StackTrace(?:Entries)?|TypeInfo|ThreadId)
     |gorge(?:Ex)?|handle|high|incl?|insert|instantiationInfo|internalNew
     |isNil|isNotForeign|iterToProc|joinThreads?|len|lines|locals|low|max|min
     |m?(?:items|pairs)|move(?:Mem)?
     |new(?:Seq(?:OfCap|Uninitialized)?|String(?:OfCap)?|Exception|WideCString)?
-    |onFailedAssert|onThreadDestruction|open|ord|peek|pinToCpu|pop(?:GcFrame)?|pred
+    |nimGC_setStackBottom|onFailedAssert|onThreadDestruction|open|ord|peek|pinToCpu|pop(?:GcFrame)?|pred
     |prepareMutation|procCall|protect|pushGcFrame|quit|raiseAssert|raw(?:Env|Proc)
     |ready|read(?:All|Buffer|Bytes|Chars?|File|Lines?)
     |(?:re)?alloc(?:Shared)?0?(?:Impl)?|recv|repr(?:Discriminant)?|reset
@@ -68,7 +68,7 @@ variables:
     |typeof|unsafe(?:Addr|New)|unsetControlCHook|wasMoved|writeStackTrace
     |ze(?:64)?|zero(?:Default|Mem)|count(?:down|up)|varargsLen|closureScope
     |currentSourcePath|disarm|dumpAllocStats|fence|format(?:ErrorIndexBound|FieldDefect)
-    |offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)?
+    nimThreadProcWrapperBody|offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)?
   )'
   float_suffix: '''(?:{{ident}})|(?:[Ff](?:32|64)|[Dd])'
   int_suffix: '''(?:{{ident}})|(?:[IUiu](?:8|16|32|64)|[Uu])'

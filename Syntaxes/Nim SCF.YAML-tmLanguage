@@ -283,15 +283,6 @@ repository:
               - include: '#main'
           - include: '#comments'
 
-  invalid-names:
-    patterns:
-      - match: '(?x:addr|asm|bind|block|break|case|cast|concept|const|continue|converter
-        |defer|discard|distinct|do|elif|else|end|enum|except|export|finally|for
-        |from|func|if|import|include|interface|iterator|let|macro|method|mixin
-        |object|of|out|proc|ptr|raise|ref|return|static|template|try|tuple|type
-        |using|var|when|while|yield)\b'
-        name: invalid.illegal.nimscf
-
   fmt-strs:
     patterns:
       - begin: '(?:(fmt)|(&))(""")'

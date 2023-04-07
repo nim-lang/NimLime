@@ -883,11 +883,13 @@ repository:
                     [ ]*
                     [:=](?![-=+*/<>@$~&%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])
                   )
-                  (?!(?x:addr|asm|bind|block|break|case|cast|concept|const|continue|converter
-                    |defer|discard|distinct|do|elif|else|end|enum|except|export|finally|for
-                    |from|func|if|import|include|interface|iterator|let|macro|method|mixin
-                    |object|of|out|proc|ptr|raise|ref|return|static|template|try|tuple|type
-                    |using|var|when|while|yield)\b
+                  (?!(?x:addr|and|as|asm|bind|block|break|case|cast|concept
+                      |const|continue|converter|defer|discard|distinct|div|do
+                      |elif|else|end|enum|except|export|finally|for|from|func
+                      |if|import|in|include|interface|is|isnot|iterator|let
+                      |macro|method|mixin|mod|nil|not|notin|object|of|or|out
+                      |proc|ptr|raise|ref|return|shl|shr|static|template|try
+                      |tuple|type|using|var|when|while|xor|yield)\b
                   )
                   ([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(:))?
                 )'

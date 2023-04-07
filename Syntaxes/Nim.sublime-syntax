@@ -20,9 +20,9 @@ variables:
   keyws: '(?x:{{disallowed_keyws}}|addr|block|case|cast|do|enum|for|func|if|iterator
     |object|out|proc|ptr|ref|return|static|try|tuple|type|var|when)\b'
   builtin_vars: '(?x:
-    ATOMIC_(?:ACQ_REL|ACQUIRE|CONSUME|RELAXED|RELEASE|SEQ_CST)|errorMessageWriter
+    errorMessageWriter
     |(?:global|local)RaiseHook|nimThreadDestructionHandlers|onUnhandledException
-    |outOfMemHook|programResult|std(?:err|out|in)|unhandledExceptionHook
+    |outOfMemHook|programResult|unhandledExceptionHook
     )'
   generic_builtin_types: '(?x:out|ptr|ref|array|cstring[Aa]rray|iterable|lent
     |open[Aa]rray|owned|ptr|range|ref|se[qt]|sink|static|type(?:desc)?|varargs)'
@@ -31,44 +31,39 @@ variables:
       |size(?:_t)?|string(?:[Aa]rray)?)
     |char|float(?:32|64)?|iterable|lent|open[Aa]rray|owned|pointer|ptr|range|ref|se[qt]
     |sink|static|string|typed?|typedesc|u?int(?:8|16|32|64)?|untyped|varargs|void)'
-  builtin_constants: '(?x:appType|Compile(?:Date|Time)|(?:big|cpu|little)Endian
-    |fm(Append|Read(?:Write(?:Existing)?)?|Write)|fsp(?:Set|Cur|End)
-    |gc(?:Throughput|Responsiveness|Optimize(?:Space|Time))|host(?:CPU|OS)
+  builtin_constants: '(?x:appType|Compile(?:Date|Time)|cpuEndian
+    |host(?:CPU|OS)
     |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on
-    |Quit(?:Failure|Success)|typeOf(?:Iter|Proc))'
+    |Quit(?:Failure|Success))'
   builtin_routines: '(?x:
-    abs|add(?:EscapedChar|Float|Int|QuitProc|Quoted)?|alignof|allocCStringArray|arrayWith
-    |ashr|astToStr|assert
-    |atomic(?:AddFetch|AlwaysLockFree|(?:And|Nand|Or|Sub|Xor)Fetch|Clear
-      |(?:Compare)?ExchangeN?|Dec|Fetch(?:A[dn]d|Nand|Or|Sub|Xor)|Inc
-      |IsLockFree|LoadN?|(?:Signal|Thread)Fence|StoreN?|TestAndSet)
-    |card|cas|chr|clamp|close|cmp(?:Mem)?|compile(?:Option|s)|contains|copyMem
-    |cpuRelax|create(?:(?:Shared)?U?|Thread)|cstringArrayToSeq
+    abs|add(?:EscapedChar|Int|Quoted)?|alignof|allocCStringArray
+    |ashr|astToStr
+    |card|chr|clamp|cmp(?:Mem)?|compile(?:Option|s)|contains|copyMem
+    |create(?:Shared)?U?|cstringArrayToSeq
     |dealloc(?:CStringArray|Heap|(?:Shared)?(?:Impl)?)|debugEcho|dec
-    |declared(?:InScope)?|deepCopy|default|defined|del(?:ete)?|dispose|doAssert(?:Raises)?|echo|endOfFile
-    |equalMem|excl|failedAssertImpl|field(?:s|Pairs)|find|finished|flushFile|freeShared
+    |declared(?:InScope)?|deepCopy|default|defined|del(?:ete)?|dispose|echo
+    |equalMem|excl|field(?:s|Pairs)|find|finished|freeShared
     |GC_(?:collectZct|(?:en|dis)able(?:MarkAndSweep)?|fullCollect|getStatistics|(?:un)?ref)
     |gcInvariant|getAllocStats
-    |get(?:CurrentException(?:Msg)?|File(?:Pos|Size)|Frame(?:State)?
-      |(?:(?:Free|Occupied|Total)(?:Shared)?|Max)Mem|GcFrame|OsFileHandle
-      |StackTrace(?:Entries)?|TypeInfo|ThreadId)
-    |gorge(?:Ex)?|handle|high|incl?|insert|instantiationInfo|internalNew
-    |isNil|isNotForeign|iterToProc|joinThreads?|len|lines|locals|low|max|min
+    |get(?:CurrentException(?:Msg)?|Frame(?:State)?
+      |(?:(?:Free|Occupied|Total)(?:Shared)?|Max)Mem|GcFrame
+      |StackTrace(?:Entries)?|TypeInfo)
+    |gorge(?:Ex)?|high|incl?|insert|instantiationInfo|internalNew
+    |isNil|isNotForeign|iterToProc|len|locals|low|max|min
     |m?(?:items|pairs)|move(?:Mem)?
-    |new(?:Seq(?:OfCap|Uninitialized)?|String(?:OfCap)?|Exception|WideCString)?
-    |nimGC_setStackBottom|onFailedAssert|onThreadDestruction|open|ord|peek|pinToCpu|pop(?:GcFrame)?|pred
-    |prepareMutation|procCall|protect|pushGcFrame|quit|raiseAssert|raw(?:Env|Proc)
-    |ready|read(?:All|Buffer|Bytes|Chars?|File|Lines?)
-    |(?:re)?alloc(?:Shared)?0?(?:Impl)?|recv|repr(?:Discriminant)?|reset
+    |new(?:Seq(?:OfCap|Uninitialized)?|String(?:OfCap)?|Exception)?
+    |nimGC_setStackBottom|onThreadDestruction|ord|pop(?:GcFrame)?|pred
+    |prepareMutation|procCall|protect|pushGcFrame|quit|raw(?:Env|Proc)
+    |(?:re)?alloc(?:Shared)?0?(?:Impl)?|repr(?:Discriminant)?|reset
     |resize(?:Shared)?|runnableExamples
-    |set(?:ControlCHook|CurrentException|FilePos|Frame(?:State)?|GcFrame|Inheritable|Len|StdIoUnbuffered|upForeignThreadGc)
-    |shallow(?:Copy)?|sizeof|slurp|stackTraceAvailable|static(?:Exec|Read)|stdmsg
+    |set(?:ControlCHook|CurrentException|Frame(?:State)?|GcFrame|Len|upForeignThreadGc)
+    |shallow(?:Copy)?|sizeof|slurp|stackTraceAvailable|static(?:Exec|Read)
     |substr|succ|swap|tearDownForeignThreadGc
-    |to(?:Biggest?(?:Float|Int)|OpenArray(?:Byte)?|U(?:8|16|32))|try(?:Recv|Send)
+    |to(?:Biggest?(?:Float|Int)|OpenArray(?:Byte)?)
     |typeof|unsafe(?:Addr|New)|unsetControlCHook|wasMoved|writeStackTrace
-    |ze(?:64)?|zero(?:Default|Mem)|count(?:down|up)|varargsLen|closureScope
-    |currentSourcePath|disarm|dumpAllocStats|fence|format(?:ErrorIndexBound|FieldDefect)
-    nimThreadProcWrapperBody|offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)?
+    |zero(?:Default|Mem)|count(?:down|up)|varargsLen|closureScope
+    |currentSourcePath|disarm|dumpAllocStats|format(?:ErrorIndexBound|FieldDefect)
+    |nimThreadProcWrapperBody|offsetOf|once|rangeCheck|(?:un)?likely|unown
   )'
   float_suffix: '''(?:{{ident}})|(?:[Ff](?:32|64)|[Dd])'
   int_suffix: '''(?:{{ident}})|(?:[IUiu](?:8|16|32|64)|[Uu])'

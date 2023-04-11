@@ -372,7 +372,7 @@ repository:
 
       - begin: ^type\b
         beginCaptures:
-          '0': {name: keyword.declaration.type.nim}
+          '0': {name: storage.modifier.nim}
         end: ^(?!  |$)
         patterns:
           - begin: '^  (?:(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) *(\.))?([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?'
@@ -399,7 +399,7 @@ repository:
 
       - begin: ^const\b
         beginCaptures:
-          '0': {name: storage.modifier.nim keyword.declaration.constant.nim}
+          '0': {name: storage.modifier.nim}
         end: ^(?!  |$)
         patterns:
           - begin: '^  (?=[A-Za-z\x80-\xff]|\(|`|_\b)'
@@ -435,7 +435,7 @@ repository:
       - begin: '(?:^|(;)) *(var|let|using) +(?=[\(`A-Za-z\x80-\xff]|_\b)'
         beginCaptures:
           '1': {name: punctuation.terminator.nim}
-          '2': {name: storage.modifier.nim keyword.declaration.variable.nim}
+          '2': {name: storage.modifier.nim}
         end: '(?=[^\({_`,#A-Za-z\x80-\xff\s])'
         patterns:
           - include: '#var-name'
@@ -796,10 +796,7 @@ repository:
       - match: '\b(?:as|(?:ex|im)port|include|bind|mixin|from|except)\b'
         name: keyword.control.nim
 
-      - match: '\b(?:const|let|using)\b'
-        name: storage.modifier.nim keyword.declaration.nim
-
-      - match: \bvar\b
+      - match: '\b(?:const|let|var|using)\b'
         name: storage.modifier.nim
 
   do-stmts:
@@ -842,7 +839,7 @@ repository:
         patterns:
           - begin: '(?=[`_A-Za-z\x80-\xff])'
             end: '(?=[^`_A-Za-z\x80-\xff])'
-            name: variable.function.nim
+            name: entity.name.function.nim
             patterns:
               - include: '#builtins'
               - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
@@ -879,7 +876,7 @@ repository:
                   ([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(:))?
                 )'
                 captures:
-                  '1': {name: variable.parameter.nim}
+                  '1': {name: variable.parameter.function.nim}
                   '2': {name: punctuation.separator.key-value.nim}
               - include: $self
           - include: '#triplestr_lit'

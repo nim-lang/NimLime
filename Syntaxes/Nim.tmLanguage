@@ -462,7 +462,7 @@
 							<key>end</key>
 							<string>(?=[^`_A-Za-z\x80-\xff])</string>
 							<key>name</key>
-							<string>variable.function.nim</string>
+							<string>entity.name.function.nim</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -537,7 +537,7 @@
 										<key>1</key>
 										<dict>
 											<key>name</key>
-											<string>variable.parameter.nim</string>
+											<string>variable.parameter.function.nim</string>
 										</dict>
 										<key>2</key>
 										<dict>
@@ -689,7 +689,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim keyword.declaration.constant.nim</string>
+							<string>storage.modifier.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -1583,13 +1583,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(?:const|let|using)\b</string>
-					<key>name</key>
-					<string>storage.modifier.nim keyword.declaration.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\bvar\b</string>
+					<string>\b(?:const|let|var|using)\b</string>
 					<key>name</key>
 					<string>storage.modifier.nim</string>
 				</dict>
@@ -2519,7 +2513,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.declaration.type.nim</string>
+							<string>storage.modifier.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2656,7 +2650,7 @@
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim keyword.declaration.variable.nim</string>
+							<string>storage.modifier.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>

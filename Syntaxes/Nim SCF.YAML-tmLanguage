@@ -385,7 +385,7 @@ repository:
 
       - begin: ^type\b
         beginCaptures:
-          '0': {name: keyword.declaration.type.nimscf}
+          '0': {name: storage.modifier.nimscf}
         end: ^(?! *#)|^(?!  |$)
         patterns:
           - begin: '^  (?:(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) *(\.))?([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?'
@@ -412,7 +412,7 @@ repository:
 
       - begin: ^const\b
         beginCaptures:
-          '0': {name: storage.modifier.nimscf keyword.declaration.constant.nimscf}
+          '0': {name: storage.modifier.nimscf}
         end: ^(?! *#)|^(?!  |$)
         patterns:
           - begin: '^  (?=[A-Za-z\x80-\xff]|\(|`|_\b)'
@@ -448,7 +448,7 @@ repository:
       - begin: '(?:^|(;)) *(var|let|using) +(?=[\(`A-Za-z\x80-\xff]|_\b)'
         beginCaptures:
           '1': {name: punctuation.terminator.nimscf}
-          '2': {name: storage.modifier.nimscf keyword.declaration.variable.nimscf}
+          '2': {name: storage.modifier.nimscf}
         end: '^(?! *#)|(?=[^\({_`,#A-Za-z\x80-\xff\s])'
         patterns:
           - include: '#var-name'
@@ -809,10 +809,7 @@ repository:
       - match: '\b(?:as|(?:ex|im)port|include|bind|mixin|from|except)\b'
         name: keyword.control.nimscf
 
-      - match: '\b(?:const|let|using)\b'
-        name: storage.modifier.nimscf keyword.declaration.nimscf
-
-      - match: \bvar\b
+      - match: '\b(?:const|let|var|using)\b'
         name: storage.modifier.nimscf
 
   do-stmts:
@@ -855,7 +852,7 @@ repository:
         patterns:
           - begin: '(?=[`_A-Za-z\x80-\xff])'
             end: '^(?! *#)|(?=[^`_A-Za-z\x80-\xff])'
-            name: variable.function.nimscf
+            name: entity.name.function.nimscf
             patterns:
               - include: '#builtins'
               - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
@@ -892,7 +889,7 @@ repository:
                   ([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(:))?
                 )'
                 captures:
-                  '1': {name: variable.parameter.nimscf}
+                  '1': {name: variable.parameter.function.nimscf}
                   '2': {name: punctuation.separator.key-value.nimscf}
               - include: '#main'
           - include: '#triplestr_lit'

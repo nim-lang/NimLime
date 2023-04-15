@@ -415,33 +415,9 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(?x: abs|add(?:[Ee]scapedChar|Float|Int|QuitProc|Quoted)?|alignof|allocCStringArray|arrayWith |ashr|astToStr|assert |atomic(?:AddFetch|AlwaysLockFree|(?:And|Nand|Or|Sub|Xor)Fetch|Clear |(?:Compare)?ExchangeN?|Dec|Fetch(?:A[dn]d|Nand|Or|Sub|Xor)|Inc |IsLockFree|LoadN?|(?:Signal|Thread)Fence|StoreN?|TestAndSet) |card|cas|chr|clamp|close|cmp(?:Mem)?|compile(?:Option|s)|contains|copyMem |cpuRelax|create(?:(?:Shared)?U?|Thread)|cstringArrayToSeq |dealloc(?:CStringArray|Heap|(?:Shared)?(?:Impl)?)|debugEcho|dec |declared(?:InScope)?|deepCopy|default|defined|del(?:ete)?|dispose|doAssert(?:Raises)?|echo|endOfFile |equalMem|excl|failedAssertImpl|field(?:s|Pairs)|find|finished|flushFile|freeShared |GC_(?:collectZct|disable(?:MarkAndSweep)?|fullCollect|getStatistics|(?:un)?ref) |gcInvariant|getAllocStats |get(?:CurrentException(?:Msg)?|File(?:Pos|Size)|Frame(?:State)? |(?:(?:Free|Occupied|Total)(?:Shared)?|Max)Mem|GCFrame|OsFileHandle |StackTrace(?:Entries)?|TypeInfo|ThreadId) |gorge(?:Ex)?|handle|high|incl?|insert|instantiationInfo|internalNew |isNil|isNotForeign|iterToProc|joinThreads?|len|lines|locals|low|max|min |m?(?:items|pairs)|move(?:Mem)? |new(?:Seq(?:OfCap|Uninitialized)?|String(?:OfCap)?|Exception|WideCString)? |onFailedAssert|onThreadDestruction|open|ord|peek|pinToCpu|pop(?:GcFrame)?|pred |prepareMutation|procCall|protect|pushGcFrame|quit|raiseAssert|raw(?:Env|Proc) |ready|read(?:All|Buffer|Bytes|Chars?|File|Lines?) |(?:re)?alloc(?:Shared)?0?(?:Impl)?|recv|repr(?:Discriminant)?|reset |resize(?:Shared)?|runnableExamples |set(?:ControlCHook|CurrentException|FilePos|Frame(?:State)?|GcFrame|Inheritable|Len|StdIoUnbuffered|upForeignThreadGc) |shallow(?:Copy)?|sizeof|slurp|stackTraceAvailable|static(?:Exec|Read)|stdmsg |substr|succ|swap|tearDownForeignThreadGc |to(?:Biggest?(?:Float|Int)|OpenArray(?:Byte)?|U(?:8|16|32))|try(?:Recv|Send) |typeof|unsafe(?:Addr|New)|unsetControlCHook|wasMoved|writeStackTrace |ze(?:64)?|zero(?:Default|Mem)|count(?:down|up)|varargsLen|closureScope |currentSourcePath|disarm|dumpAllocStats|fence|format(?:ErrorIndexBound|FieldDefect) |offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)? )\b</string>
-					<key>name</key>
-					<string>support.function.builtin.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>`(?:addr|and|div|is(?:not)?|mod|not|of|sh[lr]|x?or|(?:not)?in|=(?:copy|destroy|sink|trace)|\$|%%|[-*+/&lt;]%?=?|&lt;=%|[&amp;=]=?|\.\.|@|\[]=?)`</string>
-					<key>name</key>
-					<string>support.function.builtin.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
 					<string>\b(?x:any|array|auto|bool|byte |c(?:double|float|u?(?:long(?:long)?|char|int|short)|longdouble|schar |size(?:_t)?|string(?:[Aa]rray)?) |char|float(?:32|64)?|iterable|lent|open[Aa]rray|owned|pointer|ptr|range|ref|se[qt] |sink|static|string|typed?|type[Dd]esc|u?int(?:8|16|32|64)?|untyped|varargs|void)\b</string>
 					<key>name</key>
 					<string>storage.type.primitive.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\b(?x:appType|Compile(?:Date|Time)|(?:big|cpu|little)Endian |fm(Append|Read(?:Write(?:Existing)?)?|Write)|fsp(?:Set|Cur|End) |gc(?:Throughput|Responsiveness|Optimize(?:Space|Time))|host(?:CPU|OS) |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on |Quit(?:Failure|Success)|typeOf(?:Iter|Proc))\b</string>
-					<key>name</key>
-					<string>support.constant.builtin.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\b(?x: ATOMIC_(?:ACQ_REL|ACQUIRE|CONSUME|RELAXED|RELEASE|SEQ_CST)|errorMessageWriter |(?:global|local)RaiseHook|nimThreadDestructionHandlers|onUnhandledException |outOfMemHook|programResult|std(?:err|out|in)|unhandledExceptionHook )\b</string>
-					<key>name</key>
-					<string>support.variable.builtin.nim</string>
 				</dict>
 			</array>
 		</dict>
@@ -462,7 +438,7 @@
 							<key>end</key>
 							<string>(?=[^`_A-Za-z\x80-\xff])</string>
 							<key>name</key>
-							<string>variable.function.nim</string>
+							<string>entity.name.function.nim</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -537,7 +513,7 @@
 										<key>1</key>
 										<dict>
 											<key>name</key>
-											<string>variable.parameter.nim</string>
+											<string>variable.parameter.function.nim</string>
 										</dict>
 										<key>2</key>
 										<dict>
@@ -689,7 +665,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim keyword.declaration.constant.nim</string>
+							<string>storage.modifier.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -1571,13 +1547,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(?:const|let|using)\b</string>
-					<key>name</key>
-					<string>storage.modifier.nim keyword.declaration.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\bvar\b</string>
+					<string>\b(?:const|let|var|using)\b</string>
 					<key>name</key>
 					<string>storage.modifier.nim</string>
 				</dict>
@@ -2507,7 +2477,7 @@
 						<key>0</key>
 						<dict>
 							<key>name</key>
-							<string>keyword.declaration.type.nim</string>
+							<string>storage.modifier.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>
@@ -2644,7 +2614,7 @@
 						<key>2</key>
 						<dict>
 							<key>name</key>
-							<string>storage.modifier.nim keyword.declaration.variable.nim</string>
+							<string>storage.modifier.nim</string>
 						</dict>
 					</dict>
 					<key>end</key>

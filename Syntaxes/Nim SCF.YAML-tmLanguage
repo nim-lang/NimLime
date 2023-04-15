@@ -376,7 +376,7 @@ repository:
 
       - begin: ^type\b
         beginCaptures:
-          '0': {name: keyword.declaration.type.nimscf}
+          '0': {name: storage.modifier.nimscf}
         end: ^(?! *#)|^(?!  |$)
         patterns:
           - begin: '^  (?:(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) *(\.))?([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?'
@@ -403,7 +403,7 @@ repository:
 
       - begin: ^const\b
         beginCaptures:
-          '0': {name: storage.modifier.nimscf keyword.declaration.constant.nimscf}
+          '0': {name: storage.modifier.nimscf}
         end: ^(?! *#)|^(?!  |$)
         patterns:
           - begin: '^  (?=[A-Za-z\x80-\xff]|\(|`|_\b)'
@@ -439,7 +439,7 @@ repository:
       - begin: '(?:^|(;)) *(var|let|using) +(?=[\(`A-Za-z\x80-\xff]|_\b)'
         beginCaptures:
           '1': {name: punctuation.terminator.nimscf}
-          '2': {name: storage.modifier.nimscf keyword.declaration.variable.nimscf}
+          '2': {name: storage.modifier.nimscf}
         end: '^(?! *#)|(?=[^\({_`,#A-Za-z\x80-\xff\s])'
         patterns:
           - include: '#var-name'
@@ -800,10 +800,7 @@ repository:
       - match: '\b(?:as|(?:ex|im)port|include|bind|mixin|from|except)\b'
         name: keyword.control.nimscf
 
-      - match: '\b(?:const|let|using)\b'
-        name: storage.modifier.nimscf keyword.declaration.nimscf
-
-      - match: \bvar\b
+      - match: '\b(?:const|let|var|using)\b'
         name: storage.modifier.nimscf
 
   do-stmts:
@@ -846,7 +843,7 @@ repository:
         patterns:
           - begin: '(?=[`_A-Za-z\x80-\xff])'
             end: '^(?! *#)|(?=[^`_A-Za-z\x80-\xff])'
-            name: variable.function.nimscf
+            name: entity.name.function.nimscf
             patterns:
               - include: '#builtins'
               - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
@@ -885,7 +882,7 @@ repository:
                   ([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(:))?
                 )'
                 captures:
-                  '1': {name: variable.parameter.nimscf}
+                  '1': {name: variable.parameter.function.nimscf}
                   '2': {name: punctuation.separator.key-value.nimscf}
               - include: '#main'
           - include: '#triplestr_lit'
@@ -932,65 +929,12 @@ repository:
       - match: \bresult\b
         name: variable.language.nimscf
 
-      - match: '\b(?x:
-          abs|add(?:[Ee]scapedChar|Float|Int|QuitProc|Quoted)?|alignof|allocCStringArray|arrayWith
-          |ashr|astToStr|assert
-          |atomic(?:AddFetch|AlwaysLockFree|(?:And|Nand|Or|Sub|Xor)Fetch|Clear
-            |(?:Compare)?ExchangeN?|Dec|Fetch(?:A[dn]d|Nand|Or|Sub|Xor)|Inc
-            |IsLockFree|LoadN?|(?:Signal|Thread)Fence|StoreN?|TestAndSet)
-          |card|cas|chr|clamp|close|cmp(?:Mem)?|compile(?:Option|s)|contains|copyMem
-          |cpuRelax|create(?:(?:Shared)?U?|Thread)|cstringArrayToSeq
-          |dealloc(?:CStringArray|Heap|(?:Shared)?(?:Impl)?)|debugEcho|dec
-          |declared(?:InScope)?|deepCopy|default|defined|del(?:ete)?|dispose|doAssert(?:Raises)?|echo|endOfFile
-          |equalMem|excl|failedAssertImpl|field(?:s|Pairs)|find|finished|flushFile|freeShared
-          |GC_(?:collectZct|disable(?:MarkAndSweep)?|fullCollect|getStatistics|(?:un)?ref)
-          |gcInvariant|getAllocStats
-          |get(?:CurrentException(?:Msg)?|File(?:Pos|Size)|Frame(?:State)?
-            |(?:(?:Free|Occupied|Total)(?:Shared)?|Max)Mem|GCFrame|OsFileHandle
-            |StackTrace(?:Entries)?|TypeInfo|ThreadId)
-          |gorge(?:Ex)?|handle|high|incl?|insert|instantiationInfo|internalNew
-          |isNil|isNotForeign|iterToProc|joinThreads?|len|lines|locals|low|max|min
-          |m?(?:items|pairs)|move(?:Mem)?
-          |new(?:Seq(?:OfCap|Uninitialized)?|String(?:OfCap)?|Exception|WideCString)?
-          |onFailedAssert|onThreadDestruction|open|ord|peek|pinToCpu|pop(?:GcFrame)?|pred
-          |prepareMutation|procCall|protect|pushGcFrame|quit|raiseAssert|raw(?:Env|Proc)
-          |ready|read(?:All|Buffer|Bytes|Chars?|File|Lines?)
-          |(?:re)?alloc(?:Shared)?0?(?:Impl)?|recv|repr(?:Discriminant)?|reset
-          |resize(?:Shared)?|runnableExamples
-          |set(?:ControlCHook|CurrentException|FilePos|Frame(?:State)?|GcFrame|Inheritable|Len|StdIoUnbuffered|upForeignThreadGc)
-          |shallow(?:Copy)?|sizeof|slurp|stackTraceAvailable|static(?:Exec|Read)|stdmsg
-          |substr|succ|swap|tearDownForeignThreadGc
-          |to(?:Biggest?(?:Float|Int)|OpenArray(?:Byte)?|U(?:8|16|32))|try(?:Recv|Send)
-          |typeof|unsafe(?:Addr|New)|unsetControlCHook|wasMoved|writeStackTrace
-          |ze(?:64)?|zero(?:Default|Mem)|count(?:down|up)|varargsLen|closureScope
-          |currentSourcePath|disarm|dumpAllocStats|fence|format(?:ErrorIndexBound|FieldDefect)
-          |offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)?
-        )\b'
-        name: support.function.builtin.nimscf
-
-      - match: '`(?:addr|and|div|is(?:not)?|mod|not|of|sh[lr]|x?or|(?:not)?in|=(?:copy|destroy|sink|trace)|\$|%%|[-*+/<]%?=?|<=%|[&=]=?|\.\.|@|\[]=?)`'
-        name: support.function.builtin.nimscf
-
       - match: '\b(?x:any|array|auto|bool|byte
           |c(?:double|float|u?(?:long(?:long)?|char|int|short)|longdouble|schar
             |size(?:_t)?|string(?:[Aa]rray)?)
           |char|float(?:32|64)?|iterable|lent|open[Aa]rray|owned|pointer|ptr|range|ref|se[qt]
           |sink|static|string|typed?|type[Dd]esc|u?int(?:8|16|32|64)?|untyped|varargs|void)\b'
         name: storage.type.primitive.nimscf
-
-      - match: '\b(?x:appType|Compile(?:Date|Time)|(?:big|cpu|little)Endian
-          |fm(Append|Read(?:Write(?:Existing)?)?|Write)|fsp(?:Set|Cur|End)
-          |gc(?:Throughput|Responsiveness|Optimize(?:Space|Time))|host(?:CPU|OS)
-          |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on
-          |Quit(?:Failure|Success)|typeOf(?:Iter|Proc))\b'
-        name: support.constant.builtin.nimscf
-
-      - match: '\b(?x:
-          ATOMIC_(?:ACQ_REL|ACQUIRE|CONSUME|RELAXED|RELEASE|SEQ_CST)|errorMessageWriter
-          |(?:global|local)RaiseHook|nimThreadDestructionHandlers|onUnhandledException
-          |outOfMemHook|programResult|std(?:err|out|in)|unhandledExceptionHook
-          )\b'
-        name: support.variable.builtin.nimscf
 
   generic-symbols:
     patterns:

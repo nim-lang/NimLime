@@ -382,3 +382,11 @@ case e
 of A:
 #^ keyword.control.conditional.case.nim
 #   ^ punctuation.section.block.begin.nim
+
+Fmt(a: b)
+
+
+tuple[a: n, c]
+
+do (a: b) 
+do -> g

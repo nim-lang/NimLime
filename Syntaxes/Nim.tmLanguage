@@ -14,18 +14,6 @@
 	<array>
 		<dict>
 			<key>include</key>
-			<string>#type-defs</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#const-defs</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#var-let-using-defs</string>
-		</dict>
-		<dict>
-			<key>include</key>
 			<string>#pragmas</string>
 		</dict>
 		<dict>
@@ -508,23 +496,6 @@
 							<key>patterns</key>
 							<array>
 								<dict>
-									<key>captures</key>
-									<dict>
-										<key>1</key>
-										<dict>
-											<key>name</key>
-											<string>variable.parameter.function.nim</string>
-										</dict>
-										<key>2</key>
-										<dict>
-											<key>name</key>
-											<string>punctuation.separator.key-value.nim</string>
-										</dict>
-									</dict>
-									<key>match</key>
-									<string>(?x: (?= (?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) [ ]* [:=](?![-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]) ) (?!(?x:addr|and|as|asm|bind|block|break|case|cast|concept |const|continue|converter|defer|discard|distinct|div|do |elif|else|end|enum|except|export|finally|for|from|func |if|import|in|include|interface|is|isnot|iterator|let |macro|method|mixin|mod|nil|not|notin|object|of|or|out |proc|ptr|raise|ref|return|shl|shr|static|template|try |tuple|type|using|var|when|while|xor|yield)\b ) ([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(:))? )</string>
-								</dict>
-								<dict>
 									<key>include</key>
 									<string>$self</string>
 								</dict>
@@ -616,159 +587,6 @@
 				<dict>
 					<key>include</key>
 					<string>#line-comments</string>
-				</dict>
-			</array>
-		</dict>
-		<key>const-defs</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>\b(const) +(?=[A-Za-z\x80-\xff]|\(|`|_\b)</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>entity.name.constant.nim</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#const-name</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>^const\b</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>^(?!  |$)</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>begin</key>
-							<string>^  (?=[A-Za-z\x80-\xff]|\(|`|_\b)</string>
-							<key>end</key>
-							<string>([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])</string>
-							<key>endCaptures</key>
-							<dict>
-								<key>1</key>
-								<dict>
-									<key>name</key>
-									<string>entity.name.constant.nim</string>
-								</dict>
-								<key>2</key>
-								<dict>
-									<key>name</key>
-									<string>storage.modifier.nim</string>
-								</dict>
-							</dict>
-							<key>patterns</key>
-							<array>
-								<dict>
-									<key>include</key>
-									<string>#const-name</string>
-								</dict>
-							</array>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		<key>const-name</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>\(</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.parens.begin.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(\))|(?=[^{_`,#A-Za-z\x80-\xff\s])</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.parens.end.nim</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>captures</key>
-							<dict>
-								<key>1</key>
-								<dict>
-									<key>name</key>
-									<string>entity.name.constant.nim</string>
-								</dict>
-								<key>2</key>
-								<dict>
-									<key>name</key>
-									<string>storage.modifier.nim</string>
-								</dict>
-							</dict>
-							<key>match</key>
-							<string>([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?</string>
-						</dict>
-						<dict>
-							<key>match</key>
-							<string>,</string>
-							<key>name</key>
-							<string>punctuation.separator.nim</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>#pragmas</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>#doc-comments</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>#comments</string>
-						</dict>
-					</array>
 				</dict>
 			</array>
 		</dict>
@@ -1236,7 +1054,7 @@
 					<key>match</key>
 					<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
 					<key>name</key>
-					<string>variable.parameter.nim</string>
+					<string>variable.parameter.function.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
@@ -1960,7 +1778,7 @@
 							<key>match</key>
 							<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
 							<key>name</key>
-							<string>variable.parameter.nim</string>
+							<string>variable.parameter.function.nim</string>
 						</dict>
 						<dict>
 							<key>match</key>
@@ -2429,125 +2247,10 @@
 				</dict>
 			</array>
 		</dict>
-		<key>type-defs</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>^ *(type) +(?:(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) *(\.))?([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.accessor.dot.nim</string>
-						</dict>
-						<key>3</key>
-						<dict>
-							<key>name</key>
-							<string>entity.name.type.nim</string>
-						</dict>
-						<key>4</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(?=[^\[ ])</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#generic-param-list</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>^type\b</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>^(?!  |$)</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>begin</key>
-							<string>^  (?:(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) *(\.))?([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?</string>
-							<key>beginCaptures</key>
-							<dict>
-								<key>1</key>
-								<dict>
-									<key>name</key>
-									<string>punctuation.accessor.dot.nim</string>
-								</dict>
-								<key>2</key>
-								<dict>
-									<key>name</key>
-									<string>entity.name.type.nim</string>
-								</dict>
-								<key>3</key>
-								<dict>
-									<key>name</key>
-									<string>storage.modifier.nim</string>
-								</dict>
-							</dict>
-							<key>end</key>
-							<string>(?![\[\s])</string>
-							<key>patterns</key>
-							<array>
-								<dict>
-									<key>include</key>
-									<string>#generic-param-list</string>
-								</dict>
-							</array>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
 		<key>types</key>
 		<dict>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>begin</key>
-					<string>\btuple(?=\[)</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>storage.type.primitive.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(?=[^\[ ])</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#generic-param-list</string>
-						</dict>
-					</array>
-				</dict>
 				<dict>
 					<key>begin</key>
 					<string>(?=(?:[A-Za-z](?:_?[\dA-Za-z])*)\[)(?x:(out|ptr|ref|array |cstring[Aa]rray|iterable|lent|open[Aa]rray|owned|ptr|range|ref|se[qt] |sink|static|type(?:[Dd]esc)?|varargs)|([A-Z][\dA-Za-z]+))(\[)</string>
@@ -2594,152 +2297,6 @@
 					<string>\b(?:out|tuple|ref|ptr)\b</string>
 					<key>name</key>
 					<string>storage.type.primitive.nim</string>
-				</dict>
-			</array>
-		</dict>
-		<key>var-let-using-defs</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>(?:^|(;)) *(var|let|using) +(?=[\(`A-Za-z\x80-\xff]|_\b)</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.terminator.nim</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(?=[^\({_`,#A-Za-z\x80-\xff\s])</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#var-name</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>^(?:var|let|using)\b</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>storage.type.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>^(?!  |$)</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>begin</key>
-							<string>^  (?=[\(`A-Za-z\x80-\xff]|_\b)</string>
-							<key>end</key>
-							<string>(?=[^\({_`,#A-Za-z\x80-\xff\s])</string>
-							<key>patterns</key>
-							<array>
-								<dict>
-									<key>include</key>
-									<string>#var-name</string>
-								</dict>
-							</array>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		<key>var-name</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>\(</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.parens.begin.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(\))|(?=[^{_`,#A-Za-z\x80-\xff\s])</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.parens.end.nim</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#var-name-0</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#var-name-0</string>
-				</dict>
-			</array>
-		</dict>
-		<key>var-name-0</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>variable.other.nim</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>,</string>
-					<key>name</key>
-					<string>punctuation.separator.nim</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#pragmas</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#doc-comments</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#comments</string>
 				</dict>
 			</array>
 		</dict>

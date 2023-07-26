@@ -1097,6 +1097,7 @@ contexts:
     - match: '\.?}'
       scope: punctuation.definition.annotation.end.nim
       pop: true
+    - include: calls
     - match: '{{symbol}}'
       scope: entity.other.attribute-name.pragma.nim
     - include: square-brackets

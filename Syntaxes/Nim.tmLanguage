@@ -2069,6 +2069,10 @@
 					<key>patterns</key>
 					<array>
 						<dict>
+							<key>include</key>
+							<string>#calls</string>
+						</dict>
+						<dict>
 							<key>match</key>
 							<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
 							<key>name</key>

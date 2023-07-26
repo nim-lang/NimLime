@@ -505,6 +505,7 @@ repository:
           '0': {name: punctuation.section.annotation.end.nim}
         name: meta.annotation.nim
         patterns:
+          - include: '#calls'
           - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
             name: entity.other.attribute-name.pragma.nim
           - include: '#square-brackets'

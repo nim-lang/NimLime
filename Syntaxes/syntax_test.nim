@@ -382,3 +382,35 @@ case e
 of A:
 #^ keyword.control.conditional.case.nim
 #   ^ punctuation.section.block.begin.nim
+
+{.importc: "printf".}
+#^^^^^^^^^^^^^^^^^^^^ meta.annotation.nim
+#^ punctuation.definition.annotation.begin.nim
+# ^^^^^^^ entity.other.attribute-name.pragma.nim
+#        ^ punctuation.separator.key-value.nim
+#          ^^^^^^^^ meta.string.nim string.quoted.double.nim
+#          ^ punctuation.definition.string.begin.nim
+#                 ^ punctuation.definition.string.end.nim
+#                  ^^ punctuation.definition.annotation.end.nim
+{.hint[LineTooLong].}
+#^^^^^^^^^^^^^^^^^^^^ meta.annotation.nim
+#^ punctuation.definition.annotation.begin.nim
+# ^^^^ entity.other.attribute-name.pragma.nim
+#     ^^^^^^^^^^^^^ meta.brackets.nim
+#     ^ punctuation.section.brackets.begin.nim
+#      ^^^^^^^^^^^ support.type.nim
+#                 ^ punctuation.section.brackets.end.nim
+#                  ^^ punctuation.definition.annotation.end.nim
+{.cast(raises: []).}
+#^^^^^^^^^^^^^^^^^^^ meta.annotation.nim
+#^ punctuation.definition.annotation.begin.nim
+# ^^^^ meta.function-call.nim variable.function.nim
+#     ^^^^^^^^^^^^ meta.function-call.arguments.nim
+#     ^ punctuation.section.arguments.begin.nim
+#      ^^^^^^ variable.parameter.nim
+#            ^ punctuation.separator.key-value.nim
+#              ^^ meta.brackets.nim
+#              ^ punctuation.section.brackets.begin.nim
+#               ^ punctuation.section.brackets.end.nim
+#                ^ punctuation.section.arguments.end.nim
+#                 ^^ punctuation.definition.annotation.end.nim

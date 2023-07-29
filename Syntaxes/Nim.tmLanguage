@@ -14,18 +14,6 @@
 	<array>
 		<dict>
 			<key>include</key>
-			<string>#type-defs</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#const-defs</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#var-let-using-defs</string>
-		</dict>
-		<dict>
-			<key>include</key>
 			<string>#pragmas</string>
 		</dict>
 		<dict>
@@ -415,33 +403,9 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(?x: abs|add(?:[Ee]scapedChar|Float|Int|QuitProc|Quoted)?|alignof|allocCStringArray|arrayWith |ashr|astToStr|assert |atomic(?:AddFetch|AlwaysLockFree|(?:And|Nand|Or|Sub|Xor)Fetch|Clear |(?:Compare)?ExchangeN?|Dec|Fetch(?:A[dn]d|Nand|Or|Sub|Xor)|Inc |IsLockFree|LoadN?|(?:Signal|Thread)Fence|StoreN?|TestAndSet) |card|cas|chr|clamp|close|cmp(?:Mem)?|compile(?:Option|s)|contains|copyMem |cpuRelax|create(?:(?:Shared)?U?|Thread)|cstringArrayToSeq |dealloc(?:CStringArray|Heap|(?:Shared)?(?:Impl)?)|debugEcho|dec |declared(?:InScope)?|deepCopy|default|defined|del(?:ete)?|dispose|doAssert(?:Raises)?|echo|endOfFile |equalMem|excl|failedAssertImpl|field(?:s|Pairs)|find|finished|flushFile|freeShared |GC_(?:collectZct|disable(?:MarkAndSweep)?|fullCollect|getStatistics|(?:un)?ref) |gcInvariant|getAllocStats |get(?:CurrentException(?:Msg)?|File(?:Pos|Size)|Frame(?:State)? |(?:(?:Free|Occupied|Total)(?:Shared)?|Max)Mem|GCFrame|OsFileHandle |StackTrace(?:Entries)?|TypeInfo|ThreadId) |gorge(?:Ex)?|handle|high|incl?|insert|instantiationInfo|internalNew |isNil|isNotForeign|iterToProc|joinThreads?|len|lines|locals|low|max|min |m?(?:items|pairs)|move(?:Mem)? |new(?:Seq(?:OfCap|Uninitialized)?|String(?:OfCap)?|Exception|WideCString)? |onFailedAssert|onThreadDestruction|open|ord|peek|pinToCpu|pop(?:GcFrame)?|pred |prepareMutation|procCall|protect|pushGcFrame|quit|raiseAssert|raw(?:Env|Proc) |ready|read(?:All|Buffer|Bytes|Chars?|File|Lines?) |(?:re)?alloc(?:Shared)?0?(?:Impl)?|recv|repr(?:Discriminant)?|reset |resize(?:Shared)?|runnableExamples |set(?:ControlCHook|CurrentException|FilePos|Frame(?:State)?|GcFrame|Inheritable|Len|StdIoUnbuffered|upForeignThreadGc) |shallow(?:Copy)?|sizeof|slurp|stackTraceAvailable|static(?:Exec|Read)|stdmsg |substr|succ|swap|tearDownForeignThreadGc |to(?:Biggest?(?:Float|Int)|OpenArray(?:Byte)?|U(?:8|16|32))|try(?:Recv|Send) |typeof|unsafe(?:Addr|New)|unsetControlCHook|wasMoved|writeStackTrace |ze(?:64)?|zero(?:Default|Mem)|count(?:down|up)|varargsLen|closureScope |currentSourcePath|disarm|dumpAllocStats|excl|fence|format(?:ErrorIndexBound|FieldDefect) |incl|offsetOf|once|rangeCheck|(?:un)?likely|unown|write(?:Buffer|Bytes|Chars|File|Line)? )\b</string>
-					<key>name</key>
-					<string>support.function.builtin.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>`(?:addr|and|div|is(?:not)?|mod|not|of|sh[lr]|x?or|(?:not)?in|=(?:copy|destroy|sink|trace)|\$|%%|[-*+/&lt;]%?=?|&lt;=%|[&amp;=]=?|\.\.|@|\[]=?)`</string>
-					<key>name</key>
-					<string>support.function.builtin.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
 					<string>\b(?x:any|array|auto|bool|byte |c(?:double|float|u?(?:long(?:long)?|char|int|short)|longdouble|schar |size(?:_t)?|string(?:[Aa]rray)?) |char|float(?:32|64)?|iterable|lent|open[Aa]rray|owned|pointer|ptr|range|ref|se[qt] |sink|static|string|typed?|type[Dd]esc|u?int(?:8|16|32|64)?|untyped|varargs|void)\b</string>
 					<key>name</key>
 					<string>storage.type.primitive.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\b(?x:appType|Compile(?:Date|Time)|(?:big|cpu|little)Endian |fm(Append|Read(?:Write(?:Existing)?)?|Write)|fsp(?:Set|Cur|End) |gc(?:Throughput|Responsiveness|Optimize(?:Space|Time))|host(?:CPU|OS) |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on |Quit(?:Failure|Success)|typeOf(?:Iter|Proc))\b</string>
-					<key>name</key>
-					<string>support.constant.builtin.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\b(?x: ATOMIC_(?:ACQ_REL|ACQUIRE|CONSUME|RELAXED|RELEASE|SEQ_CST)|errorMessageWriter |(?:global|local)RaiseHook|nimThreadDestructionHandlers|onUnhandledException |outOfMemHook|programResult|std(?:err|out|in)|unhandledExceptionHook )\b</string>
-					<key>name</key>
-					<string>support.variable.builtin.nim</string>
 				</dict>
 			</array>
 		</dict>
@@ -462,7 +426,7 @@
 							<key>end</key>
 							<string>(?=[^`_A-Za-z\x80-\xff])</string>
 							<key>name</key>
-							<string>variable.function.nim</string>
+							<string>entity.name.function.nim</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -531,23 +495,6 @@
 							<string>meta.function-call.arguments.nim</string>
 							<key>patterns</key>
 							<array>
-								<dict>
-									<key>captures</key>
-									<dict>
-										<key>1</key>
-										<dict>
-											<key>name</key>
-											<string>variable.parameter.nim</string>
-										</dict>
-										<key>2</key>
-										<dict>
-											<key>name</key>
-											<string>punctuation.separator.key-value.nim</string>
-										</dict>
-									</dict>
-									<key>match</key>
-									<string>(?x: (?= (?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) [ ]* [:=](?![-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]) ) (?!(?x:addr|asm|bind|block|break|case|cast|concept|const|continue|converter |defer|discard|distinct|do|elif|else|end|enum|except|export|finally|for |from|func|if|import|include|interface|iterator|let|macro|method|mixin |object|of|out|proc|ptr|raise|ref|return|static|template|try|tuple|type |using|var|when|while|yield)\b ) ([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(:))? )</string>
-								</dict>
 								<dict>
 									<key>include</key>
 									<string>$self</string>
@@ -640,159 +587,6 @@
 				<dict>
 					<key>include</key>
 					<string>#line-comments</string>
-				</dict>
-			</array>
-		</dict>
-		<key>const-defs</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>\b(const) +(?=[A-Za-z\x80-\xff]|\(|`|_\b)</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>entity.name.constant.nim</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#const-name</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>^const\b</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim keyword.declaration.constant.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>^(?!  |$)</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>begin</key>
-							<string>^  (?=[A-Za-z\x80-\xff]|\(|`|_\b)</string>
-							<key>end</key>
-							<string>([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?|(?=[^\(])</string>
-							<key>endCaptures</key>
-							<dict>
-								<key>1</key>
-								<dict>
-									<key>name</key>
-									<string>entity.name.constant.nim</string>
-								</dict>
-								<key>2</key>
-								<dict>
-									<key>name</key>
-									<string>storage.modifier.nim</string>
-								</dict>
-							</dict>
-							<key>patterns</key>
-							<array>
-								<dict>
-									<key>include</key>
-									<string>#const-name</string>
-								</dict>
-							</array>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		<key>const-name</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>\(</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.parens.begin.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(\))|(?=[^{_`,#A-Za-z\x80-\xff\s])</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.parens.end.nim</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>captures</key>
-							<dict>
-								<key>1</key>
-								<dict>
-									<key>name</key>
-									<string>entity.name.constant.nim</string>
-								</dict>
-								<key>2</key>
-								<dict>
-									<key>name</key>
-									<string>storage.modifier.nim</string>
-								</dict>
-							</dict>
-							<key>match</key>
-							<string>([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?</string>
-						</dict>
-						<dict>
-							<key>match</key>
-							<string>,</string>
-							<key>name</key>
-							<string>punctuation.separator.nim</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>#pragmas</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>#doc-comments</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>#comments</string>
-						</dict>
-					</array>
 				</dict>
 			</array>
 		</dict>
@@ -1260,7 +1054,7 @@
 					<key>match</key>
 					<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
 					<key>name</key>
-					<string>variable.parameter.nim</string>
+					<string>variable.parameter.function.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
@@ -1355,18 +1149,6 @@
 					</dict>
 					<key>match</key>
 					<string>(`) *(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_) *(`)</string>
-				</dict>
-			</array>
-		</dict>
-		<key>invalid-names</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>(?x:addr|asm|bind|block|break|case|cast|concept|const|continue|converter |defer|discard|distinct|do|elif|else|end|enum|except|export|finally|for |from|func|if|import|include|interface|iterator|let|macro|method|mixin |object|of|out|proc|ptr|raise|ref|return|static|template|try|tuple|type |using|var|when|while|yield)\b</string>
-					<key>name</key>
-					<string>invalid.illegal.nim</string>
 				</dict>
 			</array>
 		</dict>
@@ -1583,13 +1365,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>\b(?:const|let|using)\b</string>
-					<key>name</key>
-					<string>storage.modifier.nim keyword.declaration.nim</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>\bvar\b</string>
+					<string>\b(?:const|let|var|using)\b</string>
 					<key>name</key>
 					<string>storage.modifier.nim</string>
 				</dict>
@@ -2002,7 +1778,7 @@
 							<key>match</key>
 							<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
 							<key>name</key>
-							<string>variable.parameter.nim</string>
+							<string>variable.parameter.function.nim</string>
 						</dict>
 						<dict>
 							<key>match</key>
@@ -2110,6 +1886,10 @@
 					<string>meta.annotation.nim</string>
 					<key>patterns</key>
 					<array>
+						<dict>
+							<key>include</key>
+							<string>#calls</string>
+						</dict>
 						<dict>
 							<key>match</key>
 							<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
@@ -2471,125 +2251,10 @@
 				</dict>
 			</array>
 		</dict>
-		<key>type-defs</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>^ *(type) +(?:(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) *(\.))?([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.accessor.dot.nim</string>
-						</dict>
-						<key>3</key>
-						<dict>
-							<key>name</key>
-							<string>entity.name.type.nim</string>
-						</dict>
-						<key>4</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(?=[^\[ ])</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#generic-param-list</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>^type\b</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>keyword.declaration.type.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>^(?!  |$)</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>begin</key>
-							<string>^  (?:(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`) *(\.))?([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?</string>
-							<key>beginCaptures</key>
-							<dict>
-								<key>1</key>
-								<dict>
-									<key>name</key>
-									<string>punctuation.accessor.dot.nim</string>
-								</dict>
-								<key>2</key>
-								<dict>
-									<key>name</key>
-									<string>entity.name.type.nim</string>
-								</dict>
-								<key>3</key>
-								<dict>
-									<key>name</key>
-									<string>storage.modifier.nim</string>
-								</dict>
-							</dict>
-							<key>end</key>
-							<string>(?![\[\s])</string>
-							<key>patterns</key>
-							<array>
-								<dict>
-									<key>include</key>
-									<string>#generic-param-list</string>
-								</dict>
-							</array>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
 		<key>types</key>
 		<dict>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>begin</key>
-					<string>\btuple(?=\[)</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>storage.type.primitive.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(?=[^\[ ])</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#generic-param-list</string>
-						</dict>
-					</array>
-				</dict>
 				<dict>
 					<key>begin</key>
 					<string>(?=(?:[A-Za-z](?:_?[\dA-Za-z])*)\[)(?x:(out|ptr|ref|array |cstring[Aa]rray|iterable|lent|open[Aa]rray|owned|ptr|range|ref|se[qt] |sink|static|type(?:[Dd]esc)?|varargs)|([A-Z][\dA-Za-z]+))(\[)</string>
@@ -2636,152 +2301,6 @@
 					<string>\b(?:out|tuple|ref|ptr)\b</string>
 					<key>name</key>
 					<string>storage.type.primitive.nim</string>
-				</dict>
-			</array>
-		</dict>
-		<key>var-let-using-defs</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>(?:^|(;)) *(var|let|using) +(?=[\(`A-Za-z\x80-\xff]|_\b)</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.terminator.nim</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim keyword.declaration.variable.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(?=[^\({_`,#A-Za-z\x80-\xff\s])</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#var-name</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>^(?:var|let|using)\b</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>storage.type.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>^(?!  |$)</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>begin</key>
-							<string>^  (?=[\(`A-Za-z\x80-\xff]|_\b)</string>
-							<key>end</key>
-							<string>(?=[^\({_`,#A-Za-z\x80-\xff\s])</string>
-							<key>patterns</key>
-							<array>
-								<dict>
-									<key>include</key>
-									<string>#var-name</string>
-								</dict>
-							</array>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		<key>var-name</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>begin</key>
-					<string>\(</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.parens.begin.nim</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>(\))|(?=[^{_`,#A-Za-z\x80-\xff\s])</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.parens.end.nim</string>
-						</dict>
-					</dict>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#var-name-0</string>
-						</dict>
-					</array>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#var-name-0</string>
-				</dict>
-			</array>
-		</dict>
-		<key>var-name-0</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>captures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>variable.other.nim</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>storage.modifier.nim</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?: *(\*))?</string>
-				</dict>
-				<dict>
-					<key>match</key>
-					<string>,</string>
-					<key>name</key>
-					<string>punctuation.separator.nim</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#pragmas</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#doc-comments</string>
-				</dict>
-				<dict>
-					<key>include</key>
-					<string>#comments</string>
 				</dict>
 			</array>
 		</dict>

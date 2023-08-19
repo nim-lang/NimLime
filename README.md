@@ -6,11 +6,9 @@ Nim Programming Language plugin for Sublime Text
 Features
 --------
 
-* Syntax highlighting
-* Jump to definition
-* Auto-Completion
-* Error checking and highlighting
-* Nimble package manager integration
+* Syntax highlighting.
+* Snippets.
+* Automatic continuation of doc comments.
 
 Installation
 ------------

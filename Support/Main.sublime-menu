@@ -24,7 +24,7 @@
                             {
                                 "command": "edit_settings", "args":
                                 {
-                                    "base_file": "${packages}/NimLime/NimLime.sublime-settings",
+                                    "base_file": "${packages}/NimLime/Preferences.sublime-settings",
                                     "default": "{\n\t$0\n}\n"
                                 },
                                 "caption": "Settings"

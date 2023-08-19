@@ -1,8 +1,0 @@
-{
-    //// Documention Comment Continuation Settings ////
-    // Unique settings suffixes:
-    //   'autostop':
-    //     Stop comment continuation after placing empty doc-comments
-    "doccontinue.enabled": true,
-    "doccontinue.autostop": true,
-}

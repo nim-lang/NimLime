@@ -286,7 +286,7 @@ repository:
             endCaptures:
               '1': {name: constant.other.format-spec.nim}
               '2': {name: punctuation.section.embedded.end.nim}
-            name: meta.embedded.nim
+            name: source.nim
             patterns:
               - include: $self
       - begin: (fmt)(")
@@ -309,7 +309,7 @@ repository:
               '1': {name: constant.other.format-spec.nim}
               '2': {name: punctuation.section.embedded.end.nim}
               '3': {name: invalid.illegal.nim}
-            name: meta.embedded.nim
+            name: source.nim
             patterns:
               - include: $self
       - begin: (&)(")
@@ -332,7 +332,7 @@ repository:
               '1': {name: constant.other.format-spec.nim}
               '2': {name: punctuation.section.embedded.end.nim}
               '3': {name: invalid.illegal.nim}
-            name: meta.embedded.nim
+            name: source.nim
             patterns:
               - match: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
                 name: constant.character.escape.nim

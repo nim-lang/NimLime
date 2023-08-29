@@ -711,7 +711,7 @@
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>meta.embedded.nim</string>
+							<string>source.nim</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -795,7 +795,7 @@
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>meta.embedded.nim</string>
+							<string>source.nim</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -879,7 +879,7 @@
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>meta.embedded.nim</string>
+							<string>source.nim</string>
 							<key>patterns</key>
 							<array>
 								<dict>

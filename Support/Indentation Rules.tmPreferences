@@ -7,7 +7,7 @@
   <key>settings</key>
   <dict>
     <key>increaseIndentPattern</key>
-    <string>^.*(?:[:=]|\b(?:let|var|const|type|using)) *$</string>
+    <string>^.*(?:[:=]|\b(?:let|var|const|using|type|object|enum|tuple)) *$</string>
   </dict>
 </dict>
 </plist>

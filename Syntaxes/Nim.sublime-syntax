@@ -42,7 +42,7 @@ variables:
     |create(?:Shared)?U?|cstringArrayToSeq
     |dealloc(?:CStringArray|Heap|(?:Shared)?(?:Impl)?)|debugEcho|dec
     |declared(?:InScope)?|deepCopy|default|defined|del(?:ete)?|dispose|echo
-    |equalMem|excl|field(?:s|Pairs)|find|finished|freeShared
+    |ensureMove|equalMem|excl|field(?:s|Pairs)|find|finished|freeShared
     |GC_(?:collectZct|(?:en|dis)able(?:MarkAndSweep)?|fullCollect|getStatistics|(?:un)?ref)
     |gcInvariant|getAllocStats
     |get(?:CurrentException(?:Msg)?|Frame(?:State)?
@@ -159,7 +159,7 @@ contexts:
     - match: \b(?:{{builtin_routines}})\b
       scope: support.function.builtin.nim
 
-    - match: '`(?:addr|and|div|is(?:not)?|mod|not|of|sh[lr]|x?or|(?:not)?in|=(?:copy|destroy|sink|trace)|\$|%%|[-*+/<]%?=?|<=%|[&=]=?|\.\.|@|\[]=?)`'
+    - match: '`(?:addr|and|div|is(?:not)?|mod|not|of|sh[lr]|x?or|(?:not)?in|=(?:copy|destroy|dup|sink|trace|wasMoved)|\$|%%|[-*+/<]%?=?|<=%|[&=]=?|\.\.|@|\[]=?)`'
       scope: support.function.builtin.nim
 
     - match: \b(?:{{builtin_types}})\b
@@ -1154,6 +1154,8 @@ contexts:
   operators:
     - match: '\b(?:and|not|x?or)\b'
       scope: keyword.operator.logical.nim
+    - match: ^of\b
+      scope: keyword.control.conditional.case.nim
     - match: '\b(?:of|(?:not)?in|is(?:not)?)\b'
       scope: keyword.operator.word.nim
     - match: \bsh[lr]\b

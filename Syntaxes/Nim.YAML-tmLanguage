@@ -254,8 +254,6 @@ repository:
           '0': {name: punctuation.section.parameters.end.nim}
         name: meta.function.parameters
         patterns:
-          - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
-            name: variable.parameter.function.nim
           - match: '[,;]'
             name: punctuation.separator.nim
           - begin: '(:)|(=)'
@@ -360,8 +358,6 @@ repository:
 
   generic-param-list-0:
     patterns:
-      - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
-        name: variable.parameter.function.nim
       - match: '[,;]'
         name: punctuation.separator.nim
       - begin: '(:)|(=)'

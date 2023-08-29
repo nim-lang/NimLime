@@ -710,6 +710,8 @@ repository:
             name: entity.name.function.nim
             patterns:
               - include: '#builtins'
+              - match: '[A-Z][\dA-Za-z]+\b'
+                name: support.type.nim
               - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
 
           - begin: '\[:?'

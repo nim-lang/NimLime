@@ -254,8 +254,6 @@ repository:
           '0': {name: punctuation.section.parameters.end.nim}
         name: meta.function.parameters
         patterns:
-          - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
-            name: variable.parameter.function.nim
           - match: '[,;]'
             name: punctuation.separator.nim
           - begin: '(:)|(=)'
@@ -288,7 +286,7 @@ repository:
             endCaptures:
               '1': {name: constant.other.format-spec.nim}
               '2': {name: punctuation.section.embedded.end.nim}
-            name: meta.embedded.nim
+            name: source.nim
             patterns:
               - include: $self
       - begin: (fmt)(")
@@ -311,7 +309,7 @@ repository:
               '1': {name: constant.other.format-spec.nim}
               '2': {name: punctuation.section.embedded.end.nim}
               '3': {name: invalid.illegal.nim}
-            name: meta.embedded.nim
+            name: source.nim
             patterns:
               - include: $self
       - begin: (&)(")
@@ -334,7 +332,7 @@ repository:
               '1': {name: constant.other.format-spec.nim}
               '2': {name: punctuation.section.embedded.end.nim}
               '3': {name: invalid.illegal.nim}
-            name: meta.embedded.nim
+            name: source.nim
             patterns:
               - match: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
                 name: constant.character.escape.nim
@@ -360,8 +358,6 @@ repository:
 
   generic-param-list-0:
     patterns:
-      - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
-        name: variable.parameter.function.nim
       - match: '[,;]'
         name: punctuation.separator.nim
       - begin: '(:)|(=)'
@@ -714,6 +710,8 @@ repository:
             name: entity.name.function.nim
             patterns:
               - include: '#builtins'
+              - match: '[A-Z][\dA-Za-z]+\b'
+                name: support.type.nim
               - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
 
           - begin: '\[:?'

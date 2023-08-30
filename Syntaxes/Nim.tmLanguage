@@ -435,6 +435,12 @@
 								</dict>
 								<dict>
 									<key>match</key>
+									<string>[A-Z][\dA-Za-z]+\b</string>
+									<key>name</key>
+									<string>support.type.nim</string>
+								</dict>
+								<dict>
+									<key>match</key>
 									<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
 								</dict>
 							</array>
@@ -711,7 +717,7 @@
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>meta.embedded.nim</string>
+							<string>source.nim</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -795,7 +801,7 @@
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>meta.embedded.nim</string>
+							<string>source.nim</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -879,7 +885,7 @@
 								</dict>
 							</dict>
 							<key>name</key>
-							<string>meta.embedded.nim</string>
+							<string>source.nim</string>
 							<key>patterns</key>
 							<array>
 								<dict>
@@ -1050,12 +1056,6 @@
 		<dict>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>match</key>
-					<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
-					<key>name</key>
-					<string>variable.parameter.function.nim</string>
-				</dict>
 				<dict>
 					<key>match</key>
 					<string>[,;]</string>
@@ -1774,12 +1774,6 @@
 					<string>meta.function.parameters</string>
 					<key>patterns</key>
 					<array>
-						<dict>
-							<key>match</key>
-							<string>[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`</string>
-							<key>name</key>
-							<string>variable.parameter.function.nim</string>
-						</dict>
 						<dict>
 							<key>match</key>
 							<string>[,;]</string>

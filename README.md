@@ -6,11 +6,9 @@ Nim Programming Language plugin for Sublime Text
 Features
 --------
 
-* Syntax highlighting
-* Jump to definition
-* Auto-Completion
-* Error checking and highlighting
-* Nimble package manager integration
+* Syntax highlighting.
+* Snippets.
+* Automatic continuation of doc comments.
 
 Installation
 ------------
@@ -32,20 +30,7 @@ Thus, it is only recommended for those who wish to either help develop NimLime, 
 Settings
 --------
 
-See Preferences -> PackageSettings -> NimLime
-
-Autocompletion works per default in an on-demand mode.
-This means <kbd>Ctrl</kbd>+<kbd>Space</kbd> has to be pressed again to fetch Nim compiler completions.
-It can also be set into an immediate mode.
-
-If auto-completions don't work copy the `nim_update_completions` block from the NimLime
-default key bindings file to the user key bindings file.
-
-Checking the current file automatically on-save can be enabled through the setting `check.on_save.enabled`.
-
-The path to the compiler can be configured through the setting `nim.executable`.
-Per default it is set to `nim`, which means that the compiler must be in your `PATH` for the plugin to work.
-
+See Preferences -> Package Settings -> NimLime
 
 Contributing
 ------------

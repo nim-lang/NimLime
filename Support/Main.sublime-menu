@@ -12,7 +12,10 @@
                         "children":
                         [
                             {
-                                "command": "nim_lime_open_support",
+                                "command": "open_url",
+                                "args": {
+                                    "url": "https://github.com/nim-lang/NimLime/issues"
+                                },
                                 "caption": "Support/Issue Tracker"
                             },
 
@@ -21,7 +24,7 @@
                             {
                                 "command": "edit_settings", "args":
                                 {
-                                    "base_file": "${packages}/NimLime/NimLime.sublime-settings",
+                                    "base_file": "${packages}/NimLime/Preferences.sublime-settings",
                                     "default": "{\n\t$0\n}\n"
                                 },
                                 "caption": "Settings"

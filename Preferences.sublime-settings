@@ -1,0 +1,6 @@
+{
+    // Continue doc-comment on the next line
+    "doccontinue.enabled": true,
+    // Stop doc-comment continuation after placing empty doc-comments
+    "doccontinue.autostop": true,
+}

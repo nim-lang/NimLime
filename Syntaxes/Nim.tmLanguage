@@ -407,6 +407,12 @@
 					<key>name</key>
 					<string>storage.type.primitive.nim</string>
 				</dict>
+				<dict>
+					<key>match</key>
+					<string>(?x:appType|Compile(?:Date|Time)|cpuEndian |host(?:CPU|OS) |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on |Quit(?:Failure|Success))</string>
+					<key>name</key>
+					<string>support.constant.builtin.nim</string>
+				</dict>
 			</array>
 		</dict>
 		<key>calls</key>

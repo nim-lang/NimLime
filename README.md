@@ -16,7 +16,7 @@ Installation
 1. Run `Package Control: Install Package` from the command palette.
 2. Choose `NimLime`.
 
-It is also recommended to install [LSP-nimlangserver](https://github.com/AmjadHD/LSP-nimlangserver)
+It is also recommended to install [LSP-nimlangserver](https://github.com/sublimelsp/LSP-nimlangserver)
 to enjoy IDE-like features.
 
 Settings

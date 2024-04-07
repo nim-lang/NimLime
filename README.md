@@ -1,7 +1,7 @@
 NimLime
 =======
 
-Nim Programming Language plugin for Sublime Text
+The official Nim Programming Language plugin for Sublime Text.
 
 Features
 --------
@@ -13,19 +13,11 @@ Features
 Installation
 ------------
 
-### Latest/Unstable
+1. Run `Package Control: Install Package` from the command palette.
+2. Choose `NimLime`.
 
-Note that the latest version comes directly from the repository, and thus may be broken at any time!
-Thus, it is only recommended for those who wish to either help develop NimLime, or can work around bugs.
-
-* Summon the command palette and select `Package Control: Add repository`
-* Enter the project's URL (https://github.com/nim-lang/NimLime)
-* Install `NimLime` through Package Control
-
-### Stable
-
-* Install `NimLime` through Package Control (this version is usually older than the one here)
-
+It is also recommended to install [LSP-nimlangserver](https://github.com/sublimelsp/LSP-nimlangserver)
+to enjoy IDE-like features.
 
 Settings
 --------

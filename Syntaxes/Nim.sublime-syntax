@@ -20,7 +20,7 @@ variables:
   keyws: '(?x:{{disallowed_keyws}}|addr|block|case|cast|do|enum|for|func|if|iterator
     |object|out|proc|ptr|ref|return|static|try|tuple|type|var|when)\b'
   generic_builtin_types: '(?x:out|ptr|ref|array|cstring[Aa]rray|iterable|lent
-    |open[Aa]rray|owned|ptr|range|ref|se[qt]|sink|static|type(?:desc)?|varargs)'
+    |open[Aa]rray|owned|range|se[qt]|sink|static|type(?:desc)?|varargs)'
   builtin_types: '(?x:any|array|auto|bool|byte
     |c(?:double|float|u?(?:long(?:long)?|char|int|short)|longdouble|schar
       |size(?:_t)?|string(?:[Aa]rray)?)

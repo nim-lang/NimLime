@@ -8,7 +8,7 @@
                 "children":
                 [
                     {
-                        "caption": "NimLime",
+                        "caption": "Nim",
                         "children":
                         [
                             {
@@ -24,7 +24,7 @@
                             {
                                 "command": "edit_settings", "args":
                                 {
-                                    "base_file": "${packages}/NimLime/Preferences.sublime-settings",
+                                    "base_file": "${packages}/Nim/Preferences.sublime-settings",
                                     "default": "{\n\t$0\n}\n"
                                 },
                                 "caption": "Settings"
@@ -33,7 +33,7 @@
                             {
                                 "command": "edit_settings", "args":
                                 {
-                                    "base_file": "${packages}/NimLime/Default.sublime-keymap",
+                                    "base_file": "${packages}/Nim/Default.sublime-keymap",
                                     "default": "[\n\t$0\n]\n"
                                 },
                                 "caption": "Key Bindings"

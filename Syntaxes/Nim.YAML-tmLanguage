@@ -774,10 +774,10 @@ repository:
           |sink|static|string|typed?|type[Dd]esc|u?int(?:8|16|32|64)?|untyped|varargs|void)\b'
         name: storage.type.primitive.nim
 
-      - match: '(?x:appType|Compile(?:Date|Time)|cpuEndian
+      - match: '\b(?x:appType|Compile(?:Date|Time)|cpuEndian
         |host(?:CPU|OS)
         |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on
-        |Quit(?:Failure|Success))'
+        |Quit(?:Failure|Success))\b'
         name: support.constant.builtin.nim
 
   generic-symbols:

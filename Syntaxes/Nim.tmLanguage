@@ -409,7 +409,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>(?x:appType|Compile(?:Date|Time)|cpuEndian |host(?:CPU|OS) |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on |Quit(?:Failure|Success))</string>
+					<string>\b(?x:appType|Compile(?:Date|Time)|cpuEndian |host(?:CPU|OS) |isMainModule|NaN|(?:Neg)?Inf|Nim(?:Major|Minor|Patch|Version)|nimvm|off|on |Quit(?:Failure|Success))\b</string>
 					<key>name</key>
 					<string>support.constant.builtin.nim</string>
 				</dict>

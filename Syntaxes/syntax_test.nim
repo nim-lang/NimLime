@@ -257,7 +257,7 @@ var
 #            ^ punctuation.section.brackets.begin.nim
 #              ^ punctuation.section.brackets.end.nim
     echo(c)
-#   ^^^^ meta.function-call.nim variable.function.nim support.function.builtin.nim
+#   ^^^^ meta.function-call.nim variable.function.nim
 #       ^^^ meta.function-call.arguments.nim
 #       ^ punctuation.section.arguments.begin.nim
 #         ^ punctuation.section.arguments.end.nim
@@ -414,3 +414,10 @@ of A:
 #               ^ punctuation.section.brackets.end.nim
 #                ^ punctuation.section.arguments.end.nim
 #                 ^^ punctuation.definition.annotation.end.nim
+foo int
+#^^ meta.function-call.nim variable.function.nim
+#   ^^^ storage.type.primitive.nim
+foo in
+#   ^^ keyword.operator.word.nim
+foo inter
+#^^ meta.function-call.nim variable.function.nim

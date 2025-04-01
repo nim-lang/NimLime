@@ -5,13 +5,15 @@ file_extensions: [nim, nims, nimble]
 scope: source.nim
 version: 2
 variables:
-  letter: '[A-Za-z\x80-\xff]'
-  ident: '{{letter}}(?:_?[\dA-Za-z\x80-\xff])*|_'
+  letter_bare: 'A-Za-z\x80-\x{10FFFF}&&[^{{UNICODE_OPR}}]'
+  letter: '[{{letter_bare}}]'
+  ident: '{{letter}}(?:_?[\d{{letter_bare}}])*|_'
   symbol: '{{ident}}|`[^;,\n`]+`'
   symbol_lookahead: '(?={{letter}}|\(|`|_\b)'
   pragma_start: '\{\.(?!\.})'
   string_escape_chars: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
-  OPR: '-=\+\*/<>@\$~&%\|!\?\^\.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔'
+  UNICODE_OPR: '∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔'
+  OPR: '-=\+\*/<>@\$~&%\|!\?\^\.:\\{{UNICODE_OPR}}'
   format_spec: '=?(?: *:[^}]*)?'
   disallowed_keyws: '(?x:as|asm|and|bind|break|concept|const|continue|converter
     |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import
@@ -63,9 +65,9 @@ contexts:
       pop: true
 
   generic-symbols:
-    - match: '[A-Z](_?[A-Z\d])+\b'
+    - match: '[A-Z](_?[\d{{letter_bare}}&&[^a-z]])+\b'
       scope: support.constant.nim
-    - match: '[A-Z](_?[A-Za-z\d])+\b'
+    - match: '[A-Z](_?[\d{{letter_bare}}])+\b'
       scope: support.type.nim
     - match: '{{symbol}}'
 
@@ -73,7 +75,7 @@ contexts:
     - match: \btuple(?=\[)
       scope: storage.type.primitive.nim
       push: generic-param-list
-    - match: '\b(?=(?:{{ident}})\[)(?:({{generic_builtin_types}})|([A-Z][\dA-Za-z]+))(\[)'
+    - match: '\b(?=(?:{{ident}})\[)(?:({{generic_builtin_types}})|([A-Z][\d{{letter_bare}}]+))(\[)'
       captures:
         1: storage.type.primitive.nim
         2: support.type.nim

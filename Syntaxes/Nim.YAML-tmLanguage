@@ -133,14 +133,14 @@ repository:
       - begin: for\b
         beginCaptures:
           '0': {name: keyword.control.loop.for.nim}
-        end: (in\b)|(?=[^#,{_`A-Za-z\x80-\xff\s])
+        end: (in\b)|(?=[^#,{_`A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]\s])
         endCaptures:
           '1': {name: keyword.control.loop.for.in.nim}
         patterns:
           - begin: \(
             beginCaptures:
               '0': {name: punctuation.section.parens.begin.nim}
-            end: '(in\b)|(\))|(?=[^#,{_`A-Za-z\x80-\xff\s])'
+            end: '(in\b)|(\))|(?=[^#,{_`A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]\s])'
             endCaptures:
               '1': {name: keyword.control.loop.for.in.nim}
               '2': {name: punctuation.section.parens.end.nim}
@@ -152,7 +152,7 @@ repository:
     patterns:
       - match: ','
         name: punctuation.separator.nim
-      - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
+      - match: '[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`'
       - include: '#pragmas'
       - include: '#comments'
 
@@ -206,7 +206,7 @@ repository:
 
   interpolation:
     patterns:
-      - match: '(`) *(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_) *(`)'
+      - match: '(`) *(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_) *(`)'
         captures:
           '0': {name: source.nim.embedded}
           '1': {name: punctuation.section.embedded.begin.nim}
@@ -216,7 +216,7 @@ repository:
     patterns:
       - begin: '(?x:
           (proc|template|iterator|func|method|macro|converter)\b
-          (?:[ ]*([A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`)(?:[ ]*(\*))?)?
+          (?:[ ]*([A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`)(?:[ ]*(\*))?)?
         )'
         beginCaptures:
           '1': {name: storage.type.function.nim}
@@ -349,7 +349,7 @@ repository:
       - begin: (?<=[`*\w\x{80}-\x{ff}]) *(\[)
         beginCaptures:
           '1': {name: punctuation.section.generic.begin.nim}
-        end: '(])|(?=[^#_`:=,;A-Za-z\x80-\xff\s])'
+        end: '(])|(?=[^#_`:=,;A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]\s])'
         endCaptures:
           '1': {name: punctuation.section.generic.end.nim}
         name: meta.generic.nim
@@ -382,7 +382,7 @@ repository:
         name: meta.annotation.nim
         patterns:
           - include: '#calls'
-          - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
+          - match: '[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`'
             name: entity.other.attribute-name.pragma.nim
           - include: '#square-brackets'
           - begin: (?=\S)
@@ -481,8 +481,8 @@ repository:
                ([Ee][-+]?\d(?:_?\d)*)?
               |([Ee][-+]?\d(?:_?\d)*)
             )
-             (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[Ff](?:32|64)|[Dd]))?
-            |(''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[Ff](?:32|64)|[Dd]))
+             (''(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd]))?
+            |(''(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd]))
           )
         )'
         captures:
@@ -498,7 +498,7 @@ repository:
       - match: '(?x:
           \b(0[Xx])
           (\h(?:_?\h)*)
-          (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|[Ff](?:32|64))
+          (''(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|[Ff](?:32|64))
         )'
         captures:
           '0': {name: meta.number.float.hexadecimal.nim}
@@ -509,7 +509,7 @@ repository:
       - match: '(?x:
           \b(0o)
           ([0-7](?:_?[0-7])*)
-          (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[Ff](?:32|64)|[Dd]))
+          (''(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd]))
         )'
         captures:
           '0': {name: meta.number.float.octal.nim}
@@ -520,7 +520,7 @@ repository:
       - match: '(?x:
           \b(0[Bb])
           ([01](?:_?[01])*)
-          (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[Ff](?:32|64)|[Dd]))
+          (''(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd]))
         )'
         captures:
           '0': {name: meta.number.float.binary.nim}
@@ -532,7 +532,7 @@ repository:
       - match: '(?x:
           \b(0[Xx])
           (\h(?:_?\h)*)
-          (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
+          (''(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
         )'
         captures:
           '0': {name: meta.number.integer.hexadecimal.nim}
@@ -543,7 +543,7 @@ repository:
       - match: '(?x:
           \b(0o)
           ([0-7](?:_?[0-7])*)
-          (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
+          (''(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
         )'
         captures:
           '0': {name: meta.number.integer.octal.nim}
@@ -554,7 +554,7 @@ repository:
       - match: '(?x:
           \b(0[Bb])
           ([01](?:_?[01])*)
-          (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
+          (''(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
         )'
         captures:
           '0': {name: meta.number.integer.binary.nim}
@@ -564,7 +564,7 @@ repository:
 
       - match: '(?x:
           \b(\d(?:_?\d)*)
-          (''(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
+          (''(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))?
         )'
         captures:
           '0': {name: meta.number.integer.decimal.nim}
@@ -654,7 +654,7 @@ repository:
           '1': {name: keyword.control.flow.defer.nim}
           '2': {name: punctuation.section.block.begin.nim}
 
-      - match: '\b(block)\b(?:(?: *(?:[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`))? *(:))?'
+      - match: '\b(block)\b(?:(?: *(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`))? *(:))?'
         captures:
           '1': {name: keyword.declaration.block.nim}
           '2': {name: punctuation.section.block.begin.nim}
@@ -682,7 +682,7 @@ repository:
           (?=
             (?:
               (?!(?:out|ptr|ref|tuple)\b)
-              [A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`
+              [A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`
             )
             (?:\[.*])?
             (?:
@@ -695,7 +695,7 @@ repository:
                 |(?!(as|asm|and|bind|break|concept|const|continue|converter
                   |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import
                   |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of
-                  |raise|sh[lr]|template|using|while|yield|x?or)\b)[A-Za-z\x80-\xff]
+                  |raise|sh[lr]|template|using|while|yield|x?or)\b)[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]]
                 |\{(?!\.)
               )
             )
@@ -703,14 +703,14 @@ repository:
         )'
         end: '(?=[^\[\(`\w\x{80}-\x{ff}])|(?<=["\)])'
         patterns:
-          - begin: '(?=[`_A-Za-z\x80-\xff])'
-            end: '(?=[^`_A-Za-z\x80-\xff])'
+          - begin: '(?=[`_A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])'
+            end: '(?=[^`_A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])'
             name: entity.name.function.nim
             patterns:
               - include: '#builtins'
-              - match: '[A-Z][\dA-Za-z]+\b'
+              - match: '[A-Z][\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]]+\b'
                 name: support.type.nim
-              - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
+              - match: '[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`'
 
           - begin: '\[:?'
             beginCaptures:
@@ -745,7 +745,7 @@ repository:
 
   types:
     patterns:
-      - begin: '(?=(?:[A-Za-z](?:_?[\dA-Za-z])*)\[)(?x:(out|ptr|ref|array
+      - begin: '(?=(?:[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z])*)\[)(?x:(out|ptr|ref|array
           |cstring[Aa]rray|iterable|lent|open[Aa]rray|owned|ptr|range|ref|se[qt]
           |sink|static|type(?:[Dd]esc)?|varargs)|([A-Z][\dA-Za-z]+))(\[)'
         beginCaptures:
@@ -782,8 +782,8 @@ repository:
 
   generic-symbols:
     patterns:
-      - match: '[A-Z](_?[A-Z\d_])+\b'
+      - match: '[A-Z](_?[A-Z\d\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])+\b'
         name: support.constant.nim
-      - match: '[A-Z][\dA-Za-z]+\b'
+      - match: '[A-Z][\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]]+\b'
         name: support.type.nim
-      - match: '[A-Za-z\x80-\xff](?:_?[\dA-Za-z\x80-\xff])*|_|`[^;,\n`]+`'
+      - match: '[A-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&&[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`'

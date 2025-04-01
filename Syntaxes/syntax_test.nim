@@ -1,4 +1,4 @@
-# SYNTAX TEST "Packages/NimLime/Syntaxes/Nim.sublime-syntax"
+# SYNTAX TEST "Packages/Nim/Syntaxes/Nim.sublime-syntax"
 # <- source.nim comment.line.number-sign punctuation.definition.comment
 
 discard """
@@ -154,11 +154,11 @@ const (c1*, c2) = (m, not a)
 #                          ^ punctuation.section.parens.end.nim
 const
   #^^ storage.modifier.nim keyword.declaration.constant.nim
-  pi*: float32 = 3.14
-  #^ entity.name.constant.nim
-  # ^ storage.modifier.nim
-  #  ^ punctuation.separator.annotation.nim
-  #    ^^^^^^^ storage.type.primitive.nim
+  π*: float32 = 3.14
+  #<- entity.name.constant.nim
+  #^ storage.modifier.nim
+  # ^ punctuation.separator.annotation.nim
+  #   ^^^^^^^ storage.type.primitive.nim
   abc {.pr} = 5
   #^^ entity.name.constant.nim
   #   ^^^^^ meta.annotation.nim
@@ -209,7 +209,7 @@ var
   #             ^ punctuation.separator.nim
   #               ^^^^^ storage.type.primitive.nim
   #                    ^ punctuation.section.generic.end.nim
-  c {.ma}: int
+  α {.ma}: int
   #<- entity.name.variable.nim
   # ^^^^^ meta.annotation.nim
   #      ^ punctuation.separator.annotation.nim
@@ -266,11 +266,11 @@ var
 #^^^^ storage.type.function.nim keyword.declaration.function.nim
 #     ^ entity.name.function.nim
 #      ^ punctuation.separator.annotation.return.nim
-  proc m =
-# ^^^^^^^ meta.function.nim
+  proc dα =
+# ^^^^^^^^ meta.function.nim
 # ^^^^ storage.type.function.nim keyword.declaration.function.nim
-#      ^ entity.name.function.nim
-#        ^ keyword.operator.assignment.nim
+#      ^^ entity.name.function.nim
+#         ^ keyword.operator.assignment.nim
 
 proc
 ##[ blah
@@ -279,7 +279,7 @@ proc
 #^^ comment.block.documentation.nim punctuation.definition.comment.end.nim
 m =
 
-proc m(`in` = 1, b, c: int; `in`=1, in = 1)
+proc α(`in` = 1, b, c: int; `in`=1, in = 1)
 #^^^^^ meta.function.nim
 #^^^ storage.type.function.nim keyword.declaration.function.nim
 #    ^ entity.name.function.nim
@@ -421,3 +421,5 @@ foo in
 #   ^^ keyword.operator.word.nim
 foo inter
 #^^ meta.function-call.nim variable.function.nim
+α⊘π
+#^ keyword.operator.nim

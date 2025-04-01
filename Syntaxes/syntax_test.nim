@@ -266,6 +266,10 @@ var
 #^^^^ storage.type.function.nim keyword.declaration.function.nim
 #     ^ entity.name.function.nim
 #      ^ punctuation.separator.annotation.return.nim
+proc proc =
+#    ^^^^ invalid.illegal.nim
+proc addr =
+#    ^^^^ entity.name.function.nim
   proc dα =
 # ^^^^^^^^ meta.function.nim
 # ^^^^ storage.type.function.nim keyword.declaration.function.nim

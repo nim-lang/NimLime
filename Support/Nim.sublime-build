@@ -1,8 +1,7 @@
 {
     "cmd": ["nim", "c", "$file"],
     "selector": "source.nim",
-    "file_regex": "^(.+.nim)\\((\\d+), (\\d+)\\) (.*)",
-    "line_regex": "Error:",
+    "file_regex": "^(.+\\.nim)\\((\\d+)(?:, (\\d+))?\\) (.*)",
 
     "variants": [
         {

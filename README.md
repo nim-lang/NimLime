@@ -27,7 +27,7 @@ See Preferences -> Package Settings -> Nim
 Indentation Settings
 --------------------
 
-Nim requires consistent indentation using either spaces or tabs, but mixing them will cause compiler errors. Sublime Text defaults to using tabs for indentation, which can result in issues when working with Nim code.
+Nim requires indentation using spaces. Sublime Text defaults to using tabs for indentation, which can result in issues when working with Nim code.
 
 To avoid indentation errors, configure Sublime Text to use spaces instead of tabs when editing Nim files:
 1. Open a .nim file in Sublime Text.

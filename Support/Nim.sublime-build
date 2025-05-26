@@ -2,6 +2,7 @@
     "cmd": ["nim", "c", "$file"],
     "selector": "source.nim",
     "file_regex": "^(?:Error: [^:]*: )?(.+\\.\\w+)\\((\\d+)(?:, (\\d+))?\\) (.*)",
+    "interactive": true,
 
     "variants": [
         {

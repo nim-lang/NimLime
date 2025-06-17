@@ -526,7 +526,7 @@ contexts:
         3: meta.string.interpolated.nim string.quoted.double.block.nim punctuation.definition.string.begin.nim
       push:
         - meta_content_scope: meta.string.interpolated.nim string.quoted.double.block.nim
-        - match: '{{|}}'
+        - match: '\{\{|\}\}'
           scope: constant.character.escape.nim
         - match: '}'
           scope: invalid.illegal.nim
@@ -544,7 +544,7 @@ contexts:
               pop: true
             - include: main
           with_prototype:
-            - match: '\\{|\\}'
+            - match: '\\\{|\\\}'
               scope: constant.character.escape.nim
             - match: '{'
               scope: invalid.illegal.nim
@@ -557,7 +557,7 @@ contexts:
         2: meta.string.interpolated.nim string.quoted.double.nim punctuation.definition.string.begin.nim
       push:
         - meta_content_scope: meta.string.interpolated.nim string.quoted.double.nim
-        - match: '{{|}}'
+        - match: '\{\{|\}\}'
           scope: constant.character.escape.nim
         - match: '}'
           scope: invalid.illegal.nim
@@ -578,7 +578,7 @@ contexts:
               pop: true
             - include: main
           with_prototype:
-            - match: '\\{|\\}'
+            - match: '\\\{|\\\}'
               scope: constant.character.escape.nim
             - match: '{'
               scope: invalid.illegal.nim
@@ -596,7 +596,7 @@ contexts:
         2: meta.string.interpolated.nim string.quoted.double.nim punctuation.definition.string.begin.nim
       push:
         - meta_content_scope: meta.string.interpolated.nim string.quoted.double.nim
-        - match: '{{|}}'
+        - match: '\{\{|\}\}'
           scope: constant.character.escape.nim
         - match: '}'
           scope: invalid.illegal.nim
@@ -621,7 +621,7 @@ contexts:
               pop: true
             - include: main
           with_prototype:
-            - match: '\\{|\\}'
+            - match: '\\\{|\\\}'
               scope: constant.character.escape.nim
             - match: '{'
               scope: invalid.illegal.nim

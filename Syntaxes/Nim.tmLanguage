@@ -421,16 +421,16 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(?x: (?= (?: (?!(?:out|ptr|ref|tuple)\b) [A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+` ) (?:\[.*])? (?: \( |" |[ ]+ (?: [_\d"'`\[\(] |(?!\.|(?:\*?[ ]*)[:=]|=[^=])[-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+[^\-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔\s] |(?!(as|asm|and|bind|break|concept|const|continue|converter |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of |raise|sh[lr]|template|using|while|yield|x?or)\b)[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]] |\{(?!\.) ) ) ) )</string>
+					<string>(?x: (?= (?: (?!(?:out|ptr|ref|tuple)\b) (?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}]))*|_|`[^;,\n`]+` ) (?:\[.*])? (?: \( |" |[ ]+ (?: [_\d"'`\[\(] |(?!\.|(?:\*?[ ]*)[:=]|=[^=])[-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+[^\-=+*/&lt;&gt;@$~&amp;%|!?^.:\\∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔\s] |(?!(as|asm|and|bind|break|concept|const|continue|converter |defer|discard|distinct|div|elif|else|end|except|export|finally|from|import |include|interface|is(?:not)?|let|macro|method|mixin|mod|(?:not)?in|of |raise|sh[lr]|template|using|while|yield|x?or)\b)(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}] |\{(?!\.) ) ) ) )</string>
 					<key>end</key>
-					<string>(?=[^\[\(`\w\x{80}-\x{ff}])|(?&lt;=["\)])</string>
+					<string>(?=[^\[\(`\w\x{80}-\x{10FFFF}]|[∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])|(?&lt;=["\)])</string>
 					<key>patterns</key>
 					<array>
 						<dict>
 							<key>begin</key>
-							<string>(?=[`_A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])</string>
+							<string>(?=(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[`_A-Za-z\x80-\x{10FFFF}])</string>
 							<key>end</key>
-							<string>(?=[^`_A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])</string>
+							<string>(?=[^`_A-Za-z\x80-\x{10FFFF}]|[∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])</string>
 							<key>name</key>
 							<string>entity.name.function.nim</string>
 							<key>patterns</key>
@@ -441,13 +441,13 @@
 								</dict>
 								<dict>
 									<key>match</key>
-									<string>[A-Z][\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]]+\b</string>
+									<string>[A-Z](?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])+\b</string>
 									<key>name</key>
 									<string>support.type.nim</string>
 								</dict>
 								<dict>
 									<key>match</key>
-									<string>[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`</string>
+									<string>(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_|`[^;,\n`]+`</string>
 								</dict>
 							</array>
 						</dict>
@@ -692,7 +692,7 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>{{|}}</string>
+							<string>\{\{|\}\}</string>
 							<key>name</key>
 							<string>constant.character.escape.nim</string>
 						</dict>
@@ -771,7 +771,7 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>{{|}}|""</string>
+							<string>\{\{|\}\}|""</string>
 							<key>name</key>
 							<string>constant.character.escape.nim</string>
 						</dict>
@@ -855,7 +855,7 @@
 					<array>
 						<dict>
 							<key>match</key>
-							<string>{{|}}</string>
+							<string>\{\{|\}\}</string>
 							<key>name</key>
 							<string>constant.character.escape.nim</string>
 						</dict>
@@ -940,7 +940,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`</string>
+					<string>(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_|`[^;,\n`]+`</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -968,7 +968,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>(in\b)|(?=[^#,{_`A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]\s])</string>
+					<string>(in\b)|(?=[^#,{_`A-Za-z\s\x80-\x{10FFFF}]|[∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>1</key>
@@ -991,7 +991,7 @@
 								</dict>
 							</dict>
 							<key>end</key>
-							<string>(in\b)|(\))|(?=[^#,{_`A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]\s])</string>
+							<string>(in\b)|(\))|(?=[^#,{_`A-Za-z\s\x80-\x{10FFFF}]|[∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])</string>
 							<key>endCaptures</key>
 							<dict>
 								<key>1</key>
@@ -1027,7 +1027,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(?&lt;=[`*\w\x{80}-\x{ff}]) *(\[)</string>
+					<string>(?&lt;=(?&lt;=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[`*\w\x{80}-\x{10FFFF}]) *(\[)</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -1037,7 +1037,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>(])|(?=[^#_`:=,;A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]\s])</string>
+					<string>(])|(?=[^#_`:=,;A-Za-z\x80-\x{10FFFF}\s]|[∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>1</key>
@@ -1114,19 +1114,19 @@
 			<array>
 				<dict>
 					<key>match</key>
-					<string>[A-Z](_?[A-Z\d\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])+\b</string>
+					<string>\p{Lu}(?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Z\d\x80-\x{10FFFF}])+\b</string>
 					<key>name</key>
 					<string>support.constant.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>[A-Z][\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]]+\b</string>
+					<string>\p{Lu}(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])+\b</string>
 					<key>name</key>
 					<string>support.type.nim</string>
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`</string>
+					<string>(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_|`[^;,\n`]+`</string>
 				</dict>
 			</array>
 		</dict>
@@ -1154,7 +1154,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(`) *(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_) *(`)</string>
+					<string>(`) *(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_) *(`)</string>
 				</dict>
 			</array>
 		</dict>
@@ -1361,7 +1361,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>\b(block)\b(?:(?: *(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`))? *(:))?</string>
+					<string>\b(block)\b(?:(?: *(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_|`[^;,\n`]+`))? *(:))?</string>
 				</dict>
 				<dict>
 					<key>match</key>
@@ -1509,7 +1509,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?x: \b(\d(?:_?\d)*) (?: (?: ((\.)\d(?:_?\d)*) ([Ee][-+]?\d(?:_?\d)*)? |([Ee][-+]?\d(?:_?\d)*) ) ('(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd]))? |('(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd])) ) )</string>
+					<string>(?x: \b(\d(?:_?\d)*) (?: (?: ((\.)\d(?:_?\d)*) ([Ee][-+]?\d(?:_?\d)*)? |([Ee][-+]?\d(?:_?\d)*) ) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_)|(?:[Ff](?:32|64)|[Dd]))? |('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_)|(?:[Ff](?:32|64)|[Dd])) ) )</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1536,7 +1536,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?x: \b(0[Xx]) (\h(?:_?\h)*) ('(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|[Ff](?:32|64)) )</string>
+					<string>(?x: \b(0[Xx]) (\h(?:_?\h)*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_)|[Ff](?:32|64)) )</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1563,7 +1563,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?x: \b(0o) ([0-7](?:_?[0-7])*) ('(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd])) )</string>
+					<string>(?x: \b(0o) ([0-7](?:_?[0-7])*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_)|(?:[Ff](?:32|64)|[Dd])) )</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1590,7 +1590,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?x: \b(0[Bb]) ([01](?:_?[01])*) ('(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[Ff](?:32|64)|[Dd])) )</string>
+					<string>(?x: \b(0[Bb]) ([01](?:_?[01])*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_)|(?:[Ff](?:32|64)|[Dd])) )</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1617,7 +1617,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?x: \b(0[Xx]) (\h(?:_?\h)*) ('(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )</string>
+					<string>(?x: \b(0[Xx]) (\h(?:_?\h)*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1644,7 +1644,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?x: \b(0o) ([0-7](?:_?[0-7])*) ('(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )</string>
+					<string>(?x: \b(0o) ([0-7](?:_?[0-7])*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1671,7 +1671,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?x: \b(0[Bb]) ([01](?:_?[01])*) ('(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )</string>
+					<string>(?x: \b(0[Bb]) ([01](?:_?[01])*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )</string>
 				</dict>
 				<dict>
 					<key>captures</key>
@@ -1693,7 +1693,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?x: \b(\d(?:_?\d)*) ('(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )</string>
+					<string>(?x: \b(\d(?:_?\d)*) ('(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_)|(?:[IUiu](?:8|16|32|64)|[Uu]))? )</string>
 				</dict>
 			</array>
 		</dict>
@@ -1892,7 +1892,7 @@
 						</dict>
 						<dict>
 							<key>match</key>
-							<string>[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`</string>
+							<string>(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_|`[^;,\n`]+`</string>
 							<key>name</key>
 							<string>entity.other.attribute-name.pragma.nim</string>
 						</dict>
@@ -2001,7 +2001,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(?x: (proc|template|iterator|func|method|macro|converter)\b (?:[ ]*([A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]])*|_|`[^;,\n`]+`)(?:[ ]*(\*))?)? )</string>
+					<string>(?x: (proc|template|iterator|func|method|macro|converter)\b (?:[ ]*((?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*|_|`[^;,\n`]+`)(?:[ ]*(\*))?)? )</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -2249,7 +2249,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>(?=(?:[A-Za-z\x80-\x{10FFFF}&amp;&amp;[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]](?:_?[\dA-Za-z])*)\[)(?x:(out|ptr|ref|array |cstring[Aa]rray|iterable|lent|open[Aa]rray|owned|ptr|range|ref|se[qt] |sink|static|type(?:[Dd]esc)?|varargs)|([A-Z][\dA-Za-z]+))(\[)</string>
+					<string>(?=(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[A-Za-z\x80-\x{10FFFF}](?:_?(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])*\[)(?x:(out|ptr|ref|array |cstring[Aa]rray|iterable|lent|open[Aa]rray|owned|ptr|range|ref|se[qt] |sink|static|type(?:[Dd]esc)?|varargs)|(\p{Lu}(?:(?=[^∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔])[\dA-Za-z\x80-\x{10FFFF}])+))(\[)</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>

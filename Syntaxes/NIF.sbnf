@@ -1,0 +1,63 @@
+EXTENSIONS = 'nif'
+SCOPE = 'source.nif'
+
+CONTROL_CHARS = '[()\[\]{}~#\'"\\:]'
+EMPTY = `.`
+HEXCHAR = '[0-9A-F]'
+ESCAPE = '\\#[HEXCHAR]#[HEXCHAR]'
+IDENTIFIER_START = '(?:[`\p{L}_]|#[ESCAPE])'
+IDENTIFIER_CHAR = '#[IDENTIFIER_START]|\d'
+IDENTIFIER = '#[IDENTIFIER_START](?:#[IDENTIFIER_CHAR])*'
+SYMBOL = '#[IDENTIFIER_START](?:#[IDENTIFIER_CHAR]|\.)*'
+SYMBOL_DEF = ':#[SYMBOL]'
+FLOATING_POINT_PART = '(?:(?:\.\d+)?(E-?\d+)?)'
+NUMBER = '[+-]\d+(?:#[FLOATING_POINT_PART]|u)?'
+ESCAPED_DATA = '(?:#[ESCAPE]|[ -~&&[^()\[\]{}~#\'"\\:]])'
+CHAR_LITERAL = '\'(?:(#[ESCAPE])|[ -~&&[^()\[\]{}~#\'"\\:]])\''
+OPR = '[-=\+\*/<>\$~&%\|!\?\^\.∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+'
+
+main: node*;
+
+node: node-prefix (atom | group);
+
+node-prefix: line-info? comment?;
+atom: EMPTY{keyword} | SYMBOL | number | OPR | IDENTIFIER | SYMBOL_DEF{entity.name.variable} | char-literal | string-literal;
+group{meta.group}:
+  `(`{punctuation.definition.group.begin}
+  node-kind node*
+  `)`{punctuation.definition.group.end}
+;
+filename: ','
+(~ESCAPED_DATA)*
+~''
+;
+line-info: 
+  '(?:,(~)?(\d+))|(?:(~)?(\d+))(?:,(~)?(\d+))?'{
+    1: keyword.operator,
+    2: constant.numeric,
+    3: keyword.operator,
+    4: constant.numeric,
+    5: keyword.operator,
+    6: constant.numeric
+  } filename?
+;
+comment{comment.line.number-sign}:
+  `#`{punctuation.definition.comment.begin}
+  ~'#'{punctuation.definition.comment.end}
+;
+
+node-kind:
+  '(?:#[SYMBOL])|(?:#[IDENTIFIER])'{variable.function} |
+  '\.#[IDENTIFIER]'{keyword}
+;
+number{meta.number constant.numeric}: NUMBER;
+char-literal{constant.character}: CHAR_LITERAL{1: constant.character.escape};
+string-literal:
+  `"`{meta.string string.quoted.double punctuation.definition.string.begin}
+  string-literal-inner
+;
+
+string-literal-inner{meta.string string.quoted.double}:
+  (~ESCAPE{constant.character.escape})*
+  ~'"'{punctuation.definition.string.end}
+;

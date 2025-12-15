@@ -1,35 +1,36 @@
 EXTENSIONS = 'nif'
 SCOPE = 'source.nif'
 
-CONTROL_CHARS = '[()\[\]{}~#\'"\\:]'
+CONTROL_CHARS = `()[]{}~#'"\:`
 EMPTY = `.`
 HEXCHAR = '[0-9A-F]'
 ESCAPE = '\\#[HEXCHAR]#[HEXCHAR]'
-IDENTIFIER_START = '(?:[`\p{L}_]|#[ESCAPE])'
+IDENTIFIER_START = '(?:[\p{L}`_]|#[ESCAPE])'
 IDENTIFIER_CHAR = '#[IDENTIFIER_START]|\d'
 IDENTIFIER = '#[IDENTIFIER_START](?:#[IDENTIFIER_CHAR])*'
-SYMBOL = '#[IDENTIFIER_START](?:#[IDENTIFIER_CHAR]|\.)*'
+SYMBOL = '#[IDENTIFIER_START](?:\.?(?:#[IDENTIFIER_CHAR]))*'
 SYMBOL_DEF = ':#[SYMBOL]'
 FLOATING_POINT_PART = '(?:(?:\.\d+)?(E-?\d+)?)'
 NUMBER = '[+-]\d+(?:#[FLOATING_POINT_PART]|u)?'
-ESCAPED_DATA = '(?:#[ESCAPE]|[ -~&&[^()\[\]{}~#\'"\\:]])'
-CHAR_LITERAL = '\'(?:(#[ESCAPE])|[ -~&&[^()\[\]{}~#\'"\\:]])\''
+VISIBLE_CHARACTER = '[ -~&&[^#[CONTROL_CHARS]]]'
+ESCAPED_DATA = '(?:#[ESCAPE]|#[VISIBLE_CHARACTER]|\s)'
+ILLEGAL_CHARS = '[\x00-\x1F#[CONTROL_CHARS]&&[^\s"]]'
+CHAR_LITERAL = '\'(?:(#[ESCAPE])|#[VISIBLE_CHARACTER])\''
 OPR = '[-=\+\*/<>\$~&%\|!\?\^\.∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+'
 
 main: node*;
 
-node: node-prefix (atom | group);
+node: node-prefix? (atom | group);
 
-node-prefix: line-info? comment?;
-atom: EMPTY{keyword} | SYMBOL | number | OPR | IDENTIFIER | SYMBOL_DEF{entity.name.variable} | char-literal | string-literal;
+node-prefix: line-info comment?;
+atom: EMPTY{keyword} | SYMBOL | number | OPR | SYMBOL_DEF{entity.name.variable} | char-literal | string-literal;
 group{meta.group}:
   `(`{punctuation.definition.group.begin}
   node-kind node*
   `)`{punctuation.definition.group.end}
 ;
-filename: ','
-(~ESCAPED_DATA)*
-~''
+filename: ','{punctuation.separator.comma}
+~'(?=#[ILLEGAL_CHARS])'
 ;
 line-info: 
   '(?:,(~)?(\d+))|(?:(~)?(\d+))(?:,(~)?(\d+))?'{
@@ -47,7 +48,7 @@ comment{comment.line.number-sign}:
 ;
 
 node-kind:
-  '(?:#[SYMBOL])|(?:#[IDENTIFIER])'{variable.function} |
+  '(?:#[SYMBOL])'{variable.function} |
   '\.#[IDENTIFIER]'{keyword}
 ;
 number{meta.number constant.numeric}: NUMBER;
@@ -58,6 +59,7 @@ string-literal:
 ;
 
 string-literal-inner{meta.string string.quoted.double}:
-  (~ESCAPE{constant.character.escape})*
+  (~(ESCAPE{constant.character.escape}
+  | ILLEGAL_CHARS{invalid.illegal}))*
   ~'"'{punctuation.definition.string.end}
 ;

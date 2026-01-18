@@ -2,38 +2,48 @@ EXTENSIONS = 'nif'
 SCOPE = 'source.nif'
 
 CONTROL_CHARS = `()[]{}~#'"\:`
-EMPTY = `.`
 HEXCHAR = '[0-9A-F]'
 ESCAPE = '\\#[HEXCHAR]#[HEXCHAR]'
-IDENTIFIER_START = '(?:[\p{L}`_]|#[ESCAPE])'
+IDENTIFIER_START = '(?:[_A-Za-z\x80-\xFF]|#[ESCAPE])'
 IDENTIFIER_CHAR = '#[IDENTIFIER_START]|\d'
 IDENTIFIER = '#[IDENTIFIER_START](?:#[IDENTIFIER_CHAR])*'
 SYMBOL = '#[IDENTIFIER_START](?:\.?(?:#[IDENTIFIER_CHAR]))*'
 SYMBOL_DEF = ':#[SYMBOL]'
 FLOATING_POINT_PART = '(?:(?:\.\d+)?(E-?\d+)?)'
 NUMBER = '[+-]\d+(?:#[FLOATING_POINT_PART]|u)?'
-VISIBLE_CHARACTER = '[ -~&&[^#[CONTROL_CHARS]]]'
-ESCAPED_DATA = '(?:#[ESCAPE]|#[VISIBLE_CHARACTER]|\s)'
-ILLEGAL_CHARS = '[\x00-\x1F#[CONTROL_CHARS]&&[^\s"]]'
+VISIBLE_CHARACTER = '[ -\xFF&&[^#[CONTROL_CHARS]]]'
+ILLEGAL_CHARS[chars] = '[\x00-\x1F#[CONTROL_CHARS]&&[^\s#[chars]]]'
+ILLEGAL_CHARS = ILLEGAL_CHARS['']
 CHAR_LITERAL = '\'(?:(#[ESCAPE])|#[VISIBLE_CHARACTER])\''
-OPR = '[-=\+\*/<>\$~&%\|!\?\^\.∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔]+'
 
-main: node*;
+main: (~node | '\S'{invalid.illegal})*;
 
-node: node-prefix? (atom | group);
+node: node-prefix (atom | compound-node);
 
-node-prefix: line-info comment?;
-atom: EMPTY{keyword} | SYMBOL | number | OPR | SYMBOL_DEF{entity.name.variable} | char-literal | string-literal;
-group{meta.group}:
-  `(`{punctuation.definition.group.begin}
-  node-kind node*
-  `)`{punctuation.definition.group.end}
+node-prefix: line-info? comment?;
+
+atom:
+    `.`{keyword.other}
+  | SYMBOL
+  | SYMBOL_DEF{entity.name.variable}
+  | number
+  | char-literal
+  | string-literal
 ;
+
+compound-node{meta.group}:
+  `(`{punctuation.definition.group.begin}
+  node-kind (~node | '[^\s\)]'{invalid.illegal})*
+  ~`)`{punctuation.definition.group.end}
+;
+
 filename: ','{punctuation.separator.comma}
+(~ESCAPE)*
 ~'(?=#[ILLEGAL_CHARS])'
 ;
-line-info: 
-  '(?:,(~)?(\d+))|(?:(~)?(\d+))(?:,(~)?(\d+))?'{
+
+line-info:
+  '(~)?(\d+),(~)?(\d+)'{
     1: keyword.operator,
     2: constant.numeric,
     3: keyword.operator,
@@ -41,18 +51,27 @@ line-info:
     5: keyword.operator,
     6: constant.numeric
   } filename?
+  | ',?(~)?(\d+)'{
+    1: keyword.operator,
+    2: constant.numeric
+  }
 ;
+
 comment{comment.line.number-sign}:
   `#`{punctuation.definition.comment.begin}
+  (~ILLEGAL_CHARS['#']{invalid.illegal})*
   ~'#'{punctuation.definition.comment.end}
 ;
 
 node-kind:
   '(?:#[SYMBOL])'{variable.function} |
-  '\.#[IDENTIFIER]'{keyword}
+  '\.#[IDENTIFIER]'{keyword.other.directive}
 ;
+
 number{meta.number constant.numeric}: NUMBER;
+
 char-literal{constant.character}: CHAR_LITERAL{1: constant.character.escape};
+
 string-literal:
   `"`{meta.string string.quoted.double punctuation.definition.string.begin}
   string-literal-inner
@@ -60,6 +79,6 @@ string-literal:
 
 string-literal-inner{meta.string string.quoted.double}:
   (~(ESCAPE{constant.character.escape}
-  | ILLEGAL_CHARS{invalid.illegal}))*
+  | ILLEGAL_CHARS['"']{invalid.illegal}))*
   ~'"'{punctuation.definition.string.end}
 ;

@@ -1,39 +1,47 @@
 EXTENSIONS = 'nif'
 SCOPE = 'source.nif'
 
-CONTROL_CHARS = `()[]{}~#'"\:`
+CONTROL_CHARS = `()[]{}~#'"\:@`
+B62DIGIT = '[0-9A-Za-z]'
+SHORTCHAR = '[ntr|^]'
 HEXCHAR = '[0-9A-F]'
-ESCAPE = '\\#[HEXCHAR]#[HEXCHAR]'
+ESCAPE = '\\(?:#[HEXCHAR]#[HEXCHAR]|#[SHORTCHAR])'
+EMPTY = `.`
 IDENTIFIER_START = '(?:[_A-Za-z\x80-\xFF]|#[ESCAPE])'
 IDENTIFIER_CHAR = '#[IDENTIFIER_START]|\d'
 IDENTIFIER = '#[IDENTIFIER_START](?:#[IDENTIFIER_CHAR])*'
 SYMBOL = '#[IDENTIFIER_START](?:#[IDENTIFIER_CHAR]|\.)*'
 SYMBOL_DEF = ':#[SYMBOL]'
 FLOATING_POINT_PART = '(?:(?:\.\d+)?(E-?\d+)?)'
-NUMBER = '[+-]\d+(?:#[FLOATING_POINT_PART]|u)?'
+NUMBER = '-?\d+(?:#[FLOATING_POINT_PART]|u)?'
 VISIBLE_CHARACTER = '[ -\xFF&&[^#[CONTROL_CHARS]]]'
 ILLEGAL_CHARS[chars] = '[\x00-\x1F#[CONTROL_CHARS]&&[^\s#[chars]]]'
 ILLEGAL_CHARS = ILLEGAL_CHARS['']
 CHAR_LITERAL = '\'(?:(#[ESCAPE])|#[VISIBLE_CHARACTER])\''
 
-main: (~node | '\S'{invalid.illegal})*;
+main: node;
 
-node: node-prefix (atom | compound-node);
+node: atom | compound-node;
 
-node-prefix: line-info? comment?;
+suffix: line-info? comment?;
 
 atom:
-    `.`{constant.language}
+  (
+    EMPTY{constant.language}
   | SYMBOL
   | SYMBOL_DEF{entity.name.variable}
   | number
   | char-literal
   | string-literal
+  )
+   suffix
 ;
+
+tag-head: node-kind suffix;
 
 compound-node{meta.group}:
   `(`{punctuation.definition.group.begin}
-  node-kind (~node | '[^\s\)]'{invalid.illegal})*
+  tag-head (~node | '[^\s\)]'{invalid.illegal})*
   ~`)`{punctuation.definition.group.end}
 ;
 
@@ -43,23 +51,34 @@ filename: ','{punctuation.separator.comma}
 ;
 
 line-info:
-  '(~)?(\d+)(,)(~)?(\d+)'{
-    1: keyword.operator,
-    2: constant.numeric,
-    3: punctuation.separator.comma,
-    4: keyword.operator,
-    5: constant.numeric,
-    6: keyword.operator,
-    7: constant.numeric
-  } filename?
-  | '(,)?(~)?(\d+)'{
-    1: punctuation.separator.comma,
+  '(?![~@])'
+  |
+  (
+  '(?:(@)(~)?|(~))(#[B62DIGIT]+)(,)(~)?(#[B62DIGIT]+)'{
+    1: punctuation.definition.line-infos,
     2: keyword.operator,
-    3: constant.numeric
+    3: keyword.operator,
+    4: constant.numeric,
+    5: punctuation.separator.comma,
+    6: keyword.operator,
+    7: constant.numeric,
+    8: keyword.operator,
+    9: constant.numeric
   }
+  | '(?:(@)(,)?(~)?|(~))(#[B62DIGIT]+)'{
+    1: punctuation.definition.line-infos,
+    2: punctuation.separator.comma,
+    3: keyword.operator,
+    4: keyword.operator,
+    5: constant.numeric
+  }
+  )
+  filename?
 ;
 
 comment{comment.line.number-sign}:
+  '(?!#)'
+  |
   `#`{punctuation.definition.comment.begin}
   (~ILLEGAL_CHARS['#']{invalid.illegal})*
   ~'#'{punctuation.definition.comment.end}

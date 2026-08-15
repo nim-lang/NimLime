@@ -12,7 +12,7 @@ variables:
   symbol_lookahead: '(?={{letter}}|\(|`|_\b)'
   pragma_start: '\{\.(?!\.})'
   string_escape_chars: '\\(?:[ABCEFLNPRTVabceflnprtv"''\\]|\d+|[Xx]\h{2}|[Uu](?:\h{4}|\{\h+}))'
-  UNICODE_OPR: '∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔'
+  UNICODE_OPR: '∙∘×★⊗⊘⊙⊛⊠⊡∩∧⊓±⊕⊖⊞⊟∪∨⊔⟑⟇⩓⩔■□☆'
   OPR: '-=\+\*/<>@\$~&%\|!\?\^\.:\\{{UNICODE_OPR}}'
   format_spec: '=?(?: *:[^}]*)?'
   disallowed_keyws: '(?x:as|asm|and|bind|break|concept|const|continue|converter

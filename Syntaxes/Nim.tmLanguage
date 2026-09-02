@@ -1814,6 +1814,10 @@
 						</dict>
 						<dict>
 							<key>include</key>
+							<string>#pragmas</string>
+						</dict>
+						<dict>
+							<key>include</key>
 							<string>#comments</string>
 						</dict>
 					</array>

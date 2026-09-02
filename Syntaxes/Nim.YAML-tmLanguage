@@ -263,6 +263,7 @@ repository:
             end: (?=[,;\)])
             patterns:
               - include: $self
+          - include: '#pragmas'
           - include: '#comments'
 
   fmt-strs:

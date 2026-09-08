@@ -30,8 +30,8 @@ atom:
     EMPTY{constant.language}
   | SYMBOL
   | SYMBOL_DEF{entity.name.variable}
-  | number
-  | char-literal
+  | NUMBER{meta.number constant.numeric}
+  | CHAR_LITERAL{0: constant.character, 1: constant.character.escape}
   | string-literal
   )
    suffix
@@ -88,10 +88,6 @@ node-kind:
   '(?:#[SYMBOL])'{variable.function} |
   '\.#[IDENTIFIER]'{keyword.other.directive}
 ;
-
-number{meta.number constant.numeric}: NUMBER;
-
-char-literal{constant.character}: CHAR_LITERAL{1: constant.character.escape};
 
 string-literal:
   `"`{meta.string string.quoted.double punctuation.definition.string.begin}

@@ -59,8 +59,8 @@ contexts:
       scope: meta.number.nif constant.numeric.nif
       push: suffix|0
     - match: '''(?:(\\(?:[0-9A-F][0-9A-F]|[ntr|^]))|[ -\xFF&&[^\(\)\[\]\{\}~#''"\\:@]])'''
-      scope: constant.character.nif
       captures:
+        0: constant.character.nif
         1: constant.character.escape.nif
       push: suffix|0
     - match: '"'
@@ -108,8 +108,8 @@ contexts:
       push: suffix|0
       pop: true
     - match: '''(?:(\\(?:[0-9A-F][0-9A-F]|[ntr|^]))|[ -\xFF&&[^\(\)\[\]\{\}~#''"\\:@]])'''
-      scope: constant.character.nif
       captures:
+        0: constant.character.nif
         1: constant.character.escape.nif
       push: suffix|0
       pop: true

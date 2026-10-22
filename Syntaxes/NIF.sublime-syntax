@@ -129,7 +129,7 @@ contexts:
     - meta_content_scope: meta.string.nif string.quoted.double.nif
     - match: '\\(?:[0-9A-F][0-9A-F]|[ntr|^])'
       scope: constant.character.escape.nif
-    - match: '[\x00-\x1F\(\)\[\]\{\}~#''"\\:@&&[^\s"]]'
+    - match: '[\x00-\x1F\(\)\[\]\{\}~#''"\\:@&&[^\s"#:]]'
       scope: invalid.illegal.nif
     - match: '"'
       scope: meta.string.nif string.quoted.double.nif punctuation.definition.string.end.nif

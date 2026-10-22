@@ -96,6 +96,6 @@ string-literal:
 
 string-literal-inner{meta.string string.quoted.double}:
   (~(ESCAPE{constant.character.escape}
-  | ILLEGAL_CHARS['"']{invalid.illegal}))*
+  | ILLEGAL_CHARS['"#:']{invalid.illegal}))*
   ~'"'{punctuation.definition.string.end}
 ;

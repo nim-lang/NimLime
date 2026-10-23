@@ -55,7 +55,7 @@ contexts:
     - match: ':(?:[_A-Za-z\x80-\xFF]|\\(?:[0-9A-F][0-9A-F]|[ntr|^]))(?:(?:[_A-Za-z\x80-\xFF]|\\(?:[0-9A-F][0-9A-F]|[ntr|^]))|\d|\.)*'
       scope: entity.name.variable.nif
       push: suffix|0
-    - match: '-?\d+(?:(?:(?:\.\d+)?(E-?\d+)?)|u)?'
+    - match: '-?(?:\d(_?\d)*(?:\.\d(_?\d)*(?:E[-+]?\d(_?\d)*)?|E[-+]?\d(_?\d)*)|(?:0x[0-9A-Fa-f](_?[0-9A-Fa-f])*|0o[0-7](_?[0-7])*|0b[0-1](_?[0-1])*|\d(_?\d)*)u?)\b'
       scope: meta.number.nif constant.numeric.nif
       push: suffix|0
     - match: '''(?:(\\(?:[0-9A-F][0-9A-F]|[ntr|^]))|[ -\xFF&&[^\(\)\[\]\{\}~#''"\\:@]])'''
@@ -103,7 +103,7 @@ contexts:
       scope: entity.name.variable.nif
       push: suffix|0
       pop: true
-    - match: '-?\d+(?:(?:(?:\.\d+)?(E-?\d+)?)|u)?'
+    - match: '-?(?:\d(_?\d)*(?:\.\d(_?\d)*(?:E[-+]?\d(_?\d)*)?|E[-+]?\d(_?\d)*)|(?:0x[0-9A-Fa-f](_?[0-9A-Fa-f])*|0o[0-7](_?[0-7])*|0b[0-1](_?[0-1])*|\d(_?\d)*)u?)\b'
       scope: meta.number.nif constant.numeric.nif
       push: suffix|0
       pop: true

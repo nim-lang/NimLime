@@ -6,6 +6,7 @@ B62DIGIT = '[0-9A-Za-z]'
 SHORTCHAR = '[ntr|^]'
 HEXCHAR = '[0-9A-F]'
 ESCAPE = '\\(?:#[HEXCHAR]#[HEXCHAR]|#[SHORTCHAR])'
+STR_END = '[\s()@~#]'
 EMPTY = `.`
 IDENTIFIER_START = '(?:[_A-Za-z\x80-\xFF]|#[ESCAPE])'
 IDENTIFIER_CHAR = '#[IDENTIFIER_START]|\d'
@@ -30,7 +31,9 @@ ILLEGAL_CHARS[chars] = '[\x00-\x1F#[CONTROL_CHARS]&&[^\s#[chars]]]'
 ILLEGAL_CHARS = ILLEGAL_CHARS['']
 CHAR_LITERAL = '\'(?:(#[ESCAPE])|#[VISIBLE_CHARACTER])\''
 
-main: node;
+main: line-node | compound-node;
+
+line-node: tag-head node* '\n';
 
 node: atom | compound-node;
 
@@ -39,6 +42,7 @@ suffix: line-info? comment?;
 atom:
   (
     EMPTY{constant.language}
+  | auto-string
   | SYMBOL
   | SYMBOL_DEF{entity.name.variable}
   | NUMBER{meta.number constant.numeric}
@@ -109,4 +113,10 @@ string-literal-inner{meta.string string.quoted.double}:
   (~(ESCAPE{constant.character.escape}
   | ILLEGAL_CHARS['"#:']{invalid.illegal}))*
   ~'"'{punctuation.definition.string.end}
+;
+
+auto-string{meta.string string.unquoted}:
+  '(?:#[NUMBER]|#[SYMBOL])[-/:]|[/:]'
+  (~ESCAPE{constant.character.escape})*
+  ~'(?=#[STR_END])'
 ;

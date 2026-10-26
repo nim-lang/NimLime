@@ -9,7 +9,7 @@ HEXCHAR = '[0-9A-F]'
 ESCAPE = '\\(?:#[HEXCHAR]#[HEXCHAR]|#[SHORTCHAR])'
 STR_END = '[\s()@~#]'
 EMPTY = `.`
-IDENTIFIER_START = '(?:[_A-Za-z\x80-\xFF]|#[ESCAPE])'
+IDENTIFIER_START = '(?:[_A-Za-z\x80-\xFF]|(#[ESCAPE]))'
 IDENTIFIER_CHAR = '#[IDENTIFIER_START]|\d'
 IDENTIFIER = '#[IDENTIFIER_START](?:#[IDENTIFIER_CHAR])*'
 SYMBOL = '#[IDENTIFIER_START](?:#[IDENTIFIER_CHAR]|\.)*'
@@ -18,7 +18,7 @@ DEC_DIGIT  = '\d'
 HEX_DIGIT  = '[0-9A-Fa-f]'
 OCT_DIGIT  = '[0-7]'
 BIN_DIGIT  = '[0-1]'
-DIGITS[digit]  = '#[digit](_?#[digit])*'
+DIGITS[digit]  = '#[digit](?:_?#[digit])*'
 DEC_DIGITS = DIGITS[DEC_DIGIT]
 HEX_DIGITS = DIGITS[HEX_DIGIT]
 OCT_DIGITS = DIGITS[OCT_DIGIT]
@@ -43,9 +43,9 @@ suffix: line-info? comment?;
 atom:
   (
     EMPTY{constant.language}
+  | SYMBOL_DEF{entity.name.variable}
   | auto-string
   | SYMBOL
-  | SYMBOL_DEF{entity.name.variable}
   | NUMBER{meta.number constant.numeric}
   | CHAR_LITERAL{0: constant.character, 1: constant.character.escape}
   | string-literal
@@ -117,7 +117,10 @@ string-literal-inner{meta.string string.quoted.double}:
 ;
 
 auto-string{meta.string string.unquoted}:
-  '(?:#[NUMBER]|#[SYMBOL])[-/:]|[/:]'
+  '(?:#[NUMBER]|#[SYMBOL])[-/:]|[/:]'{
+    1: constant.character.escape,
+    2: constant.character.escape
+  }
   (~ESCAPE{constant.character.escape})*
   ~'(?=#[STR_END])'
 ;

@@ -76,7 +76,7 @@ contexts:
       push: suffix|0
     - match: '"'
       scope: meta.string.nif string.quoted.double.nif punctuation.definition.string.begin.nif
-      push: [suffix|0, string-literal-inner|0]
+      push: [suffix|0, string-literal|0]
     - match: '\('
       scope: meta.group.nif punctuation.definition.group.begin.nif
       push: compound-node|0
@@ -131,7 +131,7 @@ contexts:
       push: suffix|0
     - match: '"'
       scope: meta.string.nif string.quoted.double.nif punctuation.definition.string.begin.nif
-      push: [suffix|0, string-literal-inner|0]
+      push: [suffix|0, string-literal|0]
     - match: '\('
       scope: meta.group.nif punctuation.definition.group.begin.nif
       push: compound-node|0
@@ -157,8 +157,8 @@ contexts:
     - match: '\S'
       scope: invalid.illegal.nif
       pop: true
-  # Rule: string-literal-inner
-  string-literal-inner|0:
+  # Rule: string-literal
+  string-literal|0:
     - meta_content_scope: meta.string.nif string.quoted.double.nif
     - match: '\\(?:[0-9A-F][0-9A-F]|[ntr|^])'
       scope: constant.character.escape.nif

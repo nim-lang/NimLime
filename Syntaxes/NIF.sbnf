@@ -86,12 +86,8 @@ node-kind:
   '\.#[IDENTIFIER]'{keyword.other.directive}
 ;
 
-string-literal:
-  `"`{meta.string string.quoted.double punctuation.definition.string.begin}
-  string-literal-inner
-;
-
-string-literal-inner{meta.string string.quoted.double}:
+string-literal{meta.string string.quoted.double}:
+  `"`{punctuation.definition.string.begin}
   (~(ESCAPE{constant.character.escape}
   | ILLEGAL_CHARS['"#:']{invalid.illegal}))*
   ~'"'{punctuation.definition.string.end}

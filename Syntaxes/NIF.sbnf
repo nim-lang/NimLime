@@ -38,7 +38,7 @@ line-node: tag-head node* '\n';
 
 node: atom | compound-node;
 
-suffix: line-info? comment?;
+suffix: ~line-info ~comment ;
 
 atom:
   (
@@ -61,43 +61,24 @@ compound-node{meta.group}:
   ~`)`{punctuation.definition.group.end}
 ;
 
-filename: ','{punctuation.separator.comma}
-(~ESCAPE)*
-~'(?=#[ILLEGAL_CHARS]|\s)'
+filename:
+  ','
+  (~ESCAPE)*
+  ~'(?=#[ILLEGAL_CHARS]|\s)'
+  | ''
 ;
 
-line-info:
-  '(?![~@])'
-  |
-  (
-  '(?:(@)(~)?|(~))(#[B62DIGIT]+)(,)(~)?(#[B62DIGIT]+)'{
-    1: punctuation.definition.line-infos,
-    2: keyword.operator,
-    3: keyword.operator,
-    4: constant.numeric,
-    5: punctuation.separator.comma,
-    6: keyword.operator,
-    7: constant.numeric,
-    8: keyword.operator,
-    9: constant.numeric
-  }
-  | '(?:(@)(,)?(~)?|(~))(#[B62DIGIT]+)'{
-    1: punctuation.definition.line-infos,
-    2: punctuation.separator.comma,
-    3: keyword.operator,
-    4: keyword.operator,
-    5: constant.numeric
-  }
-  )
-  filename?
+line-info{comment.line}:
+  '(?:@~?|~)#[B62DIGIT]+,~?#[B62DIGIT]+|(?:@,?~?|~)#[B62DIGIT]+'
+    ~filename
+  | ''
 ;
 
-comment{comment.line.number-sign}:
-  '(?!#)'
-  |
-  `#`{punctuation.definition.comment.begin}
+comment{comment.line}:
+  `#`
   (~ILLEGAL_CHARS['#']{invalid.illegal})*
-  ~'#'{punctuation.definition.comment.end}
+  ~'#'
+  | ''
 ;
 
 node-kind:

@@ -17,26 +17,23 @@ contexts:
       pop: true
   # Rule: comment
   comment|0:
-    - meta_content_scope: comment.line.number-sign.nif
-    - match: '(?!#)'
-      scope: comment.line.number-sign.nif
-      pop: true
+    - meta_content_scope: comment.line.nif
     - match: '#'
-      scope: punctuation.definition.comment.begin.nif
       push: comment|1
       pop: true
-    - match: '(?=\S)'
+    - match: ''
+      scope: comment.line.nif
       pop: true
   comment|0|entry-0:
     - match: ''
       set: comment|0
   # Rule: comment
   comment|1:
-    - meta_content_scope: comment.line.number-sign.nif
+    - meta_content_scope: comment.line.nif
     - match: '[\x00-\x1F\(\)\[\]\{\}~#''"\\:@&&[^\s#]]'
       scope: invalid.illegal.nif
     - match: '#'
-      scope: comment.line.number-sign.nif punctuation.definition.comment.end.nif
+      scope: comment.line.nif
       pop: true
   # Rule: compound-node
   compound-node|0:
@@ -94,15 +91,19 @@ contexts:
   # Rule: filename
   filename|0:
     - match: ','
-      scope: punctuation.separator.comma.nif
       push: filename|1
       pop: true
-    - match: '(?=\S)'
+    - match: ''
       pop: true
   # Rule: filename
   filename|1:
     - match: '\\(?:[0-9A-F][0-9A-F]|[ntr|^])'
     - match: '(?=[\x00-\x1F\(\)\[\]\{\}~#''"\\:@&&[^\s]]|\s)'
+      pop: true
+  # Meta scope context for line-info
+  line-info|meta:
+    - meta_content_scope: comment.line.nif
+    - match: ''
       pop: true
   # Rule: line-node
   line-node|0:
@@ -168,37 +169,11 @@ contexts:
       pop: true
   # Rule: suffix
   suffix|0:
-    - match: '(?![~@])'
+    - match: '(?:@~?|~)[0-9A-Za-z]+,~?[0-9A-Za-z]+|(?:@,?~?|~)[0-9A-Za-z]+'
+      scope: comment.line.nif
+      push: [comment|0|entry-0, line-info|meta, filename|0]
+      pop: true
+    - match: ''
+      scope: comment.line.nif
       push: comment|0
-      pop: true
-    - match: '(?:(@)(~)?|(~))([0-9A-Za-z]+)(,)(~)?([0-9A-Za-z]+)'
-      captures:
-        1: punctuation.definition.line-infos.nif
-        2: keyword.operator.nif
-        3: keyword.operator.nif
-        4: constant.numeric.nif
-        5: punctuation.separator.comma.nif
-        6: keyword.operator.nif
-        7: constant.numeric.nif
-        8: keyword.operator.nif
-        9: constant.numeric.nif
-      push: [comment|0|entry-0, filename|0]
-      pop: true
-    - match: '(?:(@)(,)?(~)?|(~))([0-9A-Za-z]+)'
-      captures:
-        1: punctuation.definition.line-infos.nif
-        2: punctuation.separator.comma.nif
-        3: keyword.operator.nif
-        4: keyword.operator.nif
-        5: constant.numeric.nif
-      push: [comment|0|entry-0, filename|0]
-      pop: true
-    - match: '(?!#)'
-      scope: comment.line.number-sign.nif
-      pop: true
-    - match: '#'
-      scope: comment.line.number-sign.nif punctuation.definition.comment.begin.nif
-      push: comment|1
-      pop: true
-    - match: '(?=\S)'
       pop: true

@@ -1,3 +1,4 @@
+# -*- mode: ebnf; -*-
 EXTENSIONS = 'nif'
 SCOPE = 'source.nif'
 

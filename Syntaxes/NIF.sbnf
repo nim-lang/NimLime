@@ -34,7 +34,7 @@ CHAR_LITERAL = '\'(?:(#[ESCAPE])|#[VISIBLE_CHARACTER])\''
 
 main: line-node | compound-node;
 
-line-node: tag-head node* '\n';
+line-node: tag-head (~node | '\S'{invalid.illegal})* ~'\n';
 
 node: atom | compound-node;
 

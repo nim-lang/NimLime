@@ -135,10 +135,9 @@ contexts:
     - match: '\('
       scope: meta.group.nif punctuation.definition.group.begin.nif
       push: compound-node|0
-    - match: '\n'
-      pop: true
     - match: '\S'
       scope: invalid.illegal.nif
+    - match: '\n'
       pop: true
   # Rule: main
   main:

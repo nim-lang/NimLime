@@ -1,0 +1,134 @@
+c# SYNTAX TEST "Packages/Nim/Syntaxes/NIF.sublime-syntax" #
+
+  (.nif27)
+c#^ punctuation.definition.group.begin.nif #
+c# ^^^^^^ keyword.other.directive.nif #
+c#       ^ punctuation.definition.group.end.nif #
+  (.vendor "NimLime")
+c# ^^^^^^^ keyword.other.directive.nif #
+c#         ^^^^^^^^^ string.quoted.double.nif #
+  (.indexat 2048#byte offset of the index #)
+c#          ^^^^ constant.numeric.nif #
+  (stmts@1,1,sample.p.nif#NIF 2027 specification tour #
+c# ^^^^^ variable.function.nif #
+c#      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ comment.line.nif #
+  )
+  (atoms#empty nodes, identifiers, numbers, chars, strings #
+c# ^^^^^ variable.function.nif #
+    . . .
+c#  ^ constant.language.nif #
+    ...
+c#  ^^^ constant.language.nif #
+    12
+c#  ^^ constant.numeric.nif #
+    -12
+c#  ^^^ constant.numeric.nif #
+    0xFF
+c#  ^^^^ constant.numeric.nif #
+    0x1E3
+c#  ^^^^^ constant.numeric.nif #
+    0b1111_1111
+c#  ^^^^^^^^^^^ constant.numeric.nif #
+    0xDEAD_BEEFu
+c#  ^^^^^^^^^^^^ constant.numeric.nif #
+    1_234.5_6E+0_2
+c#  ^^^^^^^^^^^^^^ constant.numeric.nif #
+    1.5E-3
+c#  ^^^^^^ constant.numeric.nif #
+    12u
+c#  ^^^ constant.numeric.nif #
+    'a'
+c#  ^^^ constant.character.nif #
+    '\n'
+c#  ^^^^ constant.character.nif #
+c#   ^^ constant.character.escape.nif #
+    '\5C'
+c#  ^^^^^ constant.character.nif #
+c#   ^^^ constant.character.escape.nif #
+    '\5c'
+c#  ^^^ invalid.illegal.nif #
+    "Hello World!\0A#:()[]{}~'\@"
+c#  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.double.nif #
+c#               ^^^ constant.character.escape.nif #
+c#                    ^^^^^^^^^^ invalid.illegal.nif #
+c#                              ^ punctuation.definition.string.end.nif #
+    "comment suffix follows"#a comment #
+c#  ^^^^^^^^^^^^^^^^^^^^^^^^ string.quoted.double.nif #
+    "This is a single\20
+c#  ^ string.quoted.double.nif punctuation.definition.string.begin.nif #
+c#                   ^^^ constant.character.escape.nif #
+  literal string"
+c#^^^^^^^^^^^^^^^ string.quoted.double.nif #
+c#              ^ string.quoted.double.nif punctuation.definition.string.end.nif #
+  )
+  (suffixes# invalid:()[]{}~'\@ #
+c# ^^^^^^^^ variable.function.nif #
+c#         ^^^^^^^^^^^^^^^^^^^^^^ comment.line.nif #
+c#                  ^^^^^^^^^^^ invalid.illegal.nif #
+    "abc"@5,3#abc #
+c#  ^^^^^ string.quoted.double.nif #
+c#       ^^^^^^^^^ comment.line.nif #
+    foo@5,~3,foo.nim
+c#     ^^^^^^^^^^^^^ comment.line.nif #
+    foo~Z,,some/file.nim#some comment #
+c#     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ comment.line.nif #
+    (call@~5,3 a b c)
+c#   ^^^^ variable.function.nif #
+c#       ^^^^^ comment.line.nif #
+c#                  ^ punctuation.definition.group.end.nif #
+    (add#performs an addition# x y)
+c#   ^^^ variable.function.nif #
+    123#answer #
+c#  ^^^ constant.numeric.nif #
+  )
+  (.lang "html")
+c# ^^^^^ keyword.other.directive.nif #
+c#       ^^^^^^ string.quoted.double.nif #
+  copy "a/b.txt" my\20dir/my\20file.txt
+c#^^^^ variable.function.nif #
+c#     ^^^^^^^^^ string.quoted.double.nif #
+c#               ^^^^^^^^^^^^^^^^^^^^^^ string.unquoted.nif #
+c#                 ^^^ constant.character.escape.nif #
+c#                          ^^^ constant.character.escape.nif #
+  info 2024-08-12T09:14:03Z "server started" (port 8080)
+c#^^^^ variable.function.nif #
+c#     ^^^^^^^^^^^^^^^^^^^^ string.unquoted.nif #
+c#                          ^^^^^^^^^^^^^^^^ string.quoted.double.nif #
+c#                                           ^ punctuation.definition.group.begin.nif #
+c#                                            ^^^^ variable.function.nif #
+c#                                                 ^^^^ constant.numeric.nif #
+  warn@0,1#disk# 2024-08-12 "disk full"
+c#^^^^ variable.function.nif #
+c#    ^^^^^^^^^^ comment.line.nif #
+c#               ^^^^^^^^^^ string.unquoted.nif #
+c#                          ^^^^^^^^^^^ string.quoted.double.nif #
+  cmd ./usr/bin@0,3#exe# ~/.bashrc
+c#^^^ variable.function.nif #
+c#    ^ constant.language.nif #
+c#     ^^^^^^^^ string.unquoted.nif #
+c#             ^^^^^^^^^ comment.line.nif #
+c#                       ^ invalid.illegal.nif #
+c#                        ^^^^^^^^ string.unquoted.nif #
+  math 1- x- -x -1
+c#^^^^ variable.function.nif #
+c#     ^^ string.unquoted.nif #
+c#        ^^ string.unquoted.nif #
+c#           ^ invalid.illegal.nif #
+c#            ^ -variable.function #
+c#              ^^ constant.numeric #
+  table key:value key :value
+c#^^^^^ variable.function.nif #
+c#      ^^^^^^^^^ string.unquoted.nif #
+c#                    ^^^^^^ entity.name.variable.nif #
+  url https://nim-lang.org
+c#^^^ variable.function.nif #
+c#    ^^^^^^^^^^^^^^^^^^^^ string.unquoted.nif #
+  report "summary" (details (path src/main.nim) (code 42))
+c#^^^^^^ variable.function.nif #
+c#       ^^^^^^^^^ string.quoted.double.nif #
+c#                 ^ punctuation.definition.group.begin.nif #
+c#                  ^^^^^^^ variable.function.nif #
+c#                                ^^^^^^^^^^^^ string.unquoted.nif #
+  (.index#illustrative offsets, usually omitted for line-based modules #
+c# ^^^^^^ keyword.other.directive.nif #
+  )
